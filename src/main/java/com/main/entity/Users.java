@@ -1,0 +1,110 @@
+package com.main.entity;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "users", schema = "solardb")
+public class Users {
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id", nullable = false)
+    private int id;
+
+    @Basic
+    @Column(name = "email", nullable = false, length = 100)
+    private String email;
+
+    @Basic
+    @Column(name = "passwords", nullable = false, length = 100)
+    private String passwords;
+
+    @Basic
+    @Column(name = "fullname", nullable = false, length = 100)
+    private String fullname;
+
+    @Basic
+    @Column(name = "phone_number", nullable = true, length = 20)
+    private String phoneNumber;
+
+    @Basic
+    @Column(name = "gender", nullable = true)
+    private Boolean gender;
+
+    @Basic
+    @Column(name = "birth", nullable = true)
+    private Date birth;
+
+    @Basic
+    @Column(name = "city", nullable = true, length = 50)
+    private String city;
+
+    @Basic
+    @Column(name = "province", nullable = true, length = 50)
+    private String province;
+
+    @Basic
+    @Column(name = "ward", nullable = true, length = 50)
+    private String ward;
+
+    @Basic
+    @Column(name = "address", nullable = true, length = 100)
+    private String address;
+
+    @Basic
+    @Column(name = "date_created", nullable = true)
+    private Timestamp dateCreated;
+
+    @Basic
+    @Column(name = "is_acctive", nullable = false)
+    private boolean isAcctive;
+
+    @Basic
+    @Column(name = "token", nullable = true, length = 50)
+    private String token;
+
+    @OneToMany(mappedBy = "usersByUserId")
+    @JsonManagedReference
+    private Collection<Carts> cartsById;
+
+    @OneToMany(mappedBy = "usersByUserId")
+    @JsonManagedReference
+    private Collection<HistoryUpdate> historyUpdatesById;
+
+    @OneToMany(mappedBy = "usersByUserId")
+    @JsonManagedReference
+    private Collection<Orders> ordersById;
+
+    @OneToMany(mappedBy = "usersByUserId")
+    @JsonManagedReference
+    private Collection<ProductComment> productCommentsById;
+
+    @OneToMany(mappedBy = "usersByUserId")
+    @JsonManagedReference
+    private Collection<ProductRate> productRatesById;
+
+    @OneToMany(mappedBy = "usersByUserId")
+    @JsonManagedReference
+    private Collection<UserDiscounts> userDiscountsById;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "role_users", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    @JsonBackReference
+    private List<Roles> roles = new ArrayList<>();
+}
