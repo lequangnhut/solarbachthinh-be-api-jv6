@@ -28,7 +28,7 @@ public class ProductCategories {
 
     @Basic
     @Column(name = "category_image", nullable = true)
-    private byte[] categoryImage;
+    private String categoryImage;
 
     @Basic
     @Column(name = "is_active", nullable = true)

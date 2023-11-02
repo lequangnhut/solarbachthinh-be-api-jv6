@@ -31,65 +31,99 @@
 
                                 <div class="form">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="productIdValue" readonly>
+                                        <input type="text"
+                                               class="form-control"
+                                               th:value="${product.id}"
+                                               id="productIdValue" readonly
+                                        >
                                         <label for="productIdValue">Mã sản phẩm</label>
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="productName" name="productName">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="productName"
+                                               th:value="${product.productName}"
+                                               name="productName"
+                                        >
                                         <label for="productName">Tên sản phẩm</label>
                                         <span class="text-danger" id="invalid-product-name"></span>
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="power" name="power">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="power"
+                                               th:value="${product.powers}"
+                                               name="power"
+                                        >
                                         <label for="power">Công suất</label>
                                         <span class="text-danger" id="invalid-power"></span>
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="amount" name="amount">
+                                        <input type="number"
+                                               class="form-control"
+                                               id="amount"
+                                               th:value="${product.quantity}"
+                                               name="amount"
+                                        >
                                         <label for="amount">Số lượng sản phẩm</label>
                                         <span class="text-danger" id="invalid-amount"></span>
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" oninput="formatPrice(this)"
-                                               id="priceInput" name="price">
+                                        <input type="text"
+                                               class="form-control"
+                                               oninput="formatPrice(this)"
+                                               id="priceInput"
+                                               th:value="${product.price}"
+                                               name="price"
+                                        >
                                         <label for="priceInput">Giá sản phẩm</label>
                                         <span class="text-danger" id="invalid-price"></span>
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="warranty" name="warranty">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="warranty"
+                                               th:value="${product.warranty}"
+                                               name="warranty"
+                                        >
                                         <label for="warranty">Thời gian bảo hành</label>
                                         <span class="text-danger" id="invalid-warranty"></span>
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <input type="tel" class="form-control" id="saleOff" name="saleOff"
-                                               oninput="formatPrice(this)">
+                                        <input type="tel"
+                                               class="form-control"
+                                               id="saleOff"
+                                               th:value="${product.saleOff}"
+                                               name="saleOff"
+                                               oninput="formatPrice(this)"
+                                        >
                                         <label for="saleOff">Giảm giá</label>
                                         <span class="text-danger" id="invalid-saleOff"></span>
                                     </div>
 
                                     <div class="form-floating mb-3">
 
-                                        <select class="form-select" name="brandId">
+                                        <select class="form-select" th:value="${product.id}" name="brandId">
                                             <option></option>
                                         </select>
                                         <label>Thương hiệu</label>
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <select class="form-select" name="productTypeId">
+                                        <select class="form-select" th:value="${product.id}" name="productTypeId">
                                             <option></option>
                                         </select>
                                         <label>Thể loại</label>
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <select class="form-select" name="isStatusDelete">
+                                        <select class="form-select" th:value="${product.id}" name="isStatusDelete">
                                             <option></option>
                                         </select>
                                         <label>Trạng thái</label>

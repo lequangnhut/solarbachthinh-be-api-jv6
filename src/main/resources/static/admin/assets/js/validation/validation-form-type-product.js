@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // ... (code for existing fields)
-
     const nameProductType = document.getElementById('name-edit-product-type');
     const errorNameProductType = document.getElementById('invalid-name-product-type');
 

@@ -27,21 +27,26 @@
                     <h5 class="card-title fw-semi-bold mb-4 mt-2">Thêm sản phẩm</h5>
                     <div class="card">
                         <div class="card-body">
-                            <form method="post" enctype="multipart/form-data">
+                            <form method="post"
+                                  enctype="multipart/form-data"
+                                  th:object="${productsDTO}"
+                            >
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="productIdValue" readonly>
+                                    <input type="text" class="form-control"
+                                           th:value="${productIdValue}"
+                                           id="productIdValue" readonly>
                                     <label for="productIdValue">Mã sản phẩm</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="productName">
+                                    <input type="text" class="form-control" id="productName" th:field="*{productName}">
                                     <label for="productName">Tên sản phẩm</label>
                                     <span class="text-danger" id="invalid-product-name"></span>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="power">
+                                    <input type="text" class="form-control" id="power" th:field="*{powers}">
                                     <label for="power">Công suất</label>
                                     <span class="text-danger" id="invalid-power"></span>
                                 </div>
@@ -91,63 +96,15 @@
                                     <label for="isStatusDelete">Trạng thái</label>
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="img1">Hình ảnh</label>
+                                    <input type="file" class="form-control" name="file1" id="img1">
+                                </div>
+
                                 <div class="form-floating mb-3">
                                     <textarea class="form-control" id="descriptions" name="descriptions"
                                               placeholder="Nhập ghi chú ở đây" style="height: 200px"></textarea>
                                     <label for="descriptions">Ghi chú</label>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-lg-6">
-                                        <label class="drop-container">
-                                            <input type="file" accept=".jpg, .jpeg, .png" id="file01" name="file01"
-                                                   onchange="previewImage(event, 'imagePreview1', 'drop-title1', 'dropImageProduct1')">
-                                            <div class="file-icon"></div>
-                                            <div class="drop-title" id="drop-title1">Nhấn để tải ảnh lên...</div>
-                                            <div class="image-show">
-                                                <img class="image-preview" id="imagePreview1" src="#"
-                                                     alt="Image Preview">
-                                            </div>
-                                        </label>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="drop-container">
-                                            <input type="file" accept=".jpg, .jpeg, .png" id="file02" name="file02"
-                                                   onchange="previewImage(event, 'imagePreview2', 'drop-title2', 'dropImageProduct2')">
-                                            <div class="file-icon"></div>
-                                            <div class="drop-title" id="drop-title2">Nhấn để tải ảnh lên...</div>
-                                            <div class="image-show">
-                                                <img class="image-preview" id="imagePreview2" src="#"
-                                                     alt="Image Preview">
-                                            </div>
-                                        </label>
-                                    </div>
-                                    <!-- Repeat for other file inputs -->
-                                    <div class="col-lg-6">
-                                        <label class="drop-container">
-                                            <input type="file" accept=".jpg, .jpeg, .png" id="file03" name="file03"
-                                                   onchange="previewImage(event, 'imagePreview3', 'drop-title3', 'dropImageProduct3')">
-                                            <div class="file-icon"></div>
-                                            <div class="drop-title" id="drop-title3">Nhấn để tải ảnh lên...</div>
-                                            <div class="image-show">
-                                                <img class="image-preview" id="imagePreview3" src="#"
-                                                     alt="Image Preview">
-                                            </div>
-                                        </label>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="drop-container">
-                                            <input type="file" accept=".jpg, .jpeg, .png" id="file04" name="file04"
-                                                   onchange="previewImage(event, 'imagePreview4', 'drop-title4', 'dropImageProduct4')">
-                                            <div class="file-icon"></div>
-                                            <div class="drop-title" id="drop-title4">Nhấn để tải ảnh lên...</div>
-                                            <div class="image-show">
-                                                <img class="image-preview" id="imagePreview4" src="#"
-                                                     alt="Image Preview">
-                                            </div>
-                                        </label>
-                                    </div>
-                                    <span class="text-danger" id="invalid-file">Vui lòng thêm đủ 4 ảnh để thêm được thông tin sản phẩm!</span>
                                 </div>
 
                                 <div class="row d-flex flex-column flex-md-row mt-3">
@@ -161,7 +118,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <a href="/admin/san-pham" class="btn btn-danger" role="button">Trở
+                                            <a href="/quan-tri/san-pham" class="btn btn-danger" role="button">Trở
                                                 về</a>
                                         </div>
                                     </div>

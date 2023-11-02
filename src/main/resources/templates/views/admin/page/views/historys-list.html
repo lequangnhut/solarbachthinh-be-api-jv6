@@ -40,10 +40,10 @@
                                     <tbody>
                                     <tr th:each="history,start : ${histories}">
                                         <th th:text="${start.index + 1}"></th>
-                                        <th th:text="${history.accountsByAccountId.fullname}"></th>
-                                        <th th:text="${#dates.format(history.updateDate, 'dd-MM-yyyy')}"></th>
-                                        <th th:text="${#dates.format(history.updateDate, 'HH:mm:ss')}"></th>
-                                        <th th:text="${history.updateDescription}"></th>
+                                        <th th:text="${history.usersByUserId.fullname}"></th>
+                                        <th th:text="${#dates.format(history.dateCreated, 'dd-MM-yyyy')}"></th>
+                                        <th th:text="${#dates.format(history.dateCreated, 'HH:mm:ss')}"></th>
+                                        <th th:text="${history.activity}"></th>
                                     </tr>
                                     </tbody>
                                 </table>

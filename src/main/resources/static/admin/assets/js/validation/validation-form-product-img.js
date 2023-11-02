@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     checkInputsProduct();
 
-    function checkAllFilesSelected() {
+    /*function checkAllFilesSelected() {
         const files = [file01, file02, file03, file04];
         let allFilesSelected = true;
 
@@ -69,12 +69,12 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             invalidFile.textContent = 'Vui lòng thêm ảnh vào tất cả các trường ảnh';
         }
-    }
+    }*/
 
-    file01.addEventListener('change', checkAllFilesSelected);
-    file02.addEventListener('change', checkAllFilesSelected);
-    file03.addEventListener('change', checkAllFilesSelected);
-    file04.addEventListener('change', checkAllFilesSelected);
+    // file01.addEventListener('change', checkAllFilesSelected);
+    // file02.addEventListener('change', checkAllFilesSelected);
+    // file03.addEventListener('change', checkAllFilesSelected);
+    // file04.addEventListener('change', checkAllFilesSelected);
 
     // Bắt sự kiện blur cho từng trường
     productId.addEventListener('blur', function () {
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
             saleOff.classList.remove('is-valid');
             saleOff.classList.add('is-invalid');
             invalidSaleOff.textContent = 'Giá giảm không thể lớn hơn giá sản phẩm';
-        } else{
+        } else {
             saleOff.classList.remove('is-invalid');
             saleOff.classList.add('is-valid');
             invalidSaleOff.textContent = '';

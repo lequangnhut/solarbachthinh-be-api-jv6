@@ -11,7 +11,7 @@ public class ProductCategoriesDto implements Serializable {
 
     String categoryName;
 
-    byte[] categoryImage;
+    String categoryImage;
 
     Boolean isActive;
 }

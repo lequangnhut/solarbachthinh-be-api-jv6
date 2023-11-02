@@ -24,16 +24,13 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <a class="btn btn-primary float-end mx-2" href="/admin/them-san-pham" role="button">
+                    <a class="btn btn-primary float-end mx-2" href="/quan-tri/san-pham/them-san-pham" role="button">
                         <i class="ti ti-file-plus"></i>Thêm sản phẩm
                     </a>
-                    <a class="btn btn-primary float-end mx-2" href="/admin/them-hinh-anh" role="button">
-                        <i class="ti ti-photo-edit"></i>Cập nhật ảnh sản phẩm
-                    </a>
-                    <a class="btn btn-primary float-end mx-2" href="/admin/the-loai" role="button">
+                    <a class="btn btn-primary float-end mx-2" href="/quan-tri/the-loai" role="button">
                         <i class="ti ti-category"></i>Thể loại sản phẩm
                     </a>
-                    <a class="btn btn-primary float-end mx-2" href="/admin/danh-muc" role="button">
+                    <a class="btn btn-primary float-end mx-2" href="/quan-tri/danh-muc" role="button">
                         <i class="ti ti-article"></i>Danh mục sản phẩm
                     </a>
                     <h5 class="card-title fw-semi-bold mb-4 mt-2">Danh sách sản phẩm</h5>
@@ -56,24 +53,24 @@
                                     <tbody>
                                     <tr th:each="product,start : ${products}">
                                         <td th:text="${start.index + 1}"></td>
-                                        <td th:text="${product.productId}"></td>
+                                        <td th:text="${product.id}"></td>
                                         <td th:text="${product.productName}" class="hidden-text-table"></td>
-                                        <td th:text="${product.productTypesByProductTypeId.categorysByCategoryId.categoryName}"></td>
-                                        <td th:text="${product.amount}"></td>
+                                        <td th:text="${product.productTypesByProductTypeId.productCategoriesByCategoryId.categoryName}"></td>
+                                        <td th:text="${product.quantity}"></td>
                                         <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></td>
-                                        <td th:if="${product.statusDelete == 'Đang bán'}">
+                                        <td th:if="${product.isStatusDelete == 'Đang bán'}">
                                             <i class='bx bxs-circle' style='color:#3a9b54'></i> Đang bán
                                         </td>
-                                        <td th:if="${product.statusDelete == 'Ngừng kinh doanh'}">
+                                        <td th:if="${product.isStatusDelete == 'Ngừng kinh doanh'}">
                                             <i class='bx bxs-circle' style='color:#c71e1e'></i> Ngừng kinh doanh
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <a class="btn btn-warning ms-2"
-                                                   th:href="@{/admin/sua-san-pham/{id}(id = ${product.productId})}"
+                                                   th:href="@{/quan-tri/san-pham/sua-san-pham/{id}(id = ${product.id})}"
                                                    role="button">Sửa</a>
                                                 <button class="btn btn-danger ms-2"
-                                                        th:attr="onclick='confirmDelete(\'' + ${product.productId} + '\')'">
+                                                        th:attr="onclick='confirmDelete(\'' + ${product.id} + '\')'">
                                                     Xoá
                                                 </button>
                                             </div>
@@ -93,20 +90,6 @@
 <div th:replace="~{views/admin/lib/script_lib}"></div>
 
 <script>
-    $(document).ready(function () {
-        var maxCharacters = 10; // Số ký tự tối đa cho phép
-
-        $('#table-product tbody tr').each(function () {
-            var cell = $(this).find('td:nth-child(3)'); // Lấy ô trong cột 1
-
-            if (cell.text().length > maxCharacters) {
-                cell.text(cell.text().substr(0, maxCharacters) + '...'); // Cắt bớt và thêm '...' khi quá số ký tự tối đa
-            }
-        });
-    });
-</script>
-
-<script>
     function confirmDelete(productId) {
         Swal.fire({
             title: 'Cảnh báo !',
@@ -119,7 +102,7 @@
             cancelButtonText: 'Hủy'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = '/admin/sua-san-pham/delete/' + productId;
+                window.location.href = '/quan-tri/sua-san-pham/delete/' + productId;
             }
         })
     }
