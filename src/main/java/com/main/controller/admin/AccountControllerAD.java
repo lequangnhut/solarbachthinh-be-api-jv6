@@ -1,25 +1,108 @@
 package com.main.controller.admin;
 
+import com.main.dto.RolesDto;
+import com.main.dto.UsersDto;
+import com.main.entity.ProductCategories;
+import com.main.entity.Roles;
+import com.main.entity.Users;
+import com.main.service.CategoryService;
+import com.main.service.RoleService;
+import com.main.service.UserService;
+import com.main.utils.EncodeUtils;
+import com.main.utils.EntityDtoUtils;
+import com.main.utils.RandomUtils;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import jdk.dynalink.beans.StaticClass;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("quan-tri/tai-khoan")
 public class AccountControllerAD {
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    RoleService roleService;
+
+    @Autowired
+    HttpSession session;
+
+    @Autowired
+    PasswordEncoder encoder;
+
+    public static boolean successMessage = false;
+
     @GetMapping
-    public String dataAccount() {
+    public String dataAccount(Model model) {
+        List<Users> users = userService.findByActiveIsTrue();
+
+        for (Users user : users) {
+            String encodedPhone = EncodeUtils.encodePhoneNumber(user.getPhoneNumber());
+            user.setPhoneNumber(encodedPhone);
+        }
+        model.addAttribute("dataAccount", users);
         return "views/admin/page/views/accounts-list";
     }
 
     @GetMapping("them-tai-khoan")
-    public String account_add() {
+    public String getAccount_add(Model model) {
+        model.addAttribute("usersDto", new UsersDto());
         return "views/admin/page/crud/account/account-add";
     }
 
-    @GetMapping("sua-tai-khoan")
-    public String account_edit() {
+    @PostMapping("them-tai-khoan")
+    public String postAccount_add(@Valid UsersDto usersDto, BindingResult result) {
+        usersDto.setAcctive(true);
+        Users users = EntityDtoUtils.convertToEntity(usersDto, Users.class);
+        userService.save(users);
+        session.setAttribute("toastSuccess", "Thêm thành công!");
+        successMessage = true;
+        return "views/admin/page/crud/account/account-add";
+    }
+
+    @GetMapping("sua-tai-khoan/{userId}")
+    public String account_edit(@PathVariable int userId, Model model) {
+        Users users = userService.findById(userId);
+        model.addAttribute("usersDto", EntityDtoUtils.convertToDto(users, Users.class));
+        model.addAttribute("users", users);
+
         return "views/admin/page/crud/account/account-edit";
     }
+
+    @PostMapping("sua-tai-khoan")
+    public String account_edit(@ModelAttribute("usersDto") UsersDto usersDto) {
+        String encodedPassword = encoder.encode(usersDto.getPasswords());
+        usersDto.setPasswords(encodedPassword);
+        userService.update(EntityDtoUtils.convertToEntity(usersDto, Users.class));
+        session.setAttribute("toastSuccess", "Cập nhật thành công !");
+        return "redirect:/quan-tri/tai-khoan";
+    }
+
+    @GetMapping("xoa-tai-khoan/{id}")
+    public String account_delete(@PathVariable("id") int id) {
+        Users users = userService.findById(id);
+        users.setAcctive(Boolean.FALSE);
+        userService.update(users);
+        session.setAttribute("toastSuccess", "Xoá thành công !");
+        return "redirect:/quan-tri/tai-khoan";
+    }
+
+    @ModelAttribute("rolesDto")
+    public List<Roles> roles() {
+        return roleService.findAllRoles();
+    }
+
 }
