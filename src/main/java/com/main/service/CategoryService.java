@@ -1,8 +1,8 @@
 package com.main.service;
 
 import com.main.entity.ProductCategories;
+import org.springframework.data.domain.Pageable;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 public interface CategoryService {

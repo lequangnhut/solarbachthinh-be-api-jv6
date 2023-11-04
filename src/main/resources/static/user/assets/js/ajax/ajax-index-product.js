@@ -66,7 +66,7 @@ function updateSlider(data, brandName) {
         newSlide.innerHTML = `
             <a href="/san-pham/san-pham-chi-tiet?ma-san-pham=${item.productId}">
                 <div class="d-flex align-items-center product-hot">
-                    <img src="/upload/${item.productImagesByProductId[0].imagePath}" width="30%" alt="">
+                    <img src="/upload/${item.productImagesById[0].imagePath}" width="30%" alt="">
                     <div class="content-item text-start text-dark">
                         <div style="font-size: 14px">${brandName}</div>
                         <div style="padding-right: 10px; font-size: 16px; text-transform: uppercase">${item.productName}</div>

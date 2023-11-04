@@ -28,7 +28,7 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                .requestMatchers("/user/**").permitAll()
+                                .requestMatchers("/user/**", "/admin/**").permitAll()
                                 .requestMatchers("/quan-tri/**").hasAuthority("ADMIN")
                                 .requestMatchers("/gio-hang/**", "/thong-tin/**").hasAuthority("USER")
                                 .requestMatchers("/**").permitAll()

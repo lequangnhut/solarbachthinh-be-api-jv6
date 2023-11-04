@@ -18,6 +18,5 @@ public class RateController {
     public String product_rate(Model model) {
         model.addAttribute("Rates", rateService.findAll());
         return "views/admin/page/views/rate-list";
-
     }
 }

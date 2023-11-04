@@ -18,6 +18,5 @@ public class CommentController {
     public String product_comment(Model model) {
         model.addAttribute("Comments", commentService.findAll());
         return "views/admin/page/views/comment-list";
-
     }
 }

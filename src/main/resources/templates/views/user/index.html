@@ -238,17 +238,18 @@
                             <div class="item">
                                 <div class="item-product d-flex align-items-center">
                                     <div class="img">
-                                        <img th:src="@{/upload/{img}(img = ${item.productImagesByProductId[0].imagePath})}"
-                                             class="img-fluid" style="width: 200px" alt="...">
+                                        <!--                                        <img th:src="@{/upload/{img}(img = ${item.productImagesById.isEmpty()})}"-->
+                                        <!--                                             class="img-fluid" style="width: 200px" alt="...">-->
                                     </div>
                                     <div class="card-body-product">
                                         <p class="name-product" th:text="${item.productName}"></p>
                                         <div class="content-product mb-3">
-                                            <span>Công suất: <b th:text="${item.power}"></b></span>
-                                            <span>Hãng: <b th:text="${item.brandsByBrandId.brandName}"></b></span>
+                                            <span>Công suất: <b th:text="${item.powers}"></b></span>
+                                            <span>Hãng: <b
+                                                    th:text="${item.productBrandsByProductBrandId.brandName}"></b></span>
                                         </div>
                                         <div class="btn-add-cart">
-                                            <a th:href="@{'/san-pham/san-pham-chi-tiet?ma-san-pham=' + ${item.productId}}"
+                                            <a th:href="@{'/san-pham/san-pham-chi-tiet?ma-san-pham=' + ${item.id}}"
                                                role="button" type="submit" class="btn btn-primary w-100">
                                                 Mua hàng</a>
                                         </div>
@@ -383,11 +384,11 @@
 
 <!-- start sản phẩm nổi bật -->
 `
-<section class="py-5 wow fadeInUp" data-wow-delay="fade-up">
+<section class="py-5 wow fadeInUp" data-wow-delay="fade-up" ng-app="products" ng-controller="change_product">
     <div class="container">
         <div class="text-center mx-auto mb-5 wow fadeIn" data-wow-delay="0.1s" style="max-width: 600px;">
-            <h6 class="text-primary">Tất Cả Sản Phẩm Nổi Bật Của Chúng Tôi</h6>
-            <h1 class="mb-4">SẢN PHẨM NỔI BẬT</h1>
+            <h6 class="text-primary">Tất Cả Sản Phẩm Mới Nhất Của Chúng Tôi</h6>
+            <h1 class="mb-4">SẢN PHẨM MỚI NHẤT</h1>
         </div>
 
         <!--Start nổi bật-->
@@ -397,11 +398,13 @@
                 <div class="col-12 col-md-12 col-lg-4">
                     <div class="box">
                         <div class="row">
-                            <div th:each="category : ${categories}" class="col-6 col-md-6 col-lg-6 p-4 product-box">
-                                <a href="javascript:void(0)" th:id="${'product-' + category.categoryId}">
-                                    <h5 class="product-title fs-6" th:text="${category.categoryName}">Tấm pin</h5>
-                                    <img th:src="@{/upload/{img}(img = ${category.categoryImage})}" alt=""
-                                         class="product-image">
+                            <div ng-repeat="category in categories" class="col-6 col-md-6 col-lg-6 p-4 product-box">
+                                <a href="javascript:void(0)"
+                                   id="product-{{category.id}}"
+                                   ng-click="changes(category.id)"
+                                >
+                                    <h5 class="product-title fs-6">{{category.categoryName}}</h5>
+                                    <img class="product-image" ng-src="/upload/{{category.categoryImage}}" alt="">
                                     <div class="position-absolute product-arrow">
                                         <i class="fa-solid fa-angle-right fa-beat"></i>
                                     </div>
@@ -415,22 +418,23 @@
                 <div class="col-12 col-md-12 col-lg-8">
                     <div class="swiper mySwiper" id="product-slider">
                         <div class="swiper-wrapper">
-                            <div th:each="item : ${products}" class="swiper-slide">
-                                <a th:href="@{'/san-pham/san-pham-chi-tiet?ma-san-pham=' + ${item.productId}}">
+                            <div ng-repeat="product in products" class="swiper-slide">
+                                <a href="/san-pham/san-pham-chi-tiet?ma-san-pham={{product.id}}">
                                     <div class="d-flex align-items-center product-hot">
-                                        <img th:src="@{/upload/{img}(img = ${item.productImagesByProductId[0].imagePath})}"
-                                             width="30%" alt="">
+                                        <!--                                        <img th:src="@{/upload/{img}(img = ${item.productImagesById[0].imagePath})}"-->
+                                        <!--                                             width="30%" alt="">-->
                                         <div class="content-item text-start text-dark">
-                                            <div style="font-size: 14px"
-                                                 th:text="${item.brandsByBrandId.brandName}"></div>
-                                            <div style="padding-right: 10px; font-size: 16px; text-transform: uppercase"
-                                                 th:text="${item.productName}"></div>
-                                            <div style="font-size: 14px">Công suất: <span style="font-weight: bold"
-                                                                                          th:text="${item.power}"></span>
+                                            <div style="font-size: 14px">
+                                                {{product.productBrandsByProductBrandId.brandName}}
+                                            </div>
+                                            <div style="padding-right: 10px; font-size: 16px; text-transform: uppercase">
+                                                {{product.productName}}
+                                            </div>
+                                            <div style="font-size: 14px">
+                                                Công suất: <span style="font-weight: bold">{{product.powers}}</span>
                                             </div>
                                             <div style="font-size: 14px">Giá:
-                                                <span style="font-weight: bold"
-                                                      th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                                                <span style="font-weight: bold">{{formatPrice(product.price)}} ₫</span>
                                             </div>
                                         </div>
                                     </div>
@@ -441,8 +445,6 @@
                 </div>
             </div>
         </div>
-        `
-
         <!--End nổi bật-->
     </div>
 </section>
@@ -597,14 +599,14 @@
 <div th:replace="~{views/user/components/footer}"></div>
 <!-- Footer End -->
 
+<!-- JavaScript Libraries -->
+<div th:replace="~{views/user/lib/script_lib}"></div>
+
 <!-- JavaScript main-->
 <script src="/user/assets/js/product.js"></script>
 
 <!-- ajax daata -->
-<script src="/user/assets/js/data/ajax-index-product.js"></script>
-
-<!-- JavaScript Libraries -->
-<div th:replace="~{views/user/lib/script_lib}"></div>
+<script src="/user/assets/js/angular-js/change-product-index.js"></script>
 
 </body>
 </html>
