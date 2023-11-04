@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Getter
@@ -15,10 +16,9 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "discounts", schema = "solardb")
+@Table(name = "discounts", schema = "solardb", catalog = "")
 public class Discounts {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false, length = 20)
     private String id;
@@ -33,25 +33,52 @@ public class Discounts {
 
     @Basic
     @Column(name = "start_use", nullable = true)
-    private Timestamp startUse;
+    private LocalDateTime startUse;
 
     @Basic
     @Column(name = "end_use", nullable = true)
-    private Timestamp endUse;
+    private LocalDateTime endUse;
 
     @Basic
     @Column(name = "discount_description", nullable = true, length = 255)
     private String discountDescription;
 
     @Basic
-    @Column(name = "is_active", nullable = false)
-    private boolean isActive;
+    @Column(name = "is_active", nullable = true)
+    private Boolean isActive;
 
     @OneToMany(mappedBy = "discountsByDiscountId")
     @JsonManagedReference
     private Collection<Orders> ordersById;
 
-    @OneToMany(mappedBy = "discountsByDiscountId")
-    @JsonManagedReference
-    private Collection<UserDiscounts> userDiscountsById;
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        Discounts that = (Discounts) o;
+//
+//        if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) return false;
+//        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+//        if (startUse != null ? !startUse.equals(that.startUse) : that.startUse != null) return false;
+//        if (endUse != null ? !endUse.equals(that.endUse) : that.endUse != null) return false;
+//        if (discountDescription != null ? !discountDescription.equals(that.discountDescription) : that.discountDescription != null)
+//            return false;
+//        if (isActive != that.isActive) return false;
+//
+//        return true;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = id != null ? id.hashCode() : 0;
+//        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
+//        result = 31 * result + (startUse != null ? startUse.hashCode() : 0);
+//        result = 31 * result + (endUse != null ? endUse.hashCode() : 0);
+//        result = 31 * result + (discountDescription != null ? discountDescription.hashCode() : 0);
+//        result = 31 * result + (isActive ? 1 : 0);
+//        return result;
+//    }
+
+
 }
