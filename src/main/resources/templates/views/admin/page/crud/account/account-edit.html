@@ -26,53 +26,124 @@
                     <h5 class="card-title fw-semibold mb-4 mt-2">Cập nhật thông tin tài khoản</h5>
                     <div class="card">
                         <div class="card-body">
-                            <form id="edit-form" onsubmit="return validateForm()" method="post">
-                                <input type="hidden" class="form-control" id="id-edit-account">
-                                <input type="hidden" class="form-control" id="email-edit-account"
-                                       placeholder="name@gmail.com" readonly>
+                            <form method="post" th:action="@{/quan-tri/tai-khoan/sua-tai-khoan}"
+                                  th:object="${usersDto}">
+
+                                <input type="hidden" class="form-control" th:field="*{id}">
+                                <input type="hidden" class="form-control" th:field="*{dateCreated}">
+                                <input type="hidden" class="form-control" th:field="*{passwords}">
+                                <input type="hidden" class="form-control" th:field="*{token}">
+                                <input type="hidden" class="form-control" th:field="*{acctive}">
 
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control"
-                                           id="fullname-edit-account"
+                                           id="email-edit-account" th:field="*{email}"
+                                           placeholder="name@gmail.com">
+                                    <label for="email-edit-account">Địa chỉ email</label>
+                                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                       class="text-danger mt-1"></p>
+                                    <span class="text-danger" id="invalid-email"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control"
+                                           id="fullName-edit-account" th:field="*{fullname}"
                                            placeholder="Họ và tên">
-                                    <label for="fullname-edit-account">Họ và tên</label>
+                                    <label for="fullName-edit-account">Họ và tên</label>
+                                    <p th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"
+                                       class="text-danger mt-1"></p>
                                     <span class="text-danger" id="invalid-full-name"></span>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="tel" class="form-control" maxlength="10"
-                                           id="phone-edit-account"
+                                    <input type="tel" class="form-control"
+                                           id="phone-edit-account" th:field="*{phoneNumber}" maxlength="10"
                                            placeholder="Số điện thoại">
                                     <label for="phone-edit-account">Số điện thoại</label>
+                                    <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"
+                                       class="text-danger mt-1"></p>
                                     <span class="text-danger" id="invalid-phone"></span>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" name="passwords"
-                                           id="password-edit-account"
-                                           placeholder="Số điện thoại">
-                                    <label for="password-edit-account">Mật khẩu</label>
-                                    <span class="text-danger" id="invalid-password"></span>
-                                </div>
-
-                                <div class="form-floating mb-3">
-                                    <input type="tel" class="form-control" id="date-edit-account"
-                                           placeholder="Số điện thoại" readonly>
-                                    <label for="date-edit-account">Ngày đăng ký</label>
-                                    <span class="text-danger" id="invalid-date"></span>
-                                </div>
-
-                                <div class="form-floating mb-3">
-                                    <select class="form-select" id="edit-account-type"
-                                            aria-label="Floating label select example" name="active-name">
-                                        <option selected disabled hidden value="">Vui lòng chọn một trường</option>
-                                        <option value="true">Đang hoạt động
-                                        </option>
-                                        <option value="false">Ngưng hoạt động
-                                        </option>
+                                    <select class="form-select" id="gender-edit-account" th:field="*{gender}"
+                                            aria-label="Floating label select example">
+                                        <option selected value="true">Nam</option>
+                                        <option value="false">Nữ</option>
                                     </select>
-                                    <label for="edit-account-type">Hoạt động</label>
-                                    <span class="text-danger" id="invalid-active"></span>
+                                    <label for="gender-edit-account">Giới Tính</label>
+                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('gender')}"
+                                          th:errors="*{gender}"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control" id="birth-edit-account"
+                                           th:field="*{birth}">
+                                    <label for="birth-edit-account">Sinh Nhật</label>
+                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('birth')}"
+                                          th:errors="*{birth}"></span>
+                                    <span class="text-danger" id="invalid-birth-account"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="city" th:field="*{city}"
+                                            aria-label="Floating label select example">
+                                        <option th:value="${users.city}" th:text="${users.city}"
+                                                selected>Chọn Tỉnh Thành
+                                        </option>
+                                        <!-- Các tùy chọn cho Tỉnh Thành -->
+                                    </select>
+                                    <label for="city">Tỉnh Thành</label>
+                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('city')}"
+                                          th:errors="*{city}"></span>
+                                    <span class="text-danger" id="invalid-city"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="province" th:field="*{province}"
+                                            aria-label="Floating label select example">
+                                        <option id="provinceOption" th:value="${users.province}"
+                                                th:text="${users.province}"
+                                                selected>Chọn Quận/Huyện
+                                        </option>
+                                        <!-- Các tùy chọn cho Quận/Huyện -->
+                                    </select>
+                                    <label for="province">Quận/Huyện</label>
+                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('province')}"
+                                          th:errors="*{province}"></span>
+                                    <span class="text-danger" id="invalid-province"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="ward" th:field="*{ward}"
+                                            aria-label="Floating label select example">
+                                        <option th:value="${users.ward}" th:text="${users.ward}"
+                                                selected>Chọn Phường/Xã
+                                        </option>
+                                        <!-- Các tùy chọn cho Phường/Xã -->
+                                    </select>
+                                    <label for="ward">Phường/Xã</label>
+                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('ward')}"
+                                          th:errors="*{ward}"></span>
+                                    <span class="text-danger" id="invalid-ward"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="address-edit-account"
+                                           th:field="*{address}">
+                                    <label for="address-edit-account">Địa chỉ cụ thể</label>
+                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('address')}"
+                                          th:errors="*{address}"></span>
+                                    <span class="text-danger" id="invalid-address-edit-account"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="edit-account-type" th:field="*{roles}">
+                                        <option selected th:each="role : ${rolesDto}" th:value="${role.id}"
+                                                th:text="${role.nameRole}"></option>
+                                    </select>
+                                    <label for="edit-account-type">Chọn vai trò</label>
+                                    <span class="text-danger" id="invalid-role"></span>
                                 </div>
 
                                 <div class="row d-flex flex-column flex-md-row mt-3">
@@ -81,12 +152,11 @@
                                             <button class="btn btn-success" type="submit" id="submitted-button">
                                                 Cập nhật
                                             </button>
-                                            <button class="btn btn-info" type="reset">Làm mới</button>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <a href="/admin/tai-khoan" class="btn btn-danger" role="button">Trở
+                                            <a href="/quan-tri/tai-khoan" class="btn btn-danger" role="button">Trở
                                                 về</a>
                                         </div>
                                     </div>
@@ -101,7 +171,7 @@
 </div>
 
 <div th:replace="~{views/admin/lib/script_lib}"></div>
+<script src="/admin/assets/js/api_address.js"></script>
 <script src="/admin/assets/js/validation/validation-account.js"></script>
-
 </body>
 </html>

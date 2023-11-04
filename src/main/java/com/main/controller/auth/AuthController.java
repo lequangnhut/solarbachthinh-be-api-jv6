@@ -75,7 +75,7 @@ public class AuthController {
     @PostMapping("dang-ky/submit")
     public String registerSave(@Valid @ModelAttribute("user") UsersDto usersDto, BindingResult result, Model model) {
         Users exitsEmail = userService.findByEmail(usersDto.getEmail());
-        Users exitsPhone = userService.findByPhone(usersDto.getPhoneNumber());
+        Users exitsPhone = userService.findByPhoneNumber(usersDto.getPhoneNumber());
 
         if (exitsEmail != null && exitsEmail.getEmail() != null && !exitsEmail.getEmail().isEmpty()) {
             result.rejectValue("email", null, "Email đã tồn tại ở một tài khoản khác !");
@@ -128,7 +128,7 @@ public class AuthController {
     @ResponseBody
     public Map<String, Boolean> checkPhone(@RequestParam String phone) {
         Map<String, Boolean> response = new HashMap<>();
-        Users exitsPhone = userService.findByPhone(phone);
+        Users exitsPhone = userService.findByPhoneNumber(phone);
         response.put("phone", exitsPhone != null && exitsPhone.getPhoneNumber() != null && !exitsPhone.getPhoneNumber().isEmpty());
         return response;
     }

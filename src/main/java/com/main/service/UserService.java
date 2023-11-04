@@ -8,11 +8,13 @@ public interface UserService {
 
     List<Users> findAllUser();
 
+    List<Users> findByActiveIsTrue();
+
     Users findById(int userId);
 
     Users findByEmail(String email);
 
-    Users findByPhone(String phone);
+    Users findByPhoneNumber(String phoneNumber);
 
     Users findByToken(String token);
 

@@ -31,6 +31,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Users> findByActiveIsTrue() {
+        return userRepository.findByActiveIsTrue();
+    }
+
+    @Override
     public Users findById(int userId) {
         return userRepository.getReferenceById(userId);
     }
@@ -41,8 +46,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users findByPhone(String phone) {
-        return userRepository.findByPhoneNumber(phone);
+    public Users findByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber);
     }
 
     @Override
@@ -56,11 +61,11 @@ public class UserServiceImpl implements UserService {
         users.setToken(RandomUtils.RandomToken(20));
         users.setDateCreated(new Timestamp(System.currentTimeMillis()));
 
-        Roles role = roleRepository.findByNameRole("USER");
-        if (role == null) {
-            role = checkRoleExist();
-        }
-        users.setRoles(List.of(role));
+//        Roles role = roleRepository.findByNameRole("USER");
+//        if (role == null) {
+//            role = checkRoleExist();
+//        }
+//        users.setRoles(List.of(role));
         return userRepository.save(users);
     }
 
