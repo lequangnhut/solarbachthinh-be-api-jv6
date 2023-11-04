@@ -132,5 +132,4 @@ public class AuthController {
         response.put("phone", exitsPhone != null && exitsPhone.getPhoneNumber() != null && !exitsPhone.getPhoneNumber().isEmpty());
         return response;
     }
-
 }

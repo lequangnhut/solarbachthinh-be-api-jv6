@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     phoneInput.addEventListener('blur', function () {
         const phoneValue = phoneInput.value.trim();
-        const phoneRegex = /^[0-9]{10}$/;
+        const phoneRegex = /^(0[0-9]{9}|84[0-9]{9})$/;
 
         if (phoneValue === '') {
             phoneInput.classList.remove('is-valid');

@@ -4,6 +4,7 @@ import com.main.entity.ProductCategories;
 import com.main.repository.ProductCategoriesRepository;
 import com.main.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<ProductCategories> findAllTop4(java.awt.print.Pageable pageable) {
+    public List<ProductCategories> findAllTop4(Pageable pageable) {
         return repo.findTop4Categories(pageable);
     }
 
