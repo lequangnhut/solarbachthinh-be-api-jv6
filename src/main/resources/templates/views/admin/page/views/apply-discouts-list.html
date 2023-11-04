@@ -44,9 +44,9 @@
                                     <tbody>
                                     <tr th:each="accountDiscountCode, i : ${accountDiscountCodeList}">
                                         <td th:text="${i.index+1}"></td>
-                                        <td th:text="${accountDiscountCode.accountsByAccountId.fullname}"></td>
-                                        <td th:text="${accountDiscountCode.accountsByAccountId.email}"></td>
-                                        <td th:text="${accountDiscountCode.discountCode}"></td>
+                                        <td th:text="${accountDiscountCode.usersByUserId.fullname}"></td>
+                                        <td th:text="${accountDiscountCode.usersByUserId.email}"></td>
+                                        <td th:text="${accountDiscountCode.discountId}"></td>
                                         <td th:text="${#dates.format(accountDiscountCode.usedAt, 'dd-MM-yyyy HH:mm')}"></td>
                                     </tr>
                                     </tbody>

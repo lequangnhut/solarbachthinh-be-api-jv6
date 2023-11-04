@@ -3,21 +3,22 @@ package com.main.dto;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 public class DiscountsDto implements Serializable {
+
     String id;
 
     Integer discountCost;
 
     Integer quantity;
 
-    Timestamp startUse;
+    LocalDateTime startUse;
 
-    Timestamp endUse;
+    LocalDateTime endUse;
 
     String discountDescription;
 
-    boolean isActive;
+    Boolean isActive;
 }

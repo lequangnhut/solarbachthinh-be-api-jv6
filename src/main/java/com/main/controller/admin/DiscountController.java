@@ -1,35 +1,130 @@
 package com.main.controller.admin;
 
+import com.main.dto.DiscountsDto;
+import com.main.entity.Discounts;
+import com.main.service.AccountDiscountCodeService;
+import com.main.service.DiscountService;
+import com.main.service.HistoryService;
+import com.main.utils.DiscountCodeGeneratoUtils;
+import com.main.utils.EntityDtoUtils;
+import com.main.utils.ReplaceUtils;
+import com.main.utils.SessionUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("quan-tri/giam-gia")
 public class DiscountController {
 
-    @GetMapping("ma-giam-gia-da-su-dung")
-    public String showAccountDiscountCode() {
-        return "views/admin/page/views/apply-discouts-list";
-    }
+    @Autowired
+    DiscountService discountService;
+
+    @Autowired
+    AccountDiscountCodeService accountDiscountCodeService;
+
+    @Autowired
+    HttpServletRequest request;
+
+    @Autowired
+    HistoryService historyService;
+
+    @Autowired
+    HttpSession session;
 
     @GetMapping
-    public String showDiscount() {
+    public String showDiscount(Model model) {
+        model.addAttribute("discountCodes", discountService.findAll());
         return "views/admin/page/views/discouts-list";
     }
 
-    @RequestMapping("them-ma")
-    public String showAddDiscount() {
+    @GetMapping("danh-sach-ma-giam-gia-da-sua-dung")
+    public String showAccountDiscountCode(Model model) {
+        model.addAttribute("accounts", discountService.findAll());
+        model.addAttribute("accountDiscountCodeList", accountDiscountCodeService.findAll());
+        return "views/admin/page/views/apply-discouts-list";
+    }
+
+    @GetMapping("them-ma")
+    public String showAddDiscount(Model model) {
+        model.addAttribute("discountCodesDTO", new DiscountsDto());
+        model.addAttribute("discountCodeValue", DiscountCodeGeneratoUtils.generateDiscountCode());
         return "views/admin/page/crud/discout/discout-add";
     }
 
-    @RequestMapping("them-ma/random-code")
-    public String randomDiscountCode() {
-        return "views/admin/page/crud/discout/discout-add";
+    @PostMapping("them-ma/save")
+    public String saveDiscountCode(@Validated DiscountsDto discountCodesDTO, BindingResult result, Model model) {
+        String price = request.getParameter("price");
+
+        if (discountCodesDTO.getEndUse().isBefore(discountCodesDTO.getStartUse())) {
+            result.rejectValue("endUse", null, "Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
+            return "views/admin/page/crud/discout/discout-add";
+        }
+
+        if (result.hasErrors()) {
+            model.addAttribute("discountCodeValue", DiscountCodeGeneratoUtils.generateDiscountCode());
+            return "views/admin/page/crud/discout/discout-add";
+        }
+
+        discountCodesDTO.setIsActive(Boolean.TRUE);
+        discountCodesDTO.setDiscountCost(ReplaceUtils.replacePrice(price));
+        Discounts save = EntityDtoUtils.convertToEntity(discountCodesDTO, Discounts.class);
+        discountService.insert(save);
+
+        SessionUtils.setAttribute("toastSuccess", "Thêm mã giảm giá thành công!");
+        return "redirect:/quan-tri/giam-gia";
     }
 
-    @GetMapping("sua-ma")
-    public String showEditDiscount() {
+    @RequestMapping("sua-ma/{id}")
+    public String showAddDiscout(@ModelAttribute DiscountsDto discountCodesDTO, @PathVariable("id") String id, Model model) {
+        Discounts discountCodes = discountService.findById(id);
+
+        discountCodesDTO.setIsActive(discountCodes.getIsActive());
+        model.addAttribute("discountCodesDTO", discountCodesDTO);
+        model.addAttribute("discountValue", discountCodes);
+        model.addAttribute("discountPriceEdit", ReplaceUtils.formatPrice(discountCodes.getDiscountCost()));
         return "views/admin/page/crud/discout/discout-edit";
     }
+
+    @PostMapping("sua-ma/save/{id}")
+    public String showEditDiscout(@Validated @ModelAttribute DiscountsDto discountCodesDTO, BindingResult bindingResult, @PathVariable("id") String id, RedirectAttributes redirectAttributes, Model model) {
+        String price = request.getParameter("discountPriceEdit");
+
+        if (!bindingResult.hasErrors()) {
+            if (discountCodesDTO.getEndUse().isBefore(discountCodesDTO.getStartUse())) {
+                redirectAttributes.addFlashAttribute("errorDate", "Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
+                return "views/admin/page/crud/discout/discout-edit";
+            } else {
+                discountCodesDTO.setId(id);
+                if (discountCodesDTO.getId() != null) {
+                    discountCodesDTO.setDiscountCost(ReplaceUtils.replacePrice(price));
+                    Discounts save = EntityDtoUtils.convertToEntity(discountCodesDTO, Discounts.class);
+                    discountService.update(save);
+                }
+
+                SessionUtils.setAttribute("toastSuccess", "Sửa mã giảm giá thành công!");
+                return "redirect:/quan-tri/giam-gia";
+            }
+        } else {
+            model.addAttribute("discountCodeValue", DiscountCodeGeneratoUtils.generateDiscountCode());
+            return "views/admin/page/crud/discout/discout-edit";
+        }
+    }
+
+    @GetMapping("xoa-ma/{id}")
+    public String deleteDiscout(@PathVariable String id) {
+        Discounts discounts = discountService.findById(id);
+        discounts.setIsActive(Boolean.FALSE);
+        discountService.insert(discounts);
+
+        session.setAttribute("toastSuccess", "Xoá mã giảm giá thành công !");
+        return "redirect:/quan-tri/giam-gia";
+    }
+
 }
