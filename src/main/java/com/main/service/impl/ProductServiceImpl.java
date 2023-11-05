@@ -29,4 +29,9 @@ public class ProductServiceImpl implements ProductService {
     public List<Products> findTopProductByCategoryId(int categoryId) {
         return productsRepository.findByCategoryId(categoryId);
     }
+
+    @Override
+    public Products findByProductId(String productId) {
+        return productsRepository.getReferenceById(productId);
+    }
 }

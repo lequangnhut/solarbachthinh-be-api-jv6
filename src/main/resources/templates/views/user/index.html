@@ -42,6 +42,36 @@
         align-items: center;
         border: 1px solid #cccccc;
     }
+
+    /* loading */
+    .product-list.loading {
+        display: none;
+    }
+
+    .loading-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 55vh;
+    }
+
+    .loading {
+        border: 4px solid rgba(0, 0, 0, 0.3);
+        border-radius: 50%;
+        border-top: 4px solid #32C36C;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 </style>
 <body>
 <!-- Spinner Start -->
@@ -238,8 +268,8 @@
                             <div class="item">
                                 <div class="item-product d-flex align-items-center">
                                     <div class="img">
-                                        <!--                                        <img th:src="@{/upload/{img}(img = ${item.productImagesById.isEmpty()})}"-->
-                                        <!--                                             class="img-fluid" style="width: 200px" alt="...">-->
+                                        <img th:src="@{'/upload/' + ${item.productImagesById[0].imagePath}}"
+                                             class="img-fluid" style="width: 200px" alt="...">
                                     </div>
                                     <div class="card-body-product">
                                         <p class="name-product" th:text="${item.productName}"></p>
@@ -382,9 +412,8 @@
 <!-- Feature End -->
 
 
-<!-- start sản phẩm nổi bật -->
-`
-<section class="py-5 wow fadeInUp" data-wow-delay="fade-up" ng-app="products" ng-controller="change_product">
+<!-- start sản phẩm nổi bật - AngularJs-->
+<section class="py-5 wow fadeInUp" data-wow-delay="fade-up" ng-app="index_controller" ng-controller="index_controller">
     <div class="container">
         <div class="text-center mx-auto mb-5 wow fadeIn" data-wow-delay="0.1s" style="max-width: 600px;">
             <h6 class="text-primary">Tất Cả Sản Phẩm Mới Nhất Của Chúng Tôi</h6>
@@ -416,16 +445,22 @@
 
                 <!-- Product Slider -->
                 <div class="col-12 col-md-12 col-lg-8">
-                    <div class="swiper mySwiper" id="product-slider">
+                    <div ng-if="isLoading" class="loading-container">
+                        <div class="loading"></div>
+                    </div>
+                    <div class="swiper mySwiper product-list animate__animated animate__fadeIn"
+                         id="product-slider"
+                         ng-class="{ 'loading': isLoading }"
+                    >
                         <div class="swiper-wrapper">
                             <div ng-repeat="product in products" class="swiper-slide">
                                 <a href="/san-pham/san-pham-chi-tiet?ma-san-pham={{product.id}}">
                                     <div class="d-flex align-items-center product-hot">
-                                        <!--                                        <img th:src="@{/upload/{img}(img = ${item.productImagesById[0].imagePath})}"-->
-                                        <!--                                             width="30%" alt="">-->
+                                        <img ng-src="/upload/{{product.productImagesById[0].imagePath}}"
+                                             width="30%" alt="">
                                         <div class="content-item text-start text-dark">
-                                            <div style="font-size: 14px">
-                                                {{product.productBrandsByProductBrandId.brandName}}
+                                            <div style="font-size: 14px">Thương hiệu:
+                                                {{productBrand.brandName}}
                                             </div>
                                             <div style="padding-right: 10px; font-size: 16px; text-transform: uppercase">
                                                 {{product.productName}}
@@ -606,7 +641,7 @@
 <script src="/user/assets/js/product.js"></script>
 
 <!-- ajax daata -->
-<script src="/user/assets/js/angular-js/change-product-index.js"></script>
+<script src="/user/assets/js/angular-js/index-controller.js"></script>
 
 </body>
 </html>

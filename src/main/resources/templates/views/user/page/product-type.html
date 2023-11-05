@@ -13,7 +13,37 @@
     <link rel="stylesheet" href="/user/assets/css/product/category-product.css">
     <link rel="stylesheet" href="/user/assets/css/product/product-type.css">
 </head>
+<style>
+    /* loading */
+    .product-list.loading {
+        display: none;
+    }
 
+    .loading-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+    }
+
+    .loading {
+        border: 4px solid rgba(0, 0, 0, 0.3);
+        border-radius: 50%;
+        border-top: 4px solid #32C36C;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
 <body>
 <!-- Spinner Start -->
 <div th:replace="~{views/user/components/spiner}"></div>
@@ -53,7 +83,7 @@
 <section id="category-product-type">
     <div class="container">
         <div class="">
-            <div class="row">
+            <div class="row" ng-app="product_type" ng-controller="product_type">
                 <div class="col-sm-12 col-lg-3">
                     <div class="filter_cat_product mb-3">
                         <h3 class="bg-primary px-5 py-3 fs-6 text-white text-uppercase mb-1"><i
@@ -64,12 +94,13 @@
                         <div class="meta_select">
                             <div class="meta_style mb-1">
                                 <div class="form-group">
-                                    <select class="form-select bg-black" id="meta_style" onchange="filterProducts()">
+                                    <select class="form-select bg-black" id="meta_style">
                                         <option value="-1">Loại</option>
-                                        <option th:each="productsTypeByCategoryId : ${productsTypeByCategoryId}"
-                                                th:if="${productsTypeByCategoryId.active}"
-                                                th:value="${productsTypeByCategoryId.productTypeId}"
-                                                th:text="${productsTypeByCategoryId.productTypeName}"></option>
+                                        <option ng-repeat="product_type in product_type"
+                                                ng-if="product_type.isActive"
+                                                ng-value="product_type.id">
+                                            {{product_type.productTypeName}}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -78,15 +109,18 @@
 
                     <div class="top_menu">
                         <ul>
-                            <li th:each="item : ${categories}" th:if="${item.active}"
-                                th:class="${item.categoryId == selectedCategory} ? 'active'">
-                                <a th:href="@{'/san-pham/loai-danh-muc?danh-muc=' + ${item.categoryId}}">
+                            <li ng-repeat="category in categories"
+                                ng-if="category.isActive"
+                                ng-click="changes(category.id)"
+                                ng-class="{'active': category.id == categoryId}"
+                            >
+                                <a href="javascript:void(0)">
                                     <img class="m-auto pb-3"
-                                         th:src="@{/upload/{img}(img = ${item.categoryImage})}"
+                                         ng-src="/upload/{{category.categoryImage}}"
                                          alt="den-nang-luong-mat-troi-thumbnail">
-                                    <p th:text="${item.categoryName}"></p>
+                                    <p>{{category.categoryName}}</p>
                                 </a>
-                                <input type="hidden" id="categorySelect" th:value="${item.categoryId}">
+                                <input type="hidden" id="categorySelect" ng-value="category.id">
                             </li>
                             <li>
                                 <a href="/san-pham">
@@ -101,32 +135,37 @@
                 </div>
 
                 <div class="col-sm-12 col-lg-8">
-                    <div class="list-product" id="filtered-products">
+                    <div ng-if="isLoading" class="loading-container">
+                        <div class="loading"></div>
+                    </div>
 
-                        <div th:if="${#lists.isEmpty(productByCategoryId)}">
+                    <div ng-if="!isLoading" class="list-product" id="filtered-products">
+                        <div ng-if="products == null">
                             <p class="text-center">Danh sách sản phẩm đang trống...</p>
                         </div>
 
-                        <div th:each="pd_categories, iterStat : ${productByCategoryId}"
-                             th:if="${pd_categories.isStatusDelete != 'Ngừng kinh doanh'}">
-                            <a th:href="@{'/san-pham/san-pham-chi-tiet?ma-san-pham=' + ${pd_categories.productId}}">
-                                <div th:if="${iterStat.count % 2 == 1}" class="item mt-4 mb-4" data-aos="fade-up">
+                        <div ng-repeat="product in products"
+                             ng-if="product.isStatusDelete != 'Ngừng kinh doanh'">
+                            <a ng-href="/san-pham/san-pham-chi-tiet?ma-san-pham={{product.id}}">
+                                <div ng-if="$index % 2 == 1" class="item mt-4 mb-4" data-aos="fade-up">
                                     <div class="row">
                                         <div class="float-left col-xl-4">
-                                            <img th:src="@{${pd_categories.productImagesByProductId.size() > 0} ? '/upload/' + ${pd_categories.productImagesByProductId[0].imagePath} : '/upload/default-img.jpg'}"
+                                            <img ng-src="{{product.productImagesById.length > 0 ? '/upload/' + product.productImagesById[0].imagePath : '/upload/default-img.jpg'}}"
                                                  alt="img">
                                         </div>
 
                                         <div class="float-right col-xl-8 d-flex justify-content-center align-items-center">
                                             <div class="content">
-                                                <h3 th:text="${pd_categories.productName}"></h3>
+                                                <h3>{{product.productName}}</h3>
                                                 <pre class="fs-6 text-dark"
-                                                     style="text-align: justify; white-space: pre-line; font-family: 'Roboto',sans-serif;"
-                                                     th:text="${pd_categories.descriptions}"></pre>
-                                                <p class="wat text-dark">Công suất: <b
-                                                        th:text="${pd_categories.power}"></b></p>
-                                                <p class="brand text-dark">Hãng: <b
-                                                        th:text="${pd_categories.brandsByBrandId.brandName}"></b>
+                                                     style="text-align: justify;
+                                                 white-space: pre-line;
+                                                 font-family: 'Roboto',sans-serif;"
+                                                >
+                                                {{product.descriptions}}
+                                            </pre>
+                                                <p class="wat text-dark">Công suất: <b>{{product.powers}}</b></p>
+                                                <p class="brand text-dark">Hãng: <b>{{productBrand.brandName}}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -135,27 +174,31 @@
                                 </div>
                             </a>
 
-                            <a th:href="@{'/san-pham/san-pham-chi-tiet?ma-san-pham=' + ${pd_categories.productId}}"
-                               th:if="${pd_categories.isStatusDelete != 'Ngừng kinh doanh'}">
-                                <div th:if="${iterStat.count % 2 == 0}" class="item mt-4 mb-4" data-aos="fade-up">
+                            <a ng-href="/san-pham/san-pham-chi-tiet?ma-san-pham={{product.id}}">
+                                <div ng-if="$index % 2 == 0" class="item mt-4 mb-4" data-aos="fade-up">
                                     <div class="row">
-                                        <div class=" col-xl-4">
-                                            <img th:src="@{${pd_categories.productImagesByProductId.size() > 0} ? '/upload/' + ${pd_categories.productImagesByProductId[0].imagePath} : '/upload/default-img.jpg'}"
+                                        <div class="col-xl-4">
+                                            <img ng-src="{{product.productImagesById.length > 0 ? '/upload/' + product.productImagesById[0].imagePath : '/upload/default-img.jpg'}}"
                                                  alt="img">
                                         </div>
-                                        <div class=" col-xl-8">
-                                            <h3 th:text="${pd_categories.productName}"></h3>
-                                            <pre class="fs-6 text-dark"
-                                                 style="text-align: justify; white-space: pre-line; font-family: 'Roboto',sans-serif;"
-                                                 th:text="${pd_categories.descriptions}"></pre>
-                                            <p class="wat text-dark">Công suất: <b
-                                                    th:text="${pd_categories.power}"></b>
-                                            </p>
-                                            <p class="brand text-dark">Hãng: <b
-                                                    th:text="${pd_categories.brandsByBrandId.brandName}"></b></p>
+
+                                        <div class="col-xl-8">
+                                            <div class="content">
+                                                <h3>{{product.productName}}</h3>
+                                                <pre class="fs-6 text-dark"
+                                                     style="text-align: justify;
+                                                 white-space: pre-line;
+                                                 font-family: 'Roboto',sans-serif;"
+                                                >
+                                                {{product.descriptions}}
+                                            </pre>
+                                                <p class="wat text-dark">Công suất: <b>{{product.powers}}</b></p>
+                                                <p class="brand text-dark">Hãng: <b>{{productBrand.brandName}}</b>
+                                                </p>
+                                            </div>
                                         </div>
-                                        <hr>
                                     </div>
+                                    <hr>
                                 </div>
                             </a>
                         </div>
@@ -173,9 +216,10 @@
 
 <!-- JavaScript Libraries -->
 <div th:replace="~{views/user/lib/script_lib}"></div>
-<script src="/user/assets/js/ajax/ajax-product-type-category.js"></script>
 
 <!-- JavaScript main-->
 <script src="/user/assets/js/product.js"></script>
+<script src="/user/assets/js/angular-js/product-type-controller.js"></script>
+
 </body>
 </html>

@@ -50,26 +50,24 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 col-md-12 col-xl-6 d-flex align-items-center">
-
                     <form action="/san-pham" method="get">
                         <div class="find d-flex align-items-center justify-content-center">
                             <input type="text" class="input-text" name="ten-san-pham" placeholder="Tìm sản phẩm">
                             <button type="submit" class="btn-find btn"><i class='bx bx-search-alt-2'></i></button>
                         </div>
                     </form>
-
                 </div>
                 <div class="col-xl-6 d-flex d-xs-none">
-                    <div th:each="item : ${categories}" th:if="${item.active}"
+                    <div th:each="category : ${categories}" th:if="${category.isActive}"
                          class="category-product d-flex justify-content-center align-items-center">
                         <div class="category-product-item">
-                            <a th:href="@{'/san-pham/loai-danh-muc?danh-muc=' + ${item.categoryId}}">
+                            <a th:href="@{'/san-pham/loai-danh-muc?danh-muc=' + ${category.id}}">
                                 <div class="card-category text-center">
                                     <div class="img text-center">
-                                        <img th:src="@{/upload/{img}(img = ${item.categoryImage})}"
+                                        <img th:src="@{'/upload/' + ${category.categoryImage}}"
                                              class="card-img-top img-fluid" alt="...">
                                     </div>
-                                    <div class="body" th:text="${item.categoryName}"></div>
+                                    <div class="body" th:text="${category.categoryName}"></div>
                                 </div>
                             </a>
                         </div>
