@@ -37,10 +37,8 @@
                                         <th scope="col">Email</th>
                                         <th scope="col">Họ và tên</th>
                                         <th scope="col">Số điện thoại</th>
-                                        <th scope="col">Giới tính</th>
-                                        <th scope="col">Ngày sinh</th>
-                                        <th scope="col">Tỉnh thành</th>
-                                        <th scope="col">Ngày đăng ký</th>
+                                        <th scope="col">Địa chi</th>
+                                        <th scope="col">Ngày tạo</th>
                                         <th scope="col">Vai trò</th>
                                         <th scope="col">Hoạt Động</th>
                                     </tr>
@@ -53,8 +51,6 @@
                                         <td th:text="${account.fullname}" class="hidden-text-table"
                                             th:title="${account.fullname}"></td>
                                         <td th:text="${account.phoneNumber}"></td>
-                                        <td th:text="${account.gender ? 'Nam' : 'Nữ'}"></td>
-                                        <td th:text="${#dates.format(account.birth, 'dd/MM/yyyy')}"></td>
                                         <td th:text="${account.city + ', ' + account.province + ', ' + account.ward + ', ' +account.address}"
                                             class="hidden-text-table"
                                             th:title="${account.city + ', ' + account.province + ', ' + account.ward + ', ' +account.address}"></td>

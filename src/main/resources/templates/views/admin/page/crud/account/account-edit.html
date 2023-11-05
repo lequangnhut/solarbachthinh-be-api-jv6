@@ -26,9 +26,12 @@
                     <h5 class="card-title fw-semibold mb-4 mt-2">Cập nhật thông tin tài khoản</h5>
                     <div class="card">
                         <div class="card-body">
-                            <form method="post" th:action="@{/quan-tri/tai-khoan/sua-tai-khoan}"
-                                  th:object="${usersDto}">
-
+                            <form id="edit-form"
+                                  method="post"
+                                  onsubmit="return validateForm()"
+                                  th:action="@{/quan-tri/tai-khoan/sua-tai-khoan}"
+                                  th:object="${usersDto}"
+                            >
                                 <input type="hidden" class="form-control" th:field="*{id}">
                                 <input type="hidden" class="form-control" th:field="*{dateCreated}">
                                 <input type="hidden" class="form-control" th:field="*{passwords}">
@@ -171,7 +174,30 @@
 </div>
 
 <div th:replace="~{views/admin/lib/script_lib}"></div>
+
+<script>
+    function validateForm() {
+        Swal.fire({
+            title: 'Cảnh báo ?',
+            text: "Bạn có chắc chắn muốn cập nhật khách hàng không ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý !',
+            cancelButtonText: 'Huỷ !'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('edit-form').submit();
+            }
+        });
+
+        return false;
+    }
+</script>
+
 <script src="/admin/assets/js/api_address.js"></script>
 <script src="/admin/assets/js/validation/validation-account.js"></script>
+
 </body>
 </html>

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api")
 public class APIAddressGHN {
 
     @Autowired

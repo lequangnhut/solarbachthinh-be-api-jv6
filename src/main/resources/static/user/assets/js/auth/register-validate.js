@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const emailInput = document.getElementById('email');
     const fullnameInput = document.getElementById('fullname');
     const phoneInput = document.getElementById('phone');
-    const password1Input = document.getElementById('password1');
-    const password2Input = document.getElementById('password2');
+    const password1Input = document.getElementById('passwordSignup');
+    const password2Input = document.getElementById('passwordConfirm');
 
     const emailError = document.getElementById('emailError');
     const fullnameError = document.getElementById('fullnameError');

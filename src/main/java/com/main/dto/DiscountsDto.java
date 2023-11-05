@@ -3,6 +3,7 @@ package com.main.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -10,7 +11,7 @@ public class DiscountsDto implements Serializable {
 
     String id;
 
-    Integer discountCost;
+    BigDecimal discountCost;
 
     Integer quantity;
 

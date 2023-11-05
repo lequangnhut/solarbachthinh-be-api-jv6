@@ -92,22 +92,26 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="password1">Mật Khẩu <span id="togglePassword1" class="eye-icon"><i
-                                            class="fa-solid fa-eye-slash"></i></span>
+                                    <label for="passwordSignup">Mật Khẩu
+                                        <span id="togglePasswordSignup" class="eye-icon">
+                                            <i class="fa-solid fa-eye-slash"></i>
+                                        </span>
                                     </label>
-                                    <input type="password" class="form-control" th:field="*{passwords}" id="password1">
+                                    <input type="password" class="form-control"
+                                           th:field="*{passwords}"
+                                           id="passwordSignup">
                                     <p th:errors="*{passwords}" class="text-danger" style="font-size: .875em"
                                        th:if="${#fields.hasErrors('passwords')}"></p>
                                     <p id="password1Error" class="invalid-feedback"></p>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="password2">Nhập Lại Mật Khẩu
-                                        <span id="togglePassword2" class="eye-icon">
+                                    <label for="passwordConfirm">Nhập Lại Mật Khẩu
+                                        <span id="togglePasswordConfirm" class="eye-icon">
                                             <i class="fa-solid fa-eye-slash"></i>
                                         </span>
                                     </label>
-                                    <input type="password" class="form-control" id="password2">
+                                    <input type="password" class="form-control" id="passwordConfirm">
                                     <p id="password2Error" class="invalid-feedback"></p>
                                 </div>
 
@@ -154,5 +158,7 @@
 
 <!--validate form register front-end-->
 <script src="/user/assets/js/auth/register-validate.js"></script>
+<script src="/user/assets/js/hide-pw-signup.js"></script>
+
 </body>
 </html>

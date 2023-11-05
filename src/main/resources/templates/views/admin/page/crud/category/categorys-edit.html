@@ -26,7 +26,7 @@
                     <h5 class="card-title fw-semibold mb-4 mt-2">Cập nhật danh mục sản phẩm</h5>
                     <div class="card">
                         <div class="card-body">
-                            <form id="editForm"
+                            <form id="edit-form"
                                   onsubmit="return validateForm()"
                                   th:action="@{'/quan-tri/danh-muc/sua-danh-muc/' + ${categories.id}}"
                                   method="post"
@@ -91,6 +91,26 @@
 
 <div th:replace="~{views/admin/lib/script_lib}"></div>
 
+<script>
+    function validateForm() {
+        Swal.fire({
+            title: 'Cảnh báo ?',
+            text: "Bạn có chắc chắn muốn cập nhật danh mục sản phẩm không ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý !',
+            cancelButtonText: 'Huỷ !'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('edit-form').submit();
+            }
+        });
+
+        return false;
+    }
+</script>
 <!--<script src="/admin/assets/js/validation/validation-category-product.js"></script>-->
 </body>
 </html>
