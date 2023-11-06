@@ -20,20 +20,20 @@
 
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
-            <a href="/trang-chu" class="nav-item nav-link fw-bold">Trang Chủ</a>
-            <a href="/gioi-thieu" class="nav-item nav-link fw-bold">Giới Thiệu</a>
-            <a href="/san-pham" class="nav-item nav-link fw-bold">Sản Phẩm</a>
+            <a href="#!trang-chu" class="nav-item nav-link fw-bold">Trang Chủ</a>
+            <a href="#!gioi-thieu" class="nav-item nav-link fw-bold">Giới Thiệu</a>
+            <a href="#!san-pham" class="nav-item nav-link fw-bold">Sản Phẩm</a>
             <div class="nav-item dropdown">
-                <a href="/hoa-luoi-on-grid" class="nav-link fw-bold dropdown-toggle" data-bs-toggle="dropdown">Lắp
+                <a href="#!hoa-luoi-on-grid" class="nav-link fw-bold dropdown-toggle" data-bs-toggle="dropdown">Lắp
                     Đặt</a>
                 <div class="dropdown-menu bg-light m-0 rounded-0 bg-white">
-                    <a href="/hoa-luoi-on-grid" class="dropdown-item">Hoà Lưới (On-Grid)</a>
-                    <a href="/hoa-luoi-hybrid" class="dropdown-item">Hoà Lưới Lưu Trữ (Hybrid)</a>
+                    <a href="#!hoa-luoi-on-grid" class="dropdown-item">Hoà Lưới (On-Grid)</a>
+                    <a href="#!hoa-luoi-hybrid" class="dropdown-item">Hoà Lưới Lưu Trữ (Hybrid)</a>
                 </div>
             </div>
-            <a href="/ban-tin" class="nav-item nav-link fw-bold">Tin Tức</a>
-            <a href="/chinh-sach" class="nav-item nav-link fw-bold">Chính Sách</a>
-            <a href="/lien-he" class="nav-item nav-link fw-bold">Liên Hệ</a>
+            <a href="#!ban-tin" class="nav-item nav-link fw-bold">Tin Tức</a>
+            <a href="#!chinh-sach" class="nav-item nav-link fw-bold">Chính Sách</a>
+            <a href="#!lien-he" class="nav-item nav-link fw-bold">Liên Hệ</a>
             <div th:if="${session.user != null}">
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link fw-bold dropdown-toggle" data-bs-toggle="dropdown">
@@ -42,26 +42,26 @@
                         <span class="wave">👋</span>
                     </a>
                     <div class="dropdown-menu bg-light m-0 rounded-0 bg-white">
-                        <a href="/thong-tin" class="dropdown-item">Thông tin cá nhân</a>
-                        <a href="/doi-mat-khau" class="dropdown-item">Đổi mật khẩu</a>
-                        <a href="/lich-su-mua-hang" class="dropdown-item">Lịch sử mua hàng</a>
+                        <a href="#!thong-tin" class="dropdown-item">Thông tin cá nhân</a>
+                        <a href="#!doi-mat-khau" class="dropdown-item">Đổi mật khẩu</a>
+                        <a href="#!lich-su-mua-hang" class="dropdown-item">Lịch sử mua hàng</a>
                         <a th:href="@{/dang-xuat}" class="dropdown-item">Đăng xuất</a>
                     </div>
                 </div>
             </div>
             <div th:if="${session.user == null}">
-                <a href="/dang-nhap" class="nav-item nav-link fw-bold">Đăng nhập</a>
+                <a href="#!dang-nhap" class="nav-item nav-link fw-bold">Đăng nhập</a>
 
-                <a href="/dang-ky" class="nav-item nav-link fw-bold d-lg-none">ĐĂNG KÝ</a>
+                <a href="#!dang-ky" class="nav-item nav-link fw-bold d-lg-none">ĐĂNG KÝ</a>
             </div>
         </div>
         <div th:if="${session.user == null}">
-            <a href="/dang-ky" class="btn btn-primary rounded-0 py-4 px-lg-5 d-lg-block d-none">ĐĂNG KÝ<i
+            <a href="#!dang-ky" class="btn btn-primary rounded-0 py-4 px-lg-5 d-lg-block d-none">ĐĂNG KÝ<i
                     class="fa fa-arrow-right ms-3"></i></a>
         </div>
 
         <div th:if="${session.user != null}">
-            <a href="/gio-hang" class="btn btn-primary rounded-0 py-4 px-lg-5 d-lg-block d-none">
+            <a href="#!gio-hang" class="btn btn-primary rounded-0 py-4 px-lg-5 d-lg-block d-none">
                 <i class="fa-solid fa-cart-plus"></i>
                 Giỏ hàng (<span th:text="${session.cartQuantity}">0</span>)
                 <i class="fa fa-arrow-right ms-3"></i>

@@ -1,8 +1,6 @@
 let API = 'http://localhost:8080/api/product';
 
-let index_controller = angular.module('index_controller', []);
-
-index_controller.controller('index_controller', function ($scope, $http, $timeout) {
+solar_app.controller('index_controller', function ($scope, $http, $timeout) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);

@@ -1,32 +1,3 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="utf-8">
-    <title>Solar Bách Thịnh - Đăng ký</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-
-    <div th:replace="~{views/user/lib/link_lib}"></div>
-</head>
-
-<body>
-<!-- Spinner Start -->
-<div th:replace="~{views/user/components/spiner}"></div>
-<!-- Spinner End -->
-
-
-<!-- Topbar Start -->
-<div th:replace="~{views/user/components/topbar}"></div>
-<!-- Topbar End -->
-
-
-<!-- Navbar Start -->
-<div th:replace="~{views/user/components/navbar}"></div>
-<!-- Navbar End -->
-
-
 <!-- Page Header Start -->
 <div class="container-fluid page-header py-5 mb-5">
     <div class="container py-5">
@@ -125,7 +96,7 @@
                 <div class="position-relative h-100">
                     <div class=" d-flex justify-content-center flex-column h-100">
                         <p class="fs-4 mb-2">Bạn đã có tài khoản ?</p>
-                        <a href="/dang-nhap" class="mb-3">Nhấn vào đây để đăng nhập</a>
+                        <a href="#!dang-nhap" class="mb-3">Nhấn vào đây để đăng nhập</a>
                         <div class="d-grid gap-2 d-md-block">
                             <p class="fs-4 mb-2">Hoặc có thể đăng nhập với: </p>
                             <!-- Nút đăng nhập bằng Facebook -->
@@ -148,17 +119,3 @@
     </div>
 </div>
 <!-- Form Đăng Ký End -->
-
-<!-- Footer Start -->
-<div th:replace="~{views/user/components/footer}"></div>
-<!-- Footer End -->
-
-<!-- JavaScript Libraries -->
-<div th:replace="~{views/user/lib/script_lib}"></div>
-
-<!--validate form register front-end-->
-<script src="/user/assets/js/auth/register-validate.js"></script>
-<script src="/user/assets/js/hide-pw-signup.js"></script>
-
-</body>
-</html>
