@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -16,10 +17,9 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "products", schema = "solardb")
+@Table(name = "products", schema = "solardb", catalog = "")
 public class Products {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false, length = 20)
     private String id;
@@ -38,7 +38,7 @@ public class Products {
 
     @Basic
     @Column(name = "price", nullable = true, precision = 0)
-    private Integer price;
+    private BigDecimal price;
 
     @Basic
     @Column(name = "quantity", nullable = true)
@@ -58,11 +58,11 @@ public class Products {
 
     @Basic
     @Column(name = "warranty", nullable = true)
-    private Integer warranty;
+    private String warranty;
 
     @Basic
     @Column(name = "sale_off", nullable = true, precision = 0)
-    private Integer saleOff;
+    private BigDecimal saleOff;
 
     @Basic
     @Column(name = "is_status_delete", nullable = true, length = 255)

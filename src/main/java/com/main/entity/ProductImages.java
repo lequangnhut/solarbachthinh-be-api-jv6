@@ -12,10 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product_images", schema = "solardb")
+@Table(name = "product_images", schema = "solardb", catalog = "")
 public class ProductImages {
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false, length = 255)
     private String id;
