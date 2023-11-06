@@ -244,13 +244,14 @@ public class ProductControllerAD {
         model.addAttribute("listProductTypeValue", productTypesService.findAll());
 
 
-        if(product.isPresent()){
+        if (product.isPresent()) {
             model.addAttribute("productDto", productsDto1);
             return "views/admin/page/crud/product/products-edit";
-        }else{
+        } else {
             return "views/admin/page/crud/product/products-edit";
         }
     }
+
     @PostMapping("sua-san-pham/{id}")
     @ResponseBody
     public String saveEditProduct(@Validated @ModelAttribute ProductsDto productsDto,
@@ -479,7 +480,7 @@ public class ProductControllerAD {
             product.setTemplateDescription(faker.lorem().paragraph());
             product.setPowers(faker.number().numberBetween(1, 100) + faker.options().option("W", "KW"));
             product.setWarranty(faker.number().numberBetween(1, 15) + faker.options().option(" Tháng", " Năm"));
-            product.setSaleOff(BigDecimal.valueOf(faker.number().numberBetween(10000, 100000)));
+//            product.setSaleOff(BigDecimal.valueOf(faker.number().numberBetween(10000, 100000)));
             product.setIsStatusDelete("Đang kinh doanh");
 
             Timestamp randomTimestamp = new Timestamp(faker.date().past(365, java.util.concurrent.TimeUnit.DAYS).getTime());

@@ -49,7 +49,7 @@ public class ProductController {
     @GetMapping("san-pham-chi-tiet")
     public String showProductDetails(@RequestParam("ma-san-pham") String productId, Model model) {
         if (!productId.isEmpty()) {
-            Products product = productService.findByProductId(productId);
+            Products product = productService.findProductByProductId(productId);
 
             model.addAttribute("product", product);
             model.addAttribute("categories", productCategoryService.findAll());

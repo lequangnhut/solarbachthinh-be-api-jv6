@@ -17,9 +17,10 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "products", schema = "solardb", catalog = "")
+@Table(name = "products", schema = "solardb")
 public class Products {
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false, length = 20)
     private String id;
@@ -61,10 +62,6 @@ public class Products {
     private String warranty;
 
     @Basic
-    @Column(name = "sale_off", nullable = true, precision = 0)
-    private BigDecimal saleOff;
-
-    @Basic
     @Column(name = "is_status_delete", nullable = true, length = 255)
     private String isStatusDelete;
 
@@ -82,11 +79,11 @@ public class Products {
 
     @OneToMany(mappedBy = "productsByProductId")
     @JsonManagedReference
-    private Collection<ProductAttributes> productAttributesById;
+    private Collection<ProductImages> productImagesById;
 
     @OneToMany(mappedBy = "productsByProductId")
     @JsonManagedReference
-    private Collection<ProductImages> productImagesById;
+    private Collection<SaleOff> productSaleOffById;
 
     @ManyToOne
     @JoinColumn(name = "product_type_id", referencedColumnName = "id", insertable = false, updatable = false)
