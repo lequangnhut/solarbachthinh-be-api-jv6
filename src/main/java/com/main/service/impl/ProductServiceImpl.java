@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,5 +29,28 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Products> findTopProductByCategoryId(int categoryId) {
         return productsRepository.findByCategoryId(categoryId);
+    }
+
+    @Override
+    public List<Products> findByProductTypeId(long productTypeId) {
+        return null;
+    }
+
+    @Override
+    public List<Products> findByCategoryId(Long categoryId) {
+        return null;
+    }
+
+    @Override
+    public Optional<Products> findByProductId(String productId) {
+        return Optional.of(productsRepository.getReferenceById(productId));
+    }
+
+    @Override
+    public void save(Products products) { productsRepository.save(products);}
+
+    @Override
+    public boolean doesProductExist(String productId) {
+        return productsRepository.existsById(productId);
     }
 }
