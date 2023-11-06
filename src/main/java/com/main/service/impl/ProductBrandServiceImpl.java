@@ -6,6 +6,8 @@ import com.main.service.ProductBrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductBrandServiceImpl implements ProductBrandService {
 
@@ -15,5 +17,10 @@ public class ProductBrandServiceImpl implements ProductBrandService {
     @Override
     public ProductBrands findByProductBrandId(String productBrandId) {
         return productBrandRepository.getReferenceById(productBrandId);
+    }
+     
+    @Override
+    public List<ProductBrands> findAll() {
+        return productBrandRepository.findAll();
     }
 }
