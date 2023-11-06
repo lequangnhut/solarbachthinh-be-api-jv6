@@ -1,37 +1,50 @@
 package com.main.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product_attributes", schema = "solardb")
-public class ProductAttributes {
+@Table(name = "sale_off", schema = "solardb")
+public class SaleOff {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private int id;
 
     @Basic
-    @Column(name = "product_id", nullable = false, length = 20)
+    @Column(name = "product_id")
     private String productId;
 
     @Basic
-    @Column(name = "attribute_name", nullable = true, length = 50)
-    private String attributeName;
+    @Column(name = "sale_value")
+    private BigDecimal saleValue;
 
     @Basic
-    @Column(name = "attribute_value", nullable = true, length = 50)
-    private String attributeValue;
+    @Column(name = "start_use")
+    private Timestamp startUse;
+
+    @Basic
+    @Column(name = "end_use")
+    private Timestamp endUse;
+
+    @Basic
+    @Column(name = "is_active")
+    private Boolean isActive;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JsonBackReference
     private Products productsByProductId;
 }

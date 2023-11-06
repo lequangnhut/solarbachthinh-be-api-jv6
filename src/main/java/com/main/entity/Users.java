@@ -72,7 +72,7 @@ public class Users {
     private Timestamp dateCreated;
 
     @Basic
-    @Column(name = "is_acctive", nullable = false)
+    @Column(name = "is_active", nullable = false)
     private boolean isAcctive;
 
     @Basic

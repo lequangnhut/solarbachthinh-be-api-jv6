@@ -32,17 +32,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Products findByProductId(String productId) {
+    public Products findProductByProductId(String productId) {
         return productsRepository.getReferenceById(productId);
-    }
-
-    public List<Products> findByProductTypeId(long productTypeId) {
-        return null;
-    }
-
-    @Override
-    public List<Products> findByCategoryId(Long categoryId) {
-        return null;
     }
 
     @Override
@@ -51,7 +42,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void save(Products products) { productsRepository.save(products);}
+    public void save(Products products) {
+        productsRepository.save(products);
+    }
 
     @Override
     public boolean doesProductExist(String productId) {

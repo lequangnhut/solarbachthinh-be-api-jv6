@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 
 @Data
 public class OrdersDto implements Serializable {
+    
     String id;
 
     Integer userId;
@@ -28,22 +29,6 @@ public class OrdersDto implements Serializable {
     String toWard;
 
     String toAddress;
-
-    Integer weight;
-
-    Integer length;
-
-    Integer width;
-
-    Integer height;
-
-    Integer serviceTypeId;
-
-    Integer serviceId;
-
-    String requiredNote;
-
-    String senderNote;
 
     Timestamp dateCreated;
 }

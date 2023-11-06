@@ -65,44 +65,8 @@ public class Orders {
     private String toAddress;
 
     @Basic
-    @Column(name = "weight", nullable = true)
-    private Integer weight;
-
-    @Basic
-    @Column(name = "length", nullable = true)
-    private Integer length;
-
-    @Basic
-    @Column(name = "width", nullable = true)
-    private Integer width;
-
-    @Basic
-    @Column(name = "height", nullable = true)
-    private Integer height;
-
-    @Basic
-    @Column(name = "service_type_id", nullable = true)
-    private Integer serviceTypeId;
-
-    @Basic
-    @Column(name = "service_id", nullable = true)
-    private Integer serviceId;
-
-    @Basic
-    @Column(name = "required_note", nullable = true, length = 255)
-    private String requiredNote;
-
-    @Basic
-    @Column(name = "sender_note", nullable = true, length = 255)
-    private String senderNote;
-
-    @Basic
     @Column(name = "date_created", nullable = true)
     private Timestamp dateCreated;
-
-    @OneToMany(mappedBy = "ordersByOrderId")
-    @JsonManagedReference
-    private Collection<Invoices> invoicesById;
 
     @OneToMany(mappedBy = "ordersByOrderId")
     @JsonManagedReference

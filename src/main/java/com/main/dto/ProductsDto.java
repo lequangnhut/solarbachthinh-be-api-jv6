@@ -10,7 +10,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Data
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -46,8 +47,6 @@ public class ProductsDto implements Serializable {
 
     @NotBlank(message = "Warranty không được trống")
     String warranty;
-
-    BigDecimal saleOff;
 
     String isStatusDelete;
 
