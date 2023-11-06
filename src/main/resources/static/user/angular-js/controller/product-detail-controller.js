@@ -1,8 +1,6 @@
 let APIAddToCart = '/san-pham/them-vao-gio-hang/';
 
-let product_details = angular.module('product_details', []);
-
-product_details.controller('product_details', function ($scope, $http, $timeout) {
+solar_app.controller('product_details', function ($scope, $http, $timeout) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);

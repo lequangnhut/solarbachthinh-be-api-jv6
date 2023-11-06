@@ -1,46 +1,11 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="utf-8">
-    <title>Solar Bách Thịnh - Lịch sử đặt hàng</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-
-    <div th:replace="~{views/user/lib/link_lib}"></div>
-    <link rel="stylesheet" href="/user/assets/css/contact.css">
-</head>
-<style>
-    .active {
-        color: white;
-        background-color: #2b7250;
-    }
-</style>
-<body>
-<!-- Spinner Start -->
-<div th:replace="~{views/user/components/spiner}"></div>
-<!-- Spinner End -->
-
-
-<!-- Topbar Start -->
-<div th:replace="~{views/user/components/topbar}"></div>
-<!-- Topbar End -->
-
-
-<!-- Navbar Start -->
-<div th:replace="~{views/user/components/navbar}"></div>
-<!-- Navbar End -->
-
-
 <!-- Page Header Start -->
 <div class="container-fluid page-header py-5 mb-5">
     <div class="container py-5">
         <h1 class="display-3 text-white mb-3 animated slideInDown">Lịch sử đặt hàng</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-white" href="/trang-chu">Trang Chủ</a></li>
-                <li class="breadcrumb-item"><a class="text-white" href="/dang-ky/xac-thuc-email">
+                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu">Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/dang-ky/xac-thuc-email">
                     Lịch sử mua hàng</a></li>
             </ol>
         </nav>
@@ -232,15 +197,3 @@
         </div>
     </div>
 </div>
-
-<!-- Footer Start -->
-<div th:replace="~{views/user/components/footer}"></div>
-<!-- Footer End -->
-
-<!-- JavaScript Libraries -->
-<div th:replace="~{views/user/lib/script_lib}"></div>
-
-<script src="/user/assets/js/ajax/ajax-show-modal-info-oder.js"></script>
-
-</body>
-</html>

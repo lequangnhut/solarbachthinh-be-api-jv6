@@ -5,7 +5,6 @@ import com.main.dto.ProductImagesDto;
 import com.main.dto.ProductsDto;
 import com.main.entity.ProductImages;
 import com.main.entity.Products;
-
 import com.main.entity.Users;
 import com.main.repository.ProductsRepository;
 import com.main.service.*;
@@ -74,7 +73,7 @@ public class ProductControllerAD {
     }
 
     @GetMapping("them-san-pham")
-    public String showAddProduct(@ModelAttribute ProductsDto productsDto, RedirectAttributes redirectAttributes, Model model) {
+    public String showAddProduct(@ModelAttribute ProductsDto productsDto, Model model) {
 //        for (Products product : generateProducts(100)) {
 //            productRepository.save(product);
 //        }
@@ -88,8 +87,8 @@ public class ProductControllerAD {
     @ResponseBody
     public String saveProduct(@Validated @ModelAttribute ProductsDto productsDto, BindingResult bindingResult, @RequestParam(value = "file1", required = false) MultipartFile file01, @RequestParam(value = "file2", required = false) MultipartFile file02, @RequestParam(value = "file3", required = false) MultipartFile file03, @RequestParam(value = "file4", required = false) MultipartFile file04, RedirectAttributes redirectAttributes, Model model) {
         String price = request.getParameter("price");
-        if (bindingResult.hasErrors()) {
 
+        if (bindingResult.hasErrors()) {
             try {
                 ProductImagesDto productImagesDto = new ProductImagesDto();
                 model.addAttribute("listBrandValue", productBrandService.findAll());
@@ -129,7 +128,6 @@ public class ProductControllerAD {
 
                     ProductImages productImages = EntityDtoUtils.convertToEntity(productImagesDto, ProductImages.class);
                     productImageService.save(productImages);
-
                 }
 
                 if (file02 != null && !file02.isEmpty()) {
@@ -208,7 +206,6 @@ public class ProductControllerAD {
                     ProductImages productImages = EntityDtoUtils.convertToEntity(productImagesDto, ProductImages.class);
 
                     productImageService.save(productImages);
-
                 }
 
                 return response.put("result", "success");
@@ -253,7 +250,6 @@ public class ProductControllerAD {
 
         if (bindingResult.hasErrors()) {
             try {
-
                 productsDto.setDateCreated(new Timestamp(System.currentTimeMillis()));
                 productsDto.setId(productIdPath);
                 productsDto.setPrice(ReplaceUtils.replacePrice(price));
@@ -290,7 +286,6 @@ public class ProductControllerAD {
 
                     ProductImages productImages = EntityDtoUtils.convertToEntity(productImagesDto, ProductImages.class);
                     productImageService.save(productImages);
-
                 }
 
                 if (file02 != null && !file02.isEmpty()) {
@@ -370,8 +365,8 @@ public class ProductControllerAD {
 
                     redirectAttributes.addFlashAttribute("updateProductSuccess", "Thay đổi thông tin sản phẩm thành công");
                     productImageService.save(productImages);
-
                 }
+
                 response.put("result", "success");
             } catch (Exception io) {
                 response.put("result", "error");

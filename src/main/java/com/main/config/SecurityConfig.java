@@ -34,8 +34,9 @@ public class SecurityConfig {
                                 .requestMatchers("/**").permitAll()
                 ).formLogin(
                         form -> form
-                                .loginPage("/dang-nhap")
                                 .loginProcessingUrl("/dang-nhap")
+                                .usernameParameter("username")
+                                .passwordParameter("password")
                                 .successHandler(handler)
                                 .permitAll()
                 ).logout(
@@ -44,7 +45,7 @@ public class SecurityConfig {
                                 .clearAuthentication(true)
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/dang-xuat"))
                                 .deleteCookies("JSESSIONID")
-                                .logoutSuccessUrl("/trang-chu")
+                                .logoutSuccessUrl("/logout-temp")
                                 .permitAll()
                 );
         return http.build();
