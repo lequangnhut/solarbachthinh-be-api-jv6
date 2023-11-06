@@ -1,6 +1,6 @@
 package com.main.service.impl;
 
-import com.main.dto.CartsRepository;
+import com.main.repository.CartsRepository;
 import com.main.entity.Carts;
 import com.main.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;

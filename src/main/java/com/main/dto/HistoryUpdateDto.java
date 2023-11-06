@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 
 @Data
 class HistoryUpdateDto implements Serializable {
+
     int id;
 
     int userId;

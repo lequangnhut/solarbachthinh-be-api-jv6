@@ -12,6 +12,7 @@ import java.util.List;
 
 @Data
 public class UsersDto implements Serializable {
+
     int id;
 
     String email;

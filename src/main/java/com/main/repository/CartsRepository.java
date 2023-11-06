@@ -1,4 +1,4 @@
-package com.main.dto;
+package com.main.repository;
 
 import com.main.entity.Carts;
 import org.springframework.data.jpa.repository.JpaRepository;

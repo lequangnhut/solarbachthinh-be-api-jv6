@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @Data
 public class ProductBrandsDto implements Serializable {
+
     String id;
 
     String brandName;
