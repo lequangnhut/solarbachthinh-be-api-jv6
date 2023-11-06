@@ -13,6 +13,10 @@ public interface ProductService {
 
     List<Products> findTopProductByCategoryId(int categoryId);
 
+    List<Products> findByProductTypeId(long productTypeId);
+
+    List<Products> findByCategoryId(Long categoryId);
+
     Products findProductByProductId(String productId);
 
     Optional<Products> findByProductId(String productId);

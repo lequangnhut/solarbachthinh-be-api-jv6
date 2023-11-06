@@ -59,7 +59,8 @@
                                           th:errors="*{quantity}"></span>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="price" th:field="*{price}">
+                                    <input type="text" class="form-control" oninput="formatPrice(this)" name="price"
+                                           id="price" th:field="*{price}">
                                     <label for="price">Giá sản phẩm <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-price"></span>
                                     <span th:if="${#fields.hasErrors('price')}" class="text-danger"
@@ -73,15 +74,9 @@
                                           th:errors="*{warranty}"></span>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="saleOff" th:field="*{saleOff}">
-                                    <label for="saleOff">Giảm giá <span class="text-danger">*</span></label>
-                                    <span class="text-danger" id="invalid-saleOff"></span>
-                                    <span th:if="${#fields.hasErrors('saleOff')}" class="text-danger"
-                                          th:errors="*{saleOff}"></span>
-                                </div>
-                                <div class="form-floating mb-3">
                                     <select class="form-select" id="brandId" th:field="*{productBrandId}">
-                                        <option value="" class="text-center">--------- Thêm thương hiệu ----------</option>
+                                        <option value="" class="text-center">--------- Thêm thương hiệu ----------
+                                        </option>
                                         <option th:each="brand : ${listBrandValue}"
                                                 th:value="${brand.id}"
                                                 th:text="${brand.brandName}">
@@ -94,7 +89,8 @@
                                 </div>
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="productTypeId" th:field="*{productTypeId}">
-                                        <option value="" class="text-center">--------- Thêm loại sản phẩm ----------</option>
+                                        <option value="" class="text-center">--------- Thêm loại sản phẩm ----------
+                                        </option>
                                         <option th:each="type : ${listProductTypeValue}"
                                                 th:value="${type.id}"
                                                 th:text="${type.productTypeName}">
@@ -106,7 +102,8 @@
                                           th:errors="*{productTypeId}"></span>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="isStatusDelete" value="Đang kinh doanh" readonly>
+                                    <input type="text" class="form-control" id="isStatusDelete" value="Đang kinh doanh"
+                                           readonly>
                                     <label for="isStatusDelete">Trạng thái <span class="text-danger">*</span></label>
                                     <span th:if="${#fields.hasErrors('isStatusDelete')}" class="text-danger"
                                           th:errors="*{isStatusDelete}"></span>
@@ -222,7 +219,8 @@
                                             <label for="backColor">Làm nổi bật</label>
                                         </div>
                                     </div>
-                                    <div class="form-control" id="text-input" contenteditable="true" th:field="*{templateDescription}"></div>
+                                    <div class="form-control" id="text-input" contenteditable="true"
+                                         th:field="*{templateDescription}"></div>
                                     <span class="text-danger" id="invalid-templateDescription"></span>
                                     <span th:if="${#fields.hasErrors('templateDescription')}" class="text-danger"
                                           th:errors="*{templateDescription}"></span>
@@ -254,6 +252,7 @@
 </div>
 
 <div th:replace="~{views/admin/lib/script_lib}"></div>
+<script src="/admin/assets/js/format-price.js"></script>
 <script src="/admin/assets/js/product/add-product.js"></script>
 <script src="/admin/assets/js/validation/validation-form-product-img.js"></script>
 <script src=""></script>
