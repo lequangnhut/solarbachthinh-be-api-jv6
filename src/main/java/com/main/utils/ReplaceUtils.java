@@ -1,21 +1,20 @@
 package com.main.utils;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
 
 public class ReplaceUtils {
 
-    public static Integer replacePrice(String priceString) {
+    public static BigDecimal replacePrice(String priceString) {
         try {
-            int price = Integer.parseInt(priceString.replaceAll("[^\\d]", ""));
-            return Integer.parseInt(new DecimalFormat("#,###", new DecimalFormatSymbols(Locale.getDefault())).format(price).replaceAll("[^\\d]", ""));
+            String cleanedPriceString = priceString.replaceAll("[^\\d.]", "");
+            return new BigDecimal(cleanedPriceString);
         } catch (NumberFormatException e) {
-            return -1;
+            return null;
         }
     }
 
-    public static String formatPrice(int price) {
+    public static String formatPrice(BigDecimal price) {
         DecimalFormat decimalFormat = new DecimalFormat("###,###");
         return decimalFormat.format(price);
     }

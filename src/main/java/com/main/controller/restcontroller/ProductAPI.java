@@ -2,7 +2,7 @@ package com.main.controller.restcontroller;
 
 import com.main.entity.ProductCategories;
 import com.main.entity.Products;
-import com.main.service.CategoryService;
+import com.main.service.ProductCategoryService;
 import com.main.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +17,7 @@ import java.util.List;
 public class ProductAPI {
 
     @Autowired
-    CategoryService categoryService;
+    ProductCategoryService productCategoryService;
 
     @Autowired
     ProductService productService;
@@ -27,12 +27,14 @@ public class ProductAPI {
         return productService.findAll();
     }
 
+    // tìm ra 4 danh mục đầu tiên
     @GetMapping("product/get-top4-category")
     public List<ProductCategories> showCategory() {
         Pageable pageable = PageRequest.of(0, 4);
-        return categoryService.findAllTop4(pageable);
+        return productCategoryService.findAllTop4(pageable);
     }
 
+    // tìm ra sản phẩm bằng mã danh mục
     @GetMapping("product/{categoryId}")
     public List<Products> productGetById(@PathVariable int categoryId) {
         return productService.findTopProductByCategoryId(categoryId);

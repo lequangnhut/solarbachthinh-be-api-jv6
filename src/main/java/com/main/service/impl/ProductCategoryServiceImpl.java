@@ -2,7 +2,7 @@ package com.main.service.impl;
 
 import com.main.entity.ProductCategories;
 import com.main.repository.ProductCategoriesRepository;
-import com.main.service.CategoryService;
+import com.main.service.ProductCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CategoryServiceImpl implements CategoryService {
+public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     @Autowired
     ProductCategoriesRepository repo;

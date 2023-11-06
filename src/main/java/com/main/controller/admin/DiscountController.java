@@ -17,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("quan-tri/giam-gia")
@@ -93,12 +92,12 @@ public class DiscountController {
     }
 
     @PostMapping("sua-ma/save/{id}")
-    public String showEditDiscout(@Validated @ModelAttribute DiscountsDto discountCodesDTO, BindingResult bindingResult, @PathVariable("id") String id, RedirectAttributes redirectAttributes, Model model) {
+    public String showEditDiscount(@Validated @ModelAttribute DiscountsDto discountCodesDTO, BindingResult result, @PathVariable("id") String id, Model model) {
         String price = request.getParameter("discountPriceEdit");
 
-        if (!bindingResult.hasErrors()) {
+        if (!result.hasErrors()) {
             if (discountCodesDTO.getEndUse().isBefore(discountCodesDTO.getStartUse())) {
-                redirectAttributes.addFlashAttribute("errorDate", "Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
+                result.rejectValue("errorDate", null, "Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
                 return "views/admin/page/crud/discout/discout-edit";
             } else {
                 discountCodesDTO.setId(id);

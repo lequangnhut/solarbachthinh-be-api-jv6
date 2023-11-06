@@ -14,6 +14,6 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     Users findByPhoneNumber(String phoneNumber);
 
-    @Query("SELECT u FROM Users u WHERE u.isAcctive = true")
+    @Query("SELECT u FROM Users u JOIN u.roles r  WHERE u.isAcctive = true AND r.nameRole LIKE 'USER' ORDER BY u.dateCreated DESC LIMIT 90")
     List<Users> findByActiveIsTrue();
 }

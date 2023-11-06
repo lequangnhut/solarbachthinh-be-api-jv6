@@ -1,18 +1,17 @@
 package com.main.controller.restcontroller;
 
-import com.main.controller.admin.AccountControllerAD;
+import com.main.controller.admin.UserControllerAD;
 import com.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class checkDuplicateAPI {
+public class CheckDuplicateAPI {
 
     @Autowired
     UserService userService;
@@ -37,8 +36,8 @@ public class checkDuplicateAPI {
     @GetMapping("/success-message")
     public Map<String, Boolean> getSuccessMessage() {
         Map<String, Boolean> response = new HashMap<>();
-        response.put("exists", AccountControllerAD.successMessage);
-        AccountControllerAD.successMessage = false;
+        response.put("exists", UserControllerAD.successMessage);
+        UserControllerAD.successMessage = false;
         return response;
     }
 }

@@ -9,7 +9,7 @@
             <a href="/gio-hang" role="button" class="cart-images text-center w-100 me-4">
                 <i class="bi bi-bag" style="font-size: 35px"></i>
             </a>
-            <!--<span class="cart-number text-center" th:text="${session.cartAmount}">2</span>-->
+            <span class="cart-number text-center" th:text="${session.cartQuantity}">0</span>
             <span class="cart-number text-center">0</span>
         </div>
 
@@ -63,7 +63,7 @@
         <div th:if="${session.user != null}">
             <a href="/gio-hang" class="btn btn-primary rounded-0 py-4 px-lg-5 d-lg-block d-none">
                 <i class="fa-solid fa-cart-plus"></i>
-                Giỏ hàng (<span>0</span>)
+                Giỏ hàng (<span th:text="${session.cartQuantity}">0</span>)
                 <i class="fa fa-arrow-right ms-3"></i>
             </a>
         </div>

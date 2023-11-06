@@ -71,10 +71,10 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="password1">Mật Khẩu <span id="togglePassword1" class="eye-icon"><i
+                                    <label for="passwordLogin">Mật Khẩu <span id="togglePasswordLogin" class="eye-icon"><i
                                             class="fa-solid fa-eye-slash"></i></span>
                                     </label>
-                                    <input type="password" class="form-control" name="password" id="password1">
+                                    <input type="password" class="form-control" name="password" id="passwordLogin">
                                     <p id="passwordError" class="invalid-feedback"></p>
                                 </div>
 
@@ -115,7 +115,6 @@
 </div>
 <!-- Login Form End -->
 
-
 <!-- Footer Start -->
 <div th:replace="~{views/user/components/footer}"></div>
 <!-- Footer End -->
@@ -125,6 +124,7 @@
 
 <!--validate form login front-end-->
 <script src="/user/assets/js/auth/login-validate.js"></script>
-</body>
+<script src="/user/assets/js/hide-pw-login.js"></script>
 
+</body>
 </html>

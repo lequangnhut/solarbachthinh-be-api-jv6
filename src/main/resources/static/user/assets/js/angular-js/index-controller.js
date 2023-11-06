@@ -1,8 +1,8 @@
 let API = 'http://localhost:8080/api/product';
 
-let index_product = angular.module('products', []);
+let index_controller = angular.module('index_controller', []);
 
-index_product.controller('change_product', function ($scope, $http, $timeout) {
+index_controller.controller('index_controller', function ($scope, $http, $timeout) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
@@ -45,7 +45,14 @@ index_product.controller('change_product', function ($scope, $http, $timeout) {
             method: 'GET',
             url: API + '/' + 1
         }).then(function successCallback(response) {
-            $scope.products = response.data;
+            let brandId = null;
+            const products = $scope.products = response.data;
+
+            for (let i = 0; i < products.length; i++) {
+                brandId = products[i].productBrandId;
+            }
+
+            getProductBrandByBrandId(brandId);
 
             // Khi dữ liệu đã được load, hãy cập nhật Swiper
             $timeout(function () {
@@ -55,19 +62,45 @@ index_product.controller('change_product', function ($scope, $http, $timeout) {
             console.log(response.data);
         });
 
+        $scope.isLoading = false;
+
         $scope.changes = function (categoryId) {
+            $scope.isLoading = true;
+
+            $timeout(function () {
+                $http({
+                    method: 'GET',
+                    url: API + '/' + categoryId
+                }).then(function successCallback(response) {
+                    let brandId = null;
+                    const products = $scope.products = response.data;
+
+                    for (let i = 0; i < products.length; i++) {
+                        brandId = products[i].productBrandId;
+                    }
+
+                    getProductBrandByBrandId(brandId);
+
+                    // Khi dữ liệu đã được load, hãy cập nhật Swiper
+                    $timeout(function () {
+                        mySwiper.update();
+                    });
+                }, function errorCallback(response) {
+                    console.log(response.data);
+                });
+            }, 1500);
+        }
+
+        function getProductBrandByBrandId(brandId) {
             $http({
                 method: 'GET',
-                url: API + '/' + categoryId
+                url: 'http://localhost:8080/api/product-brand/' + brandId
             }).then(function successCallback(response) {
-                $scope.products = response.data;
-
-                // Khi dữ liệu đã được load, hãy cập nhật Swiper
-                $timeout(function () {
-                    mySwiper.update();
-                });
+                $scope.productBrand = response.data;
+                $scope.isLoading = false;
             }, function errorCallback(response) {
                 console.log(response.data);
+                $scope.isLoading = false;
             });
         }
     });

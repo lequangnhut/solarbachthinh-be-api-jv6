@@ -5,7 +5,6 @@ function formatPrice(input) {
     let price = parseInt(rawValue);
 
     if (!isNaN(price)) {
-        let formattedPrice = price.toLocaleString('vi-VN');
-        input.value = formattedPrice;
+        input.value = price.toLocaleString('en-US');
     }
 }

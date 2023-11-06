@@ -13,6 +13,12 @@ public class ProductBrandServiceImpl implements ProductBrandService {
 
     @Autowired
     ProductBrandRepository productBrandRepository;
+
+    @Override
+    public ProductBrands findByProductBrandId(String productBrandId) {
+        return productBrandRepository.getReferenceById(productBrandId);
+    }
+     
     @Override
     public List<ProductBrands> findAll() {
         return productBrandRepository.findAll();

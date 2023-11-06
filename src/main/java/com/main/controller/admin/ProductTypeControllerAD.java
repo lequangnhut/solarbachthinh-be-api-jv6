@@ -3,7 +3,7 @@ package com.main.controller.admin;
 import com.main.dto.ProductTypesDto;
 import com.main.entity.ProductCategories;
 import com.main.entity.ProductTypes;
-import com.main.service.CategoryService;
+import com.main.service.ProductCategoryService;
 import com.main.service.ProductTypeService;
 import com.main.utils.EntityDtoUtils;
 import jakarta.servlet.http.HttpSession;
@@ -22,7 +22,7 @@ public class ProductTypeControllerAD {
     ProductTypeService productTypeService;
 
     @Autowired
-    CategoryService categoryService;
+    ProductCategoryService productCategoryService;
 
     @Autowired
     HttpSession session;
@@ -35,7 +35,7 @@ public class ProductTypeControllerAD {
 
     @GetMapping("them-the-loai")
     public String show_product_types_add(Model model) {
-        List<ProductCategories> categories = categoryService.findAll();
+        List<ProductCategories> categories = productCategoryService.findAll();
 
         model.addAttribute("productTypeDTO", new ProductTypesDto());
         model.addAttribute("categories", categories);
@@ -45,7 +45,7 @@ public class ProductTypeControllerAD {
     @GetMapping("sua-the-loai/{productTypeId}")
     public String show_product_types_edit(@PathVariable int productTypeId, Model model) {
         ProductTypes productTypes = productTypeService.findById(productTypeId);
-        List<ProductCategories> categories = categoryService.findAll();
+        List<ProductCategories> categories = productCategoryService.findAll();
 
         model.addAttribute("product_types", productTypes);
         model.addAttribute("categories", categories);

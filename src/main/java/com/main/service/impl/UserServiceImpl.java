@@ -61,11 +61,6 @@ public class UserServiceImpl implements UserService {
         users.setToken(RandomUtils.RandomToken(20));
         users.setDateCreated(new Timestamp(System.currentTimeMillis()));
 
-//        Roles role = roleRepository.findByNameRole("USER");
-//        if (role == null) {
-//            role = checkRoleExist();
-//        }
-//        users.setRoles(List.of(role));
         return userRepository.save(users);
     }
 
