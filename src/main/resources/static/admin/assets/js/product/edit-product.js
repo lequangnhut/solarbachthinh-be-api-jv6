@@ -7,7 +7,7 @@ function getFormData() {
     const quantity = document.getElementById("quantity").value;
     const price = document.getElementById("price").value;
     const warranty = document.getElementById("warranty").value;
-    const saleOff = document.getElementById("saleOff").value;
+    // const saleOff = document.getElementById("saleOff").value;
     const brandId = document.getElementById("brandId").value;
     const productTypeId = document.getElementById("productTypeId").value;
     const isStatusDelete = document.getElementById("isStatusDelete").value;
@@ -20,7 +20,7 @@ function getFormData() {
     formData.append("quantity", quantity);
     formData.append("price", price);
     formData.append("warranty", warranty);
-    formData.append("saleOff", saleOff);
+    // formData.append("saleOff", saleOff);
     formData.append("productBrandId", brandId);
     formData.append("productTypeId", productTypeId);
     formData.append("isStatusDelete", isStatusDelete);
@@ -68,8 +68,8 @@ document.getElementById("submitted-button").addEventListener("click", function (
         contentType: false,
         processData: false,
         success: function (response) {
-            console.log(response)
-            if (response=== "success") {
+            console.log(response.result)
+            if (response.result === "success") {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -80,17 +80,13 @@ document.getElementById("submitted-button").addEventListener("click", function (
                 window.location.href = 'http://localhost:8080/quan-tri/san-pham';
             } else if (response === "error") {
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi...',
-                    text: 'Vui lòng kiểm tra lại dữ liệu!',
+                    icon: 'error', title: 'Lỗi...', text: 'Vui lòng kiểm tra lại dữ liệu!',
                 });
             }
         },
         error: function (error) {
             Swal.fire({
-                icon: 'error',
-                title: 'Lỗi...',
-                text: 'Lỗi khi gửi dữ liệu!',
+                icon: 'error', title: 'Lỗi...', text: 'Lỗi khi gửi dữ liệu!',
             });
         }
     });
@@ -103,7 +99,7 @@ function resetFields() {
     document.getElementById('quantity').classList.remove('is-valid');
     document.getElementById('price').classList.remove('is-valid');
     document.getElementById('warranty').classList.remove('is-valid');
-    document.getElementById('saleOff').classList.remove('is-valid');
+    // document.getElementById('saleOff').classList.remove('is-valid');
     document.getElementById('brandId').classList.remove('is-valid');
     document.getElementById('productTypeId').classList.remove('is-valid');
     document.getElementById('isStatusDelete').classList.remove('is-valid');
@@ -116,7 +112,7 @@ function resetFields() {
     document.getElementById("quantity").value = '';
     document.getElementById("price").value = '';
     document.getElementById("warranty").value = '';
-    document.getElementById("saleOff").value = '';
+    // document.getElementById("saleOff").value = '';
     document.getElementById("brandId").value = '';
     document.getElementById("productTypeId").value = '';
     document.getElementById("isStatusDelete").value = '';
@@ -136,15 +132,7 @@ let formatButtons = document.querySelectorAll(".format");
 let scriptButtons = document.querySelectorAll(".script");
 let createTableButton = document.getElementById("createTable");
 
-let fontList = [
-    "Arial",
-    "Verdana",
-    "Times New Roman",
-    "Garamond",
-    "Georgia",
-    "Courier New",
-    "cursive",
-];
+let fontList = ["Arial", "Verdana", "Times New Roman", "Garamond", "Georgia", "Courier New", "cursive",];
 
 const initializer = () => {
     highlighter(alignButtons, true);

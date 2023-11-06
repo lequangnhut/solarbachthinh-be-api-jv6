@@ -37,7 +37,8 @@
                                     <label for="productIdValue">Mã sản phẩm <span class="text-danger">*</span></label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="productName" th:value="${productDto.productName}">
+                                    <input type="text" class="form-control" id="productName"
+                                           th:value="${productDto.productName}">
                                     <label for="productName">Tên sản phẩm <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-product-name"></span>
                                 </div>
@@ -47,24 +48,22 @@
                                     <span class="text-danger" id="invalid-power"></span>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="quantity" th:value="${productDto.quantity}">
+                                    <input type="number" class="form-control" id="quantity"
+                                           th:value="${productDto.quantity}">
                                     <label for="quantity">Số lượng sản phẩm <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-amount"></span>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="price" th:value="${productDto.price}">
+                                    <input type="text" class="form-control" oninput="formatPrice(this)" name="price"
+                                           id="price" th:value="${ProductPriceEdit}">
                                     <label for="price">Giá sản phẩm <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-price"></span>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="warranty" th:value="${productDto.warranty}">
+                                    <input type="text" class="form-control" id="warranty"
+                                           th:value="${productDto.warranty}">
                                     <label for="warranty">Thời gian bảo hành <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-warranty"></span>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="saleOff" th:value="${productDto.saleOff}">
-                                    <label for="saleOff">Giảm giá <span class="text-danger">*</span></label>
-                                    <span class="text-danger" id="invalid-saleOff"></span>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="brandId">
@@ -100,7 +99,8 @@
                                                 th:selected="${status} == ${productDto.isStatusDelete}">
                                         </option>
                                     </select>
-                                    <label for="isStatusDelete">Trạng thái xóa <span class="text-danger">*</span></label>
+                                    <label for="isStatusDelete">Trạng thái xóa <span
+                                            class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-isStatusDelete"></span>
                                 </div>
                                 <div class="mb-3">
@@ -214,9 +214,11 @@
                                             <label for="backColor">Làm nổi bật</label>
                                         </div>
                                     </div>
-                                    <div class="form-control" id="text-input" contenteditable="true" th:utext="${productDto.templateDescription}"></div>
+                                    <div class="form-control" id="text-input" contenteditable="true"
+                                         th:utext="${productDto.templateDescription}"></div>
                                     <span class="text-danger" id="invalid-templateDescription"></span>
-                                    <span th:if="${#fields.hasErrors('templateDescription')}" class="text-danger"></span>
+                                    <span th:if="${#fields.hasErrors('templateDescription')}"
+                                          class="text-danger"></span>
 
                                 </div>
                                 <div class="row d-flex flex-column flex-md-row mt-3">

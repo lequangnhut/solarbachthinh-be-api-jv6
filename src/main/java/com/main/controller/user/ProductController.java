@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("san-pham")
 public class ProductController {
@@ -49,7 +51,7 @@ public class ProductController {
     @GetMapping("san-pham-chi-tiet")
     public String showProductDetails(@RequestParam("ma-san-pham") String productId, Model model) {
         if (!productId.isEmpty()) {
-            Products product = productService.findProductByProductId(productId);
+            Optional<Products> product = productService.findByProductId(productId);
 
             model.addAttribute("product", product);
             model.addAttribute("categories", productCategoryService.findAll());

@@ -10,9 +10,12 @@ import com.main.entity.Users;
 import com.main.repository.ProductsRepository;
 import com.main.service.*;
 import com.main.utils.EntityDtoUtils;
+import com.main.utils.ReplaceUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -71,10 +74,7 @@ public class ProductControllerAD {
     }
 
     @GetMapping("them-san-pham")
-    public String showAddProduct(@ModelAttribute ProductsDto productsDto,
-                                 RedirectAttributes redirectAttributes,
-                                 Model model
-    ) {
+    public String showAddProduct(@ModelAttribute ProductsDto productsDto, RedirectAttributes redirectAttributes, Model model) {
 //        for (Products product : generateProducts(100)) {
 //            productRepository.save(product);
 //        }
@@ -86,14 +86,8 @@ public class ProductControllerAD {
 
     @PostMapping("them-san-pham")
     @ResponseBody
-    public String saveProduct(@Validated @ModelAttribute ProductsDto productsDto,
-                              BindingResult bindingResult,
-                              @RequestParam(value = "file1", required = false) MultipartFile file01,
-                              @RequestParam(value = "file2", required = false) MultipartFile file02,
-                              @RequestParam(value = "file3", required = false) MultipartFile file03,
-                              @RequestParam(value = "file4", required = false) MultipartFile file04,
-                              RedirectAttributes redirectAttributes,
-                              Model model) {
+    public String saveProduct(@Validated @ModelAttribute ProductsDto productsDto, BindingResult bindingResult, @RequestParam(value = "file1", required = false) MultipartFile file01, @RequestParam(value = "file2", required = false) MultipartFile file02, @RequestParam(value = "file3", required = false) MultipartFile file03, @RequestParam(value = "file4", required = false) MultipartFile file04, RedirectAttributes redirectAttributes, Model model) {
+        String price = request.getParameter("price");
         if (bindingResult.hasErrors()) {
 
             try {
@@ -103,10 +97,10 @@ public class ProductControllerAD {
 
                 productsDto.setDateCreated(new Timestamp(System.currentTimeMillis()));
                 productsDto.setId(productIdValue());
+                productsDto.setPrice(ReplaceUtils.replacePrice(price));
                 productsDto.setIsStatusDelete("Đang kinh doanh");
 
                 Products save = EntityDtoUtils.convertToEntity(productsDto, Products.class);
-                System.out.println(productsDto.toString());
 
                 productService.save(save);
 
@@ -227,21 +221,14 @@ public class ProductControllerAD {
     }
 
     @GetMapping("sua-san-pham/{id}")
-    public String showEditProduct(@Validated @ModelAttribute ProductsDto productsDto,
-                                  BindingResult bindingResult,
-                                  @RequestParam(value = "file1", required = false) MultipartFile file01,
-                                  @RequestParam(value = "file2", required = false) MultipartFile file02,
-                                  @RequestParam(value = "file3", required = false) MultipartFile file03,
-                                  @RequestParam(value = "file4", required = false) MultipartFile file04,
-                                  @PathVariable("id") String productIdPath,
-                                  RedirectAttributes redirectAttributes,
-                                  Model model) {
+    public String showEditProduct(@Validated @ModelAttribute ProductsDto productsDto, BindingResult bindingResult, @RequestParam(value = "file1", required = false) MultipartFile file01, @RequestParam(value = "file2", required = false) MultipartFile file02, @RequestParam(value = "file3", required = false) MultipartFile file03, @RequestParam(value = "file4", required = false) MultipartFile file04, @PathVariable("id") String productIdPath, RedirectAttributes redirectAttributes, Model model) {
         Optional<Products> product = productService.findByProductId(productIdPath);
         ProductImagesDto productImagesDto = new ProductImagesDto();
 
         ProductsDto productsDto1 = EntityDtoUtils.convertToDto(product.get(), ProductsDto.class);
         model.addAttribute("listBrandValue", productBrandService.findAll());
         model.addAttribute("listProductTypeValue", productTypesService.findAll());
+        model.addAttribute("ProductPriceEdit", ReplaceUtils.formatPrice(product.get().getPrice()));
 
 
         if (product.isPresent()) {
@@ -254,15 +241,8 @@ public class ProductControllerAD {
 
     @PostMapping("sua-san-pham/{id}")
     @ResponseBody
-    public String saveEditProduct(@Validated @ModelAttribute ProductsDto productsDto,
-                                  BindingResult bindingResult,
-                                  @RequestParam(value = "file1", required = false) MultipartFile file01,
-                                  @RequestParam(value = "file2", required = false) MultipartFile file02,
-                                  @RequestParam(value = "file3", required = false) MultipartFile file03,
-                                  @RequestParam(value = "file4", required = false) MultipartFile file04,
-                                  @PathVariable("id") String productIdPath,
-                                  RedirectAttributes redirectAttributes,
-                                  Model model) {
+    public ResponseEntity<Map<String, String>> saveEditProduct(@Validated @ModelAttribute ProductsDto productsDto, BindingResult bindingResult, @RequestParam(value = "file1", required = false) MultipartFile file01, @RequestParam(value = "file2", required = false) MultipartFile file02, @RequestParam(value = "file3", required = false) MultipartFile file03, @RequestParam(value = "file4", required = false) MultipartFile file04, @PathVariable("id") String productIdPath, RedirectAttributes redirectAttributes, Model model) {
+        String price = request.getParameter("price");
         Optional<Products> product = productService.findByProductId(productIdPath);
 
         ProductsDto productsDto1 = EntityDtoUtils.convertToDto(product.get(), ProductsDto.class);
@@ -276,6 +256,7 @@ public class ProductControllerAD {
 
                 productsDto.setDateCreated(new Timestamp(System.currentTimeMillis()));
                 productsDto.setId(productIdPath);
+                productsDto.setPrice(ReplaceUtils.replacePrice(price));
                 productsDto.setIsStatusDelete("Đang kinh doanh");
 
                 Products save = EntityDtoUtils.convertToEntity(productsDto, Products.class);
@@ -391,14 +372,14 @@ public class ProductControllerAD {
                     productImageService.save(productImages);
 
                 }
-
-                return response.put("result", "success");
+                response.put("result", "success");
             } catch (Exception io) {
-                return response.put("result", "error");
+                response.put("result", "error");
             }
         } else {
-            return response.put("result", "error");
+            response.put("result", "error");
         }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ModelAttribute("productAddIdValue")
