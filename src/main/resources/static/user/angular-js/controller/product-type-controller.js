@@ -1,11 +1,7 @@
-let API_Product = 'http://localhost:8080/api/product';
-let API_ProductCategory = 'http://localhost:8080/api/product-category';
-let API_ProductType = 'http://localhost:8080/api/product-type';
+solar_app.controller('product_type', function ($scope, $http, $timeout, $location) {
 
-solar_app.controller('product_type', function ($scope, $http, $timeout) {
-
-    let params = new URLSearchParams(window.location.search);
-    $scope.categoryId = params.get('danh-muc');
+    var params = $location.search();
+    $scope.categoryId = params['danh-muc'];
 
     // lấy ra danh sách danh mục
     $http({
@@ -17,10 +13,10 @@ solar_app.controller('product_type', function ($scope, $http, $timeout) {
         console.log(response.data);
     });
 
-    // lấy ra danh sách sản phẩm
+    // lấy ra danh sách sản phẩm bằng category id
     $http({
         method: 'GET',
-        url: API_Product + '/' + 1
+        url: API_Product + '/' + $scope.categoryId
     }).then(function successCallback(response) {
         let brandId = null;
         const products = $scope.products = response.data;
@@ -71,15 +67,19 @@ solar_app.controller('product_type', function ($scope, $http, $timeout) {
     }
 
     function getProductBrandByBrandId(brandId) {
-        $http({
-            method: 'GET',
-            url: 'http://localhost:8080/api/product-brand/' + brandId
-        }).then(function successCallback(response) {
-            $scope.productBrand = response.data;
+        if (brandId != null) {
+            $http({
+                method: 'GET',
+                url: API_ProductBrand + '/' + brandId
+            }).then(function successCallback(response) {
+                $scope.productBrand = response.data;
+                $scope.isLoading = false;
+            }, function errorCallback(response) {
+                console.log(response.data);
+                $scope.isLoading = false;
+            });
+        } else {
             $scope.isLoading = false;
-        }, function errorCallback(response) {
-            console.log(response.data);
-            $scope.isLoading = false;
-        });
+        }
     }
 });

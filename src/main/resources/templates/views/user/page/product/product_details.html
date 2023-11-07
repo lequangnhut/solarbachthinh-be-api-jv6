@@ -5,11 +5,11 @@
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu">Trang Chủ</a></li>
-                <li class="breadcrumb-item" aria-current="page"><a class="text-white" href="#!/san-pham">
-                    Sản Phẩm</a>
+                <li class="breadcrumb-item" aria-current="page">
+                    <a class="text-white" href="#!/san-pham">Sản Phẩm</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a class="text-white" href="/san-pham/loai-danh-muc?danh-muc=1">
+                    <a class="text-white" href="#!/san-pham/loai-danh-muc?danh-muc=1">
                         Loại Sản Phẩm
                     </a>
                 </li>
@@ -28,61 +28,42 @@
         <div class="col-lg-6 px-3">
             <div id="overlay" class="w-100 d-inline-block mb-3 d-flex justify-content-center mb-3"
                  style="background-color: #F1F1F1;">
-                <img id="overlay-image"
-                     th:if="${product.productImagesById != null and product.productImagesById.size() > 0}"
-                     th:src="@{'/upload/'+${product.productImagesById[0].imagePath}}"
+                <img id="overlay-image" ng-src="/upload/{{product.productImagesById[0].imagePath}}"
                      alt="den-nang-luong-mat-troi-sokoyo-solo-15w-h61107">
-                <img th:unless="${product.productImagesById != null and product.productImagesById.size() > 0}"
-                     class="w-50" src="/upload/default-img.jpg" alt="Default Image">
             </div>
             <div class="row px-2 ps-2">
                 <div class="col-3 col-md-3 col-lg-3 px-1">
                     <div class="w-100 d-inline-block" style="background-color: #F1F1F1;">
-                        <img class="w-100"
-                             th:if="${product.productImagesById != null and product.productImagesById.size() > 0}"
-                             th:src="@{'/upload/' + ${product.productImagesById[0].imagePath}}"
+                        <img class="w-100" ng-src="/upload/{{product.productImagesById[0].imagePath}}"
                              alt="den-nang-luong-mat-troi-sokoyo-solo-15w-298">
-                        <img th:unless="${product.productImagesById != null and product.productImagesById.size() > 0}"
-                             class="w-50" src="/upload/default-img.jpg" alt="Default Image">
                     </div>
                 </div>
                 <div class="col-3 col-md-3 col-lg-3 px-1">
                     <div class="w-100 d-inline-block" style="background-color: #F1F1F1;">
-                        <img class="w-100"
-                             th:if="${product.productImagesById != null and product.productImagesById.size() > 0}"
-                             th:src="@{'/upload/' + ${product.productImagesById[0].imagePath}}"
+                        <img class="w-100" ng-src="/upload/{{product.productImagesById[1].imagePath}}"
                              alt="den-nang-luong-mat-troi-sokoyo-solo-15w-298">
-                        <img th:unless="${product.productImagesById != null and product.productImagesById.size() > 0}"
-                             class="w-50" src="/upload/default-img.jpg" alt="Default Image">
                     </div>
                 </div>
                 <div class="col-3 col-md-3 col-lg-3 px-1">
                     <div class="w-100 d-inline-block" style="background-color: #F1F1F1;">
-                        <img class="w-100"
-                             th:if="${product.productImagesById != null and product.productImagesById.size() > 0}"
-                             th:src="@{'/upload/' + ${product.productImagesById[0].imagePath}}"
+                        <img class="w-100" ng-src="/upload/{{product.productImagesById[2].imagePath}}"
                              alt="den-nang-luong-mat-troi-sokoyo-solo-15w-298">
-                        <img th:unless="${product.productImagesById != null and product.productImagesById.size() > 0}"
-                             class="w-50" src="/upload/default-img.jpg" alt="Default Image">
                     </div>
                 </div>
                 <div class="col-3 col-md-3 col-lg-3 px-1">
                     <div class="w-100 d-inline-block" style="background-color: #F1F1F1;">
-                        <img class="w-100"
-                             th:if="${product.productImagesById != null and product.productImagesById.size() > 0}"
-                             th:src="@{'/upload/' + ${product.productImagesById[1].imagePath}}"
+                        <img class="w-100" ng-src="/upload/{{product.productImagesById[3].imagePath}}"
                              alt="den-nang-luong-mat-troi-sokoyo-solo-15w-298">
-                        <img th:unless="${product.productImagesById != null and product.productImagesById.size() > 0}"
-                             class="w-50" src="/upload/default-img.jpg" alt="Default Image">
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-6" ng-app="product_details" ng-controller="product_details">
-            <h6 class="heading_h2 fs-4" th:text="${product.productName}"></h6>
+        <div class="col-lg-6">
+            <h6 class="heading_h2 fs-4">{{product.productName}}</h6>
             <div class="content">
-                <pre class="fs-6" style="text-align: justify; white-space: pre-line; font-family: 'Roboto',sans-serif;"
-                     th:text="${product.descriptions}"></pre>
+                <pre class="fs-6" style="text-align: justify; white-space: pre-line; font-family: 'Roboto',sans-serif;">
+                    {{product.descriptions}}
+                </pre>
             </div>
 
             <div class="row">
@@ -91,13 +72,10 @@
                         Hotline: <strong><a href="tel:1800 6567">1800 6567</a></strong>
                     </div>
                     <div class="price-pd text-secondary">
-                        <del> Giảm giá: <strong
-                                th:text="${#numbers.formatDecimal(product.saleOff, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong>
-                        </del>
+                        <del> Giảm giá: <strong>{{formatPrice(product.price)}} đ</strong></del>
                     </div>
                     <div class="price-pd text-danger">
-                        Giá bán: <strong
-                            th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong>
+                        Giá bán: <strong>{{formatPrice(product.price)}} đ</strong>
                     </div>
 
                     <div class="d-flex justify-content-start mt-3">
@@ -124,13 +102,12 @@
                         </a>
                     </div>
                 </div>
+
                 <!-- Quantity -->
                 <div class="d-flex mt-4" style="max-width: 300px"
-                     th:if="${product.isStatusDelete == 'Đang bán' and session.user != null}"
+                     ng-if="product.isStatusDelete == 'Đang kinh doanh' && session_user != null"
                 >
                     <div class="mb-3">
-                        <input type="hidden" class="cart-id">
-
                         <label for="form" class="form-label">Số lượng</label>
                         <div class="float-end button-quantity d-flex align-items-center">
                             <button class="btn btn-primary d-flex justify-content-center align-items-center"
@@ -156,16 +133,16 @@
             </div>
 
             <a href="tel:0967363343"
-               th:if="${product.isStatusDelete == 'Ngừng kinh doanh' and session.user != null}"
+               ng-if="product.isStatusDelete == 'Ngừng kinh doanh' && session_user != null"
                class="view_more d-flex justify-content-center">
                 Liên hệ mua hàng
             </a>
             <a href="javascript:void(0)" ng-click="addToCart(quantity)"
-               th:if="${product.isStatusDelete == 'Đang bán' and session.user != null}"
+               ng-if="product.isStatusDelete == 'Đang kinh doanh' && session_user != null"
                class="view_more d-flex justify-content-center">
                 Thêm vào giỏ hàng
             </a>
-            <a href="/dang-nhap" th:if="${session.user == null}"
+            <a href="#!/dang-nhap" ng-if="session_user == null"
                class="view_more d-flex justify-content-center">
                 Vui lòng đăng nhập
             </a>
@@ -194,20 +171,29 @@
                 <table style="border-collapse: collapse; width: 100%; background-color: #f7f7f7;">
                     <tbody>
                     <tr style="height: 24px;">
-                        <td style="width: 50%; height: 24px;"><strong>Công suất:</strong> <span
-                                th:text="${product.powers}">20W</span></td>
-                        <td style="width: 50%; height: 24px;"><strong>Pin Lithium LiFePo4:</strong> <span
-                                th:text="${product.productBrandsByProductBrandId.brandName}"></span></td>
+                        <td style="width: 50%; height: 24px;">
+                            <strong>Công suất:</strong>
+                            <span>{{product.powers}}</span>
+                        </td>
+                        <td style="width: 50%; height: 24px;">
+                            <strong>Pin Lithium LiFePo4:</strong>
+                            <span>{{product.productBrandsByProductBrandId.brandName}}</span>
+                        </td>
                     </tr>
                     <tr style="height: 24px;">
-                        <td style="width: 50%; height: 24px;"><strong>Thương hiệu:</strong> <span
-                                th:text="${product.productBrandsByProductBrandId.brandName}"></span></td>
-                        <td style="width: 50%; height: 24px;"><strong>Tấm pin NLMT:&nbsp;</strong> <span
-                                th:text="${product.productTypesByProductTypeId.productTypeName}"></span></td>
+                        <td style="width: 50%; height: 24px;">
+                            <strong>Thương hiệu:</strong>
+                            <span>{{product.productBrandsByProductBrandId.brandName}}</span>
+                        </td>
+                        <td style="width: 50%; height: 24px;">
+                            <strong>Tấm pin NLMT:&nbsp;</strong>
+                            <span>{{product.productTypesByProductTypeId.productTypeName}}</span>
+                        </td>
                     </tr>
                     <tr style="height: 24px;">
-                        <td style="width: 50%; height: 24px;"><strong>Dòng sản phẩm:</strong> <span
-                                th:text="${product.productTypesByProductTypeId.productCategoriesByCategoryId.categoryName}"></span>
+                        <td style="width: 50%; height: 24px;">
+                            <strong>Dòng sản phẩm:</strong>
+                            <span>{{product.productTypesByProductTypeId.productCategoriesByCategoryId.categoryName}}</span>
                         </td>
                         <td style="width: 50%; height: 24px;"><strong>Chip LED:</strong> LUMILEDS3030</td>
                     </tr>
@@ -436,16 +422,21 @@
 
             <div class="top_menu">
                 <ul>
-                    <li th:each="category : ${categories}" th:if="${category.isActive}" class="active">
-                        <a th:href="@{'/san-pham/loai-danh-muc?danh-muc=' + ${category.id}}">
+                    <li ng-repeat="category in categories"
+                        ng-if="category.isActive"
+                        ng-click="changes(category.id)"
+                        ng-class="{'active': category.id == categoryId}"
+                    >
+                        <a href="#!/san-pham/loai-danh-muc?danh-muc={{category.id}}">
                             <img class="m-auto pb-3"
-                                 th:src="@{'/upload/' + ${category.categoryImage}}"
+                                 ng-src="/upload/{{category.categoryImage}}"
                                  alt="den-nang-luong-mat-troi-thumbnail">
-                            <p th:text="${category.categoryName}"></p>
+                            <p>{{category.categoryName}}</p>
                         </a>
+                        <input type="hidden" id="categorySelect" ng-value="category.id">
                     </li>
-                    <li class="active">
-                        <a href="/san-pham">
+                    <li>
+                        <a href="#!/san-pham">
                             <img class="m-auto pb-3"
                                  src="/upload/clipboard-1.png"
                                  alt="den-nang-luong-mat-troi-thumbnail">
@@ -472,22 +463,21 @@
                     <!-- Swiper -->
                     <div class="swiper" id="product_pin">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide" th:each="product : ${products}">
+                            <div class="swiper-slide" ng-repeat="product in products">
                                 <div class="item">
                                     <div class="item-product d-flex align-items-center">
                                         <div class="img">
-                                            <img th:src="@{'/upload/' + ${product.productImagesById[0].imagePath}}"
+                                            <img ng-src="/upload/{{product.productImagesById[0].imagePath}}"
                                                  class="img-fluid" style="width: 200px" alt="...">
                                         </div>
                                         <div class="card-body-product">
-                                            <p class="name-product" th:text="${product.productName}"></p>
+                                            <p class="name-product">{{product.productName}}</p>
                                             <div class="content-product mb-3">
-                                                <span>Công suất: <b th:text="${product.powers}"></b></span>
-                                                <span>Hãng: <b
-                                                        th:text="${product.productBrandsByProductBrandId.brandName}"></b></span>
+                                                <span>Công suất: <b>{{product.powers}}</b></span>
+                                                <span>Hãng: <b>{{product.productBrandsByProductBrandId.brandName}}</b></span>
                                             </div>
                                             <div class="btn-add-cart">
-                                                <a th:href="@{'/san-pham/san-pham-chi-tiet?ma-san-pham=' + ${product.id}}"
+                                                <a href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product.id}}"
                                                    role="button" type="submit" class="btn btn-primary w-100">
                                                     Mua hàng</a>
                                             </div>

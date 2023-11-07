@@ -120,8 +120,12 @@
                                     <input type="file" class="form-control" id="file4">
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <textarea class="form-control" id="descriptions"
-                                              placeholder="Nhập ghi chú ở đây" style="height: 150px"></textarea>
+                                    <textarea class="form-control"
+                                              id="descriptions"
+                                              placeholder="Nhập ghi chú ở đây"
+                                              style="height: 150px"
+                                              th:text="${productDto.descriptions}">
+                                    </textarea>
                                     <label for="descriptions">Mô tả</label>
                                 </div>
                                 <div class="container-desciption mb-5">

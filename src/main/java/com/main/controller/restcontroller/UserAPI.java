@@ -1,8 +1,14 @@
 package com.main.controller.restcontroller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.main.dto.UsersDto;
 import com.main.entity.Users;
 import com.main.service.UserService;
+import com.main.utils.EntityDtoUtils;
+import com.main.utils.SessionAttr;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +22,9 @@ public class UserAPI {
     @Autowired
     UserService userService;
 
+    @Autowired
+    HttpSession session;
+
     @GetMapping("user")
     public List<Users> displayMessage() {
         return userService.findAllUser();
@@ -25,6 +34,27 @@ public class UserAPI {
     public ResponseEntity<Users> getAccountById(@PathVariable int userId) {
         Users users = userService.findById(userId);
         return ResponseEntity.ok().body(users);
+    }
+
+    @GetMapping("user/session-user")
+    public ResponseEntity<String> sessionUser() {
+        Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
+
+        if (users != null) {
+            UsersDto usersDto = new UsersDto();
+            usersDto.setEmail(users.getEmail());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                String json = objectMapper.writeValueAsString(usersDto);
+                return ResponseEntity.ok(json);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error converting to JSON");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found in session");
+        }
     }
 
     @PostMapping("user")

@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface CartService {
 
-    List<Carts> findListCartByUserId(int userId);
+    List<Object[]> findListCartByUserId(int userId);
 
     Carts findProductExits(int userId, String productId);
+
+    Carts findByCartId(int userId);
 
     Integer findPriceByUserId(int userId);
 

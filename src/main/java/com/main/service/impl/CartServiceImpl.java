@@ -15,13 +15,18 @@ public class CartServiceImpl implements CartService {
     CartsRepository cartsRepository;
 
     @Override
-    public List<Carts> findListCartByUserId(int userId) {
-        return cartsRepository.findByUserId(userId);
+    public List<Object[]> findListCartByUserId(int userId) {
+        return cartsRepository.findAllCartByUserId(userId);
     }
 
     @Override
     public Carts findProductExits(int userId, String productId) {
         return cartsRepository.findByUserIdAndProductId(userId, productId);
+    }
+
+    @Override
+    public Carts findByCartId(int cartId) {
+        return cartsRepository.getReferenceById(cartId);
     }
 
     @Override

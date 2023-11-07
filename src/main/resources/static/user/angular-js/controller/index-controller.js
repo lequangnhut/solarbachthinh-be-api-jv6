@@ -1,5 +1,3 @@
-let API_Product = 'http://localhost:8080/API_Product/product';
-
 solar_app.controller('index_controller', function ($scope, $http, $timeout) {
 
     $scope.formatPrice = function (price) {
@@ -19,7 +17,7 @@ solar_app.controller('index_controller', function ($scope, $http, $timeout) {
     // lấy ra danh sách top 4 thể loại
     $http({
         method: 'GET',
-        url: 'http://localhost:8080/API_Product/product/get-top4-category'
+        url: 'http://localhost:8080/api/product/get-top4-category'
     }).then(function successCallback(response) {
         $scope.categories = response.data;
     }, function errorCallback(response) {
@@ -28,7 +26,7 @@ solar_app.controller('index_controller', function ($scope, $http, $timeout) {
 
     // Khởi tạo Swiper trong $timeout để đảm bảo nó được gọi sau khi dữ liệu đã được load
     $timeout(function () {
-        var mySwiper = new Swiper('.mySwiper', {
+        const mySwiper = new Swiper('.mySwiper', {
             slidesPerView: 2, grid: {
                 rows: 2,
             }, spaceBetween: 30, pagination: {
@@ -103,7 +101,7 @@ solar_app.controller('index_controller', function ($scope, $http, $timeout) {
         function getProductBrandByBrandId(brandId) {
             $http({
                 method: 'GET',
-                url: 'http://localhost:8080/API_Product/product-brand/' + brandId
+                url: 'http://localhost:8080/api/product-brand/' + brandId
             }).then(function successCallback(response) {
                 $scope.productBrand = response.data;
                 $scope.isLoading = false;

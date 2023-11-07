@@ -30,7 +30,6 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers("/user/**", "/admin/**").permitAll()
                                 .requestMatchers("/quan-tri/**").hasAuthority("ADMIN")
-                                .requestMatchers("/gio-hang/**", "/thong-tin/**").hasAuthority("USER")
                                 .requestMatchers("/**").permitAll()
                 ).formLogin(
                         form -> form
@@ -45,7 +44,7 @@ public class SecurityConfig {
                                 .clearAuthentication(true)
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/dang-xuat"))
                                 .deleteCookies("JSESSIONID")
-                                .logoutSuccessUrl("/logout-temp")
+                                .logoutSuccessUrl("/redirect-logout")
                                 .permitAll()
                 );
         return http.build();

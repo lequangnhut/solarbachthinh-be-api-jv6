@@ -1,4 +1,4 @@
-solar_app.controller('login_controller', function ($scope, $http, $location) {
+solar_app.controller('login_controller', function ($scope, $http) {
 
     $scope.submit_login = function () {
         let email = $scope.email;
@@ -11,8 +11,8 @@ solar_app.controller('login_controller', function ($scope, $http, $location) {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             data: 'username=' + email + '&password=' + password
-        }).then(function successCallback(response) {
-            window.location.href = "/page-temp";
+        }).then(function successCallback() {
+            window.location.href = "/redirect";
         });
     };
 

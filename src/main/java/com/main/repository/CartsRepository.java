@@ -9,7 +9,15 @@ import java.util.List;
 
 public interface CartsRepository extends JpaRepository<Carts, Integer> {
 
-    List<Carts> findByUserId(int userId);
+    @Query("SELECT c, p, br, MIN(img.imagePath) " +
+            "FROM Carts c " +
+            "JOIN c.productsByProductId p " +
+            "JOIN p.productBrandsByProductBrandId br " +
+            "JOIN p.productImagesById img " +
+            "JOIN c.usersByUserId u " +
+            "WHERE u.id = :userId " +
+            "GROUP BY c.id")
+    List<Object[]> findAllCartByUserId(@Param("userId") int userId);
 
     Carts findByUserIdAndProductId(int userId, String productId);
 

@@ -26,16 +26,16 @@
                     </form>
                 </div>
                 <div class="col-xl-6 d-flex d-xs-none">
-                    <div th:each="category : ${categories}" th:if="${category.isActive}"
+                    <div ng-repeat="category in categories" ng-if="category.isActive"
                          class="category-product d-flex justify-content-center align-items-center">
                         <div class="category-product-item">
-                            <a th:href="@{'/san-pham/loai-danh-muc?danh-muc=' + ${category.id}}">
+                            <a href="#!/san-pham/loai-danh-muc?danh-muc={{category.id}}">
                                 <div class="card-category text-center">
                                     <div class="img text-center">
-                                        <img th:src="@{'/upload/' + ${category.categoryImage}}"
+                                        <img ng-src="/upload/{{category.categoryImage}}"
                                              class="card-img-top img-fluid" alt="...">
                                     </div>
-                                    <div class="body" th:text="${category.categoryName}"></div>
+                                    <div class="body">{{category.categoryName}}</div>
                                 </div>
                             </a>
                         </div>
@@ -48,78 +48,78 @@
 <!-- Navbar End -->
 
 <!-- Product Start -->
-<main id="product mt-5">
-    <div class="container">
-        <div class="page mt-5 mb-4"><h1>Danh sách sản phẩm</h1></div>
+<!--<main id="product mt-5">-->
+<!--    <div class="container">-->
+<!--        <div class="page mt-5 mb-4"><h1>Danh sách sản phẩm</h1></div>-->
 
-        <!--Start Solar Light-->
-        <div class="product_template mt-4 mb-4" data-aos="fade-up"
-             th:each="category : ${categories_productsType_products}">
-            <th:block
-                    th:with="result=${@productController.isProductListInCategoryNotEmpty(categories_productsType_products, category.getCategoryId())}">
-                <!-- Kiểm tra xem danh sách loại sản phẩm của danh mục có rỗng không -->
-                <th:block th:if="${result}">
-                    <div class="title_cart mt-4 d-flex align-items-center mb-3">
-                        <div class="title-card-box d-flex align-items-center h-100">
-                            <div class="category_product">
-                                <span th:text="${category.categoryName}"></span>
-                            </div>
-                        </div>
-                        <a class="see_more"
-                           th:href="@{'/san-pham/loai-danh-muc?danh-muc=' + ${category.categoryId}}">Xem
-                            thêm...</a>
-                    </div>
-                    <div class="slide_product">
-                        <!-- Swiper -->
-                        <div class="swiper" id="product_light">
-                            <div class="swiper-wrapper">
-                                <!-- Lặp qua loại sản phẩm trong danh mục -->
-                                <th:block th:each="productType : ${category.productTypesByCategoryId}">
-                                    <!-- Kiểm tra xem danh sách sản phẩm của loại sản phẩm có rỗng không -->
-                                    <th:block th:if="${productType.productsByProductTypeId.size() > 0}">
-                                        <!-- Lặp qua danh sách sản phẩm của loại sản phẩm -->
-                                        <th:block th:each="product : ${productType.productsByProductTypeId}"
-                                                  th:if="${product.isStatusDelete == 'Đang bán'}">
-                                            <div class="swiper-slide">
-                                                <div class="item-product d-flex align-items-center">
-                                                    <div class="img">
-                                                        <img th:if="${product.productImagesByProductId.size() > 0}"
-                                                             th:src="@{'/upload/'+${product.productImagesByProductId[0].imagePath}}"
-                                                             class="img-fluid" style="width: 200px" alt="...">
-                                                        <img th:unless="${product.productImagesByProductId.size() > 0}"
-                                                             th:src="@{'/upload/default-img.jpg'}"
-                                                             class="img-fluid" style="width: 200px" alt="...">
-                                                    </div>
-                                                    <div class="card-body-product">
-                                                        <p class="name-product"
-                                                           th:text="${product.productName}"></p>
-                                                        <div class="content-product mb-3">
-                                                                <span>Công suất: <b
-                                                                        th:text="${product.power}"></b></span>
-                                                            <span>Hãng: <b
-                                                                    th:text="${product.brandsByBrandId.brandName}"></b></span>
-                                                        </div>
-                                                        <div class="btn-add-cart">
-                                                            <a th:href="@{'/san-pham/san-pham-chi-tiet?ma-san-pham=' + ${product.productId}}"
-                                                               role="button"
-                                                               class="btn btn-primary w-100">Xem chi tiết
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </th:block>
-                                    </th:block>
-                                </th:block>
-                            </div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                        </div>
-                    </div>
-                </th:block>
-            </th:block>
-        </div>
-        <!--End Solar Light-->
-    </div>
-</main>
+<!--        &lt;!&ndash;Start Solar Light&ndash;&gt;-->
+<!--        <div class="product_template mt-4 mb-4" data-aos="fade-up"-->
+<!--             th:each="category : ${categories_productsType_products}">-->
+<!--            <th:block-->
+<!--                    th:with="result=${@productController.isProductListInCategoryNotEmpty(categories_productsType_products, category.getCategoryId())}">-->
+<!--                &lt;!&ndash; Kiểm tra xem danh sách loại sản phẩm của danh mục có rỗng không &ndash;&gt;-->
+<!--                <th:block th:if="${result}">-->
+<!--                    <div class="title_cart mt-4 d-flex align-items-center mb-3">-->
+<!--                        <div class="title-card-box d-flex align-items-center h-100">-->
+<!--                            <div class="category_product">-->
+<!--                                <span th:text="${category.categoryName}"></span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <a class="see_more"-->
+<!--                           th:href="@{'/san-pham/loai-danh-muc?danh-muc=' + ${category.categoryId}}">Xem-->
+<!--                            thêm...</a>-->
+<!--                    </div>-->
+<!--                    <div class="slide_product">-->
+<!--                        &lt;!&ndash; Swiper &ndash;&gt;-->
+<!--                        <div class="swiper" id="product_light">-->
+<!--                            <div class="swiper-wrapper">-->
+<!--                                &lt;!&ndash; Lặp qua loại sản phẩm trong danh mục &ndash;&gt;-->
+<!--                                <th:block th:each="productType : ${category.productTypesByCategoryId}">-->
+<!--                                    &lt;!&ndash; Kiểm tra xem danh sách sản phẩm của loại sản phẩm có rỗng không &ndash;&gt;-->
+<!--                                    <th:block th:if="${productType.productsByProductTypeId.size() > 0}">-->
+<!--                                        &lt;!&ndash; Lặp qua danh sách sản phẩm của loại sản phẩm &ndash;&gt;-->
+<!--                                        <th:block th:each="product : ${productType.productsByProductTypeId}"-->
+<!--                                                  th:if="${product.isStatusDelete == 'Đang bán'}">-->
+<!--                                            <div class="swiper-slide">-->
+<!--                                                <div class="item-product d-flex align-items-center">-->
+<!--                                                    <div class="img">-->
+<!--                                                        <img th:if="${product.productImagesByProductId.size() > 0}"-->
+<!--                                                             th:src="@{'/upload/'+${product.productImagesByProductId[0].imagePath}}"-->
+<!--                                                             class="img-fluid" style="width: 200px" alt="...">-->
+<!--                                                        <img th:unless="${product.productImagesByProductId.size() > 0}"-->
+<!--                                                             th:src="@{'/upload/default-img.jpg'}"-->
+<!--                                                             class="img-fluid" style="width: 200px" alt="...">-->
+<!--                                                    </div>-->
+<!--                                                    <div class="card-body-product">-->
+<!--                                                        <p class="name-product"-->
+<!--                                                           th:text="${product.productName}"></p>-->
+<!--                                                        <div class="content-product mb-3">-->
+<!--                                                                <span>Công suất: <b-->
+<!--                                                                        th:text="${product.power}"></b></span>-->
+<!--                                                            <span>Hãng: <b-->
+<!--                                                                    th:text="${product.brandsByBrandId.brandName}"></b></span>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="btn-add-cart">-->
+<!--                                                            <a th:href="@{'/san-pham/san-pham-chi-tiet?ma-san-pham=' + ${product.productId}}"-->
+<!--                                                               role="button"-->
+<!--                                                               class="btn btn-primary w-100">Xem chi tiết-->
+<!--                                                            </a>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </th:block>-->
+<!--                                    </th:block>-->
+<!--                                </th:block>-->
+<!--                            </div>-->
+<!--                            <div class="swiper-button-next"></div>-->
+<!--                            <div class="swiper-button-prev"></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </th:block>-->
+<!--            </th:block>-->
+<!--        </div>-->
+<!--        &lt;!&ndash;End Solar Light&ndash;&gt;-->
+<!--    </div>-->
+<!--</main>-->
 <!-- Product End -->

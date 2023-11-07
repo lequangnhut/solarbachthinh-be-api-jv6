@@ -7,6 +7,7 @@ import com.main.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,13 @@ public class ProductAPI {
     @GetMapping("product")
     public List<Products> productList() {
         return productService.findAll();
+    }
+
+    // tìm ra product bằng mã
+    @GetMapping("product/find-by-id/{productId}")
+    public ResponseEntity<Products> getAccountById(@PathVariable String productId) {
+        Products product = productService.findProductByProductId(productId);
+        return ResponseEntity.ok().body(product);
     }
 
     // tìm ra 4 danh mục đầu tiên

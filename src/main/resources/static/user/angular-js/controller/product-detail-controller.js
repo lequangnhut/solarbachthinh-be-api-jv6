@@ -1,6 +1,7 @@
-let APIAddToCart = '/san-pham/them-vao-gio-hang/';
+solar_app.controller('product_details', function ($scope, $http, $location) {
 
-solar_app.controller('product_details', function ($scope, $http, $timeout) {
+    var params = $location.search();
+    let productId = $scope.productId = params['ma-san-pham'];
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
@@ -10,10 +11,6 @@ solar_app.controller('product_details', function ($scope, $http, $timeout) {
 
     // thêm vào giỏ hàng
     $scope.addToCart = function (quantity) {
-        // Lấy tham số "ma-san-pham" từ URL
-        let params = new URLSearchParams(window.location.search);
-        let productId = params.get('ma-san-pham');
-
         sendDataToController(productId, quantity);
     }
 
@@ -29,12 +26,49 @@ solar_app.controller('product_details', function ($scope, $http, $timeout) {
         $scope.quantity++;
     }
 
+    // lấy ra session user đang đăng nhập
+    $http({
+        method: 'GET', url: API_UserSession
+    }).then(function successCallback(response) {
+        $scope.session_user = response.data;
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
+
+    // lấy ra danh sách danh mục
+    $http({
+        method: 'GET', url: API_ProductCategory
+    }).then(function successCallback(response) {
+        $scope.categories = response.data;
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
+
+    // lấy ra product bằng mã
+    $http({
+        method: 'GET', url: API_Product + '/' + 'find-by-id/' + productId
+    }).then(function successCallback(response) {
+        $scope.product = response.data;
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
+
+    // lấy ra product nổi bật
+    $http({
+        method: 'GET', url: API_Product + '/' + 1
+    }).then(function successCallback(response) {
+        $scope.products = response.data;
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
+
+    // thêm vào giỏ hàng
     function sendDataToController(productId, quantity) {
         $http({
             method: 'POST',
-            url: APIAddToCart + productId + '&' + quantity
+            url: API_Cart + '/them-vao-gio-hang/' + productId + '&' + quantity
         }).then(function successCallback(response) {
-            window.location.href = 'http://localhost:8080/gio-hang';
+            window.location.href = '#!/gio-hang'
         }, function errorCallback(response) {
             console.log(response.data)
         });

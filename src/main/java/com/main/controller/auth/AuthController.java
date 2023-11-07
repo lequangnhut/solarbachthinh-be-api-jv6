@@ -66,18 +66,35 @@ public class AuthController {
     }
 
     // gán giá trị cho trang tạm để lưu session
-    @GetMapping("page-temp")
-    public String pageTemp(Principal principal) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
-        Users users = userService.findByEmail(userDetails.getUsername());
+    @GetMapping("redirect")
+    public String pageRedirect(Principal principal) {
+        if (principal != null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+            Users users = userService.findByEmail(userDetails.getUsername());
 
-        session.setAttribute(SessionAttr.CURRENT_USER, users);
-        session.setAttribute("toastSuccess", "Đăng nhập thành công !");
-        return "redirect:#!/trang-chu";
+            if (userDetails.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ADMIN"))) {
+                if (users != null) {
+                    session.setAttribute(SessionAttr.CURRENT_USER, users);
+                    session.setAttribute("toastSuccess", "Đăng nhập thành công !");
+                    return "redirect:/quan-tri/san-pham";
+                }
+
+            } else if (userDetails.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("USER"))) {
+                if (users != null) {
+                    session.setAttribute(SessionAttr.CURRENT_USER, users);
+                    session.setAttribute("toastSuccess", "Đăng nhập thành công !");
+                    return "redirect:#!/trang-chu";
+                }
+            } else {
+                return "redirect:/error";
+            }
+        }
+        session.setAttribute("toastFailed", "Sai thông tin đăng nhập !");
+        return "redirect:#!/dang-nhap";
     }
 
     // xoá session
-    @GetMapping("logout-temp")
+    @GetMapping("redirect-logout")
     public String logoutTemp() {
         session.removeAttribute(SessionAttr.CURRENT_USER);
         return "redirect:#!/trang-chu";
