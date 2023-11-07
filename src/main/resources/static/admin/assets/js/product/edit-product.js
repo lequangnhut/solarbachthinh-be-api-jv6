@@ -70,13 +70,6 @@ document.getElementById("submitted-button").addEventListener("click", function (
         success: function (response) {
             console.log(response.result)
             if (response.result === "success") {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Thêm sản phẩm thành công',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
                 window.location.href = 'http://localhost:8080/quan-tri/san-pham';
             } else if (response === "error") {
                 Swal.fire({

@@ -67,13 +67,21 @@ document.getElementById("submitted-button").addEventListener("click", function (
         processData: false,
         success: function (response) {
             console.log(response)
-            if (response === "success") {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Thêm sản phẩm thành công',
+            if (response === "success" || response === "") {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm sản phẩm thành công!"
                 });
 
                 resetFields();
@@ -90,19 +98,29 @@ document.getElementById("submitted-button").addEventListener("click", function (
                 });
 
             } else if (response === "error") {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi...',
-                    text: 'Vui lòng kiểm tra lại dữ liệu!',
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "Lỗi khi thêm sản phẩm vui lòng thử lại!"
                 });
             }
         },
         error: function (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi...',
-                text: 'Lỗi khi gửi dữ liệu!',
-            });
+            Swal.fire(
+                'Lỗi khi gửi dữ liệu!',
+                centerFailed,
+                'error'
+            );
         }
     });
 });

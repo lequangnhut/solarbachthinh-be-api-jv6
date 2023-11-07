@@ -10,6 +10,7 @@ import com.main.repository.ProductsRepository;
 import com.main.service.*;
 import com.main.utils.EntityDtoUtils;
 import com.main.utils.ReplaceUtils;
+import com.main.utils.SessionAttr;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -363,7 +364,8 @@ public class ProductControllerAD {
 
                     ProductImages productImages = EntityDtoUtils.convertToEntity(productImagesDto, ProductImages.class);
 
-                    redirectAttributes.addFlashAttribute("updateProductSuccess", "Thay đổi thông tin sản phẩm thành công");
+                    showAlert(true);
+                    redirectAttributes.addFlashAttribute("updateSuccess", "Cập nhật dữ liệu thành công");
                     productImageService.save(productImages);
                 }
 
@@ -375,6 +377,11 @@ public class ProductControllerAD {
             response.put("result", "error");
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @ModelAttribute("isStatusUpdateProduct")
+    public Boolean showAlert (Boolean status) {
+        return status;
     }
 
     @ModelAttribute("productAddIdValue")
@@ -409,12 +416,12 @@ public class ProductControllerAD {
         productsList = productService.findAll();
         String productId;
         if (productsList.isEmpty()) {
-            productId = "SP0000001";
+            productId = "SP0001";
         } else {
             String input = productsList.get(productsList.size() - 1).getId();
             String prefix = input.substring(0, 2);
             int number = Integer.parseInt(input.substring(2));
-            String newNumber = String.format("%07d", number + 1);
+            String newNumber = String.format("%04d", number + 1);
 
             productId = prefix + newNumber;
         }
@@ -422,7 +429,7 @@ public class ProductControllerAD {
         if (productService.doesProductExist(productId)) {
             String prefix = productId.substring(0, 2);
             int number = Integer.parseInt(productId.substring(2));
-            String newNumber = String.format("%07d", number + 1);
+            String newNumber = String.format("%04d", number + 1);
             productId = prefix + newNumber;
             return productId;
         } else {
