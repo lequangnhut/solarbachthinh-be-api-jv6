@@ -1,8 +1,6 @@
 let API_Cart = 'http://localhost:8080/api/carts';
 
-let cart_controller = angular.module('cart_controller', []);
-
-cart_controller.controller('cart_controller', function ($scope, $http, $timeout) {
+solar_app.controller('cart_controller', function ($scope, $http, $timeout) {
 
     $scope.carts = [];
     $scope.quantity = 1;

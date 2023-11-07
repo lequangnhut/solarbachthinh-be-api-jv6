@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     const brandNameInput = document.getElementById('brandName');
     const phoneNumberInput = document.getElementById('phoneNumber');

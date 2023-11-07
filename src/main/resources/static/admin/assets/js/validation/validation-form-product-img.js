@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const quantity = document.getElementById('quantity');
     const price = document.getElementById('price');
     const warranty = document.getElementById('warranty');
-    const saleOff = document.getElementById('saleOff');
     const brandId = document.getElementById('brandId');
     const productTypeId = document.getElementById('productTypeId');
     const templateDescription = document.getElementById('text-input');
@@ -15,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const invalidAmount = document.getElementById('invalid-amount');
     const invalidPrice = document.getElementById('invalid-price');
     const invalidWarranty = document.getElementById('invalid-warranty');
-    const invalidSaleOff = document.getElementById('invalid-saleOff');
     const invalidBrandId = document.getElementById('invalid-brandId');
     const invalidProductTypeId = document.getElementById('invalid-productTypeId');
     const invalidTemplateDescription = document.getElementById('invalid-templateDescription');
@@ -27,13 +25,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const loginSubmitted = false;
 
     function checkInputsLogin() {
-        const fields = [productId, productName, powers, quantity, price, warranty, saleOff, brandId, productTypeId];
+        const fields = [productId, productName, powers, quantity, price, warranty, brandId, productTypeId];
         for (let i = 0; i < fields.length; i++) {
             if (fields[i].value.trim() === '' || fields[i].classList.contains('is-invalid')) {
                 submittedButton.disabled = true;
                 return;
             }
-            if(templateDescription.textContent.trim() === ''){
+            if (templateDescription.textContent.trim() === '') {
                 submittedButton.disabled = true;
                 return;
             }
@@ -46,13 +44,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let productSubmitted = false;
 
     function checkInputsProduct() {
-        const fields = [productId, productName, powers, quantity, price, warranty, saleOff, brandId, productTypeId];
+        const fields = [productId, productName, powers, quantity, price, warranty, brandId, productTypeId];
         for (let i = 0; i < fields.length; i++) {
             if (fields[i].value.trim() === '') {
                 submittedButton.disabled = true;
                 return;
             }
-            if(templateDescription.textContent.trim() === ''){
+            if (templateDescription.textContent.trim() === '') {
                 submittedButton.disabled = true;
                 return;
             }
@@ -60,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function () {
         submittedButton.disabled = productSubmitted;
     }
 
-    checkInputsProduct();
 
     productId.addEventListener('input', function () {
         const value = productId.value.trim();
@@ -132,24 +129,6 @@ document.addEventListener('DOMContentLoaded', function () {
             price.classList.remove('is-valid');
             price.classList.add('is-invalid');
 
-        } else if (parseInt(saleOff.value) >= parseInt(price.value)) {
-            invalidPrice.textContent = 'Giá sản phẩm phải lớn hơn giảm giá';
-            price.classList.remove('is-valid');
-            price.classList.add('is-invalid');
-
-            invalidSaleOff.textContent = 'Giảm giá phải nhỏ hơn giá sản phẩm';
-            saleOff.classList.remove('is-valid');
-            saleOff.classList.add('is-invalid');
-
-        } else if (parseInt(saleOff.value) <= parseInt(price.value)) {
-            invalidPrice.textContent = '';
-            price.classList.remove('is-invalid');
-            price.classList.add('is-valid');
-
-            invalidSaleOff.textContent = '';
-            saleOff.classList.remove('is-invalid');
-            saleOff.classList.add('is-valid');
-
         } else {
             invalidPrice.textContent = '';
             price.classList.remove('is-invalid');
@@ -157,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }
         checkInputsProduct();
-
     });
 
     warranty.addEventListener('input', function () {
@@ -178,30 +156,8 @@ document.addEventListener('DOMContentLoaded', function () {
             warranty.classList.remove('is-invalid');
             warranty.classList.add('is-valid');
             invalidWarranty.textContent = '';
-
         }
         checkInputsProduct();
-    });
-
-    saleOff.addEventListener('input', function () {
-        if (saleOff.value <= 0) {
-            invalidSaleOff.textContent = 'Giảm giá phải lớn hơn 0';
-            saleOff.classList.remove('is-valid');
-            saleOff.classList.add('is-invalid');
-
-        } else if (parseInt(saleOff.value) >= parseInt(price.value)) {
-            invalidSaleOff.textContent = 'Giảm giá phải nhỏ hơn giá sản phẩm';
-            saleOff.classList.remove('is-valid');
-            saleOff.classList.add('is-invalid');
-
-        } else {
-            invalidSaleOff.textContent = '';
-            saleOff.classList.remove('is-invalid');
-            saleOff.classList.add('is-valid');
-
-        }
-        checkInputsProduct();
-
     });
 
     brandId.addEventListener('input', function () {
@@ -210,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
             brandId.classList.add('is-invalid');
             invalidBrandId.textContent = 'Không bỏ trống thương hiệu';
 
-        } else if (brandId.value.trim() === '--------- Thêm thương hiệu ----------'){
+        } else if (brandId.value.trim() === '--------- Thêm thương hiệu ----------') {
             brandId.classList.remove('is-valid');
             brandId.classList.add('is-invalid');
             invalidBrandId.textContent = 'Không bỏ trống thương hiệu';
@@ -219,10 +175,8 @@ document.addEventListener('DOMContentLoaded', function () {
             brandId.classList.remove('is-invalid');
             brandId.classList.add('is-valid');
             invalidBrandId.textContent = '';
-
         }
         checkInputsProduct();
-
     })
 
     productTypeId.addEventListener('input', function () {
@@ -231,19 +185,17 @@ document.addEventListener('DOMContentLoaded', function () {
             productTypeId.classList.add('is-invalid');
             invalidProductTypeId.textContent = 'Không bỏ trống loại sản phẩm';
 
-        } else if (productTypeId.value.trim() === '--------- Thêm loại sản phẩm ----------'){
+        } else if (productTypeId.value.trim() === '--------- Thêm loại sản phẩm ----------') {
             productTypeId.classList.remove('is-valid');
             productTypeId.classList.add('is-invalid');
             invalidProductTypeId.textContent = 'Không bỏ trống loại sản phẩm';
 
-        } else{
+        } else {
             productTypeId.classList.remove('is-invalid');
             productTypeId.classList.add('is-valid');
             invalidProductTypeId.textContent = '';
-
         }
         checkInputsProduct();
-
     })
 
     templateDescription.addEventListener('input', function () {
@@ -251,15 +203,12 @@ document.addEventListener('DOMContentLoaded', function () {
             templateDescription.classList.remove('is-valid');
             templateDescription.classList.add('is-invalid');
             invalidTemplateDescription.textContent = 'Vui lòng nhập mô tả chi tiết sản phẩm';
-
         } else {
             templateDescription.classList.remove('is-invalid');
             templateDescription.classList.add('is-valid');
             invalidTemplateDescription.textContent = '';
-
         }
         checkInputsProduct();
-
     });
 
     productId.addEventListener('blur', function () {
@@ -271,10 +220,8 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             productId.classList.remove('is-invalid');
             productId.classList.add('is-valid');
-
         }
         checkInputsProduct();
-
     });
 
     productName.addEventListener('blur', function () {
@@ -288,10 +235,8 @@ document.addEventListener('DOMContentLoaded', function () {
             productName.classList.remove('is-invalid');
             productName.classList.add('is-valid');
             invalidProductName.textContent = '';
-
         }
         checkInputsProduct();
-
     });
 
     powers.addEventListener('blur', function () {
@@ -312,10 +257,8 @@ document.addEventListener('DOMContentLoaded', function () {
             powers.classList.remove('is-invalid');
             powers.classList.add('is-valid');
             invalidPower.textContent = '';
-
         }
         checkInputsProduct();
-
     });
 
     quantity.addEventListener('blur', function () {
@@ -334,10 +277,8 @@ document.addEventListener('DOMContentLoaded', function () {
             quantity.classList.remove('is-invalid');
             quantity.classList.add('is-valid');
             invalidAmount.textContent = '';
-
         }
         checkInputsProduct();
-
     });
 
     price.addEventListener('blur', function () {
@@ -345,24 +286,6 @@ document.addEventListener('DOMContentLoaded', function () {
             invalidPrice.textContent = 'Giá sản phẩm phải lớn hơn 0';
             price.classList.remove('is-valid');
             price.classList.add('is-invalid');
-
-        } else if (parseInt(saleOff.value) >= parseInt(price.value)) {
-            invalidPrice.textContent = 'Giá sản phẩm phải lớn hơn giảm giá';
-            price.classList.remove('is-valid');
-            price.classList.add('is-invalid');
-
-            invalidSaleOff.textContent = 'Giảm giá phải nhỏ hơn giá sản phẩm';
-            saleOff.classList.remove('is-valid');
-            saleOff.classList.add('is-invalid');
-
-        } else if (parseInt(saleOff.value) <= parseInt(price.value)) {
-            invalidPrice.textContent = '';
-            price.classList.remove('is-invalid');
-            price.classList.add('is-valid');
-
-            invalidSaleOff.textContent = '';
-            saleOff.classList.remove('is-invalid');
-            saleOff.classList.add('is-valid');
 
         } else {
             invalidPrice.textContent = '';
@@ -390,31 +313,8 @@ document.addEventListener('DOMContentLoaded', function () {
             warranty.classList.remove('is-invalid');
             warranty.classList.add('is-valid');
             invalidWarranty.textContent = '';
-
         }
         checkInputsProduct();
-
-    });
-
-    saleOff.addEventListener('blur', function () {
-        if (saleOff.value <= 0) {
-            invalidSaleOff.textContent = 'Giảm giá phải lớn hơn 0';
-            saleOff.classList.remove('is-valid');
-            saleOff.classList.add('is-invalid');
-
-        } else if (parseInt(saleOff.value) >= parseInt(price.value)) {
-            invalidSaleOff.textContent = 'Giảm giá phải nhỏ hơn giá sản phẩm';
-            saleOff.classList.remove('is-valid');
-            saleOff.classList.add('is-invalid');
-
-        } else {
-            invalidSaleOff.textContent = '';
-            saleOff.classList.remove('is-invalid');
-            saleOff.classList.add('is-valid');
-
-        }
-        checkInputsProduct();
-
     });
 
     brandId.addEventListener('blur', function () {
@@ -423,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function () {
             brandId.classList.add('is-invalid');
             invalidBrandId.textContent = 'Không bỏ trống thương hiệu';
 
-        } else if (brandId.value.trim() === '--------- Thêm thương hiệu ----------'){
+        } else if (brandId.value.trim() === '--------- Thêm thương hiệu ----------') {
             brandId.classList.remove('is-valid');
             brandId.classList.add('is-invalid');
             invalidBrandId.textContent = 'Không bỏ trống thương hiệu';
@@ -432,10 +332,8 @@ document.addEventListener('DOMContentLoaded', function () {
             brandId.classList.remove('is-invalid');
             brandId.classList.add('is-valid');
             invalidBrandId.textContent = '';
-
         }
         checkInputsProduct();
-
     })
 
     productTypeId.addEventListener('blur', function () {
@@ -444,19 +342,17 @@ document.addEventListener('DOMContentLoaded', function () {
             productTypeId.classList.add('is-invalid');
             invalidProductTypeId.textContent = 'Không bỏ trống loại sản phẩm';
 
-        } else if (productTypeId.value.trim() === '--------- Thêm loại sản phẩm ----------'){
+        } else if (productTypeId.value.trim() === '--------- Thêm loại sản phẩm ----------') {
             productTypeId.classList.remove('is-valid');
             productTypeId.classList.add('is-invalid');
             invalidProductTypeId.textContent = 'Không bỏ trống loại sản phẩm';
 
-        } else{
+        } else {
             productTypeId.classList.remove('is-invalid');
             productTypeId.classList.add('is-valid');
             invalidProductTypeId.textContent = '';
-
         }
         checkInputsProduct();
-
     })
 
     templateDescription.addEventListener('blur', function () {
@@ -469,10 +365,8 @@ document.addEventListener('DOMContentLoaded', function () {
             templateDescription.classList.remove('is-invalid');
             templateDescription.classList.add('is-valid');
             invalidTemplateDescription.textContent = '';
-
         }
         checkInputsProduct();
-
     });
 
     submittedButton.addEventListener('click', function (event) {
@@ -483,5 +377,4 @@ document.addEventListener('DOMContentLoaded', function () {
             checkInputsProduct();
         }
     });
-
 });

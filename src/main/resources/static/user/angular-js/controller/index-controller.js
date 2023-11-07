@@ -1,4 +1,4 @@
-let API = 'http://localhost:8080/api/product';
+let API_Product = 'http://localhost:8080/API_Product/product';
 
 solar_app.controller('index_controller', function ($scope, $http, $timeout) {
 
@@ -6,9 +6,20 @@ solar_app.controller('index_controller', function ($scope, $http, $timeout) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
     };
 
+    // lấy ra danh sách sản phẩm
     $http({
         method: 'GET',
-        url: 'http://localhost:8080/api/product/get-top4-category'
+        url: API_Product + '/' + 1
+    }).then(function successCallback(response) {
+        $scope.products = response.data;
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
+
+    // lấy ra danh sách top 4 thể loại
+    $http({
+        method: 'GET',
+        url: 'http://localhost:8080/API_Product/product/get-top4-category'
     }).then(function successCallback(response) {
         $scope.categories = response.data;
     }, function errorCallback(response) {
@@ -41,7 +52,7 @@ solar_app.controller('index_controller', function ($scope, $http, $timeout) {
 
         $http({
             method: 'GET',
-            url: API + '/' + 1
+            url: API_Product + '/' + 1
         }).then(function successCallback(response) {
             let brandId = null;
             const products = $scope.products = response.data;
@@ -68,7 +79,7 @@ solar_app.controller('index_controller', function ($scope, $http, $timeout) {
             $timeout(function () {
                 $http({
                     method: 'GET',
-                    url: API + '/' + categoryId
+                    url: API_Product + '/' + categoryId
                 }).then(function successCallback(response) {
                     let brandId = null;
                     const products = $scope.products = response.data;
@@ -92,7 +103,7 @@ solar_app.controller('index_controller', function ($scope, $http, $timeout) {
         function getProductBrandByBrandId(brandId) {
             $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/product-brand/' + brandId
+                url: 'http://localhost:8080/API_Product/product-brand/' + brandId
             }).then(function successCallback(response) {
                 $scope.productBrand = response.data;
                 $scope.isLoading = false;

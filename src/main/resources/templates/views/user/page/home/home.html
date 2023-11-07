@@ -172,22 +172,21 @@
                 <!-- Swiper -->
                 <div class="swiper mswiper" id="product_pin">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" th:each="item : ${products}">
+                        <div class="swiper-slide" ng-repeat="product in products">
                             <div class="item">
                                 <div class="item-product d-flex align-items-center">
                                     <div class="img">
-                                        <img th:src="@{'/upload/' + ${item.productImagesById[0].imagePath}}"
+                                        <img ng-src="/upload/{{product.productImagesById[0].imagePath}}"
                                              class="img-fluid" style="width: 200px" alt="...">
                                     </div>
                                     <div class="card-body-product">
-                                        <p class="name-product" th:text="${item.productName}"></p>
+                                        <p class="name-product">{{product.productName}}</p>
                                         <div class="content-product mb-3">
-                                            <span>Công suất: <b th:text="${item.powers}"></b></span>
-                                            <span>Hãng: <b
-                                                    th:text="${item.productBrandsByProductBrandId.brandName}"></b></span>
+                                            <span>Công suất: <b>{{product.powers}}</b></span>
+                                            <span>Hãng: <b>{{product.productBrandsByProductBrandId.brandName}}</b></span>
                                         </div>
                                         <div class="btn-add-cart">
-                                            <a th:href="@{'/san-pham/san-pham-chi-tiet?ma-san-pham=' + ${item.id}}"
+                                            <a href="/san-pham/san-pham-chi-tiet?ma-san-pham={{product.id}}"
                                                role="button" type="submit" class="btn btn-primary w-100">
                                                 Mua hàng</a>
                                         </div>

@@ -36,17 +36,22 @@ solar_app.config(function ($routeProvider) {
             templateUrl: API_Template + 'contact/contact.html',
             controller: ''
         })
-        .when('/dang-nhap', {
-            templateUrl: API_Template + 'auth/login.html',
-            controller: ''
-        })
-        .when('/dang-ky', {
-            templateUrl: API_Template + 'auth/sign-up.html',
-            controller: ''
-        })
         .when('/gio-hang', {
             templateUrl: API_Template + 'cart/cart.html',
             controller: ''
+        })
+        .when('/lich-su-mua-hang', {
+            templateUrl: API_Template + 'history/history-payment.html',
+            controller: ''
+        })
+        // auth
+        .when('/dang-nhap', {
+            templateUrl: API_Template + 'auth/login.html',
+            controller: 'login_controller'
+        })
+        .when('/dang-ky', {
+            templateUrl: API_Template + 'auth/sign-up.html',
+            controller: 'login_controller'
         })
         .when('/thong-tin', {
             templateUrl: API_Template + 'profile/user-profile.html',
@@ -58,10 +63,6 @@ solar_app.config(function ($routeProvider) {
         })
         .when('/quen-mat-khau', {
             templateUrl: API_Template + 'password/forgot-password.html',
-            controller: ''
-        })
-        .when('/lich-su-mua-hang', {
-            templateUrl: API_Template + 'history/history-payment.html',
             controller: ''
         })
         .otherwise({

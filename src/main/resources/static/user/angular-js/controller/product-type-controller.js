@@ -2,9 +2,7 @@ let API_Product = 'http://localhost:8080/api/product';
 let API_ProductCategory = 'http://localhost:8080/api/product-category';
 let API_ProductType = 'http://localhost:8080/api/product-type';
 
-let product_type = angular.module('product_type', []);
-
-product_type.controller('product_type', function ($scope, $http, $timeout) {
+solar_app.controller('product_type', function ($scope, $http, $timeout) {
 
     let params = new URLSearchParams(window.location.search);
     $scope.categoryId = params.get('danh-muc');
