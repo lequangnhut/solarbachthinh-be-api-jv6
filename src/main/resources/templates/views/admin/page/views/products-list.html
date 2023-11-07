@@ -122,7 +122,7 @@
     }
 </script>
 
-<div th:if="${updateProductSuccess != null}">
+<div th:if="${isStatusUpdateProduct != null}">
     <script>
         Swal.mixin({
             toast: true,
@@ -136,6 +136,7 @@
             }
         })
     </script>
+<th:block></th:block>
 </div>
 </body>
 </html>

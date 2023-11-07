@@ -15,7 +15,6 @@ import lombok.Setter;
 @Table(name = "product_images", schema = "solardb")
 public class ProductImages {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false, length = 255)
     private String id;
