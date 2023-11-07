@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const quantity = document.getElementById('quantity');
     const price = document.getElementById('price');
     const warranty = document.getElementById('warranty');
-    const brandId = document.getElementById('brandId');
+    const brandId = document.getElementById('productBrandId');
     const productTypeId = document.getElementById('productTypeId');
     const templateDescription = document.getElementById('text-input');
 

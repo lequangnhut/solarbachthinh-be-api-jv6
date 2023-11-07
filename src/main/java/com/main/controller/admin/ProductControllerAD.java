@@ -87,7 +87,7 @@ public class ProductControllerAD {
     @ResponseBody
     public String saveProduct(@Validated @ModelAttribute ProductsDto productsDto, BindingResult bindingResult, @RequestParam(value = "file1", required = false) MultipartFile file01, @RequestParam(value = "file2", required = false) MultipartFile file02, @RequestParam(value = "file3", required = false) MultipartFile file03, @RequestParam(value = "file4", required = false) MultipartFile file04, RedirectAttributes redirectAttributes, Model model) {
         String price = request.getParameter("price");
-
+        System.out.println(productsDto.toString());
         if (bindingResult.hasErrors()) {
             try {
                 ProductImagesDto productImagesDto = new ProductImagesDto();
@@ -387,7 +387,7 @@ public class ProductControllerAD {
             String input = productsList.get(productsList.size() - 1).getId();
             String prefix = input.substring(0, 2);
             int number = Integer.parseInt(input.substring(2));
-            String newNumber = String.format("%07d", number + 1);
+            String newNumber = String.format("%04d", number + 1);
 
             productId = prefix + newNumber;
         }
@@ -395,7 +395,7 @@ public class ProductControllerAD {
         if (productService.doesProductExist(productId)) {
             String prefix = productId.substring(0, 2);
             int number = Integer.parseInt(productId.substring(2));
-            String newNumber = String.format("%07d", number + 1);
+            String newNumber = String.format("%04d", number + 1);
             productId = prefix + newNumber;
             return productId;
         } else {
@@ -456,7 +456,6 @@ public class ProductControllerAD {
             product.setTemplateDescription(faker.lorem().paragraph());
             product.setPowers(faker.number().numberBetween(1, 100) + faker.options().option("W", "KW"));
             product.setWarranty(faker.number().numberBetween(1, 15) + faker.options().option(" Tháng", " Năm"));
-//            product.setSaleOff(BigDecimal.valueOf(faker.number().numberBetween(10000, 100000)));
             product.setIsStatusDelete("Đang kinh doanh");
 
             Timestamp randomTimestamp = new Timestamp(faker.date().past(365, java.util.concurrent.TimeUnit.DAYS).getTime());

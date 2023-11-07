@@ -20,7 +20,6 @@ import java.util.Collection;
 @Table(name = "products", schema = "solardb")
 public class Products {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false, length = 20)
     private String id;

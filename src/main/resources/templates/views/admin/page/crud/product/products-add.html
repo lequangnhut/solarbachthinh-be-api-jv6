@@ -36,45 +36,36 @@
                                            th:value="${productAddIdValue}"
                                            id="productIdValue" readonly name="id">
                                     <label for="productIdValue">Mã sản phẩm <span class="text-danger">*</span></label>
+                                    <span class="text-danger" id="invalid-product-id"></span>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="productName" th:field="*{productName}">
                                     <label for="productName">Tên sản phẩm <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-product-name"></span>
-                                    <span th:if="${#fields.hasErrors('productName')}" class="text-danger"
-                                          th:errors="*{productName}"></span>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="powers" th:field="*{powers}">
                                     <label for="powers">Công suất <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-power"></span>
-                                    <span th:if="${#fields.hasErrors('powers')}" class="text-danger"
-                                          th:errors="*{powers}"></span>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="number" class="form-control" id="quantity" th:field="*{quantity}">
                                     <label for="quantity">Số lượng sản phẩm <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-amount"></span>
-                                    <span th:if="${#fields.hasErrors('quantity')}" class="text-danger"
-                                          th:errors="*{quantity}"></span>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" oninput="formatPrice(this)" name="price"
                                            id="price" th:field="*{price}">
                                     <label for="price">Giá sản phẩm <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-price"></span>
-                                    <span th:if="${#fields.hasErrors('price')}" class="text-danger"
-                                          th:errors="*{price}"></span>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="warranty" th:field="*{warranty}">
                                     <label for="warranty">Thời gian bảo hành <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-warranty"></span>
-                                    <span th:if="${#fields.hasErrors('warranty')}" class="text-danger"
-                                          th:errors="*{warranty}"></span>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="brandId" th:field="*{productBrandId}">
+                                    <select class="form-select" id="productBrandId" th:field="*{productBrandId}">
                                         <option value="" class="text-center">--------- Thêm thương hiệu ----------
                                         </option>
                                         <option th:each="brand : ${listBrandValue}"
@@ -82,10 +73,8 @@
                                                 th:text="${brand.brandName}">
                                         </option>
                                     </select>
-                                    <label for="brandId">Thương hiệu <span class="text-danger">*</span></label>
+                                    <label for="productBrandId">Thương hiệu <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-brandId"></span>
-                                    <span th:if="${#fields.hasErrors('productBrandId')}" class="text-danger"
-                                          th:errors="*{productBrandId}"></span>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="productTypeId" th:field="*{productTypeId}">
@@ -98,15 +87,11 @@
                                     </select>
                                     <label for="productTypeId">Loại sản phẩm <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-productTypeId"></span>
-                                    <span th:if="${#fields.hasErrors('productTypeId')}" class="text-danger"
-                                          th:errors="*{productTypeId}"></span>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="isStatusDelete" value="Đang kinh doanh"
                                            readonly>
                                     <label for="isStatusDelete">Trạng thái <span class="text-danger">*</span></label>
-                                    <span th:if="${#fields.hasErrors('isStatusDelete')}" class="text-danger"
-                                          th:errors="*{isStatusDelete}"></span>
                                 </div>
                                 <div class="mb-3">
                                     <label for="file1">Hình ảnh 1</label>
