@@ -7,8 +7,7 @@ function getFormData() {
     const quantity = document.getElementById("quantity").value;
     const price = document.getElementById("price").value;
     const warranty = document.getElementById("warranty").value;
-    const saleOff = document.getElementById("saleOff").value;
-    const brandId = document.getElementById("brandId").value;
+    const brandId = document.getElementById("productBrandId").value;
     const productTypeId = document.getElementById("productTypeId").value;
     const isStatusDelete = document.getElementById("isStatusDelete").value;
     const descriptions = document.getElementById("descriptions").value;
@@ -20,7 +19,6 @@ function getFormData() {
     formData.append("quantity", quantity);
     formData.append("price", price);
     formData.append("warranty", warranty);
-    formData.append("saleOff", saleOff);
     formData.append("productBrandId", brandId);
     formData.append("productTypeId", productTypeId);
     formData.append("isStatusDelete", isStatusDelete);
@@ -54,7 +52,7 @@ function getFormData() {
     } else {
         formData.append("file4", null); // Hoặc bất kỳ giá trị mặc định nào bạn muốn gửi
     }
-
+    console.log(formData)
     return formData;
 }
 
@@ -69,17 +67,7 @@ document.getElementById("submitted-button").addEventListener("click", function (
         processData: false,
         success: function (response) {
             console.log(response)
-            $.ajax({
-                url: 'http://localhost:8080/quan-tri/san-pham/productIdValueAPI',
-                type: 'GET',
-                success: function (newProductIdValue) {
-                    document.getElementById('productIdValue').value = newProductIdValue;
-                },
-                error: function (error) {
-                    console.error('Lỗi khi lấy productIdValue mới', error);
-                }
-            });
-            if (response=== "success") {
+            if (response === "success") {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -89,6 +77,17 @@ document.getElementById("submitted-button").addEventListener("click", function (
                 });
 
                 resetFields();
+
+                $.ajax({
+                    url: 'http://localhost:8080/quan-tri/san-pham/productIdValueAPI',
+                    type: 'GET',
+                    success: function (newProductIdValue) {
+                        document.getElementById('productIdValue').value = newProductIdValue;
+                    },
+                    error: function (error) {
+                        document.getElementById('invalid-product-id').text = 'Lỗi khi lấy giá trị mã sản phẩm mới, bấm F5 để thử lại!';
+                    }
+                });
 
             } else if (response === "error") {
                 Swal.fire({
@@ -115,8 +114,7 @@ function resetFields() {
     document.getElementById('quantity').classList.remove('is-valid');
     document.getElementById('price').classList.remove('is-valid');
     document.getElementById('warranty').classList.remove('is-valid');
-    document.getElementById('saleOff').classList.remove('is-valid');
-    document.getElementById('brandId').classList.remove('is-valid');
+    document.getElementById('productBrandId').classList.remove('is-valid');
     document.getElementById('productTypeId').classList.remove('is-valid');
     document.getElementById('isStatusDelete').classList.remove('is-valid');
     document.getElementById('descriptions').classList.remove('is-valid');
@@ -128,8 +126,7 @@ function resetFields() {
     document.getElementById("quantity").value = '';
     document.getElementById("price").value = '';
     document.getElementById("warranty").value = '';
-    document.getElementById("saleOff").value = '';
-    document.getElementById("brandId").value = '';
+    document.getElementById("productBrandId").value = '';
     document.getElementById("productTypeId").value = '';
     document.getElementById("isStatusDelete").value = '';
     document.getElementById("descriptions").value = '';
