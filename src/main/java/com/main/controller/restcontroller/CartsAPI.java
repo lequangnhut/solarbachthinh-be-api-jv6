@@ -2,8 +2,10 @@ package com.main.controller.restcontroller;
 
 import com.main.dto.CartsDto;
 import com.main.entity.Carts;
+import com.main.entity.Products;
 import com.main.entity.Users;
 import com.main.service.CartService;
+import com.main.service.ProductService;
 import com.main.utils.EntityDtoUtils;
 import com.main.utils.SessionAttr;
 import jakarta.servlet.http.HttpSession;
@@ -20,6 +22,9 @@ public class CartsAPI {
 
     @Autowired
     CartService cartService;
+
+    @Autowired
+    ProductService productService;
 
     @Autowired
     HttpSession session;
@@ -64,11 +69,15 @@ public class CartsAPI {
 
         Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
         Carts exitsCart = cartService.findProductExits(users.getId(), productId);
+        Products products = productService.findProductByProductId(productId);
 
         if (exitsCart != null) {
-            exitsCart.setQuantity(exitsCart.getQuantity() + quantity);
-            cartService.save(exitsCart);
-
+            if (exitsCart.getQuantity() < products.getQuantity()) {
+                if (quantity < products.getQuantity()) {
+                    exitsCart.setQuantity(exitsCart.getQuantity() + quantity);
+                    cartService.save(exitsCart);
+                }
+            }
         } else {
             cartsDto.setUserId(users.getId());
             cartsDto.setProductId(productId);

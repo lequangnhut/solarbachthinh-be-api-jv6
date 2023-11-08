@@ -3,11 +3,16 @@ let API_Template = '/page/';
 // api user
 let API_UserSession = '/api/user/session-user';
 
-// các api viết ở đây, api product
-let API_Product = '/api/product';
+// api category
+let API_GetTop4Category = '/api/product/get-top4-category'
 let API_ProductCategory = '/api/product-category';
+
+// api product
+let API_Product = '/api/product';
 let API_ProductType = '/api/product-type';
-let API_ProductBrand = '/api/product-brand'
+
+// api discount
+let API_Discount = '/api/discount'
 
 // api giỏ hàng
 let API_Cart = '/api/carts';

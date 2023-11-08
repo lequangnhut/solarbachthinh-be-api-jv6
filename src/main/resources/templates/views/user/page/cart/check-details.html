@@ -20,9 +20,7 @@
 <div class="container-fluid bg-light overflow-hidden px-lg-0" style="margin: 6rem 0;">
     <section class="h-100" id="cart">
         <div class="container py-5">
-            <form id="submit-payment" onsubmit="return confirmPayment()"
-                  th:action="@{/gio-hang/xac-nhan-thong-tin}"
-                  th:object="${customer}" method="post">
+            <form method="post">
                 <div class="row d-flex justify-content-center my-4">
                     <div class="col-md-7">
                         <div class="card mb-3">
@@ -30,56 +28,61 @@
                                 <h5 class="mb-0">Địa chỉ nhận hàng</h5>
                             </div>
                             <div class="card-body">
-                                <input type="hidden" name="discountCode" th:value="${discountCode}">
                                 <div class="mb-3">
-                                    <input type="text" class="form-control" th:value="${session.account.fullname}"
-                                           placeholder="Họ và tên">
+                                    <input type="text" class="form-control"
+                                           placeholder="Họ và tên"
+                                           ng-model="user.fullname"
+                                    >
                                 </div>
 
                                 <div class="mb-3">
-                                    <input type="tel" class="form-control" maxlength="10" placeholder="Số điện thoại"
-                                           th:value="${session.account.phoneNumber}">
+                                    <input type="tel" class="form-control"
+                                           maxlength="10"
+                                           placeholder="Số điện thoại"
+                                           ng-model="user.phoneNumber"
+                                    >
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="city" aria-label="Floating label select example"
-                                            th:field="*{province}">
-                                        <option th:value="${customer.province}" th:text="${customer.province}" selected>
-                                            Chọn Tỉnh Thành
-                                        </option>
+                                    <select class="form-select"
+                                            id="city" ng-model="user.city"
+                                            aria-label="Floating label select example"
+                                    >
+                                        <option>{{user.city}}</option>
                                     </select>
                                     <label for="city">Tỉnh Thành</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="district"
-                                            aria-label="Floating label select example" th:field="*{district}">
-                                        <option th:value="${customer.district}" th:text="${customer.district}" selected>
-                                            Chọn Quận/Huyện
-                                        </option>
+                                    <select class="form-select"
+                                            id="district" ng-model="user.province"
+                                            aria-label="Floating label select example">
+                                        <option>{{user.province}}</option>
                                     </select>
                                     <label for="district">Quận/Huyện</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="ward" aria-label="Floating label select example"
-                                            th:field="*{village}">
-                                        <option th:value="${customer.village}" th:text="${customer.village}" selected>
-                                            Chọn Phường/Xã
-                                        </option>
+                                    <select class="form-select"
+                                            id="ward" ng-model="user.ward"
+                                            aria-label="Floating label select example">
+                                        <option>{{user.ward}}</option>
                                     </select>
                                     <label for="ward">Phường/Xã</label>
                                 </div>
 
                                 <div class="mb-3">
-                                    <input type="text" class="form-control" th:field="*{address}"
-                                           th:value="${customer.address}" placeholder="Địa chỉ cụ thể">
+                                    <input type="text" ng-model="user.address"
+                                           class="form-control"
+                                           placeholder="Địa chỉ cụ thể"
+                                    >
                                 </div>
 
                                 <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a comment here" name="description"
-                                              id="floatingTextarea2" style="height: 100px"></textarea>
-                                    <label for="floatingTextarea2">Ghi chú</label>
+                                    <textarea class="form-control" placeholder="Leave a comment here"
+                                              id="noted" style="height: 100px" ng-model="noted">
+                                    </textarea>
+                                    <label for="noted">Ghi chú</label>
                                 </div>
                             </div>
                         </div>
@@ -119,39 +122,42 @@
                                 <h5 class="mb-0"><i class="fa-solid fa-tags"></i>&nbsp;Mã giảm giá</h5>
                             </div>
                             <div class="card-body">
-                                <div>
-                                    <div class="mb-3">
-                                        <input type="text" class="form-control" id="discountCode"
-                                               placeholder="Mã ưu đãi">
-                                    </div>
-                                    <div class="go-to-pay w-100 d-flex justify-content-center align-items-center">
-                                        <button type="button" id="discountForm"
-                                                class="btn btn-primary btn-lg btn-block text-center w-100"
-                                                th:disabled="${#lists.isEmpty(carts)}">
-                                            Áp dụng
-                                        </button>
-                                    </div>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control"
+                                           placeholder="Mã ưu đãi"
+                                           ng-model="discount_code"
+                                    >
+                                </div>
+                                <div class="go-to-pay w-100 d-flex justify-content-center align-items-center">
+                                    <button type="button" ng-click="load_discount()"
+                                            class="btn btn-primary btn-lg text-center w-100">
+                                        Áp dụng
+                                    </button>
                                 </div>
                             </div>
                         </div>
                         <div class="card mb-4">
                             <div class="card-header py-3 bg-white">
-                                <h5 class="mb-0"><i class="fa-solid fa-tags"></i>&nbsp;Đơn hàng của bạn - <span
-                                        th:text="${session.cartAmount}"></span> sản phẩm</h5>
+                                <h5 class="mb-0"><i class="fa-solid fa-tags"></i>&nbsp;Đơn hàng của bạn -
+                                    <span>{{quantity_cart}}</span> sản phẩm
+                                </h5>
                             </div>
                             <div class="card-body">
-                                <div class="row" th:each="cart : ${shoppingCarts}">
+                                <div class="row" ng-repeat="cart in object_cart">
                                     <div class="col-8 col-md-8 col-lg-9">
                                         <ul class="list-group list-group-flush ps-0">
-                                            <li style="font-size: 14px; list-style: none"
-                                                th:text="${cart.productsByProductId.productName} + ' - (x' + ${cart.amount} + ')'">
+                                            <li style="font-size: 14px; list-style: none">
+                                                {{$index + 1}}. {{cart[1].productName}}
+                                                <br>
+                                                (Số lượng x{{cart[0].quantity}})
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="col-5 col-md-5 col-lg-3 d-flex justify-content-end text-dark">
                                         <ul class="ps-0">
-                                            <li style="font-size: 14px; list-style: none"
-                                                th:text="${#numbers.formatDecimal(cart.price, 0, 'COMMA', 0, 'POINT').replace(',', '.') + ' ₫'}"></li>
+                                            <li style="font-size: 14px; list-style: none">
+                                                {{formatPrice(cart[1].price)}} ₫
+                                            </li>
                                         </ul>
                                     </div>
                                     <hr class="my-2"/>
@@ -166,8 +172,9 @@
                                     </div>
                                     <div class="col-5 col-md-5 col-lg-3 d-flex justify-content-end text-dark">
                                         <ul class="ps-0">
-                                            <li style="font-size: 14px; list-style: none" id="totalPriceDB"
-                                                th:text="${#numbers.formatDecimal(totalPricePay, 0, 'COMMA', 0, 'POINT').replace(',', '.') + ' ₫'}"></li>
+                                            <li style="font-size: 14px; list-style: none">
+                                                {{formatPrice(subtotal)}} đ
+                                            </li>
                                         </ul>
                                     </div>
 
@@ -179,7 +186,23 @@
                                     </div>
                                     <div class="col-5 col-md-5 col-lg-3 d-flex justify-content-end text-dark">
                                         <ul class="ps-0">
-                                            <li style="font-size: 14px; list-style: none" id="discount">0 ₫</li>
+                                            <li style="font-size: 14px; list-style: none">
+                                                {{formatPrice(discount)}} đ
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-7 col-md-7 col-lg-9">
+                                        <ul class="ps-0">
+                                            Phí vận chuyển:
+                                            <li style="font-size: 14px; list-style: none"></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-5 col-md-5 col-lg-3 d-flex justify-content-end text-dark">
+                                        <ul class="ps-0">
+                                            <li style="font-size: 14px; list-style: none">
+                                                {{formatPrice(shippingFee)}} đ
+                                            </li>
                                         </ul>
                                     </div>
 
@@ -191,8 +214,9 @@
                                     </div>
                                     <div class="col-5 col-md-5 col-lg-3 d-flex justify-content-end text-danger">
                                         <ul class="ps-0">
-                                            <li style="font-size: 14px; list-style: none" id="totalPricePay"
-                                                th:text="${#numbers.formatDecimal(totalPricePay, 0, 'COMMA', 0, 'POINT').replace(',', '.') + ' ₫'}"></li>
+                                            <li style="font-size: 14px; list-style: none">
+                                                {{formatPrice(total)}} đ
+                                            </li>
                                         </ul>
                                     </div>
 

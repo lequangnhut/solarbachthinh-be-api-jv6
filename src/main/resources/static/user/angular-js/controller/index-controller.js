@@ -1,28 +1,24 @@
-solar_app.controller('index_controller', function ($scope, $http, $timeout) {
+solar_app.controller('index_controller', function ($scope, $http, $timeout, CategoryService, ProductService) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
     };
 
     // lấy ra danh sách sản phẩm
-    $http({
-        method: 'GET',
-        url: API_Product + '/' + 1
-    }).then(function successCallback(response) {
-        $scope.products = response.data;
-    }, function errorCallback(response) {
-        console.log(response.data);
-    });
+    ProductService.findProductByIdOne()
+        .then(function successCallback(response) {
+            $scope.products = response.data;
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
 
     // lấy ra danh sách top 4 thể loại
-    $http({
-        method: 'GET',
-        url: 'http://localhost:8080/api/product/get-top4-category'
-    }).then(function successCallback(response) {
-        $scope.categories = response.data;
-    }, function errorCallback(response) {
-        console.log(response.data);
-    });
+    CategoryService.findCategoryTop4()
+        .then(function successCallback(response) {
+            $scope.categories = response.data;
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
 
     // Khởi tạo Swiper trong $timeout để đảm bảo nó được gọi sau khi dữ liệu đã được load
     $timeout(function () {
@@ -48,26 +44,7 @@ solar_app.controller('index_controller', function ($scope, $http, $timeout) {
             },
         });
 
-        $http({
-            method: 'GET',
-            url: API_Product + '/' + 1
-        }).then(function successCallback(response) {
-            let brandId = null;
-            const products = $scope.products = response.data;
-
-            for (let i = 0; i < products.length; i++) {
-                brandId = products[i].productBrandId;
-            }
-
-            getProductBrandByBrandId(brandId);
-
-            // Khi dữ liệu đã được load, hãy cập nhật Swiper
-            $timeout(function () {
-                mySwiper.update();
-            });
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
+        loadSwiperProduct(1);
 
         $scope.isLoading = false;
 
@@ -75,40 +52,23 @@ solar_app.controller('index_controller', function ($scope, $http, $timeout) {
             $scope.isLoading = true;
 
             $timeout(function () {
-                $http({
-                    method: 'GET',
-                    url: API_Product + '/' + categoryId
-                }).then(function successCallback(response) {
-                    let brandId = null;
-                    const products = $scope.products = response.data;
+                loadSwiperProduct(categoryId);
+            }, 1500);
+        }
 
-                    for (let i = 0; i < products.length; i++) {
-                        brandId = products[i].productBrandId;
-                    }
-
-                    getProductBrandByBrandId(brandId);
+        function loadSwiperProduct(categoryId) {
+            ProductService.findProductByCategoryId(categoryId)
+                .then(function successCallback(response) {
+                    $scope.object_product = response.data;
 
                     // Khi dữ liệu đã được load, hãy cập nhật Swiper
                     $timeout(function () {
                         mySwiper.update();
                     });
+                    $scope.isLoading = false;
                 }, function errorCallback(response) {
                     console.log(response.data);
                 });
-            }, 1500);
-        }
-
-        function getProductBrandByBrandId(brandId) {
-            $http({
-                method: 'GET',
-                url: 'http://localhost:8080/api/product-brand/' + brandId
-            }).then(function successCallback(response) {
-                $scope.productBrand = response.data;
-                $scope.isLoading = false;
-            }, function errorCallback(response) {
-                console.log(response.data);
-                $scope.isLoading = false;
-            });
         }
     });
 });

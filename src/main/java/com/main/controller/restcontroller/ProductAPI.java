@@ -44,7 +44,7 @@ public class ProductAPI {
 
     // tìm ra sản phẩm bằng mã danh mục
     @GetMapping("product/{categoryId}")
-    public List<Products> productGetById(@PathVariable int categoryId) {
+    public List<Object[]> productGetById(@PathVariable int categoryId) {
         return productService.findTopProductByCategoryId(categoryId);
     }
 }

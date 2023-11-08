@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Products> findTopProductByCategoryId(int categoryId) {
+    public List<Object[]> findTopProductByCategoryId(int categoryId) {
         return productsRepository.findByCategoryId(categoryId);
     }
 
