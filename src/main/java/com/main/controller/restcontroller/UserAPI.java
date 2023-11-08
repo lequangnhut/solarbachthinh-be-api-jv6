@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.main.dto.UsersDto;
 import com.main.entity.Users;
 import com.main.service.UserService;
-import com.main.utils.EntityDtoUtils;
 import com.main.utils.SessionAttr;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,14 @@ public class UserAPI {
 
         if (users != null) {
             UsersDto usersDto = new UsersDto();
+            usersDto.setId(users.getId());
             usersDto.setEmail(users.getEmail());
+            usersDto.setFullname(users.getFullname());
+            usersDto.setPhoneNumber(users.getPhoneNumber());
+            usersDto.setDistrictName(users.getDistrictName());
+            usersDto.setProvinceName(users.getProvinceName());
+            usersDto.setWardName(users.getWardName());
+            usersDto.setAddress(users.getAddress());
 
             ObjectMapper objectMapper = new ObjectMapper();
             try {

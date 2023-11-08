@@ -20,9 +20,7 @@
 <div class="container-fluid bg-light overflow-hidden px-lg-0" style="margin: 6rem 0;">
     <section class="h-100" id="cart">
         <div class="container py-5">
-            <form id="submit-payment" onsubmit="return confirmPayment()"
-                  th:action="@{/gio-hang/xac-nhan-thong-tin}"
-                  th:object="${customer}" method="post">
+            <form method="post">
                 <div class="row d-flex justify-content-center my-4">
                     <div class="col-md-7">
                         <div class="card mb-3">
@@ -30,56 +28,95 @@
                                 <h5 class="mb-0">Địa chỉ nhận hàng</h5>
                             </div>
                             <div class="card-body">
-                                <input type="hidden" name="discountCode" th:value="${discountCode}">
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" th:value="${session.account.fullname}"
-                                           placeholder="Họ và tên">
-                                </div>
-
-                                <div class="mb-3">
-                                    <input type="tel" class="form-control" maxlength="10" placeholder="Số điện thoại"
-                                           th:value="${session.account.phoneNumber}">
+                                <div class="form-floating mb-3">
+                                    <input type="text"
+                                           id="full_name"
+                                           class="form-control"
+                                           placeholder="Họ và tên"
+                                           ng-model="user.fullname"
+                                    >
+                                    <label for="full_name">Họ và tên</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="city" aria-label="Floating label select example"
-                                            th:field="*{province}">
-                                        <option th:value="${customer.province}" th:text="${customer.province}" selected>
-                                            Chọn Tỉnh Thành
-                                        </option>
+                                    <input type="tel"
+                                           id="phone"
+                                           class="form-control"
+                                           maxlength="10"
+                                           placeholder="Số điện thoại"
+                                           ng-model="user.phoneNumber"
+                                    >
+                                    <label for="phone">Số điện thoại</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select class="form-select"
+                                            id="city"
+                                            ng-model="user.provinceName"
+                                            aria-label="Floating label select example"
+                                            ng-options="province.ProvinceName for province in ship_province track by province.ProvinceID"
+                                            ng-change="getDistricts(user.provinceName)"
+                                    >
+                                        <option value="" selected disabled>Chọn Tỉnh Thành / Thành Phố</option>
                                     </select>
                                     <label for="city">Tỉnh Thành</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="district"
-                                            aria-label="Floating label select example" th:field="*{district}">
-                                        <option th:value="${customer.district}" th:text="${customer.district}" selected>
-                                            Chọn Quận/Huyện
-                                        </option>
+                                    <select class="form-select"
+                                            id="district"
+                                            ng-model="user.districtName"
+                                            aria-label="Floating label select example"
+                                            ng-options="districts.DistrictName for districts in ship_districts track by districts.DistrictID"
+                                            ng-change="getWards(user.districtName)"
+                                    >
+                                        <option value="" selected disabled>Chọn Quận/Huyện</option>
                                     </select>
                                     <label for="district">Quận/Huyện</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="ward" aria-label="Floating label select example"
-                                            th:field="*{village}">
-                                        <option th:value="${customer.village}" th:text="${customer.village}" selected>
-                                            Chọn Phường/Xã
-                                        </option>
+                                    <select class="form-select"
+                                            id="ward"
+                                            ng-model="user.wardName"
+                                            aria-label="Floating label select example"
+                                            ng-options="ward.WardName for ward in ship_ward track by ward.WardCode"
+                                            ng-change="onWardChange(user.wardName)"
+                                    >
+                                        <option value="" selected disabled>Chọn Phường/Xã</option>
                                     </select>
+
                                     <label for="ward">Phường/Xã</label>
                                 </div>
 
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" th:field="*{address}"
-                                           th:value="${customer.address}" placeholder="Địa chỉ cụ thể">
+                                <div class="form-floating mb-3">
+                                    <input type="text" ng-model="user.address"
+                                           class="form-control"
+                                           id="address"
+                                           placeholder="Địa chỉ cụ thể"
+                                    >
+                                    <label for="address">Địa chỉ cụ thể</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select class="form-select"
+                                            id="service"
+                                            ng-model="serviceName"
+                                            aria-label="Floating label select example"
+                                            ng-options="service.short_name for service in ship_services track by service.service_id"
+                                            ng-change="calculateFee(serviceName)"
+                                    >
+                                        <option value="" selected disabled>Chọn hình thức vận chuyển</option>
+                                    </select>
+
+                                    <label for="service">Hình thức vận chuyển</label>
                                 </div>
 
                                 <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a comment here" name="description"
-                                              id="floatingTextarea2" style="height: 100px"></textarea>
-                                    <label for="floatingTextarea2">Ghi chú</label>
+                                    <textarea class="form-control" placeholder="Leave a comment here"
+                                              id="noted" style="height: 100px" ng-model="noted">
+                                    </textarea>
+                                    <label for="noted">Ghi chú</label>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +124,12 @@
                         <div class="card mb-3">
                             <div class="card-body">
                                 <p><strong>Thời gian dự kiến giao hàng</strong></p>
-                                <p class="mb-0">10/09/2023 - 11/10/2023</p>
+                                <span class="mb-0" ng-if="intend_time == null">
+                                    Chưa xác định dạng thời gian dự kiến giao hàng
+                                </span>
+                                <span class="mb-0" ng-if="intend_time != null">
+                                    {{intend_time | timestampToDateString}}
+                                </span>
                             </div>
                         </div>
 
@@ -119,39 +161,42 @@
                                 <h5 class="mb-0"><i class="fa-solid fa-tags"></i>&nbsp;Mã giảm giá</h5>
                             </div>
                             <div class="card-body">
-                                <div>
-                                    <div class="mb-3">
-                                        <input type="text" class="form-control" id="discountCode"
-                                               placeholder="Mã ưu đãi">
-                                    </div>
-                                    <div class="go-to-pay w-100 d-flex justify-content-center align-items-center">
-                                        <button type="button" id="discountForm"
-                                                class="btn btn-primary btn-lg btn-block text-center w-100"
-                                                th:disabled="${#lists.isEmpty(carts)}">
-                                            Áp dụng
-                                        </button>
-                                    </div>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control"
+                                           placeholder="Mã ưu đãi"
+                                           ng-model="discount_code"
+                                    >
+                                </div>
+                                <div class="go-to-pay w-100 d-flex justify-content-center align-items-center">
+                                    <button type="button" ng-click="load_discount()"
+                                            class="btn btn-primary btn-lg text-center w-100">
+                                        Áp dụng
+                                    </button>
                                 </div>
                             </div>
                         </div>
                         <div class="card mb-4">
                             <div class="card-header py-3 bg-white">
-                                <h5 class="mb-0"><i class="fa-solid fa-tags"></i>&nbsp;Đơn hàng của bạn - <span
-                                        th:text="${session.cartAmount}"></span> sản phẩm</h5>
+                                <h5 class="mb-0"><i class="fa-solid fa-tags"></i>&nbsp;Đơn hàng của bạn -
+                                    <span>{{quantity_cart}}</span> sản phẩm
+                                </h5>
                             </div>
                             <div class="card-body">
-                                <div class="row" th:each="cart : ${shoppingCarts}">
+                                <div class="row" ng-repeat="cart in object_cart">
                                     <div class="col-8 col-md-8 col-lg-9">
                                         <ul class="list-group list-group-flush ps-0">
-                                            <li style="font-size: 14px; list-style: none"
-                                                th:text="${cart.productsByProductId.productName} + ' - (x' + ${cart.amount} + ')'">
+                                            <li style="font-size: 14px; list-style: none">
+                                                {{$index + 1}}. {{cart[1].productName}}
+                                                <br>
+                                                (Số lượng x{{cart[0].quantity}})
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="col-5 col-md-5 col-lg-3 d-flex justify-content-end text-dark">
                                         <ul class="ps-0">
-                                            <li style="font-size: 14px; list-style: none"
-                                                th:text="${#numbers.formatDecimal(cart.price, 0, 'COMMA', 0, 'POINT').replace(',', '.') + ' ₫'}"></li>
+                                            <li style="font-size: 14px; list-style: none">
+                                                {{formatPrice(cart[1].price)}} ₫
+                                            </li>
                                         </ul>
                                     </div>
                                     <hr class="my-2"/>
@@ -166,8 +211,9 @@
                                     </div>
                                     <div class="col-5 col-md-5 col-lg-3 d-flex justify-content-end text-dark">
                                         <ul class="ps-0">
-                                            <li style="font-size: 14px; list-style: none" id="totalPriceDB"
-                                                th:text="${#numbers.formatDecimal(totalPricePay, 0, 'COMMA', 0, 'POINT').replace(',', '.') + ' ₫'}"></li>
+                                            <li style="font-size: 14px; list-style: none">
+                                                {{formatPrice(subtotal)}} đ
+                                            </li>
                                         </ul>
                                     </div>
 
@@ -179,7 +225,23 @@
                                     </div>
                                     <div class="col-5 col-md-5 col-lg-3 d-flex justify-content-end text-dark">
                                         <ul class="ps-0">
-                                            <li style="font-size: 14px; list-style: none" id="discount">0 ₫</li>
+                                            <li style="font-size: 14px; list-style: none">
+                                                {{formatPrice(discount)}} đ
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-7 col-md-7 col-lg-9">
+                                        <ul class="ps-0">
+                                            Phí vận chuyển:
+                                            <li style="font-size: 14px; list-style: none"></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-5 col-md-5 col-lg-3 d-flex justify-content-end text-dark">
+                                        <ul class="ps-0">
+                                            <li style="font-size: 14px; list-style: none">
+                                                {{formatPrice(shippingFee)}} đ
+                                            </li>
                                         </ul>
                                     </div>
 
@@ -191,8 +253,9 @@
                                     </div>
                                     <div class="col-5 col-md-5 col-lg-3 d-flex justify-content-end text-danger">
                                         <ul class="ps-0">
-                                            <li style="font-size: 14px; list-style: none" id="totalPricePay"
-                                                th:text="${#numbers.formatDecimal(totalPricePay, 0, 'COMMA', 0, 'POINT').replace(',', '.') + ' ₫'}"></li>
+                                            <li style="font-size: 14px; list-style: none">
+                                                {{formatPrice(total)}} đ
+                                            </li>
                                         </ul>
                                     </div>
 
@@ -209,8 +272,11 @@
                                         <div class="form-check">
                                             <label class="form-check-label">
                                                 <input type="radio" class="form-check-input" name="categoryPayment"
-                                                       value="TRANSFER">
-                                                Thanh toán thông qua ví VNPAY.
+                                                       value="TRANSFER"
+                                                       ng-disabled="total > 10000000"
+                                                >
+                                                <span ng-if="total > 10000000">Thanh toán tiện lợi với ví VNPAY - Không khả dụng</span>
+                                                <span ng-if="total <= 10000000">Thanh toán tiện lợi với ví VNPAY.</span>
                                             </label>
                                         </div>
                                     </div>

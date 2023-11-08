@@ -1,33 +1,31 @@
-solar_app.controller('cart_controller', function ($rootScope, $scope, $http, $timeout) {
+solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $timeout, CartService) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
     };
 
-    // lấy ra object giỏ hàng sp, thương hiệu, img
-    $http({
-        method: 'GET',
-        url: API_Cart
-    }).then(function successCallback(response) {
-        $scope.object_cart = response.data;
-        $scope.calculateTotal();
-    }, function errorCallback(response) {
-        console.log(response.data);
-    });
+    // lấy ra object giỏ hàng sp, thương hiệu, img'
+    CartService.findAllCart()
+        .then(function successCallback(response) {
+            $scope.object_cart = response.data;
+            $scope.calculate_total();
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
 
     // trừ số lượng
     $scope.decrease_quantity = function (cartItem) {
         if (cartItem.quantity > 1) {
             cartItem.quantity--;
             updateCartItemInDB(cartItem);
-            $scope.calculateTotal();
+            $scope.calculate_total();
         } else {
             $scope.delete_cart(cartItem.id);
         }
     }
 
     // kiểm tra số lượng trong input
-    $scope.checkQuantity = function (cartItem) {
+    $scope.check_quantity = function (cartItem) {
         console.log(cartItem)
         // if (cartItem.quantity > $scope.object_cart[1].quantity) {
         //     cartItem.quantity = $scope.object_cart[1].quantity;
@@ -41,12 +39,12 @@ solar_app.controller('cart_controller', function ($rootScope, $scope, $http, $ti
         if (cartItem.quantity < product[1].quantity) {
             cartItem.quantity++;
             updateCartItemInDB(cartItem);
-            $scope.calculateTotal();
+            $scope.calculate_total();
         }
     }
 
     // tính tổng tiền giỏ hàng
-    $scope.calculateTotal = function () {
+    $scope.calculate_total = function () {
         let subtotal = 0;
 
         for (let i = 0; i < $scope.object_cart.length; i++) {
@@ -66,14 +64,17 @@ solar_app.controller('cart_controller', function ($rootScope, $scope, $http, $ti
 
     // cập nhật số giỏ hàng lượng trong db
     function updateCartItemInDB(cartItem) {
-        $http({
-            method: 'POST',
-            url: API_Cart + '/update-quantity-cart',
-            params: {
-                cardId: cartItem.id,
-                quantity: cartItem.quantity
-            }
-        });
+        CartService.updateQuantityCart(cartItem);
+    }
+
+    // tổng số lượng sp trong giỏ hàng
+    $rootScope.sum_quantity_cart = function () {
+        CartService.sumQuantityCart()
+            .then(function successCallback(response) {
+                $rootScope.quantity_cart = response.data;
+            }, function errorCallback(response) {
+                console.log(response.data);
+            });
     }
 
     // xoá sản phẩm trong giỏ hàng
@@ -100,7 +101,8 @@ solar_app.controller('cart_controller', function ($rootScope, $scope, $http, $ti
                         }
                     }
 
-                    $scope.calculateTotal();
+                    $scope.calculate_total();
+                    $scope.sum_quantity_cart();
 
                     $timeout(function () {
                         centerAlert('Thành công !', 'Xoá sản phẩm ra khỏi giỏ hàng thành công !', 'success');

@@ -27,11 +27,11 @@ public class UsersDto implements Serializable {
 
     Date birth;
 
-    String city;
+    String ProvinceName;
 
-    String province;
+    String DistrictName;
 
-    String ward;
+    String WardName;
 
     String address;
 
