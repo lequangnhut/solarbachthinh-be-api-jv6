@@ -26,46 +26,46 @@
                     <h5 class="card-title fw-semibold mb-4 mt-2">Thêm thương hiệu mới</h5>
                     <div class="card">
                         <div class="card-body">
-                            <form th:action="@{/admin/them-thuong-hieu/insert}" method="post"
+                            <form th:action="@{/quan-tri/danh-sach-thuong-hieu/them-thuong-hieu}" th:object="${productBrandsDto}" method="post"
                                   id="form-brand">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" readonly id="brandId" placeholder="...">
+                                    <input type="text" th:value="${brandsIdValue}" class="form-control" readonly id="brandId" placeholder="...">
                                     <label for="brandId">Mã thương hiệu</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="brandName" placeholder="...">
+                                    <input type="text" class="form-control" id="brandName" th:field="*{brandName}" placeholder="...">
                                     <label for="brandName">Tên thương hiệu</label>
                                     <p id="brandNameError" class="invalid-feedback"></p>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="tel" class="form-control" id="phoneNumber" placeholder="..."
+                                    <input type="tel" class="form-control" id="phoneNumber" th:field="*{brandPhoneNumber}"  placeholder="..."
                                            maxlength="10">
                                     <label for="phoneNumber">Số điện thoại</label>
                                     <p id="phoneNumberError" class="invalid-feedback"></p>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="countryOfOrigin" placeholder="...">
+                                    <input type="text" class="form-control" id="countryOfOrigin" th:field="*{countryOfOrigin}" placeholder="...">
                                     <label for="countryOfOrigin">Địa chỉ thương hiệu</label>
                                     <p id="countryOfOriginError" class="invalid-feedback"></p>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="websiteUrl" placeholder="...">
+                                    <input type="text" class="form-control" id="websiteUrl" th:field="*{websiteUrl}" placeholder="...">
                                     <label for="websiteUrl">Website</label>
                                     <p id="websiteUrlError" class="invalid-feedback"></p>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="brandDescription" placeholder="...">
+                                    <input type="text" class="form-control" id="brandDescription" th:field="*{brandDescription}" placeholder="...">
                                     <label for="brandDescription">Chi tiết thương hiệu</label>
                                     <p id="brandDescriptionError" class="invalid-feedback"></p>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" value="Đang hợp tác" id="isStatusDelete"
+                                    <input type="text" class="form-control" value="Đang hoạt động" id="isStatusDelete"
                                            placeholder="..." readonly>
                                     <label for="isStatusDelete">Trạng thái</label>
                                 </div>
@@ -81,7 +81,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <a href="/admin/danh-sach-thuong-hieu" class="btn btn-danger" role="button">Trở
+                                            <a href="/quan-tri/danh-sach-thuong-hieu" class="btn btn-danger" role="button">Trở
                                                 về</a>
                                         </div>
                                     </div>

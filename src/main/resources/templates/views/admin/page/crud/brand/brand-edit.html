@@ -26,51 +26,55 @@
                     <h5 class="card-title fw-semibold mb-4 mt-2">Cập nhật thương hiệu</h5>
                     <div class="card">
                         <div class="card-body">
-                            <form id="form-brand" method="post">
+                            <form id="form-brand" th:action="@{/quan-tri/danh-sach-thuong-hieu/sua-thuong-hieu/{id}(id = ${infoBrand.id})}" th:object="${productBrandsDto}" method="post">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" name="brandId" readonly id="brandId"
-                                           placeholder="...">
+                                           placeholder="..." th:value="${infoBrand.id}">
                                     <label for="brandId">Mã thương hiệu</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" name="brandName" id="brandName"
+                                    <input type="text" class="form-control" th:value="${infoBrand.brandName}" name="brandName" id="brandName"
                                            placeholder="...">
                                     <label for="brandName">Tên thương hiệu</label>
                                     <p id="brandNameError" class="invalid-feedback"></p>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber"
+                                    <input type="tel" class="form-control" th:value="${infoBrand.brandPhoneNumber}" name="brandPhoneNumber" id="phoneNumber"
                                            placeholder="..." maxlength="10">
                                     <label for="phoneNumber">Số điện thoại</label>
                                     <p id="phoneNumberError" class="invalid-feedback"></p>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" name="countryOfOrigin" id="countryOfOrigin"
+                                    <input type="text" class="form-control" th:value="${infoBrand.countryOfOrigin}" name="countryOfOrigin" id="countryOfOrigin"
                                            placeholder="...">
                                     <label for="countryOfOrigin">Địa chỉ thương hiệu</label>
                                     <p id="countryOfOriginError" class="invalid-feedback"></p>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" name="websiteUrl" id="websiteUrl"
+                                    <input type="text" class="form-control" th:value="${infoBrand.websiteUrl}" name="websiteUrl" id="websiteUrl"
                                            placeholder="...">
                                     <label for="websiteUrl">Website</label>
                                     <p id="websiteUrlError" class="invalid-feedback"></p>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" name="brandDescription"
+                                    <input type="text" class="form-control" th:value="${infoBrand.brandDescription}" name="brandDescription"
                                            id="brandDescription" placeholder="...">
                                     <label for="brandDescription">Chi tiết thương hiệu</label>
                                     <p id="brandDescriptionError" class="invalid-feedback"></p>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" name="isStatusDelete">
-                                        <option></option>
+                                    <select class="form-select"  name="isStatusDelete">
+                                        <option
+                                                th:each="status : ${isStatusDeleteProductBrandValue}"
+                                                th:value="${status}"
+                                                th:text="${status}"
+                                                th:selected="${status} == ${infoBrand.isStatusDelete}"></option>
                                     </select>
                                     <label>Thương hiệu</label>
                                 </div>

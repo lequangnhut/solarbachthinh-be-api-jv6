@@ -110,28 +110,85 @@ document.addEventListener('DOMContentLoaded', function () {
         checkInputsBrand();
     });
 
-    submitButton.addEventListener('click', function (event) {
-        event.preventDefault();
+    brandNameInput.addEventListener('input', function () {
+        const brandNameValue = brandNameInput.value.trim();
+        //const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (brandSubmitted) {
-            return;
+        if (brandNameValue === '') {
+            brandNameInput.classList.remove('is-valid');
+            brandNameInput.classList.add('is-invalid');
+            brandNameError.textContent = 'Vui lòng nhập tên thương hiệu.';
+        } else {
+            brandNameInput.classList.remove('is-invalid');
+            brandNameInput.classList.add('is-valid');
+            brandNameError.textContent = '';
         }
+        checkInputsBrand();
+    });
 
-        Swal.fire({
-            title: 'Cảnh báo !',
-            text: "Bạn có chắc chắn thao tác này không ?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Đồng ý !'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Người dùng đã xác nhận
-                document.getElementById('form-brand').submit();
-                brandSubmitted = true;
-                checkInputsBrand();
-            }
-        })
+    phoneNumberInput.addEventListener('input', function () {
+        const phoneValue = phoneNumberInput.value.trim();
+        const phoneRegex = /^[0-9]{10}$/;
+
+        if (phoneValue === '') {
+            phoneNumberInput.classList.remove('is-valid');
+            phoneNumberInput.classList.add('is-invalid');
+            phoneNumberError.textContent = 'Vui lòng nhập số điện thoại.';
+        } else if (!phoneRegex.test(phoneValue)) {
+            phoneNumberInput.classList.remove('is-valid');
+            phoneNumberInput.classList.add('is-invalid');
+            phoneNumberError.textContent = 'Số điện thoại không hợp lệ.';
+        } else {
+            phoneNumberInput.classList.remove('is-invalid');
+            phoneNumberInput.classList.add('is-valid');
+            phoneNumberError.textContent = '';
+        }
+        checkInputsBrand();
+    });
+
+    countryOfOriginInput.addEventListener('input', function () {
+        const countryOfOriginValue = countryOfOriginInput.value.trim();
+        const countryOfOriginRegex = /^[\p{L}'][\p{L}'\s-]{0,}$/u;
+
+        if (countryOfOriginValue === '') {
+            countryOfOriginInput.classList.remove('is-valid');
+            countryOfOriginInput.classList.add('is-invalid');
+            countryOfOriginError.textContent = 'Vui lòng nhập địa chỉ thương hiệu.';
+        } else {
+            countryOfOriginInput.classList.remove('is-invalid');
+            countryOfOriginInput.classList.add('is-valid');
+            countryOfOriginError.textContent = '';
+        }
+        checkInputsBrand();
+    });
+
+    websiteUrlInput.addEventListener('input', function () {
+        const websiteUrlValue = websiteUrlInput.value.trim();
+
+        if (websiteUrlValue === '') {
+            websiteUrlInput.classList.remove('is-valid');
+            websiteUrlInput.classList.add('is-invalid');
+            websiteUrlError.textContent = 'Vui lòng nhập trang web thương hiệu.';
+        } else {
+            websiteUrlInput.classList.remove('is-invalid');
+            websiteUrlInput.classList.add('is-valid');
+            websiteUrlError.textContent = '';
+        }
+        checkInputsBrand();
+    });
+
+    brandDescriptionInput.addEventListener('input', function () {
+        const brandDescriptionValue = brandDescriptionInput.value.trim();
+
+        if (brandDescriptionValue === '') {
+            brandDescriptionInput.classList.remove('is-valid');
+            brandDescriptionInput.classList.add('is-invalid');
+            brandDescriptionError.textContent = 'Vui lòng nhập mô tả thương hiệu.';
+        } else {
+            brandDescriptionInput.classList.remove('is-invalid');
+            brandDescriptionInput.classList.add('is-valid');
+            brandDescriptionError.textContent = '';
+        }
+        checkInputsBrand();
     });
 });

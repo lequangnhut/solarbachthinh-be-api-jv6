@@ -366,6 +366,7 @@ public class ProductControllerAD {
 
                     showAlert(true);
                     redirectAttributes.addFlashAttribute("updateSuccess", "Cập nhật dữ liệu thành công");
+                    session.setAttribute("toastSuccess", "Cập nhật sản phẩm thành công");
                     productImageService.save(productImages);
                 }
 

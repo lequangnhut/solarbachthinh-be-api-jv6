@@ -18,7 +18,17 @@ public class ProductBrandServiceImpl implements ProductBrandService {
     public ProductBrands findByProductBrandId(String productBrandId) {
         return productBrandRepository.getReferenceById(productBrandId);
     }
-     
+
+    @Override
+    public void save(ProductBrands productBrands) {
+        productBrandRepository.save(productBrands);
+    }
+
+    @Override
+    public boolean doesProductBrandExist(String id) {
+        return productBrandRepository.existsById(id);
+    }
+
     @Override
     public List<ProductBrands> findAll() {
         return productBrandRepository.findAll();

@@ -16,8 +16,6 @@ import java.util.Collection;
 @Entity
 @Table(name = "product_brands", schema = "solardb")
 public class ProductBrands {
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false, length = 20)
     private String id;
