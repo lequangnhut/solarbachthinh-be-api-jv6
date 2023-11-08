@@ -9,4 +9,8 @@ public interface ProductBrandService {
     List<ProductBrands> findAll();
 
     ProductBrands findByProductBrandId(String productBrandId);
+
+    void save(ProductBrands productBrands);
+
+    boolean doesProductBrandExist(String id);
 }
