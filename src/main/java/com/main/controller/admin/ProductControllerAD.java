@@ -380,6 +380,21 @@ public class ProductControllerAD {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("xoa-san-pham/{id}")
+    public String deleteProducts(@PathVariable("id") String id){
+        boolean status = productService.doesProductExist(id);
+        if (status) {
+            Products product = productService.findProductByProductId(id);
+            product.setIsStatusDelete("Ngừng kinh doanh");
+            productService.save(product);
+            session.setAttribute("toastSuccess", "Xóa sản phẩm thành công !");
+            return "redirect:/quan-tri/san-pham";
+        } else {
+            session.setAttribute("toastFailed", "Xóa sản phẩm thất bại! không tìm thấy ID");
+            return "redirect:/quan-tri/san-pham";
+        }
+    }
+
     @ModelAttribute("isStatusUpdateProduct")
     public Boolean showAlert (Boolean status) {
         return status;
