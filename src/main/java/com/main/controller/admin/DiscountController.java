@@ -2,7 +2,7 @@ package com.main.controller.admin;
 
 import com.main.dto.DiscountsDto;
 import com.main.entity.Discounts;
-import com.main.service.AccountDiscountCodeService;
+import com.main.service.UserDiscountService;
 import com.main.service.DiscountService;
 import com.main.service.HistoryService;
 import com.main.utils.DiscountCodeGeneratoUtils;
@@ -26,7 +26,7 @@ public class DiscountController {
     DiscountService discountService;
 
     @Autowired
-    AccountDiscountCodeService accountDiscountCodeService;
+    UserDiscountService userDiscountService;
 
     @Autowired
     HttpServletRequest request;
@@ -46,7 +46,7 @@ public class DiscountController {
     @GetMapping("danh-sach-ma-giam-gia-da-sua-dung")
     public String showAccountDiscountCode(Model model) {
         model.addAttribute("accounts", discountService.findAll());
-        model.addAttribute("accountDiscountCodeList", accountDiscountCodeService.findAll());
+        model.addAttribute("accountDiscountCodeList", userDiscountService.findAll());
         return "views/admin/page/views/apply-discouts-list";
     }
 
@@ -74,7 +74,7 @@ public class DiscountController {
         discountCodesDTO.setIsActive(Boolean.TRUE);
         discountCodesDTO.setDiscountCost(ReplaceUtils.replacePrice(price));
         Discounts save = EntityDtoUtils.convertToEntity(discountCodesDTO, Discounts.class);
-        discountService.insert(save);
+        discountService.save(save);
 
         SessionUtils.setAttribute("toastSuccess", "Thêm mã giảm giá thành công!");
         return "redirect:/quan-tri/giam-gia";
@@ -103,8 +103,8 @@ public class DiscountController {
                 discountCodesDTO.setId(id);
                 if (discountCodesDTO.getId() != null) {
                     discountCodesDTO.setDiscountCost(ReplaceUtils.replacePrice(price));
-                    Discounts save = EntityDtoUtils.convertToEntity(discountCodesDTO, Discounts.class);
-                    discountService.update(save);
+                    Discounts discount = EntityDtoUtils.convertToEntity(discountCodesDTO, Discounts.class);
+                    discountService.save(discount);
                 }
 
                 SessionUtils.setAttribute("toastSuccess", "Sửa mã giảm giá thành công!");
@@ -120,7 +120,7 @@ public class DiscountController {
     public String deleteDiscout(@PathVariable String id) {
         Discounts discounts = discountService.findById(id);
         discounts.setIsActive(Boolean.FALSE);
-        discountService.insert(discounts);
+        discountService.save(discounts);
 
         session.setAttribute("toastSuccess", "Xoá mã giảm giá thành công !");
         return "redirect:/quan-tri/giam-gia";

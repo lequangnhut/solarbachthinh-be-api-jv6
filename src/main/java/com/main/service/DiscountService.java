@@ -13,9 +13,7 @@ public interface DiscountService {
 
     Discounts findById(String discountID);
 
-    Discounts insert(Discounts discount);
-
-    Discounts update(Discounts discount);
+    void save(Discounts discount);
 
     Discounts delete(String discount);
 }

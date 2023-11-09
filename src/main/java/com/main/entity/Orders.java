@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -19,7 +20,6 @@ import java.util.Collection;
 @Table(name = "orders", schema = "solardb")
 public class Orders {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false, length = 20)
     private String id;
@@ -27,18 +27,25 @@ public class Orders {
     @Basic
     @Column(name = "user_id", nullable = true)
     private Integer userId;
-
     @Basic
+
     @Column(name = "payment_type", nullable = true)
     private Boolean paymentType;
+
+    @Column(name = "payment_stauts", nullable = true)
+    private Boolean paymentStatus;
+
+    @Basic
+    @Column(name = "discount_id", nullable = true, length = 20)
+    private String discountId;
 
     @Basic
     @Column(name = "order_status", nullable = true, length = 30)
     private String orderStatus;
 
     @Basic
-    @Column(name = "discount_id", nullable = true, length = 20)
-    private String discountId;
+    @Column(name = "order_ship_cost", nullable = true, precision = 0)
+    private BigDecimal orderShipCost;
 
     @Basic
     @Column(name = "to_name", nullable = true, length = 100)
@@ -49,8 +56,8 @@ public class Orders {
     private String toPhone;
 
     @Basic
-    @Column(name = "to_city", nullable = true, length = 50)
-    private String toCity;
+    @Column(name = "to_province", nullable = true, length = 50)
+    private String toProvince;
 
     @Basic
     @Column(name = "to_district", nullable = true, length = 50)
@@ -63,6 +70,10 @@ public class Orders {
     @Basic
     @Column(name = "to_address", nullable = true, length = -1)
     private String toAddress;
+
+    @Basic
+    @Column(name = "order_note", nullable = true, length = 255)
+    private String orderNote;
 
     @Basic
     @Column(name = "date_created", nullable = true)

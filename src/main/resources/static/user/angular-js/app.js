@@ -17,6 +17,9 @@ let API_Discount = '/api/discount'
 // api giỏ hàng
 let API_Cart = '/api/carts';
 
+// api order
+let API_Order = 'api/order';
+
 // khởi tạo ứng dụng
 let solar_app = angular.module('solar_app', ['ngRoute'])
     .run(function ($rootScope, $http, CartService) {
@@ -86,7 +89,7 @@ solar_app.config(function ($routeProvider) {
         })
         .when('/gio-hang/xac-nhan-thong-tin-don-hang', {
             templateUrl: API_Template + 'cart/check-details.html',
-            controller: 'check-details-controller'
+            controller: 'check_details_controller'
         })
         .when('/lich-su-mua-hang', {
             templateUrl: API_Template + 'history/history-payment.html',

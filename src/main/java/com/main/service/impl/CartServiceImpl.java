@@ -1,7 +1,7 @@
 package com.main.service.impl;
 
-import com.main.repository.CartsRepository;
 import com.main.entity.Carts;
+import com.main.repository.CartsRepository;
 import com.main.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,15 +27,6 @@ public class CartServiceImpl implements CartService {
     @Override
     public Carts findByCartId(int cartId) {
         return cartsRepository.getReferenceById(cartId);
-    }
-
-    @Override
-    public Integer findPriceByUserId(int userId) {
-        if (cartsRepository.findPriceByAccountId(userId) != null) {
-            return cartsRepository.findPriceByAccountId(userId);
-        } else {
-            return 0;
-        }
     }
 
     @Override
