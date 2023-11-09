@@ -1,4 +1,4 @@
-solar_app.controller('cart_controller', function ($scope, $http, $timeout, CartService) {
+solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $timeout, CartService) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
@@ -67,6 +67,16 @@ solar_app.controller('cart_controller', function ($scope, $http, $timeout, CartS
         CartService.updateQuantityCart(cartItem);
     }
 
+    // tổng số lượng sp trong giỏ hàng
+    $rootScope.sum_quantity_cart = function () {
+        CartService.sumQuantityCart()
+            .then(function successCallback(response) {
+                $rootScope.quantity_cart = response.data;
+            }, function errorCallback(response) {
+                console.log(response.data);
+            });
+    }
+
     // xoá sản phẩm trong giỏ hàng
     $scope.delete_cart = function (cartId) {
         Swal.fire({
@@ -92,6 +102,8 @@ solar_app.controller('cart_controller', function ($scope, $http, $timeout, CartS
                     }
 
                     $scope.calculate_total();
+                    $scope.sum_quantity_cart();
+
                     $timeout(function () {
                         centerAlert('Thành công !', 'Xoá sản phẩm ra khỏi giỏ hàng thành công !', 'success');
                     });

@@ -19,16 +19,14 @@ let API_Cart = '/api/carts';
 
 // khởi tạo ứng dụng
 let solar_app = angular.module('solar_app', ['ngRoute'])
-    .run(function ($rootScope, $http) {
+    .run(function ($rootScope, $http, CartService) {
         // lấy ra tổng số lượng giỏ hàng
-        $http({
-            method: 'GET',
-            url: API_Cart + '/quantity-cart'
-        }).then(function successCallback(response) {
-            $rootScope.quantity_cart = response.data;
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
+        CartService.sumQuantityCart()
+            .then(function successCallback(response) {
+                $rootScope.quantity_cart = response.data;
+            }, function errorCallback(response) {
+                console.log(response.data);
+            });
     });
 
 solar_app.config(['$qProvider', function ($qProvider) {

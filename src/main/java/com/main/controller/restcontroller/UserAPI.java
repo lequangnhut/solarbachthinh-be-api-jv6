@@ -45,9 +45,9 @@ public class UserAPI {
             usersDto.setEmail(users.getEmail());
             usersDto.setFullname(users.getFullname());
             usersDto.setPhoneNumber(users.getPhoneNumber());
-            usersDto.setProvince(users.getProvince());
-            usersDto.setCity(users.getCity());
-            usersDto.setWard(users.getWard());
+            usersDto.setDistrictName(users.getDistrictName());
+            usersDto.setProvinceName(users.getProvinceName());
+            usersDto.setWardName(users.getWardName());
             usersDto.setAddress(users.getAddress());
 
             ObjectMapper objectMapper = new ObjectMapper();

@@ -28,54 +28,88 @@
                                 <h5 class="mb-0">Địa chỉ nhận hàng</h5>
                             </div>
                             <div class="card-body">
-                                <div class="mb-3">
-                                    <input type="text" class="form-control"
+                                <div class="form-floating mb-3">
+                                    <input type="text"
+                                           id="full_name"
+                                           class="form-control"
                                            placeholder="Họ và tên"
                                            ng-model="user.fullname"
                                     >
+                                    <label for="full_name">Họ và tên</label>
                                 </div>
 
-                                <div class="mb-3">
-                                    <input type="tel" class="form-control"
+                                <div class="form-floating mb-3">
+                                    <input type="tel"
+                                           id="phone"
+                                           class="form-control"
                                            maxlength="10"
                                            placeholder="Số điện thoại"
                                            ng-model="user.phoneNumber"
                                     >
+                                    <label for="phone">Số điện thoại</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
                                     <select class="form-select"
-                                            id="city" ng-model="user.city"
+                                            id="city"
+                                            ng-model="user.provinceName"
                                             aria-label="Floating label select example"
+                                            ng-options="province.ProvinceName for province in ship_province track by province.ProvinceID"
+                                            ng-change="getDistricts(user.provinceName)"
                                     >
-                                        <option>{{user.city}}</option>
+                                        <option value="" selected disabled>Chọn Tỉnh Thành / Thành Phố</option>
                                     </select>
                                     <label for="city">Tỉnh Thành</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
                                     <select class="form-select"
-                                            id="district" ng-model="user.province"
-                                            aria-label="Floating label select example">
-                                        <option>{{user.province}}</option>
+                                            id="district"
+                                            ng-model="user.districtName"
+                                            aria-label="Floating label select example"
+                                            ng-options="districts.DistrictName for districts in ship_districts track by districts.DistrictID"
+                                            ng-change="getWards(user.districtName)"
+                                    >
+                                        <option value="" selected disabled>Chọn Quận/Huyện</option>
                                     </select>
                                     <label for="district">Quận/Huyện</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
                                     <select class="form-select"
-                                            id="ward" ng-model="user.ward"
-                                            aria-label="Floating label select example">
-                                        <option>{{user.ward}}</option>
+                                            id="ward"
+                                            ng-model="user.wardName"
+                                            aria-label="Floating label select example"
+                                            ng-options="ward.WardName for ward in ship_ward track by ward.WardCode"
+                                            ng-change="onWardChange(user.wardName)"
+                                    >
+                                        <option value="" selected disabled>Chọn Phường/Xã</option>
                                     </select>
+
                                     <label for="ward">Phường/Xã</label>
                                 </div>
 
-                                <div class="mb-3">
+                                <div class="form-floating mb-3">
                                     <input type="text" ng-model="user.address"
                                            class="form-control"
+                                           id="address"
                                            placeholder="Địa chỉ cụ thể"
                                     >
+                                    <label for="address">Địa chỉ cụ thể</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select class="form-select"
+                                            id="service"
+                                            ng-model="serviceName"
+                                            aria-label="Floating label select example"
+                                            ng-options="service.short_name for service in ship_services track by service.service_id"
+                                            ng-change="calculateFee(serviceName)"
+                                    >
+                                        <option value="" selected disabled>Chọn hình thức vận chuyển</option>
+                                    </select>
+
+                                    <label for="service">Hình thức vận chuyển</label>
                                 </div>
 
                                 <div class="form-floating">
@@ -90,7 +124,12 @@
                         <div class="card mb-3">
                             <div class="card-body">
                                 <p><strong>Thời gian dự kiến giao hàng</strong></p>
-                                <p class="mb-0">10/09/2023 - 11/10/2023</p>
+                                <span class="mb-0" ng-if="intend_time == null">
+                                    Chưa xác định dạng thời gian dự kiến giao hàng
+                                </span>
+                                <span class="mb-0" ng-if="intend_time != null">
+                                    {{intend_time | timestampToDateString}}
+                                </span>
                             </div>
                         </div>
 
@@ -233,8 +272,11 @@
                                         <div class="form-check">
                                             <label class="form-check-label">
                                                 <input type="radio" class="form-check-input" name="categoryPayment"
-                                                       value="TRANSFER">
-                                                Thanh toán thông qua ví VNPAY.
+                                                       value="TRANSFER"
+                                                       ng-disabled="total > 10000000"
+                                                >
+                                                <span ng-if="total > 10000000">Thanh toán tiện lợi với ví VNPAY - Không khả dụng</span>
+                                                <span ng-if="total <= 10000000">Thanh toán tiện lợi với ví VNPAY.</span>
                                             </label>
                                         </div>
                                     </div>

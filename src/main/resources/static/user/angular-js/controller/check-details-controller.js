@@ -1,102 +1,291 @@
-solar_app.controller('check-details-controller', function ($scope, $http, CartService, UserService, DiscountService) {
+solar_app.controller('check-details-controller', function ($scope, $http, CartService, UserService, DiscountService, ShippingService) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
     };
 
+    let shippingService;
+    let totalShippingFee;
+    let defaultProvinceID, defaultDistrictID, defaultWardId;
+
+    $scope.user = {
+        provinceName: null, districtName: null, wardName: null
+    };
+
     $scope.discount_code = "";
 
     // lấy ra object giỏ hàng sp, thương hiệu, img
-    CartService.findAllCart()
-        .then(function successCallback(response) {
-            let object_cart = $scope.object_cart = response.data;
-            calculate_total(object_cart);
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
+    CartService.findAllCart().then(function successCallback(response) {
+        let object_cart = $scope.object_cart = response.data;
+        // cho nó giá trị tiền ship sẳn
+        totalShippingFee = 300000
+        $scope.calculate_total(object_cart);
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
 
     // lấy ra session user đang đăng nhập
-    UserService.findUserBySession()
-        .then(function successCallback(response) {
-            $scope.user = response.data;
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
+    UserService.findUserBySession().then(function successCallback(response) {
+        $scope.user = response.data;
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
 
-    // lấy ra đối tượng mã giảm giá
-    DiscountService.findDiscount()
-        .then(function successCallback(response) {
-            $scope.discounts_modal = response.data;
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
+    // lấy ra danh sách mã giảm giá
+    DiscountService.findDiscount().then(function successCallback(response) {
+        $scope.discounts_modal = response.data;
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
 
-    $scope.load_discount = function () {
-        let date_time = new Date().toLocaleString();
+    // Lấy danh sách tỉnh thành
+    ShippingService.getProvince().then(function (response) {
+        $scope.ship_province = response.data.data;
 
-        let discounts_modal = $scope.discounts_modal;
-        let discount_code_input = $scope.discount_code.trim();
+        // Kiểm tra nếu user đã có tỉnh thành được chọn
+        if ($scope.user.provinceName && $scope.ship_province.length > 0) {
+            const matchedProvince = $scope.ship_province.find(function (province) {
+                return province.ProvinceName === $scope.user.provinceName;
+            });
 
-        let discount_code_db = null;
+            if (matchedProvince) {
+                $scope.user.provinceName = matchedProvince;
+            }
 
-        for (let i = 0; i < discounts_modal.length; i++) {
-            discount_code_db = discounts_modal[i];
+            defaultProvinceID = matchedProvince.ProvinceID;
+
+            // Lấy danh sách quận/huyện của tỉnh đã chọn
+            ShippingService.getDistrictsByProvinceId(matchedProvince.ProvinceID).then(function (response) {
+                $scope.ship_districts = response.data.data;
+
+                // Kiểm tra nếu user đã có quận/huyện được chọn
+                if ($scope.user.districtName && $scope.ship_districts.length > 0) {
+                    const matchedDistrict = $scope.ship_districts.find(function (district) {
+                        return district.DistrictName === $scope.user.districtName;
+                    });
+
+                    if (matchedDistrict) {
+                        $scope.user.districtName = matchedDistrict;
+                    }
+
+                    // lấy giá giá trị mặc định của huyện trong db
+                    defaultDistrictID = matchedDistrict.DistrictID;
+
+                    // Lấy danh sách xã/phường của quận/huyện đã chọn
+                    ShippingService.getWardByDistrictId(matchedDistrict.DistrictID).then(function (response) {
+                        $scope.ship_ward = response.data.data;
+
+                        // Kiểm tra nếu user đã có xã/phường được chọn
+                        if ($scope.user.wardName && $scope.ship_ward.length > 0) {
+                            const matchedWard = $scope.ship_ward.find(function (ward) {
+                                return ward.WardName === $scope.user.wardName;
+                            });
+
+                            if (matchedWard) {
+                                $scope.user.wardName = matchedWard;
+                            }
+                            defaultWardId = matchedWard.WardCode;
+                        }
+                    }, function (error) {
+                        console.log(error);
+                    });
+                }
+            }, function (error) {
+                console.log(error);
+            });
         }
+    }, function (error) {
+        console.log(error);
+    });
 
-        if (discount_code_input === null || discount_code_input.length === 0) {
-            toastAlert('warning', 'Vui lòng nhập mã giảm giá !');
+    // Hàm này được gọi khi người dùng chọn một tỉnh thành cụ thể
+    $scope.getDistricts = function (provinceName) {
+        const province_id = provinceName.ProvinceID;
 
-        } else if (!discount_code_input.endsWith(discount_code_db.id)) {
-            toastAlert('warning', 'Mã giảm giá không tồn tại !');
+        // Cập nhật giá trị mặc định của tỉnh thành (nếu người dùng chọn)
+        defaultProvinceID = province_id;
 
-        } else if (discount_code_db.endUse < date_time && !discount_code_db.isActive) {
-            toastAlert('warning', 'Mã giảm giá đã hết hạn !');
+        ShippingService.getDistrictsByProvinceId(province_id).then(function (response) {
+            $scope.ship_districts = response.data.data;
 
-        } else {
-            $scope.apply_discount(discount_code_db);
+            if ($scope.user.districtName && $scope.ship_districts.length > 0) {
+                const matchedDistricts = $scope.ship_districts.find(function (districts) {
+                    return $scope.user.districtName === districts.DistrictName;
+                });
+
+                if (matchedDistricts) {
+                    $scope.user.districtName = matchedDistricts;
+                }
+            }
+        }, function (error) {
+            console.log(error);
+        });
+    };
+
+    // Hàm này được gọi khi người dùng chọn một quận huyện cụ thể
+    $scope.getWards = function (districtName) {
+        if (districtName) { // Kiểm tra xem districtName đã được chọn chưa
+            const district_id = districtName.DistrictID;
+
+            defaultDistrictID = district_id;
+
+            ShippingService.getWardByDistrictId(district_id).then(function (response) {
+                $scope.ship_ward = response.data.data;
+
+                if ($scope.user.wardName && $scope.ship_ward.length > 0) {
+                    const matchedWard = $scope.ship_ward.find(function (ward) {
+                        return ward.WardName === $scope.user.wardName;
+                    });
+
+                    if (matchedWard) {
+                        $scope.user.wardName = matchedWard;
+                    }
+
+                    // Cập nhật giá trị mặc định của xã/phường (nếu người dùng chọn)
+                    defaultWardId = matchedWard.WardCode;
+                }
+            }, function (error) {
+                console.log(error);
+            });
         }
     };
 
-    $scope.apply_discount = function (discount_code_db) {
-        DiscountService.findDiscountByDiscountId(discount_code_db.id)
-            .then(function successCallback(response) {
-                let discounts = response.data;
-
-                centerAlert(
-                    'Thành công !',
-                    'Sử dụng mã giảm giá thành công và được giảm giá '
-                    + $scope.formatPrice(discounts.discountCost) + ' ₫ !',
-                    'success'
-                )
-                // tính lại tiền
-                calculate_total($scope.object_cart, discounts);
-            }, function errorCallback(response) {
-                console.log(response.data);
-            });
+    $scope.onWardChange = function (selectedWard) {
+        if (selectedWard) {
+            defaultWardId = selectedWard.WardCode;
+        }
     }
 
-    // tính tổng giá tiền và tạm tính
-    function calculate_total(object_cart, discounts) {
+    // lấy dịch vụ chuyển phát của giao hàng nhanh
+    ShippingService.getAvailableServices().then(function (response) {
+        shippingService = $scope.ship_services = response.data.data;
+    }, function (error) {
+        console.log(error);
+    });
+
+    // tính toán phí dịch vụ
+    $scope.calculateFee = function (selectedService) {
+        let items = [];
+
+        for (let i = 0; i < $scope.object_cart.length; i++) {
+            let product = $scope.object_cart[i];
+            items.push({
+                "name": product[1].productName,
+                "quantity": product[1].quantity,
+                "height": 10,
+                "weight": 10,
+                "length": 100,
+                "width": 100
+            });
+        }
+
+        const requestData = {
+            "service_type_id": selectedService.service_type_id,
+            "from_district_id": 1572, // ninh kiều, cần thơ
+            "to_district_id": defaultDistrictID,
+            "to_ward_code": defaultWardId,
+            "height": 1,
+            "length": 1,
+            "weight": 1,
+            "width": 1,
+            "insurance_value": 0,
+            "coupon": null,
+            "items": items
+        };
+
+        ShippingService.calculateShippingFee(requestData).then(function (response) {
+            totalShippingFee = $scope.shippingFee = response.data.data;
+
+            // tính toán tiền và tính thời gian dự kiến
+            $scope.calculate_total($scope.object_cart);
+            $scope.intend_time_ship(defaultDistrictID, defaultWardId, selectedService.service_id);
+        }, function (error) {
+            console.log(error);
+        });
+    };
+
+    //tính toán thời gian dự kiến vận chuyển
+    $scope.intend_time_ship = function (districtId, wardId, service_id) {
+        const requestData = {
+            from_district_id: 1572,
+            from_ward_code: "550105",
+            to_district_id: districtId,
+            to_ward_code: wardId.toString(),
+            service_id: service_id
+        };
+
+        ShippingService.getEstimatedDeliveryTime(requestData).then(function (response) {
+            $scope.intend_time = response.data.data.leadtime;
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    // tính toán và áp dụng discount
+    $scope.load_discount = function () {
+        let date_time = new Date();
         let subtotal = 0;
-        let discount = 0;
-        let shippingFee = 0;
-        let total = 0;
+
+        let object_cart = $scope.object_cart;
+        let discounts_modal = $scope.discounts_modal;
+        let discount_code_input = $scope.discount_code.trim();
 
         for (let i = 0; i < object_cart.length; i++) {
             subtotal += object_cart[i][0].quantity * object_cart[i][1].price;
         }
 
-        if (discounts != null) {
-            discount = discounts.discountCost;
-            shippingFee = 0;
-
-            total = subtotal - discount + shippingFee;
-        } else {
-            discount = 0;
-            shippingFee = 0;
-
-            total = subtotal - discount + shippingFee;
+        if (!discount_code_input || discount_code_input.trim().length === 0) {
+            toastAlert('warning', 'Vui lòng nhập mã giảm giá !');
+            return;
         }
+
+        let validDiscount = discounts_modal.find(discount => discount.id === discount_code_input);
+
+        if (!validDiscount) {
+            toastAlert('warning', 'Mã giảm giá không tồn tại !');
+            return;
+        }
+
+        let discountEndDate = new Date(validDiscount.endUse);
+
+        if (validDiscount.discountCost > subtotal) {
+            toastAlert('warning', 'Không đủ điều kiện dùng mã !');
+            return;
+        }
+
+        if (discountEndDate < date_time && !validDiscount.isActive) {
+            toastAlert('warning', 'Mã giảm giá đã hết hạn !');
+            return;
+        }
+
+        $scope.apply_discount(validDiscount);
+    };
+
+    // áp dụng discount
+    $scope.apply_discount = function (discount_code_db) {
+        DiscountService.findDiscountByDiscountId(discount_code_db.id).then(function successCallback(response) {
+            let discounts = response.data;
+
+            centerAlert('Thành công !', 'Sử dụng mã giảm giá thành công và được giảm giá ' + $scope.formatPrice(discounts.discountCost) + ' ₫ !', 'success')
+            // tính lại tiền
+            $scope.calculate_total($scope.object_cart, discounts);
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
+    }
+
+    // tính tổng giá tiền và tạm tính
+    $scope.calculate_total = function (object_cart, discounts) {
+        let shippingFee = totalShippingFee.total ? totalShippingFee.total : totalShippingFee;
+        let subtotal = 0;
+        let discount = discounts ? discounts.discountCost : 0;
+        let total;
+
+        for (let i = 0; i < object_cart.length; i++) {
+            subtotal += object_cart[i][0].quantity * object_cart[i][1].price;
+        }
+
+        total = subtotal - discount + shippingFee;
 
         $scope.subtotal = subtotal;
         $scope.discount = discount;

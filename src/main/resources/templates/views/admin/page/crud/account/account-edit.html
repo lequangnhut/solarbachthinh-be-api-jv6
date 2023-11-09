@@ -89,45 +89,45 @@
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="city" th:field="*{city}"
+                                    <select class="form-select" id="city" th:field="*{getProvinceName}"
                                             aria-label="Floating label select example">
-                                        <option th:value="${users.city}" th:text="${users.city}"
+                                        <option th:value="${users.getProvinceName}" th:text="${users.getProvinceName}"
                                                 selected>Chọn Tỉnh Thành
                                         </option>
                                         <!-- Các tùy chọn cho Tỉnh Thành -->
                                     </select>
                                     <label for="city">Tỉnh Thành</label>
                                     <span class="text-danger invalid-form" th:if="${#fields.hasErrors('city')}"
-                                          th:errors="*{city}"></span>
+                                          th:errors="*{getProvinceName}"></span>
                                     <span class="text-danger" id="invalid-city"></span>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="province" th:field="*{province}"
+                                    <select class="form-select" id="province" th:field="*{getDistrictName}"
                                             aria-label="Floating label select example">
-                                        <option id="provinceOption" th:value="${users.province}"
-                                                th:text="${users.province}"
+                                        <option id="provinceOption" th:value="${users.getDistrictName}"
+                                                th:text="${users.getDistrictName}"
                                                 selected>Chọn Quận/Huyện
                                         </option>
                                         <!-- Các tùy chọn cho Quận/Huyện -->
                                     </select>
                                     <label for="province">Quận/Huyện</label>
                                     <span class="text-danger invalid-form" th:if="${#fields.hasErrors('province')}"
-                                          th:errors="*{province}"></span>
+                                          th:errors="*{getDistrictName}"></span>
                                     <span class="text-danger" id="invalid-province"></span>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="ward" th:field="*{ward}"
+                                    <select class="form-select" id="ward" th:field="*{getWardName}"
                                             aria-label="Floating label select example">
-                                        <option th:value="${users.ward}" th:text="${users.ward}"
+                                        <option th:value="${users.getWardName}" th:text="${users.getWardName}"
                                                 selected>Chọn Phường/Xã
                                         </option>
                                         <!-- Các tùy chọn cho Phường/Xã -->
                                     </select>
                                     <label for="ward">Phường/Xã</label>
                                     <span class="text-danger invalid-form" th:if="${#fields.hasErrors('ward')}"
-                                          th:errors="*{ward}"></span>
+                                          th:errors="*{getWardName}"></span>
                                     <span class="text-danger" id="invalid-ward"></span>
                                 </div>
 

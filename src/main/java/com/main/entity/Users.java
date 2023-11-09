@@ -52,16 +52,16 @@ public class Users {
     private Date birth;
 
     @Basic
-    @Column(name = "city", nullable = true, length = 50)
-    private String city;
+    @Column(name = "province_name", nullable = true, length = 50)
+    private String ProvinceName;
 
     @Basic
-    @Column(name = "province", nullable = true, length = 50)
-    private String province;
+    @Column(name = "district_name", nullable = true, length = 50)
+    private String DistrictName;
 
     @Basic
-    @Column(name = "ward", nullable = true, length = 50)
-    private String ward;
+    @Column(name = "ward_name", nullable = true, length = 50)
+    private String WardName;
 
     @Basic
     @Column(name = "address", nullable = true, length = 100)

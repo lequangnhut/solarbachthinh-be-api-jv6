@@ -6,6 +6,13 @@ solar_app.service('CartService', function ($http) {
         })
     };
 
+    this.sumQuantityCart = function () {
+        return $http({
+            method: 'GET',
+            url: API_Cart + '/quantity-cart'
+        })
+    }
+
     this.addProductToCart = function (productId, quantity) {
         return $http({
             method: 'POST',
