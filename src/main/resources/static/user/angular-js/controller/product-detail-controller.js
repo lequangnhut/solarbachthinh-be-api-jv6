@@ -1,4 +1,4 @@
-solar_app.controller('product_details', function ($scope, $http, $location, UserService, ProductService, CategoryService, CartService) {
+solar_app.controller('product_details', function ($scope, $http, $location, $sce, UserService, ProductService, CategoryService, CartService) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
@@ -35,6 +35,7 @@ solar_app.controller('product_details', function ($scope, $http, $location, User
     ProductService.findProductByProductId(productId)
         .then(function successCallback(response) {
             $scope.product = response.data;
+            $scope.trustedHtml = $sce.trustAsHtml($scope.product.templateDescription);
         }, function errorCallback(response) {
             console.log(response.data);
         });

@@ -28,32 +28,37 @@
         <div class="col-lg-6 px-3">
             <div id="overlay" class="w-100 d-inline-block mb-3 d-flex justify-content-center mb-3"
                  style="background-color: #F1F1F1;">
-                <img id="overlay-image" ng-src="/upload/{{product.productImagesById[0].imagePath}}"
-                     alt="den-nang-luong-mat-troi-sokoyo-solo-15w-h61107">
+                <img id="overlay-image"
+                     ng-src="{{ product.productImagesById[0].imagePath ? '/upload/' + product.productImagesById[0].imagePath : '/upload/' + 'default_image_url.jpg' }}"
+                     alt="Ảnh sản phẩm">
             </div>
             <div class="row px-2 ps-2">
                 <div class="col-3 col-md-3 col-lg-3 px-1">
                     <div class="w-100 d-inline-block" style="background-color: #F1F1F1;">
-                        <img class="w-100" ng-src="/upload/{{product.productImagesById[0].imagePath}}"
-                             alt="den-nang-luong-mat-troi-sokoyo-solo-15w-298">
+                        <img class="w-100"
+                             ng-src="{{ product.productImagesById[0].imagePath ? '/upload/' + product.productImagesById[0].imagePath : '/upload/' + 'default_image_url.jpg' }}"
+                             alt="Ảnh sản phẩm">
                     </div>
                 </div>
                 <div class="col-3 col-md-3 col-lg-3 px-1">
                     <div class="w-100 d-inline-block" style="background-color: #F1F1F1;">
-                        <img class="w-100" ng-src="/upload/{{product.productImagesById[1].imagePath}}"
-                             alt="den-nang-luong-mat-troi-sokoyo-solo-15w-298">
+                        <img class="w-100"
+                             ng-src="{{ product.productImagesById[1].imagePath ? '/upload/' + product.productImagesById[1].imagePath : '/upload/' + 'default_image_url.jpg' }}"
+                             alt="Ảnh sản phẩm">
                     </div>
                 </div>
                 <div class="col-3 col-md-3 col-lg-3 px-1">
                     <div class="w-100 d-inline-block" style="background-color: #F1F1F1;">
-                        <img class="w-100" ng-src="/upload/{{product.productImagesById[2].imagePath}}"
-                             alt="den-nang-luong-mat-troi-sokoyo-solo-15w-298">
+                        <img class="w-100"
+                             ng-src="{{ product.productImagesById[2].imagePath ? '/upload/' + product.productImagesById[2].imagePath : '/upload/' + 'default_image_url.jpg' }}"
+                             alt="Ảnh sản phẩm">
                     </div>
                 </div>
                 <div class="col-3 col-md-3 col-lg-3 px-1">
                     <div class="w-100 d-inline-block" style="background-color: #F1F1F1;">
-                        <img class="w-100" ng-src="/upload/{{product.productImagesById[3].imagePath}}"
-                             alt="den-nang-luong-mat-troi-sokoyo-solo-15w-298">
+                        <img class="w-100"
+                             ng-src="{{ product.productImagesById[3].imagePath ? '/upload/' + product.productImagesById[3].imagePath : '/upload/' + 'default_image_url.jpg' }}"
+                             alt="Ảnh sản phẩm">
                     </div>
                 </div>
             </div>
@@ -105,8 +110,7 @@
 
                 <!-- Quantity -->
                 <div class="d-flex mt-4" style="max-width: 300px"
-                     ng-if="product.isStatusDelete == 'Đang kinh doanh' && session_user != null"
-                >
+                     ng-if="product.isStatusDelete == 'Đang kinh doanh' && session_user != null">
                     <div class="mb-3">
                         <label for="form" class="form-label">Số lượng</label>
                         <br>
@@ -169,212 +173,7 @@
                     </li>
                 </ul>
             </div>
-            <h2 class="heading_h2" id="tongquan">Thông số kỹ thuật</h2>
-            <div class="content mb-5">
-                <table style="border-collapse: collapse; width: 100%; background-color: #f7f7f7;">
-                    <tbody>
-                    <tr style="height: 24px;">
-                        <td style="width: 50%; height: 24px;">
-                            <strong>Công suất:</strong>
-                            <span>{{product.powers}}</span>
-                        </td>
-                        <td style="width: 50%; height: 24px;">
-                            <strong>Pin Lithium LiFePo4:</strong>
-                            <span>{{product.productBrandsByProductBrandId.brandName}}</span>
-                        </td>
-                    </tr>
-                    <tr style="height: 24px;">
-                        <td style="width: 50%; height: 24px;">
-                            <strong>Thương hiệu:</strong>
-                            <span>{{product.productBrandsByProductBrandId.brandName}}</span>
-                        </td>
-                        <td style="width: 50%; height: 24px;">
-                            <strong>Tấm pin NLMT:&nbsp;</strong>
-                            <span>{{product.productTypesByProductTypeId.productTypeName}}</span>
-                        </td>
-                    </tr>
-                    <tr style="height: 24px;">
-                        <td style="width: 50%; height: 24px;">
-                            <strong>Dòng sản phẩm:</strong>
-                            <span>{{product.productTypesByProductTypeId.productCategoriesByCategoryId.categoryName}}</span>
-                        </td>
-                        <td style="width: 50%; height: 24px;"><strong>Chip LED:</strong> LUMILEDS3030</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="content">
-                <p><img class="aligncenter size-full wp-image-15613"
-                        src="/user/assets/img/product-details/5.png"
-                        alt="den-led-nang-luong-mat-troi-sokoyo-teco-20w-h12112" width="700" height="367"
-                        sizes="(max-width: 700px) 100vw, 700px"></p>
-                <p><img class="aligncenter size-full wp-image-15611"
-                        src="/user/assets/img/product-details/4.png"
-                        alt="den-led-nang-luong-mat-troi-sokoyo-teco-20w-h22112" width="700" height="367"
-                        sizes="(max-width: 700px) 100vw, 700px"></p>
-                <p><img class="aligncenter size-full wp-image-16726"
-                        src="/user/assets/img/product-details/3.png"
-                        alt="den-led-nang-luong-mat-troi-sokoyo-teco-20w-1205" width="700" height="366"
-                        sizes="(max-width: 700px) 100vw, 700px"></p>
-                <p><img class="aligncenter size-full wp-image-15607"
-                        src="/user/assets/img/product-details/2.png"
-                        alt="den-led-nang-luong-mat-troi-sokoyo-teco-20w-h42112" width="700" height="367"
-                        sizes="(max-width: 700px) 100vw, 700px"></p>
-                <p><img class="aligncenter size-full wp-image-14131"
-                        src="/user/assets/img/product-details/1.png"
-                        alt="den-led-nang-luong-mat-troi-sokoyo-teco-20w-h10308" width="700" height="366"
-                        sizes="(max-width: 700px) 100vw, 700px"></p>
-                <p class="mt-4 mb-3" id="certificate"><strong>ƯU ĐIỂM VƯỢT TRỘI CỦA SẢN PHẨM</strong></p>
-                <table style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
-                    <tbody>
-                    <tr>
-                        <td style="width: 6.48149%;"><img class="aligncenter size-full wp-image-14043"
-                                                          src="https://datsolar.com/wp-content/uploads/sites/4/2021/08/icon-den-nlmt-1.png"
-                                                          alt="icon-den-nlmt-1" width="35" height="35"></td>
-                        <td style="width: 93.5184%;">Đèn sử dụng loại Chip LED Philips Lumileds 3030 hiệu suất cao
-                            170lm/W, thương hiệu uy tín Philips của Hà Lan. Tuổi thọ LED &gt; 50.000H (Độ bền tương
-                            đương 12 năm)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 6.48149%;"><img class="aligncenter size-full wp-image-14048"
-                                                          src="https://datsolar.com/wp-content/uploads/sites/4/2021/08/icon-den-nlmt-2.png"
-                                                          alt="icon-den-nlmt-2" width="35" height="35"></td>
-                        <td style="width: 93.5184%;">Pin lưu trữ Lithium LiFePo4 dung lượng 259WH, tuổi thọ lên đến
-                            8
-                            năm
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 6.48149%;"><img class="aligncenter size-full wp-image-14050"
-                                                          src="https://datsolar.com/wp-content/uploads/sites/4/2021/08/icon-den-nlmt-3.png"
-                                                          alt="icon-den-nlmt-3" width="35" height="35"></td>
-                        <td style="width: 93.5184%;">Tấm pin năng lượng mặt trời Poly, 50W/18V, hiệu suất cao, độ
-                            bền
-                            trên 25 năm
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 6.48149%;"><img class="aligncenter size-full wp-image-14052"
-                                                          src="https://datsolar.com/wp-content/uploads/sites/4/2021/08/icon-den-nlmt-4.png"
-                                                          alt="icon-den-nlmt-4" width="35" height="35"></td>
-                        <td style="width: 93.5184%;">Bộ điều khiển thông minh: PWM, 12V, 10A, tùy chỉnh độ sáng và
-                            giảm
-                            điện năng tiêu thụ, giám sát hoạt động của đèn, kéo dài tuổi thọ của đèn. Giúp đèn tự
-                            sáng
-                            khi trời tối, tắt khi trời sáng
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 6.48149%;"><img class="aligncenter size-full wp-image-14054"
-                                                          src="https://datsolar.com/wp-content/uploads/sites/4/2021/08/icon-den-nlmt-5.png"
-                                                          alt="icon-den-nlmt-5" width="35" height="35"></td>
-                        <td style="width: 93.5184%;">Cấp độ bảo vệ IP65 và IK08 giúp đèn có thể làm việc tốt ở nhiệt
-                            độ
-                            cao, mưa dài ngày và nhiều bụi bẩn
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 6.48149%;"><img class="aligncenter size-full wp-image-14056"
-                                                          src="https://datsolar.com/wp-content/uploads/sites/4/2021/08/icon-den-nlmt-6.png"
-                                                          alt="icon-den-nlmt-6" width="35" height="35"></td>
-                        <td style="width: 93.5184%;">Thời gian chiếu sáng (trường hợp ban ngày hoàn toàn không có
-                            nắng):
-                            3 đêm
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <p><strong>Ngoài ra:</strong></p>
-                <ul>
-                    <li>Thiết kế được cấp bằng sáng chế dễ dàng mở, bảo trì thuận tiện</li>
-                    <li>Kiểu phân bố ánh sáng: Chóa đèn loại cánh dơi, góc chiếu rộng (150° x 75°), độ đồng đều ánh
-                        sáng
-                        tốt
-                    </li>
-                    <li>Kết nối IOT: Giám sát hệ thống thông minh trên điện thoại (tùy chọn)</li>
-                    <li>Đạt chứng chỉ: CE, IEC, RoHS…</li>
-                </ul>
-                <p><strong>AN TÂM KHI SỬ DỤNG CÁC SẢN PHẨM ĐÈN NĂNG LƯỢNG MẶT TRỜI SOKOYO</strong></p>
-                <ul>
-                    <li>Sokoyo thành lập từ năm 2008, nằm trong&nbsp;top 10 về sản phẩm đèn năng lượng mặt trời trên
-                        toàn cầu.
-                    </li>
-                    <li>Nhà sản xuất chuyên nghiệp về đèn đường năng lượng mặt trời với diện tích nhà máy hơn
-                        80.000m2,
-                        có thể đáp ứng công suất hằng năm hơn 250.000 bộ cho thị trường.
-                    </li>
-                    <li>Phòng thí nghiệm, kiểm tra sản phẩm hiện đại theo tiêu chuẩn quốc tế có diện tích trên
-                        1.000m2
-                        với đầy đủ các thiết bị như máy đo quang học, đo cấp độ bảo vệ IP, máy kiểm tra nhiệt độ, mô
-                        phỏng môi trường khắc nghiệt đảm bảo an toàn về điện, quang học, cũng như hiệu suất vật lý
-                        của
-                        từng sản phẩm.
-                    </li>
-                    <li>Sản phẩm đạt tiêu chuẩn quốc tế như: CE, RoHS, TUV, IEC, CQC, Golden Sun, CB… mang đến chất
-                        lượng và hiệu quả tốt nhất, cùng sự an tâm, hài lòng cho khách hàng.
-                    </li>
-                </ul>
-                <p style="text-align: justify;" id="policy"><strong>LÝ DO LỰA CHỌN SOLAR BÁCH THỊNH ?</strong></p>
-                <div class="row mb-3">
-                    <div class="col-lg-6"><img class="aligncenter size-full wp-image-19578"
-                                               src="https://datsolar.com/wp-content/uploads/sites/4/2022/07/Sokoyo-Certificate-Distributor-2023.jpg"
-                                               alt="Certificate Distributor" width="300" height="424"
-                                               srcset="https://datsolar.com/wp-content/uploads/sites/4/2022/07/Sokoyo-Certificate-Distributor-2023.jpg 300w, https://datsolar.com/wp-content/uploads/sites/4/2022/07/Sokoyo-Certificate-Distributor-2023-212x300.jpg 212w"
-                                               sizes="(max-width: 300px) 100vw, 300px"></div>
-                    <div class="col-lg-6"><img class="aligncenter size-full wp-image-19580"
-                                               src="https://datsolar.com/wp-content/uploads/sites/4/2022/07/Sokoyo-Certificate-Service_Center-2023.jpg"
-                                               alt="Certificate Service Center" width="300" height="424"
-                                               srcset="https://datsolar.com/wp-content/uploads/sites/4/2022/07/Sokoyo-Certificate-Service_Center-2023.jpg 300w, https://datsolar.com/wp-content/uploads/sites/4/2022/07/Sokoyo-Certificate-Service_Center-2023-212x300.jpg 212w"
-                                               sizes="(max-width: 300px) 100vw, 300px"></div>
-                </div>
-                <p style="text-align: justify;">Solar Bách Thịnh là Nhà phân phối độc quyền và Trung tâm dịch vụ của
-                    Sokoyo tại
-                    Việt Nam, cam kết mang đến những sản phẩm chuẩn mực chất lượng, đầy đủ CO, CQ, chứng nhận CE,
-                    RoHS,
-                    IEC, ISO, CB… đáp ứng đa dạng nhu cầu; đặc biệt cho các dự án thầu công, dự án chiếu sáng đường
-                    nông
-                    thôn, chiếu sáng đô thị.</p>
-                <p style="text-align: justify;">Solar Bách Thịnh sẽ hỗ trợ tư vấn, thiết kế giải pháp chiếu sáng, hệ
-                    thống giám
-                    sát IoT, đồng hành cùng đối tác trong việc triển khai lắp đặt trọn gói, giúp khách hàng gia tăng
-                    hiệu quả.</p>
-                <p style="text-align: justify;">Hỗ trợ cấu hình sản phẩm theo nhu cầu, đồng hành cùng nhà thầu, đại
-                    lý
-                    bảo hành và dịch vụ sau bán hàng.</p>
-                <p id="document"><img class="aligncenter size-full wp-image-9619"
-                                      src="https://datsolar.com/wp-content/uploads/sites/4/2021/05/den-led-nang-luong-mat-troi-sokoyo-nova-30w-40w-50w-60w-h13.jpg"
-                                      alt="den-led-nang-luong-mat-troi-sokoyo-nova-30w-40w-50w-60w-h13" width="911"
-                                      height="608"
-                                      srcset="https://datsolar.com/wp-content/uploads/sites/4/2021/05/den-led-nang-luong-mat-troi-sokoyo-nova-30w-40w-50w-60w-h13.jpg 911w, https://datsolar.com/wp-content/uploads/sites/4/2021/05/den-led-nang-luong-mat-troi-sokoyo-nova-30w-40w-50w-60w-h13-300x200.jpg 300w, https://datsolar.com/wp-content/uploads/sites/4/2021/05/den-led-nang-luong-mat-troi-sokoyo-nova-30w-40w-50w-60w-h13-768x513.jpg 768w"
-                                      sizes="(max-width: 911px) 100vw, 911px"></p>
-                <p style="text-align: justify;">Hàng hóa, thiết bị luôn có sẵn tại Việt Nam, đối tác không cần đầu
-                    tư
-                    kho bãi, không tốn chi phí nhân sự quản lý nhập khẩu, chi phí quản lý kho.</p>
-                <p style="text-align: justify;">Solar Bách Thịnh đại diện hãng thực hiện chính sách bảo hành chính
-                    hãng
-                    ngay
-                    tại Việt Nam.</p>
-                <p style="text-align: justify;">Các trung tâm dịch vụ kỹ thuật Solar Bách Thịnh có mặt tại An Giang,
-                    hỗ
-                    trợ khách hàng, đối tác toàn diện.</p>
-                <p style="text-align: justify;">Tất cả sản phẩm do Solar Bách Thịnh cung cấp đều được bảo hành điện
-                    tử
-                    chính
-                    hãng. Khách hàng có thể cài đặt và kiểm tra thời gian, chính sách bảo hành tại Website SOLAR
-                    BÁCH
-                    THỊNH trên
-                <p style="text-align: justify;">Với hơn 400 nhân sự giàu kinh nghiệm luôn sẵn sàng hỗ trợ 24/7 trước
-                    và
-                    sau bán hàng, Solar Bách Thịnh cam kết đảm bảo chất lượng toàn bộ sản phẩm phân phối trên toàn
-                    quốc,
-                    cung
-                    cấp giải pháp thông minh hỗ trợ khách hàng tiết kiệm thời gian và chi phí.</p>
-                <p style="text-align: justify;">Trở thành đối tác: Solar Bách Thịnh cam kết cung cấp trọn gói sản
-                    phẩm/giải
-                    pháp, đồng hành và hỗ trợ về chính sách, công cụ, đào tạo, khách hàng và kỹ thuật.</p>
-            </div>
+            <div ng-bind-html="trustedHtml"></div>
             <div class="number_partner">
                 <div class="item">
                     <img src="https://datsolar.com/wp-content/uploads/sites/4/2020/07/medal.png" alt="medal">
