@@ -269,17 +269,17 @@
                                 <div class="item">
                                     <div class="item-product d-flex align-items-center">
                                         <div class="img">
-                                            <img ng-src="/upload/{{product.productImagesById[0].imagePath}}"
+                                            <img ng-src="/upload/{{product[0].productImagesById[0].imagePath}}"
                                                  class="img-fluid" style="width: 200px" alt="...">
                                         </div>
                                         <div class="card-body-product">
-                                            <p class="name-product">{{product.productName}}</p>
+                                            <p class="name-product">{{product[0].productName}}</p>
                                             <div class="content-product mb-3">
-                                                <span>Công suất: <b>{{product.powers}}</b></span>
-                                                <span>Hãng: <b>{{product.productBrandsByProductBrandId.brandName}}</b></span>
+                                                <span>Công suất: <b>{{product[0].powers}}</b></span>
+                                                <span>Hãng: <b>{{product[1].brandName}}</b></span>
                                             </div>
                                             <div class="btn-add-cart">
-                                                <a href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product.id}}"
+                                                <a href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product[0].id}}"
                                                    role="button" type="submit" class="btn btn-primary w-100">
                                                     Mua hàng</a>
                                             </div>

@@ -1,34 +1,27 @@
 package com.main.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
-@Data
+@Getter
+@Setter
 public class OrdersDto implements Serializable {
-    
-    String id;
 
-    Integer userId;
+    private String noted;
 
-    Boolean paymentType;
+    private String paymentMethod;
 
-    String orderStatus;
+    private String serviceName;
 
-    String discountId;
+    private String discountId;
 
-    String toName;
+    private Integer shippingFee;
 
-    String toPhone;
+    private double total;
 
-    String toCity;
+    UserPaymentDto user_payment;
 
-    String toDistrict;
-
-    String toWard;
-
-    String toAddress;
-
-    Timestamp dateCreated;
+    ProductCartDto productCartDto;
 }

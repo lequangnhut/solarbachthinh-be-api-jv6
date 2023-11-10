@@ -12,8 +12,6 @@ public interface CartService {
 
     Carts findByCartId(int userId);
 
-    Integer findPriceByUserId(int userId);
-
     Integer countCartByUserId(int userId);
 
     Carts save(Carts carts);

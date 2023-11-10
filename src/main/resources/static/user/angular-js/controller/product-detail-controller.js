@@ -1,4 +1,4 @@
-solar_app.controller('product_details', function ($scope, $http, $location, $sce, UserService, ProductService, CategoryService, CartService) {
+solar_app.controller('product_details', function ($scope, $http, $timeout, $location, $sce, UserService, ProductService, CategoryService, CartService) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
@@ -80,4 +80,28 @@ solar_app.controller('product_details', function ($scope, $http, $location, $sce
                 console.log(response.data)
             });
     }
+
+    // lỗi tài nguyên tĩnh
+    $timeout(function () {
+        var thumbnailImages = document.querySelectorAll('.col-lg-3 img');
+
+        thumbnailImages.forEach(function (thumbnail) {
+            thumbnail.addEventListener('click', function () {
+                var imagePath = this.src;
+
+                var overlay = document.getElementById('overlay');
+                var overlayImage = document.getElementById('overlay-image');
+
+                overlayImage.src = imagePath;
+
+                // Hiển thị overlay
+                overlay.style.display = 'block';
+            });
+        });
+
+        var overlay = document.getElementById('overlay');
+        overlay.addEventListener('click', function () {
+            this.style.display = 'none';
+        });
+    })
 });

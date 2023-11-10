@@ -1,4 +1,4 @@
-solar_app.controller('check-details-controller', function ($scope, $http, CartService, UserService, DiscountService, ShippingService) {
+solar_app.controller('check_details_controller', function ($scope, $http, CartService, UserService, DiscountService, ShippingService) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
@@ -264,7 +264,7 @@ solar_app.controller('check-details-controller', function ($scope, $http, CartSe
     // áp dụng discount
     $scope.apply_discount = function (discount_code_db) {
         DiscountService.findDiscountByDiscountId(discount_code_db.id).then(function successCallback(response) {
-            let discounts = response.data;
+            let discounts = $scope.discount = response.data;
 
             centerAlert('Thành công !', 'Sử dụng mã giảm giá thành công và được giảm giá ' + $scope.formatPrice(discounts.discountCost) + ' ₫ !', 'success')
             // tính lại tiền

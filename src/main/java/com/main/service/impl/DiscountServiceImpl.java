@@ -19,6 +19,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Autowired
     ModelMapper modelMapper;
+
     @Override
     public List<Discounts> findAll() {
         return repo.findAll();
@@ -35,13 +36,8 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public Discounts insert(Discounts discount) {
-        return repo.save(discount);
-    }
-
-    @Override
-    public Discounts update(Discounts discount) {
-        return repo.save(discount);
+    public void save(Discounts discount) {
+        repo.save(discount);
     }
 
     @Override
