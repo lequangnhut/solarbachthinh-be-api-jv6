@@ -86,9 +86,13 @@ public class ProductControllerAD {
 
     @PostMapping("them-san-pham")
     @ResponseBody
-    public String saveProduct(@Validated @ModelAttribute ProductsDto productsDto, BindingResult bindingResult, @RequestParam(value = "file1", required = false) MultipartFile file01, @RequestParam(value = "file2", required = false) MultipartFile file02, @RequestParam(value = "file3", required = false) MultipartFile file03, @RequestParam(value = "file4", required = false) MultipartFile file04, RedirectAttributes redirectAttributes, Model model) {
+    public String saveProduct(@Validated @ModelAttribute ProductsDto productsDto, BindingResult bindingResult,
+                              @RequestParam(value = "file1", required = false) MultipartFile file01,
+                              @RequestParam(value = "file2", required = false) MultipartFile file02,
+                              @RequestParam(value = "file3", required = false) MultipartFile file03,
+                              @RequestParam(value = "file4", required = false) MultipartFile file04,
+                              Model model) {
         String price = request.getParameter("price");
-        System.out.println(productsDto.toString());
         if (bindingResult.hasErrors()) {
             try {
                 ProductImagesDto productImagesDto = new ProductImagesDto();
@@ -365,7 +369,6 @@ public class ProductControllerAD {
                     ProductImages productImages = EntityDtoUtils.convertToEntity(productImagesDto, ProductImages.class);
 
                     showAlert(true);
-                    redirectAttributes.addFlashAttribute("updateSuccess", "Cập nhật dữ liệu thành công");
                     session.setAttribute("toastSuccess", "Cập nhật sản phẩm thành công");
                     productImageService.save(productImages);
                 }

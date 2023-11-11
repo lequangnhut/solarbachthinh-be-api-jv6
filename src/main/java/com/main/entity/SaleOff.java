@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -33,11 +34,11 @@ public class SaleOff {
 
     @Basic
     @Column(name = "start_use")
-    private Timestamp startUse;
+    private LocalDateTime startUse;
 
     @Basic
     @Column(name = "end_use")
-    private Timestamp endUse;
+    private LocalDateTime endUse;
 
     @Basic
     @Column(name = "is_active")
