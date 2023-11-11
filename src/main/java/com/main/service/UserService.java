@@ -18,6 +18,8 @@ public interface UserService {
 
     Users findByToken(String token);
 
+    Users register(Users users);
+
     Users save(Users users);
 
     Users update(Users users);

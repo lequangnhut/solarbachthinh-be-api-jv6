@@ -10,4 +10,18 @@ solar_app.service('OrderService', function ($http) {
             data: data
         })
     }
+
+    this.findByOrderId = function (orderId) {
+        return $http({
+            method: 'GET',
+            url: API_Order + '/findById/' + orderId,
+        })
+    }
+
+    this.findByUserId = function (userId) {
+        return $http({
+            method: 'GET',
+            url: API_Order + '/history-payment/' + userId,
+        })
+    }
 });

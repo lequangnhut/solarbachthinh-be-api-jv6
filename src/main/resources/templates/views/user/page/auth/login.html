@@ -27,28 +27,54 @@
                     <!-- from login -->
                     <div class="login border-end">
                         <div class="login__container">
-                            <form ng-submit="submit_login()"
-                                  method="post"
-                                  name="form-valid"
-                            >
+                            <form ng-submit="submit_login()" method="post" name="formChk">
                                 <div class="mb-3">
                                     <label for="email">Email</label>
-                                    <input type="email" class="form-control" ng-model="email" id="email">
+                                    <input type="email"
+                                           class="form-control"
+                                           name="email"
+                                           ng-model="email"
+                                           ng-class="{ 'is-invalid': formChk.email.$invalid && formChk.email.$touched, 'is-valid': formChk.email.$valid && formChk.email.$touched }"
+                                           id="email"
+                                           required
+                                           ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]+$/">
                                     <small class="text-danger"
-                                           ng-show="form-valid.email.$touched && form-valid.email.$invalid">
-                                        Vui lòng nhập đúng định dạng email !
+                                           ng-show="formChk.email.$touched && formChk.email.$error.required">
+                                        Vui lòng nhập địa chỉ email !
+                                    </small>
+                                    <small class="text-danger"
+                                           ng-show="formChk.email.$touched && formChk.email.$error.pattern">
+                                        Địa chỉ email không đúng định dạng !
                                     </small>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="passwordLogin">Mật Khẩu <span id="togglePasswordLogin" class="eye-icon"><i
-                                            class="fa-solid fa-eye-slash"></i></span>
+                                    <label for="passwordLogin">Mật Khẩu
+                                        <span id="togglePasswordLogin" class="eye-icon">
+                                            <i class="fa-solid fa-eye-slash"></i>
+                                        </span>
                                     </label>
-                                    <input type="password" class="form-control" ng-model="password" id="passwordLogin">
-                                    <p id="passwordError" class="invalid-feedback"></p>
+                                    <input type="password"
+                                           class="form-control"
+                                           name="password"
+                                           ng-model="password"
+                                           id="passwordLogin"
+                                           ng-class="{ 'is-invalid': formChk.password.$invalid && formChk.password.$touched, 'is-valid': formChk.password.$valid && formChk.password.$touched }"
+                                           required
+                                           ng-minlength="6">
+                                    <small class="text-danger"
+                                           ng-show="formChk.password.$touched && formChk.password.$error.required">
+                                        Vui lòng nhập mật khẩu !
+                                    </small>
+                                    <small class="text-danger"
+                                           ng-show="formChk.password.$error.minlength && formChk.password.$dirty">
+                                        Mật khẩu cần ít nhất 6 ký tự.
+                                    </small>
                                 </div>
 
-                                <button type="submit" id="submit-button-login" class="signInButton">Đăng Nhập</button>
+                                <button type="submit" id="submit-button-login" class="signInButton"
+                                        ng-disabled="formChk.$invalid">Đăng Nhập
+                                </button>
                             </form>
                         </div>
                     </div>

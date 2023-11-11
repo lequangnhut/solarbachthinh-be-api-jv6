@@ -1,7 +1,5 @@
 solar_app.controller('payment_controller', function ($scope, OrderService, DiscountService) {
 
-    $scope.paymentMethod = "COD";
-
     $scope.payment_calculator = function () {
         Swal.fire({
             title: 'Cảnh báo ?',
@@ -9,16 +7,31 @@ solar_app.controller('payment_controller', function ($scope, OrderService, Disco
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
+
             cancelButtonColor: '#d33',
             confirmButtonText: 'Đồng ý !',
             cancelButtonText: 'Huỷ !'
         }).then((result) => {
             if (result.isConfirmed) {
-                $scope.userPayment();
-                centerAlert('Thành công !', 'Đơn hàng của bạn đã được đặt thành công !', 'success')
-                window.location.href = '#!/trang-chu'
+                $scope.processPayment();
             }
         })
+    };
+
+    // Trong AngularJS controller
+    $scope.processPayment = function () {
+        if ($scope.paymentMethod === 'COD') {
+            localStorage.removeItem('appliedDiscount');
+            $scope.userPayment();
+            centerAlert('Thành công !', 'Đơn hàng của bạn đã được đặt thành công !', 'success');
+            // Chuyển đến trang chủ
+            window.location.href = '#!/trang-chu';
+        } else if ($scope.paymentMethod === 'TRANSFER') {
+
+            window.location.href = '#!/gio-hang/xac-nhan-thong-tin-don-hang/thanh-toan?tong-tien=' + $scope.total;
+        } else {
+            console.log('Không có lựa chọn thanh toán nào được chọn');
+        }
     };
 
     // lấy ra các thông tin người đặt hàng, thông tin đơn hàng

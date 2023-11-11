@@ -16,12 +16,11 @@ solar_app.controller('product_details', function ($scope, $http, $timeout, $loca
     }
 
     // lấy ra session user đang đăng nhập
-    UserService.findUserBySession()
-        .then(function successCallback(response) {
-            $scope.session_user = response.data;
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
+    UserService.findUserBySession().then(function successCallback(response) {
+        $scope.session_user = response.data;
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
 
     // lấy ra danh sách danh mục
     CategoryService.findAllCategory()

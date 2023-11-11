@@ -1,5 +1,6 @@
 package com.main.service.impl;
 
+import com.main.dto.RegisterDto;
 import com.main.dto.UsersDto;
 import com.main.entity.Users;
 import com.main.service.EmailService;
@@ -23,7 +24,7 @@ import java.util.*;
 @EnableScheduling
 public class EmailServiceImpl implements EmailService {
 
-    Queue<UsersDto> emailQueue = new LinkedList<>();
+    Queue<RegisterDto> emailQueue = new LinkedList<>();
 
     @Autowired
     JavaMailSender sender;
@@ -38,26 +39,26 @@ public class EmailServiceImpl implements EmailService {
     private String email;
 
     @Override
-    public void queueEmailRegister(UsersDto usersDto) {
-        emailQueue.add(usersDto);
+    public void queueEmailRegister(RegisterDto registerDto) {
+        emailQueue.add(registerDto);
     }
 
     @Override
     public void sendMailRegister() {
         while (!emailQueue.isEmpty()) {
-            UsersDto usersDto = emailQueue.poll();
-            Users users = userService.findByEmail(usersDto.getEmail());
+            RegisterDto registerDto = emailQueue.poll();
+            Users users = userService.findByEmail(registerDto.getEmail());
             try {
                 MimeMessage message = sender.createMimeMessage();
                 MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
 
-                helper.setTo(usersDto.getEmail());
+                helper.setTo(registerDto.getEmail());
 
                 Map<String, Object> variables = new HashMap<>();
-                variables.put("email", usersDto.getEmail());
-                variables.put("password", usersDto.getPasswords());
-                variables.put("full_name", usersDto.getFullname());
-                variables.put("phone_number", usersDto.getPhoneNumber());
+                variables.put("email", registerDto.getEmail());
+                variables.put("password", registerDto.getPasswords());
+                variables.put("full_name", registerDto.getFullname());
+                variables.put("phone_number", registerDto.getPhoneNumber());
                 variables.put("token", users.getToken());
                 SimpleDateFormat sdfdate = new SimpleDateFormat("dd-MM-yyyy");
                 SimpleDateFormat sdftime = new SimpleDateFormat("HH:mm:ss");

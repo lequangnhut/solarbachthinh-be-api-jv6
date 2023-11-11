@@ -11,9 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
@@ -41,28 +39,14 @@ public class AuthController {
 
     //xác thực email
     @GetMapping("xac-thuc-email")
-    public String verifyEmail(@RequestParam("token") String token, Model model) {
+    public String verifyEmail(@RequestParam("token") String token) {
         Users users = userService.findByToken(token);
 
         if (users != null) {
-            String email = users.getEmail();
-            model.addAttribute("email", email);
             users.setAcctive(Boolean.TRUE);
             userService.update(users);
         }
-        return "views/user/page/password/verify-success";
-    }
-
-    // post đăng ký
-    @PostMapping("dang-ky/submit")
-    public String registerSave() {
-
-//        Users usersMap = EntityDtoUtils.convertToEntity(usersDto, Users.class);
-//        userService.save(usersMap);
-//
-//        session.setAttribute("centerSuccess", "Đăng ký tài khoản thành công, vui lòng xác thực email !");
-//        emailService.queueEmailRegister(usersDto);
-        return "redirect:#!/dang-nhap";
+        return "redirect:/#!xac-thuc-tai-khoan";
     }
 
     // gán giá trị cho trang tạm để lưu session

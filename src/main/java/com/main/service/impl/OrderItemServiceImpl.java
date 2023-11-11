@@ -6,11 +6,18 @@ import com.main.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrderItemServiceImpl implements OrderItemService {
 
     @Autowired
     OrderItemsRepository orderItemsRepository;
+
+    @Override
+    public List<OrderItems> findByOrderId(String orderId) {
+        return orderItemsRepository.findByOrderId(orderId);
+    }
 
     @Override
     public OrderItems save(OrderItems orderItems) {

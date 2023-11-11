@@ -56,6 +56,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Users register(Users users) {
+        users.setPasswords(passwordEncoder.encode(users.getPasswords()));
+        users.setToken(RandomUtils.RandomToken(20));
+        users.setDateCreated(new Timestamp(System.currentTimeMillis()));
+        users.setAcctive(Boolean.FALSE);
+
+        Roles role = roleRepository.findByNameRole("USER");
+        if (role == null) {
+            role = checkRoleExist();
+        }
+        users.setRoles(List.of(role));
+        return userRepository.save(users);
+    }
+
+    @Override
     public Users save(Users users) {
         users.setPasswords(passwordEncoder.encode(users.getPasswords()));
         users.setToken(RandomUtils.RandomToken(20));

@@ -107,7 +107,6 @@
                                 >
                                     <option value="" selected disabled>Chọn hình thức vận chuyển</option>
                                 </select>
-
                                 <label for="service">Hình thức vận chuyển</label>
                             </div>
 
@@ -127,6 +126,9 @@
                                     Chưa xác định dạng thời gian dự kiến giao hàng
                                 </span>
                             <span class="mb-0" ng-if="intend_time != null">
+                                    {{intend_time | calculatePreviousDate:2}} -
+                                </span>
+                            <span class="mb-0" ng-if="intend_time != null">
                                     {{intend_time | timestampToDateString}}
                                 </span>
                         </div>
@@ -142,7 +144,7 @@
                                      src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
                                      alt="Visa"/>
                                 <img class="me-2" width="45px"
-                                     src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+                                     src="https://i.gyazo.com/884ccd6cfb1e3587623a0815cd228aa2.png"
                                      alt="American Express"/>
                                 <img class="me-2" width="45px"
                                      src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
@@ -165,6 +167,26 @@
                                        placeholder="Mã ưu đãi"
                                        ng-model="discount_code"
                                 >
+                            </div>
+
+                            <div class="row" ng-if="discountApplied && appliedDiscount">
+                                <div class="col-8 col-md-8 col-lg-9">
+                                    <ul class="list-group list-group-flush ps-0">
+                                        <li style="font-size: 14px; list-style: none">
+                                            {{$index + 1}}. {{appliedDiscount.id}} -
+                                            {{formatPrice(appliedDiscount.discountCost)}} ₫
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-5 col-md-5 col-lg-3 d-flex justify-content-end text-dark">
+                                    <ul class="ps-0">
+                                        <li style="font-size: 14px; list-style: none">
+                                            <a href="javascript:void(0)" ng-click="deleteDiscount()" role="button">
+                                                xoá
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                             <div class="go-to-pay w-100 d-flex justify-content-center align-items-center">
                                 <button type="button" ng-click="load_discount()"
@@ -260,41 +282,43 @@
 
                                 <hr class="my-2"/>
 
-                                <div class="mb-3">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio"
-                                                   class="form-check-input"
-                                                   name="categoryPayment"
-                                                   value="COD"
-                                                   ng-model="paymentMethod"
-                                                   ng-disabled="total > 10000000"
-                                                   ng-checked="total <= 10000000"
-                                            >
-                                            <span ng-if="total > 10000000">Thanh toán khi nhận hàng - không khả dụng</span>
-                                            <span ng-if="total <= 10000000">Thanh toán khi nhận hàng.</span>
-                                        </label>
+                                <form name="paymentForm" ng-submit="payment_calculator()" novalidate>
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="radio"
+                                                       class="form-check-input"
+                                                       name="categoryPayment"
+                                                       value="COD"
+                                                       ng-model="paymentMethod"
+                                                       ng-disabled="total > 10000000"
+                                                       required
+                                                >
+                                                <span ng-if="total > 10000000">Thanh toán khi nhận hàng - không khả dụng</span>
+                                                <span ng-if="total <= 10000000">Thanh toán khi nhận hàng.</span>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="radio"
+                                                       class="form-check-input"
+                                                       name="categoryPayment"
+                                                       value="TRANSFER"
+                                                       ng-model="paymentMethod"
+                                                       required
+                                                >
+                                                Thanh toán tiện lợi với ví VNPAY.
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="radio"
-                                                   class="form-check-input"
-                                                   name="categoryPayment"
-                                                   value="TRANSFER"
-                                                   ng-model="paymentMethod"
-                                                   ng-checked="total > 10000000"
-                                            >
-                                            Thanh toán tiện lợi với ví VNPAY.
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="go-to-pay w-100 d-flex justify-content-center align-items-center">
-                                <button ng-click="payment_calculator()" type="button"
-                                        class="btn btn-primary btn-lg btn-block text-center w-100">
-                                    Đặt hàng
-                                </button>
+                                    <div class="go-to-pay w-100 d-flex justify-content-center align-items-center">
+                                        <button type="submit" ng-disabled="paymentForm.$invalid"
+                                                class="btn btn-primary btn-lg btn-block text-center w-100">
+                                            Đặt hàng
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
