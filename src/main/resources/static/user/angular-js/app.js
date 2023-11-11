@@ -2,6 +2,7 @@ let API_Template = '/page/';
 
 // api user
 let API_UserSession = '/api/user/session-user';
+let API_User = '/api/user';
 
 // api category
 let API_GetTop4Category = '/api/product/get-top4-category'
@@ -19,6 +20,16 @@ let API_Cart = '/api/carts';
 
 // api order
 let API_Order = 'api/order';
+
+// api vnpay
+let API_VNPAY = '/api/vnpay'
+
+// api check tồn tại email, số điện thoại
+let API_ExistEmail = '/api/check-duplicate-email/'
+let API_ExistPhone = '/api/check-duplicate-phone/'
+
+// api order item
+let API_OrderItem = '/api/order-item'
 
 // khởi tạo ứng dụng
 let solar_app = angular.module('solar_app', ['ngRoute'])
@@ -93,17 +104,35 @@ solar_app.config(function ($routeProvider) {
         })
         .when('/lich-su-mua-hang', {
             templateUrl: API_Template + 'history/history-payment.html',
-            controller: ''
+            controller: 'history_controller'
+        })
+
+        // vnpay
+        .when('/gio-hang/xac-nhan-thong-tin-don-hang/thanh-toan', {
+            templateUrl: API_Template + 'vnpay/payment-vnpay.html',
+            controller: 'vnpay_controller'
+        })
+        .when('/gio-hang/xac-nhan-thong-tin-don-hang/thanh-toan/thanh-cong', {
+            templateUrl: API_Template + 'vnpay/payment-success.html',
+            controller: 'create_order_controller'
+        })
+        .when('/gio-hang/xac-nhan-thong-tin-don-hang/thanh-toan/that-bai', {
+            templateUrl: API_Template + 'vnpay/payment-failed.html',
+            controller: 'create_order_controller'
         })
 
         // auth
         .when('/dang-nhap', {
             templateUrl: API_Template + 'auth/login.html',
-            controller: 'login_controller'
+            controller: 'auth_controller'
         })
         .when('/dang-ky', {
             templateUrl: API_Template + 'auth/sign-up.html',
-            controller: 'login_controller'
+            controller: 'auth_controller'
+        })
+        .when('/xac-thuc-tai-khoan', {
+            templateUrl: API_Template + 'auth/verify-success.html',
+            controller: 'auth_controller'
         })
         .when('/thong-tin', {
             templateUrl: API_Template + 'profile/user-profile.html',

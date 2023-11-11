@@ -1,9 +1,12 @@
 package com.main.controller.restcontroller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.main.dto.RegisterDto;
 import com.main.dto.UsersDto;
 import com.main.entity.Users;
+import com.main.service.EmailService;
 import com.main.service.UserService;
+import com.main.utils.EntityDtoUtils;
 import com.main.utils.SessionAttr;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api")
@@ -20,6 +25,9 @@ public class UserAPI {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    EmailService emailService;
 
     @Autowired
     HttpSession session;
@@ -63,10 +71,23 @@ public class UserAPI {
         }
     }
 
-    @PostMapping("user")
-    public Users addUser(@RequestBody Users users) {
-        users.setAcctive(Boolean.FALSE);
-        return userService.save(users);
+    @GetMapping("user/find-by-email/{email}")
+    public ResponseEntity<Map<String, Object>> getUser(@PathVariable String email) {
+        System.out.println(email);
+        Map<String, Object> response = new HashMap<>();
+        Users users = userService.findByEmail(email);
+        response.put("users", users);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("user/create-auth")
+    public Users addUser(@RequestBody RegisterDto registerDto) {
+        // send mail
+        emailService.queueEmailRegister(registerDto);
+
+        // mapper và lưu đối tượng user
+        Users user = EntityDtoUtils.convertToEntity(registerDto, Users.class);
+        return userService.register(user);
     }
 
     @PutMapping("user/{userId}")

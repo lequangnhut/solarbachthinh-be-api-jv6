@@ -1,0 +1,72 @@
+solar_app.controller('history_controller', function ($scope, UserService, OrderService, OrderItermService, DiscountService) {
+
+    $scope.formatPrice = function (price) {
+        return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
+    };
+
+    UserService.findUserBySession().then(function successCallback(response) {
+        $scope.users = response.data;
+
+        OrderService.findByUserId($scope.users.id).then(function successCallback(response) {
+            $scope.history_order = response.data;
+        });
+    });
+
+    $scope.getInfoOrder = function (orderId) {
+        let combinedData = [];
+        let totalAmount = 0;
+        let shippingFee = 0;
+        let subTotal = 0;
+        let discountId;
+
+        OrderService.findByOrderId(orderId).then(function successCallback(response) {
+            discountId = response.data.discountId;
+            $scope.order = response.data;
+
+            if (discountId !== null) {
+                DiscountService.findDiscountByDiscountId(discountId).then(function successCallback(response) {
+                    $scope.discountCost = response.data.discountCost;
+                });
+            } else {
+                $scope.discountCost = 0;
+            }
+
+            OrderItermService.findByOrderId($scope.order.id).then(function successCallback(response) {
+                let listOrderItemAndProduct = $scope.order_items = response.data;
+
+                for (let i = 0; i < listOrderItemAndProduct.length; i++) {
+                    let data = {
+                        product: listOrderItemAndProduct[i][1],
+                        orderItem: listOrderItemAndProduct[i][0]
+                    };
+                    combinedData.push(data);
+
+                    // tạm tính
+                    subTotal += (data.orderItem.quantity * data.product.price);
+                    shippingFee = $scope.order.orderShipCost;
+                    // Tính tổng tiền dựa trên số lượng và giá của orderItem
+                    totalAmount = subTotal - $scope.discountCost + shippingFee;
+                }
+
+                $scope.combinedData = combinedData;
+                $scope.subTotal = subTotal;
+                $scope.shippingFee = shippingFee;
+                $scope.totalAmount = totalAmount;
+            });
+        });
+
+        // Watch for changes in discountId and update discountCost accordingly
+        $scope.$watch('discountId', function (newDiscountId, oldDiscountId) {
+            if (newDiscountId !== oldDiscountId) {
+                if (newDiscountId !== null) {
+                    DiscountService.findDiscountByDiscountId(newDiscountId).then(function successCallback(response) {
+                        $scope.discountCost = response.data.discountCost;
+                    });
+                } else {
+                    // If there's no discount, set discountCost to 0
+                    $scope.discountCost = 0;
+                }
+            }
+        });
+    };
+});

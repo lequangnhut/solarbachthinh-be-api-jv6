@@ -1,10 +1,11 @@
 package com.main.service;
 
+import com.main.dto.RegisterDto;
 import com.main.dto.UsersDto;
 
 public interface EmailService {
 
-    void queueEmailRegister(UsersDto usersDto);
+    void queueEmailRegister(RegisterDto registerDto);
 
     void sendMailRegister();
 

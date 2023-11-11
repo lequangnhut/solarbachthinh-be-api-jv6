@@ -9,7 +9,7 @@ solar_app.service('ProductService', function ($http) {
     this.findProductByProductId = function (productId) {
         return $http({
             method: 'GET',
-            url: API_Product + '/' + 'find-by-id/' + productId
+            url: API_Product + '/find-by-id/' + productId
         })
     };
 
@@ -19,4 +19,11 @@ solar_app.service('ProductService', function ($http) {
             url: API_Product + '/' + categoryId
         })
     }
+
+    this.findAllByProductId = function (productId) {
+        return $http({
+            method: 'GET',
+            url: API_Product + '/findByProductId/' + productId
+        })
+    };
 });

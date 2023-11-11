@@ -10,21 +10,20 @@ import com.main.service.CartService;
 import com.main.service.OrderItemService;
 import com.main.service.OrderService;
 import com.main.utils.EntityDtoUtils;
-import com.main.utils.RandomUtils;
 import com.main.utils.SessionAttr;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("api")
 public class OrderAPI {
 
@@ -40,9 +39,21 @@ public class OrderAPI {
     @Autowired
     HttpSession session;
 
+    @GetMapping("order/history-payment/{userId}")
+    private List<Orders> findAllByUserId(@PathVariable int userId) {
+        return orderService.findByUserId(userId);
+    }
+
+    @GetMapping("order/findById/{orderId}")
+    private ResponseEntity<Orders> findByOrderId(@PathVariable String orderId) {
+        Orders order = orderService.findByOrderId(orderId);
+        return ResponseEntity.ok().body(order);
+    }
+
     @PostMapping(value = "order/create-order", consumes = {"application/json;charset=UTF-8"})
     private void createOrder(@RequestBody OrdersDto ordersDto) {
-        String orderId = RandomUtils.RandomToken(15);
+        System.out.println("cccc");
+        String orderId = ordersDto.getOrderId();
         BigDecimal price = BigDecimal.valueOf(ordersDto.getTotal());
         String discountId = ordersDto.getDiscountId();
         boolean paymentType = "COD".equals(ordersDto.getPaymentMethod());
@@ -55,11 +66,10 @@ public class OrderAPI {
         if (StringUtils.isNotEmpty(discountId)) {
             orders.setDiscountId(discountId);
         }
-        orders.setOrderShipCost(BigDecimal.valueOf(ordersDto.getShippingFee()));
-        orders.setPaymentStatus(paymentType);
         orders.setPaymentType(paymentType);
+        orders.setPaymentStatus(paymentType);
         orders.setOrderStatus("Đã đặt hàng");
-        orders.setOrderShipCost(price);
+        orders.setOrderShipCost(BigDecimal.valueOf(ordersDto.getShippingFee()));
 
         UserPaymentDto userPayment = ordersDto.getUser_payment();
         if (userPayment != null) {

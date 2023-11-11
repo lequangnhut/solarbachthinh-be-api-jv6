@@ -28,6 +28,11 @@ public class ProductAPI {
         return productService.findAll();
     }
 
+    @GetMapping("product/findByProductId/{productId}")
+    public List<Products> findByProductId(@PathVariable String productId) {
+        return productService.findAllByProductId(productId);
+    }
+
     // tìm ra product bằng mã
     @GetMapping("product/find-by-id/{productId}")
     public ResponseEntity<Products> getAccountById(@PathVariable String productId) {
