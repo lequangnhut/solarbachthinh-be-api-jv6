@@ -1,6 +1,7 @@
 package com.main.service.impl;
 
 import com.main.entity.Products;
+import com.main.repository.ProductBrandRepository;
 import com.main.repository.ProductsRepository;
 import com.main.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ProductsRepository productsRepository;
-
 
     @Override
     public List<Products> findAll() {
@@ -59,5 +59,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean doesProductExist(String productId) {
         return productsRepository.existsById(productId);
+    }
+
+    @Override
+    public List<Products> findByProductNameContaining(String search) {
+        return productsRepository.findByProductNameContaining(search);
+    }
+
+    @Override
+    public List<Products> findByCategoryBProductTypeByProducts(int categoryId) {
+        return productsRepository.findByCategoryBProductTypeByProducts(categoryId);
     }
 }

@@ -49,4 +49,7 @@ solar_app.controller("swiper", function ($scope, $timeout) {
     $timeout(function () {
         initializeAllSwipers();
     });
+
 });
+
+

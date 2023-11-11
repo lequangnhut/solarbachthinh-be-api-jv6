@@ -1,6 +1,7 @@
 package com.main.service;
 
 import com.main.entity.Products;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,4 +25,9 @@ public interface ProductService {
     void save(Products products);
 
     boolean doesProductExist(String productId);
+
+    List<Products> findByProductNameContaining(String search);
+
+    List<Products> findByCategoryBProductTypeByProducts(int categoryId);
+
 }

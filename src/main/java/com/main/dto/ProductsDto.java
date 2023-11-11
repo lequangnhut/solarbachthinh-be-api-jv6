@@ -8,6 +8,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Getter
@@ -52,4 +53,7 @@ public class ProductsDto implements Serializable {
 
     @NotNull(message = "Date Created không được trống")
     Timestamp dateCreated;
+
+    String brandName;
+
 }

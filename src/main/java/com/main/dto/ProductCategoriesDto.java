@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 public class ProductCategoriesDto implements Serializable {
@@ -15,4 +16,6 @@ public class ProductCategoriesDto implements Serializable {
     String categoryImage;
 
     Boolean isActive;
+
+    List<ProductTypesDto> productTypes;
 }
