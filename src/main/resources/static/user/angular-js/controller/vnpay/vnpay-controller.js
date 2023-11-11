@@ -1,4 +1,4 @@
-solar_app.controller('vnpay_controller', function ($scope, $location, $routeParams, UserService, OrderCodeService, VnpayService) {
+solar_app.controller('vnpay_controller', function ($scope, $location, UserService, OrderCodeService, VnpayService) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
@@ -27,11 +27,4 @@ solar_app.controller('vnpay_controller', function ($scope, $location, $routePara
             console.log(response.data);
         });
     }
-
-    // bắt đầu tạo đơn hàng
-    $scope.orderInfo = $routeParams.orderInfo;
-    $scope.paymentTime = $routeParams.paymentTime;
-    $scope.totalPrice = $routeParams.totalPrice;
-    $scope.bankCode = $routeParams.bankCode;
-    $scope.transactionId = $routeParams.transactionId;
 });

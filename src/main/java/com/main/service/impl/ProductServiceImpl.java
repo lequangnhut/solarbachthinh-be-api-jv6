@@ -22,23 +22,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Products> findByProductTypeId(int productTypeId) {
-        return productsRepository.findByProductTypeId(productTypeId);
+    public List<Products> findAllByProductId(String productId) {
+        return productsRepository.findAllById(productId);
     }
 
     @Override
     public List<Object[]> findTopProductByCategoryId(int categoryId) {
         return productsRepository.findByCategoryId(categoryId);
-    }
-
-    @Override
-    public List<Products> findByProductTypeId(long productTypeId) {
-        return null;
-    }
-
-    @Override
-    public List<Products> findByCategoryId(Long categoryId) {
-        return null;
     }
 
     @Override

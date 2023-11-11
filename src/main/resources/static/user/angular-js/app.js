@@ -114,11 +114,11 @@ solar_app.config(function ($routeProvider) {
         })
         .when('/gio-hang/xac-nhan-thong-tin-don-hang/thanh-toan/thanh-cong', {
             templateUrl: API_Template + 'vnpay/payment-success.html',
-            controller: 'vnpay_controller'
+            controller: 'create_order_controller'
         })
         .when('/gio-hang/xac-nhan-thong-tin-don-hang/thanh-toan/that-bai', {
             templateUrl: API_Template + 'vnpay/payment-failed.html',
-            controller: 'vnpay_controller'
+            controller: 'create_order_controller'
         })
 
         // auth

@@ -1,4 +1,4 @@
-solar_app.controller('check_details_controller', function ($scope, $http, $window, CartService, UserService, DiscountService, ShippingService) {
+solar_app.controller('check_details_controller', function ($scope, $http, $timeout, $window, CartService, UserService, DiscountService, ShippingService) {
 
     // Kiểm tra xem đã có thông tin mã giảm giá trong local storage chưa
     $scope.discountApplied = localStorage.getItem('appliedDiscount') !== null;
@@ -16,13 +16,14 @@ solar_app.controller('check_details_controller', function ($scope, $http, $windo
         provinceName: null, districtName: null, wardName: null
     };
 
+    $scope.showDiscountHTML = true;
     $scope.discount_code = "";
 
     // lấy ra object giỏ hàng sp, thương hiệu, img
     CartService.findAllCart().then(function successCallback(response) {
         let object_cart = $scope.object_cart = response.data;
         // cho nó giá trị tiền ship sẳn
-        totalShippingFee = 300000
+        totalShippingFee = 0
         $scope.calculate_total(object_cart, $scope.appliedDiscount);
     }, function errorCallback(response) {
         console.log(response.data);
@@ -283,11 +284,11 @@ solar_app.controller('check_details_controller', function ($scope, $http, $windo
         DiscountService.findDiscountByDiscountId(discount_code_db.id).then(function successCallback(response) {
             let discounts = $scope.discount = response.data;
 
-            // Lưu thông tin mã giảm giá vào local storage
-            localStorage.setItem('appliedDiscount', JSON.stringify(discounts));
-
             // Đặt lại biến để hiện component
             $scope.discountApplied = true;
+
+            // Lưu thông tin mã giảm giá vào local storage
+            localStorage.setItem('appliedDiscount', JSON.stringify(discounts));
 
             centerAlert('Thành công !', 'Sử dụng mã giảm giá thành công và được giảm giá ' + $scope.formatPrice(discounts.discountCost) + ' ₫ !', 'success')
 
@@ -301,12 +302,13 @@ solar_app.controller('check_details_controller', function ($scope, $http, $windo
     // Xoá discount khỏi localsoted nếu người dùng muốn
     $scope.deleteDiscount = function () {
         localStorage.removeItem('appliedDiscount');
+
         // Gọi hàm tính lại tiền nếu cần
         $scope.calculate_total($scope.object_cart, null);
 
         // Đặt lại biến để ẩn component
         $scope.discountApplied = false;
-        $scope.appliedDiscount = {}; // Xóa dữ liệu discount
+        $scope.appliedDiscount = null;
     }
 
     // tính tổng giá tiền và tạm tính
@@ -326,5 +328,10 @@ solar_app.controller('check_details_controller', function ($scope, $http, $windo
         $scope.discount = discount;
         $scope.shippingFee = shippingFee;
         $scope.total = total;
+
+        //lấy mã giãm giá
+        if (discounts !== null) {
+            $scope.discountId = discounts.id;
+        }
     }
 });

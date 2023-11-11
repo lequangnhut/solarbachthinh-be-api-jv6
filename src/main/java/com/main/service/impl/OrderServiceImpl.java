@@ -16,7 +16,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Orders> findByUserId(int userId) {
-        return orderRepository.findByUserId(userId);
+        return orderRepository.findByUserIdOrderByDateCreatedDesc(userId);
     }
 
     @Override

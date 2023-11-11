@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductsRepository extends JpaRepository<Products, String> {
 
-    List<Products> findByProductTypeId(int productTypeId);
+    List<Products> findAllById(String productId);
 
     @Query("SELECT p, br FROM Products p " +
             "JOIN p.productBrandsByProductBrandId br " +

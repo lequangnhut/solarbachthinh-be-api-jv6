@@ -9,13 +9,9 @@ public interface ProductService {
 
     List<Products> findAll();
 
-    List<Products> findByProductTypeId(int productTypeId);
+    List<Products> findAllByProductId(String productId);
 
     List<Object[]> findTopProductByCategoryId(int categoryId);
-
-    List<Products> findByProductTypeId(long productTypeId);
-
-    List<Products> findByCategoryId(Long categoryId);
 
     Products findProductByProductId(String productId);
 

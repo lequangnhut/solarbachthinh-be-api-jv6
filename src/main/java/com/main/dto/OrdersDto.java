@@ -9,6 +9,8 @@ import java.io.Serializable;
 @Setter
 public class OrdersDto implements Serializable {
 
+    private String orderId;
+
     private String noted;
 
     private String paymentMethod;

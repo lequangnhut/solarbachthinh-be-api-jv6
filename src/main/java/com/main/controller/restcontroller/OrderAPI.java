@@ -10,7 +10,6 @@ import com.main.service.CartService;
 import com.main.service.OrderItemService;
 import com.main.service.OrderService;
 import com.main.utils.EntityDtoUtils;
-import com.main.utils.GenerateOrderCode;
 import com.main.utils.SessionAttr;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
@@ -53,7 +52,8 @@ public class OrderAPI {
 
     @PostMapping(value = "order/create-order", consumes = {"application/json;charset=UTF-8"})
     private void createOrder(@RequestBody OrdersDto ordersDto) {
-        String orderId = GenerateOrderCode.generateOrderCode();
+        System.out.println("cccc");
+        String orderId = ordersDto.getOrderId();
         BigDecimal price = BigDecimal.valueOf(ordersDto.getTotal());
         String discountId = ordersDto.getDiscountId();
         boolean paymentType = "COD".equals(ordersDto.getPaymentMethod());
@@ -66,11 +66,10 @@ public class OrderAPI {
         if (StringUtils.isNotEmpty(discountId)) {
             orders.setDiscountId(discountId);
         }
-        orders.setOrderShipCost(BigDecimal.valueOf(ordersDto.getShippingFee()));
-        orders.setPaymentStatus(paymentType);
         orders.setPaymentType(paymentType);
+        orders.setPaymentStatus(paymentType);
         orders.setOrderStatus("Đã đặt hàng");
-        orders.setOrderShipCost(price);
+        orders.setOrderShipCost(BigDecimal.valueOf(ordersDto.getShippingFee()));
 
         UserPaymentDto userPayment = ordersDto.getUser_payment();
         if (userPayment != null) {

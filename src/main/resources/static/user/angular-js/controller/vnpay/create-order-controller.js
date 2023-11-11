@@ -1,45 +1,22 @@
-solar_app.controller('payment_controller', function ($scope, OrderService, OrderCodeService, DiscountService) {
+solar_app.controller('create_order_controller', function ($scope, $location, $routeParams, UserService, DiscountService, OrderService) {
 
-    $scope.payment_calculator = function () {
-        Swal.fire({
-            title: 'Cảnh báo ?',
-            text: "Bạn có chắc chắn muốn đặt hàng không ?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Đồng ý !',
-            cancelButtonText: 'Huỷ !'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $scope.processPayment();
-            }
-        })
+    $scope.formatPriceVNPAY = function (price) {
+        let formattedPrice = price / 100;
+        return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(formattedPrice);
     };
 
-    // Trong AngularJS controller
-    $scope.processPayment = function () {
-        if ($scope.paymentMethod === 'COD') {
-            $scope.userPayment();
-            centerAlert('Thành công !', 'Đơn hàng của bạn đã được đặt thành công !', 'success');
-            // Chuyển đến trang chủ
-            window.location.href = '#!/trang-chu';
-
-            // Xoá local mã giảm giá đi
-            localStorage.removeItem('appliedDiscount');
-        } else if ($scope.paymentMethod === 'TRANSFER') {
-            // chuyêển đến trang xác nhận thông tin để thanh toán
-            window.location.href = '#!/gio-hang/xac-nhan-thong-tin-don-hang/thanh-toan?tong-tien=' + $scope.total;
-        } else {
-            console.log('Không có lựa chọn thanh toán nào được chọn');
-        }
-    };
+    // thông tin của vnpay trả về
+    $scope.orderInfo = $routeParams.orderInfo;
+    $scope.paymentTime = $routeParams.paymentTime;
+    $scope.totalPrice = $routeParams.totalPrice;
+    $scope.bankCode = $routeParams.bankCode;
+    $scope.transactionId = $routeParams.transactionId;
 
     // lấy ra các thông tin người đặt hàng, thông tin đơn hàng
     $scope.userPayment = function () {
         let productCartDto = {
-            cartsList: [], productsList: []
+            cartsList: [],
+            productsList: []
         };
 
         for (let i = 0; i < $scope.object_cart.length; i++) {
@@ -57,7 +34,7 @@ solar_app.controller('payment_controller', function ($scope, OrderService, Order
         };
 
         const data = {
-            orderId: OrderCodeService.generateOrderCode(),
+            orderId: $scope.orderInfo,
             user_payment: $scope.user_payment,
             productCartDto: productCartDto,
             discountId: $scope.discountId,

@@ -19,7 +19,7 @@
     <div class="container px-lg-0">
         <div class="row g-0 mx-lg-0">
             <div class="col-lg-12 py-5 wow fadeIn" data-wow-delay="0.5s">
-                <h4 class="text-center">Lịch sử mua hàng - khách hàng <span th:text="${account.fullname}"></span></h4>
+                <h4 class="text-center">Lịch sử mua hàng - khách hàng {{users.fullname}}</h4>
 
                 <div class="table-responsive mt-4">
                     <table id="sortHistoryOrder" class="table">
@@ -36,16 +36,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="order in orders">
+                        <tr ng-repeat="order in history_order">
                             <td>{{$index + 1}}</td>
                             <td>{{order.id}}</td>
                             <td>{{order.toName}}</td>
                             <td>{{order.toPhone}}</td>
                             <td>{{order.toProvince}}</td>
                             <td>{{order.orderStatus}}</td>
-                            <td>{{order.paymentStatus ? 'Thanh toán qua ví VNPAY' : 'Thanh toán khi nhận hàng'}}</td>
+                            <td>{{order.paymentStatus ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}</td>
                             <td>
-                                <a class="show-info" ng-click="getInfoOrder(order.id)" data-bs-toggle="modal"
+                                <a href="javascript:void(0)" class="show-info" ng-click="getInfoOrder(order.id)"
+                                   data-bs-toggle="modal"
                                    data-bs-target="#modal-confirm-data">
                                     Xem chi tiết
                                 </a>
@@ -53,9 +54,8 @@
                         </tr>
                         </tbody>
                     </table>
-                    <h6 class="text-center text-secondary mb-5" ng-if="!orders || orders.lenght === 0">Bạn chưa có lịch
-                        sử mua hàng, nhấn <a
-                                href="#!/san-pham">vào đây</a> để mua hàng
+                    <h6 class="text-center text-secondary mb-5" ng-if="!history_order || history_order.length === 0">
+                        Bạn chưa có lịch sử mua hàng, nhấn <a href="#!/san-pham">vào đây</a> để mua hàng
                     </h6>
                 </div>
             </div>
@@ -121,21 +121,21 @@
 
                         <div class="mb-3">
                             <label for="datePayment" class="form-label">Ngày đặt hàng</label>
-                            <input type="text" class="form-control" id="datePayment" ng-value="order.dateCreated"
-                                   readonly>
+                            <input type="text" class="form-control" id="datePayment"
+                                   ng-value="order.dateCreated | vietnameseDateTime" readonly>
                         </div>
 
                         <div class="mb-3">
                             <label for="payment" class="form-label">Hình thức thanh toán</label>
                             <input type="text" class="form-control" id="payment"
-                                   ng-value="order.paymentType ? 'Thanh toán qua ví VNPAY	' : 'Thanh toán khi nhận hàng'"
+                                   ng-value="order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'"
                                    readonly>
                         </div>
 
                         <div class="mb-3">
                             <label for="statusPay" class="form-label">Trang thái thanh toán</label>
                             <input type="text" class="form-control" id="statusPay"
-                                   ng-value="order.paymentStatus ? 'Đã thanh toán' : 'Chưa thanh toán'" readonly>
+                                   ng-value="order.paymentStatus ? 'Chưa thanh toán' : 'Đã thanh toán'" readonly>
                         </div>
 
                         <div class="mb-3">
@@ -148,7 +148,9 @@
                 <div class="col-12">
                     <div class="ms-3 mx-3 mb-4">
                         <label for="noted">Ghi chú</label>
-                        <textarea class="form-control" id="noted" rows="2" readonly>{{order.orderNote}}</textarea>
+                        <textarea class="form-control" id="noted" rows="2"
+                                  ng-value="order.orderNote ? order.orderNote : 'Không có thông tin ghi chú'" readonly>
+                        </textarea>
                     </div>
                 </div>
                 <div class="col-12 col-lg-12">
@@ -160,21 +162,29 @@
                             <th>Tên sản phẩm</th>
                             <th>Giá tiền</th>
                             <th>Số lượng</th>
-                            <th>Tổng tiền</th>
+                            <th>Giá tiền</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="order_item in order_items">
+                        <tr ng-repeat="data in combinedData">
                             <td>{{$index + 1}}</td>
-                            <!--                            <td>{{order_item}}</td>-->
-                            <td></td>
-                            <td></td>
+                            <td>{{data.product.productName}}</td>
+                            <td>{{formatPrice(data.product.price)}} ₫</td>
+                            <td>{{data.orderItem.quantity}}</td>
+                            <td>{{formatPrice(data.product.price)}} ₫</td>
                         </tr>
                         </tbody>
                     </table>
-                    <h6 class="d-flex justify-content-end mx-4">Giảm giá:&ensp;<span id="giamGia"></span>
+                    <h6 class="d-flex justify-content-end mx-4">Tạm tính:&ensp;
+                        <span>{{formatPrice(subTotal)}} ₫</span>
                     </h6>
-                    <h6 class="d-flex justify-content-end mx-4">Tổng thanh toán:&ensp;<span id="totalPricePay"></span>
+                    <h6 class="d-flex justify-content-end mx-4">Giảm giá:&ensp;
+                        <span>{{formatPrice(discountCost)}} ₫</span>
+                    </h6>
+                    <h6 class="d-flex justify-content-end mx-4">Phí vận chuyển:&ensp;
+                        <span>{{formatPrice(shippingFee)}} ₫</span>
+                    </h6>
+                    <h6 class="d-flex justify-content-end mx-4">Tổng thanh toán:&ensp;<span>{{formatPrice(totalAmount)}} ₫</span>
                     </h6>
                 </div>
             </div>
