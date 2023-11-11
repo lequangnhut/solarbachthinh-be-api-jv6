@@ -3,6 +3,7 @@ package com.main.controller.admin;
 import com.github.javafaker.Faker;
 import com.main.dto.ProductImagesDto;
 import com.main.dto.ProductsDto;
+import com.main.dto.ResponseObject;
 import com.main.entity.ProductImages;
 import com.main.entity.Products;
 import com.main.entity.Users;
@@ -86,12 +87,13 @@ public class ProductControllerAD {
 
     @PostMapping("them-san-pham")
     @ResponseBody
-    public String saveProduct(@Validated @ModelAttribute ProductsDto productsDto, BindingResult bindingResult,
+    public ResponseObject saveProduct(@Validated @ModelAttribute ProductsDto productsDto, BindingResult bindingResult,
                               @RequestParam(value = "file1", required = false) MultipartFile file01,
                               @RequestParam(value = "file2", required = false) MultipartFile file02,
                               @RequestParam(value = "file3", required = false) MultipartFile file03,
                               @RequestParam(value = "file4", required = false) MultipartFile file04,
                               Model model) {
+        ResponseObject responseObject = new ResponseObject();
         String price = request.getParameter("price");
         if (bindingResult.hasErrors()) {
             try {
@@ -212,13 +214,15 @@ public class ProductControllerAD {
 
                     productImageService.save(productImages);
                 }
-
-                return response.put("result", "success");
+                responseObject = new ResponseObject("200", "Thêm sản phẩm thành công", null);
+                return responseObject;
             } catch (Exception io) {
-                return response.put("result", "error");
+                responseObject = new ResponseObject("404", "Lỗi không thể thêm dữ liệu vui lòng đợi trong giây lát", null);
+                return responseObject;
             }
         } else {
-            return response.put("result", "error");
+            responseObject = new ResponseObject("400", "Không thể thêm dữ liệu vui lòng kiểm tra lại dữ liệu", null);
+            return responseObject;
         }
     }
 
@@ -243,8 +247,9 @@ public class ProductControllerAD {
 
     @PostMapping("sua-san-pham/{id}")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> saveEditProduct(@Validated @ModelAttribute ProductsDto productsDto, BindingResult bindingResult, @RequestParam(value = "file1", required = false) MultipartFile file01, @RequestParam(value = "file2", required = false) MultipartFile file02, @RequestParam(value = "file3", required = false) MultipartFile file03, @RequestParam(value = "file4", required = false) MultipartFile file04, @PathVariable("id") String productIdPath, RedirectAttributes redirectAttributes, Model model) {
+    public ResponseObject saveEditProduct(@Validated @ModelAttribute ProductsDto productsDto, BindingResult bindingResult, @RequestParam(value = "file1", required = false) MultipartFile file01, @RequestParam(value = "file2", required = false) MultipartFile file02, @RequestParam(value = "file3", required = false) MultipartFile file03, @RequestParam(value = "file4", required = false) MultipartFile file04, @PathVariable("id") String productIdPath, RedirectAttributes redirectAttributes, Model model) {
         String price = request.getParameter("price");
+        ResponseObject responseObject = new ResponseObject();
         Optional<Products> product = productService.findByProductId(productIdPath);
 
         ProductsDto productsDto1 = EntityDtoUtils.convertToDto(product.get(), ProductsDto.class);
@@ -258,7 +263,6 @@ public class ProductControllerAD {
                 productsDto.setDateCreated(new Timestamp(System.currentTimeMillis()));
                 productsDto.setId(productIdPath);
                 productsDto.setPrice(ReplaceUtils.replacePrice(price));
-                productsDto.setIsStatusDelete("Đang kinh doanh");
 
                 Products save = EntityDtoUtils.convertToEntity(productsDto, Products.class);
 
@@ -369,18 +373,18 @@ public class ProductControllerAD {
                     ProductImages productImages = EntityDtoUtils.convertToEntity(productImagesDto, ProductImages.class);
 
                     showAlert(true);
-                    session.setAttribute("toastSuccess", "Cập nhật sản phẩm thành công");
                     productImageService.save(productImages);
                 }
-
-                response.put("result", "success");
+                responseObject = new ResponseObject("200", "Sửa sản phẩm thành công", null);
+                return responseObject;
             } catch (Exception io) {
-                response.put("result", "error");
+                responseObject = new ResponseObject("404", "Lỗi không thể thêm dữ liệu vui lòng đợi trong giây lát", null);
+                return responseObject;
             }
         } else {
-            response.put("result", "error");
+            responseObject = new ResponseObject("400", "Không thể thêm dữ liệu vui lòng kiểm tra lại dữ liệu", null);
+            return responseObject;
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("xoa-san-pham/{id}")

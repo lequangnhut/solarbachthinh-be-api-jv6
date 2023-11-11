@@ -7,7 +7,6 @@ function getFormData() {
     const quantity = document.getElementById("quantity").value;
     const price = document.getElementById("price").value;
     const warranty = document.getElementById("warranty").value;
-    // const saleOff = document.getElementById("saleOff").value;
     const brandId = document.getElementById("brandId").value;
     const productTypeId = document.getElementById("productTypeId").value;
     const isStatusDelete = document.getElementById("isStatusDelete").value;
@@ -20,7 +19,6 @@ function getFormData() {
     formData.append("quantity", quantity);
     formData.append("price", price);
     formData.append("warranty", warranty);
-    // formData.append("saleOff", saleOff);
     formData.append("productBrandId", brandId);
     formData.append("productTypeId", productTypeId);
     formData.append("isStatusDelete", isStatusDelete);
@@ -69,11 +67,58 @@ document.getElementById("submitted-button").addEventListener("click", function (
         processData: false,
         success: function (response) {
             console.log(response.result)
-            if (response.result === "success") {
-                window.location.href = 'http://localhost:8080/quan-tri/san-pham';
-            } else if (response === "error") {
-                Swal.fire({
-                    icon: 'error', title: 'Lỗi...', text: 'Vui lòng kiểm tra lại dữ liệu!',
+            if (response.status === "200") {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: response.message
+                });
+
+                setTimeout(function() {
+                    window.location.href = 'http://localhost:8080/quan-tri/san-pham';
+                }, 1100);
+
+            } else if (response.status === "400") {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: response.message
+                });
+            } else if (response.status === "404") {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: response.message
                 });
             }
         },

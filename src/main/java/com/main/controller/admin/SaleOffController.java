@@ -45,8 +45,6 @@ public class SaleOffController {
     @Autowired
     ProductService productService;
 
-    String pathRedirectPageEdit = "views/admin/page/crud/sale-off/sale-off-edit";
-
     @GetMapping
     public String showDiscount(Model model) {
         model.addAttribute("listProductSaleOff", saleOffService.findAll());
@@ -70,20 +68,15 @@ public class SaleOffController {
         if (productService.doesProductExist(id)) {
             if (saleOffService.doseExitsProductId(id)) {
                 saleOff = saleOffService.findByProductId(id);
-                responseObject.setStatus("200");
-                responseObject.setMessage("Đã tìm thấy id");
-                responseObject.setData(saleOff);
+
+                responseObject = new ResponseObject("200" , "Đã tìm thấy thông tin sản phẩm", saleOff);
             } else {
-                responseObject.setStatus("200");
-                responseObject.setMessage("Đã tìm thấy id");
-                responseObject.setData(null);
+                responseObject = new ResponseObject("200" , "Đã tìm thấy thông tin sản phẩm", null);
             }
         } else {
-            responseObject.setStatus("404");
-            responseObject.setMessage("Lỗi không tìm thấy sản phẩm");
+            responseObject = new ResponseObject("404" , "Lỗi không tìm thấy sản phẩm", null);
         }
 
-        System.out.println(responseObject.toString());
         return responseObject;
     }
 
@@ -144,7 +137,7 @@ public class SaleOffController {
                 SaleOff saleOff = EntityDtoUtils.convertToEntity(saleOffDto, SaleOff.class);
                 System.out.println(saleOffDto.getIsActive());
                 saleOffService.save(saleOff);
-                responseObject = new ResponseObject("200", "Sửa giảm giá sản phẩm thành công!", null);
+                responseObject = new ResponseObject("201", "Sửa giảm giá sản phẩm thành công!", null);
                 return responseObject;
             }
         }
