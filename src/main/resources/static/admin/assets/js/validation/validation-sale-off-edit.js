@@ -43,22 +43,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Kiểm tra ngày kết thúc giảm giá
     validationFielsEndUser();
+
+    formatPriceGetId('saleValue');
 });
 
 productId.addEventListener('blur', function () {
     validationFielsProductId()
+    formatPriceGetId('saleValue');
 });
 
 productId.addEventListener('input', function () {
     validationFielsProductId()
+    formatPriceGetId('saleValue');
 });
 
 productId.addEventListener('change', function () {
-    validationFielsProductId()
+    validationFielsProductId();
+    formatPriceGetId('saleValue');
+
 });
 
 productId.addEventListener('load', function () {
     validationFielsProductId()
+    formatPriceGetId('saleValue');
 });
 
 saleValue.addEventListener('blur', function () {

@@ -67,7 +67,7 @@ document.getElementById("submitted-button").addEventListener("click", function (
         processData: false,
         success: function (response) {
             console.log(response)
-            if (response === "success" || response === "") {
+            if (response.status === "200") {
                 const Toast = Swal.mixin({
                     toast: true,
                     position: "top-end",
@@ -81,7 +81,7 @@ document.getElementById("submitted-button").addEventListener("click", function (
                 });
                 Toast.fire({
                     icon: "success",
-                    title: "Thêm sản phẩm thành công!"
+                    title: response.message
                 });
 
                 resetFields();
@@ -97,7 +97,7 @@ document.getElementById("submitted-button").addEventListener("click", function (
                     }
                 });
 
-            } else if (response === "error") {
+            } else if (response.status === "400") {
                 const Toast = Swal.mixin({
                     toast: true,
                     position: "top-end",
@@ -111,7 +111,23 @@ document.getElementById("submitted-button").addEventListener("click", function (
                 });
                 Toast.fire({
                     icon: "success",
-                    title: "Lỗi khi thêm sản phẩm vui lòng thử lại!"
+                    title: response.message
+                });
+            } else if (response.status === "404") {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: response.message
                 });
             }
         },
