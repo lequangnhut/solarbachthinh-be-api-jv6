@@ -10,9 +10,8 @@ public class ScheduledTasks {
     @Autowired
     SaleOffService saleOffService;
 
-    @Scheduled(fixedDelay = 60000)
+    @Scheduled(fixedDelay = 1000)
     public void checkDiscountStatus() {
         saleOffService.updateSalsOffStatus();
-        System.out.println("Cập nhật thành công");
     }
 }

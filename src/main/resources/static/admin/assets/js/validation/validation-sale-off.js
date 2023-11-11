@@ -38,14 +38,17 @@ productId.addEventListener('input', function () {
 
 productId.addEventListener('change', function () {
     validationFielsProductId()
+    formatPriceGetId('saleValue')
 });
 
 saleValue.addEventListener('blur', function () {
     validationFielsSaleValue()
+    formatPriceGetId('saleValue')
 });
 
 saleValue.addEventListener('input', function () {
     validationFielsSaleValue()
+    formatPriceGetId('saleValue')
 });
 
 
@@ -205,6 +208,27 @@ function cleandFiels() {
     startUse.classList.remove('is-invalid');
     endUse.classList.remove('is-valid');
     endUse.classList.remove('is-invalid');
+
+    invalidProductId.textContent = '';
+    invalidSaveValue.textContent = '';
+    invalidStartUse.textContent = '';
+    invalidEndUse.textContent = '';
+}
+
+function cleandInput() {
+    productId.classList.remove('is-valid');
+    productId.classList.remove('is-invalid');
+    saleValue.classList.remove('is-valid');
+    saleValue.classList.remove('is-invalid');
+    startUse.classList.remove('is-valid');
+    startUse.classList.remove('is-invalid');
+    endUse.classList.remove('is-valid');
+    endUse.classList.remove('is-invalid');
+
+    productId.value = '';
+    saleValue.value = '';
+    startUse.value = '';
+    endUse.value = '';
 
     invalidProductId.textContent = '';
     invalidSaveValue.textContent = '';

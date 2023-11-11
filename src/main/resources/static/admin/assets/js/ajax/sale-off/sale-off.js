@@ -42,7 +42,7 @@ document.getElementById("productId").addEventListener('change', function () {
 
                     setTimeout(function() {
                         checkAllData();
-                        formatPrice(document.getElementById('saveValue'))
+                        formatPriceGetId('saleValue');
                     }, 300);
                 }
             } else if (response.status === '400') {
@@ -93,6 +93,28 @@ document.getElementById('submitted-button').addEventListener('click', function (
                     icon: "success",
                     title: response.message
                 });
+                cleandInput();
+            } else if (response.status === '201') {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: response.message
+                });
+
+                setTimeout(function() {
+                    window.location = 'http://localhost:8080/quan-tri/giam-gia-san-pham'
+                }, 1000);
+
             } else if (response.status === '404') {
                 const Toast = Swal.mixin({
                     toast: true,
