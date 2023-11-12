@@ -19,4 +19,19 @@ public interface ProductsRepository extends JpaRepository<Products, String> {
             "ORDER BY p.dateCreated DESC LIMIT 10"
     )
     List<Object[]> findByCategoryId(@Param("categoryId") int categoryId);
+
+    List<Products> findByProductTypeId(int productTypeId);
+
+    @Query("SELECT p FROM Products p " +
+            "JOIN p.productTypesByProductTypeId pt " +
+            "JOIN pt.productCategoriesByCategoryId pc " +
+            "WHERE pc.id = :categoryId AND LOWER(p.productName) LIKE LOWER(concat('%', :productName, '%'))")
+    List<Products> findByCategoryIdAndProductNameContaining(@Param("categoryId") int categoryId, @Param("productName") String productName);
+
+
+    @Query("SELECT p FROM Products p " +
+            "JOIN p.productTypesByProductTypeId pt " +
+            "JOIN pt.productCategoriesByCategoryId pc " +
+            "WHERE pc.id = :categoryId")
+    List<Products> findByCategoryByProductTypeByProducts(@Param("categoryId") int categoryId);
 }
