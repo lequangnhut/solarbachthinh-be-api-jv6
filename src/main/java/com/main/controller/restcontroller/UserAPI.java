@@ -54,17 +54,17 @@ public class UserAPI {
         Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
 
         if (users != null) {
-            Integer userId = users.getId();
-
-            Integer sumResult = orderService.sumOrderPrice(userId); // Sử dụng truy vấn của bạn
-            Integer countResult = orderService.countOrdersByAccountId(userId);
-
-            if (sumResult == null) {
-                sumResult = 0;
-            }
-            if (countResult == null) {
-                countResult = 0;
-            }
+//            Integer userId = users.getId();
+//
+//            Integer sumResult = orderService.sumOrderPrice(userId); // Sử dụng truy vấn của bạn
+//            Integer countResult = orderService.countOrdersByAccountId(userId);
+//
+//            if (sumResult == null) {
+//                sumResult = 0;
+//            }
+//            if (countResult == null) {
+//                countResult = 0;
+//            }
 
             UsersDto usersDto = new UsersDto();
             usersDto.setId(users.getId());
@@ -79,8 +79,8 @@ public class UserAPI {
             usersDto.setDistrictName(users.getDistrictName());
             usersDto.setWardName(users.getWardName());
             usersDto.setAddress(users.getAddress());
-            usersDto.setTotalOrderPrice(sumResult);
-            usersDto.setOrderCount(countResult);
+//            usersDto.setTotalOrderPrice(sumResult);
+//            usersDto.setOrderCount(countResult);
 
             ObjectMapper objectMapper = new ObjectMapper();
             try {

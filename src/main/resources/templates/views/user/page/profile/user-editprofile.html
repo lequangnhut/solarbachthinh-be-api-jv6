@@ -4,8 +4,8 @@
         <h1 class="display-3 text-white mb-3 animated slideInDown">Chỉnh sửa thông tin cá nhân</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu">Trang Chủ</a></li>
-                <li class="breadcrumb-item"><a class="text-white" href="#!/thong-tin">
+                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu" scroll-to-top>Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/thong-tin" scroll-to-top>
                     Thay đổi thông tin</a>
                 </li>
             </ol>
@@ -37,7 +37,7 @@
                                         <h5 class="text-secondary mt-2">ID: {{users.id}}</h5>
                                         <div class="">
                                             <h5>
-                                                <a style="color: #32C36C" href="#!/thong-tin"
+                                                <a style="color: #32C36C" href="#!/thong-tin" scroll-to-top
                                                    class="fs-5 text-decoration-none">
                                                     Quay về trang trước
                                                 </a>
@@ -47,7 +47,7 @@
                                         <h6 class="text-secondary mt-2">
                                             Tổng số lượng đơn hàng: {{users.orderCount}}
                                         </h6>
-                                        <h6 class="text-secondary mt-2" >
+                                        <h6 class="text-secondary mt-2">
                                             Tổng số tiền: {{ (users.totalOrderPrice | number:0) + ' ₫' }}
                                         </h6>
                                     </div>
@@ -68,7 +68,7 @@
                                             <div class="row">
                                                 <h4 class="text-dark mb-3">Thông tin</h4>
                                                 <div class="col-12 col-md-12 col-lg-4">
-<!--                                                    Email-->
+                                                    <!--                                                    Email-->
                                                     <div class="mb-3">
                                                         <label>Email</label>
                                                         <input type="email" class="form-control" id="email"
@@ -76,7 +76,7 @@
                                                         <input type="hidden" class="form-control" id="idaccount"
                                                                ng-model="users.id">
                                                     </div>
-<!--                                                    Fullname-->
+                                                    <!--                                                    Fullname-->
                                                     <div class="mb-3">
                                                         <label>Họ và tên</label><br>
                                                         <input type="text"
@@ -87,11 +87,11 @@
                                                                ng-pattern="/^[\p{L}'][\p{L}'\s-]{0,}$/u"
                                                                required>
                                                         <small class="text-danger"
-                                                                ng-show="editProfileForm.fullname.$error.required || editProfileForm.fullname.$error.pattern">
-                                                               Vui lòng nhập họ tên!
+                                                               ng-show="editProfileForm.fullname.$error.required || editProfileForm.fullname.$error.pattern">
+                                                            Vui lòng nhập họ tên!
                                                         </small>
                                                     </div>
-<!--                                                    NumberPhone-->
+                                                    <!--                                                    NumberPhone-->
                                                     <div class="mb-3">
                                                         <label>Số điện thoại</label><br>
                                                         <input type="tel" class="form-control"

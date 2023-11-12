@@ -4,10 +4,10 @@
         <h1 class="display-3 text-white mb-3 animated slideInDown">Sản Phẩm</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu">Trang Chủ</a></li>
-                <li class="breadcrumb-item"><a class="text-white" href="#!/san-pham">Sản Phẩm</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu" scroll-to-top>Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/san-pham" scroll-to-top>Sản Phẩm</a></li>
                 <li class="breadcrumb-item">
-                    <a class="text-white" href="#!/san-pham/loai-danh-muc?danh-muc=1">
+                    <a class="text-white" href="#!/san-pham/loai-danh-muc?danh-muc=1" scroll-to-top>
                         Loại Sản Phẩm
                     </a>
                 </li>
@@ -53,7 +53,7 @@
                                 ng-click="changes(category.id)"
                                 ng-class="{'active': category.id == categoryId}"
                             >
-                                <a href="javascript:void(0)">
+                                <a href="javascript:void(0)" scroll-to-top>
                                     <img class="m-auto pb-3"
                                          ng-src="/upload/{{category.categoryImage}}"
                                          alt="den-nang-luong-mat-troi-thumbnail">
@@ -62,7 +62,7 @@
                                 <input type="hidden" id="categorySelect" ng-value="category.id">
                             </li>
                             <li>
-                                <a href="#!/san-pham">
+                                <a href="#!/san-pham" scroll-to-top>
                                     <img class="m-auto pb-3"
                                          src="/upload/clipboard-1.png"
                                          alt="den-nang-luong-mat-troi-thumbnail">
@@ -83,7 +83,8 @@
                             <p class="text-center">Danh sách sản phẩm đang trống...</p>
                         </div>
                         <div ng-repeat="product in products" ng-if="product[0].isStatusDelete != 'Ngừng kinh doanh'">
-                            <a ng-href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product[0].id}}">
+                            <a ng-href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product[0].id}}"
+                               scroll-to-top>
                                 <div ng-if="$index % 2 == 1" class="item mt-4 mb-4" data-aos="fade-up">
                                     <div class="row">
                                         <div class="float-left col-xl-4">
@@ -111,7 +112,8 @@
                                 </div>
                             </a>
 
-                            <a ng-href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product[0].id}}">
+                            <a ng-href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product[0].id}}"
+                               scroll-to-top>
                                 <div ng-if="$index % 2 == 0" class="item mt-4 mb-4" data-aos="fade-up">
                                     <div class="row">
                                         <div class="col-xl-4">

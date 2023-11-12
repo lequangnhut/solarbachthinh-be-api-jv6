@@ -172,7 +172,7 @@
                     </div>
                 </div>
                 <div class="see_more">
-                    <a href="#!/san-pham">Xem thêm...</a>
+                    <a href="#!/san-pham" scroll-to-top>Xem thêm...</a>
                 </div>
             </div>
             <div class="slide_product">
@@ -194,7 +194,7 @@
                                         </div>
                                         <div class="btn-add-cart">
                                             <a href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product[0].id}}"
-                                               role="button" type="submit" class="btn btn-primary w-100">
+                                               scroll-to-top role="button" type="submit" class="btn btn-primary w-100">
                                                 Mua hàng</a>
                                         </div>
                                     </div>
@@ -374,7 +374,8 @@
                         </div>
                         <div class="swiper-wrapper">
                             <div ng-repeat="product in object_product" class="swiper-slide">
-                                <a href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product[0].id}}">
+                                <a href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product[0].id}}"
+                                   scroll-to-top>
                                     <div class="d-flex align-items-center product-hot">
                                         <img ng-src="/upload/{{product[0].productImagesById[0].imagePath}}"
                                              width="30%" alt="">

@@ -4,8 +4,8 @@
         <h1 class="display-3 text-white mb-3 animated slideInDown">Lịch sử đặt hàng</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu">Trang Chủ</a></li>
-                <li class="breadcrumb-item"><a class="text-white" href="#!/lich-su-mua-hang">
+                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu" scroll-to-top>Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/lich-su-mua-hang" scroll-to-top>
                     Lịch sử mua hàng</a></li>
             </ol>
         </nav>
@@ -43,7 +43,7 @@
                             <td>{{order.toPhone}}</td>
                             <td>{{order.toProvince}}</td>
                             <td>{{order.orderStatus}}</td>
-                            <td>{{order.paymentStatus ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}</td>
+                            <td>{{order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}</td>
                             <td>
                                 <a href="javascript:void(0)" class="show-info" ng-click="getInfoOrder(order.id)"
                                    data-bs-toggle="modal"
@@ -55,7 +55,7 @@
                         </tbody>
                     </table>
                     <h6 class="text-center text-secondary mb-5" ng-if="!history_order || history_order.length === 0">
-                        Bạn chưa có lịch sử mua hàng, nhấn <a href="#!/san-pham">vào đây</a> để mua hàng
+                        Bạn chưa có lịch sử mua hàng, nhấn <a href="#!/san-pham" scroll-to-top>vào đây</a> để mua hàng
                     </h6>
                 </div>
             </div>
@@ -135,7 +135,7 @@
                         <div class="mb-3">
                             <label for="statusPay" class="form-label">Trang thái thanh toán</label>
                             <input type="text" class="form-control" id="statusPay"
-                                   ng-value="order.paymentStatus ? 'Chưa thanh toán' : 'Đã thanh toán'" readonly>
+                                   ng-value="paymentStatusDisplay = getStatusText()" readonly>
                         </div>
 
                         <div class="mb-3">

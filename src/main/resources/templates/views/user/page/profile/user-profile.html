@@ -4,8 +4,11 @@
         <h1 class="display-3 text-white mb-3 animated slideInDown">Thông tin cá nhân</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu">Trang Chủ</a></li>
-                <li class="breadcrumb-item"><a class="text-white" href="#!/thong-tin">Thông tin cá nhân</a>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu" scroll-to-top>Trang Chủ</a></li>
+                <li class="breadcrumb-item">
+                    <a class="text-white" href="#!/thong-tin" scroll-to-top>
+                        Thông tin cá nhân
+                    </a>
                 </li>
             </ol>
         </nav>
@@ -37,7 +40,7 @@
                                         <div class="">
                                             <h5>
                                                 <a style="color: #32C36C"
-                                                   href="#!/thong-tin/sua-thong-tin"
+                                                   href="#!/thong-tin/sua-thong-tin" scroll-to-top
                                                    class="fs-5 text-decoration-none">
                                                     Chỉnh sửa thông tin
                                                 </a>
@@ -47,7 +50,7 @@
                                         <h6 class="text-secondary mt-2">
                                             Tổng số lượng đơn hàng: {{users.orderCount}}
                                         </h6>
-                                        <h6 class="text-secondary mt-2" >
+                                        <h6 class="text-secondary mt-2">
                                             Tổng số tiền: {{ (users.totalOrderPrice | number:0) + ' ₫' }}
                                         </h6>
                                     </div>
@@ -76,7 +79,8 @@
                                                 </h6>
                                                 <h6 class="text-dark mt-4 ng-binding">{{users.phoneNumber}}
                                                 </h6>
-                                                <h6 class="text-dark mt-4 ng-binding">{{users.birth | date:'dd-MM-yyyy'}}</h6>
+                                                <h6 class="text-dark mt-4 ng-binding">
+                                                    {{users.birth | date:'dd-MM-yyyy'}}</h6>
                                                 <h6 class="text-dark mt-4 ng-binding" ng-if="!users.gender">Nữ</h6>
                                                 <h6 class="text-dark mt-4 ng-binding" ng-if="users.gender">Nam</h6>
                                                 <div class="text-dark mt-4 ng-binding">

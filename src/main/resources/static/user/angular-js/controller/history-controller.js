@@ -23,6 +23,20 @@ solar_app.controller('history_controller', function ($scope, UserService, OrderS
             discountId = response.data.discountId;
             $scope.order = response.data;
 
+            $scope.getStatusText = function () {
+                let paymentStatus = $scope.order.paymentStatus
+                switch (paymentStatus) {
+                    case 0:
+                        return 'Chưa thanh toán';
+                    case 1:
+                        return 'Đã thanh toán';
+                    case 2:
+                        return 'Thanh toán thất bại';
+                    default:
+                        return 'Trạng thái không xác định';
+                }
+            };
+
             if (discountId !== null) {
                 DiscountService.findDiscountByDiscountId(discountId).then(function successCallback(response) {
                     $scope.discountCost = response.data.discountCost;
@@ -36,8 +50,7 @@ solar_app.controller('history_controller', function ($scope, UserService, OrderS
 
                 for (let i = 0; i < listOrderItemAndProduct.length; i++) {
                     let data = {
-                        product: listOrderItemAndProduct[i][1],
-                        orderItem: listOrderItemAndProduct[i][0]
+                        product: listOrderItemAndProduct[i][1], orderItem: listOrderItemAndProduct[i][0]
                     };
                     combinedData.push(data);
 

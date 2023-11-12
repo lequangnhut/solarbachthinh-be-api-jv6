@@ -69,12 +69,11 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
 
     // tổng số lượng sp trong giỏ hàng
     $rootScope.sum_quantity_cart = function () {
-        CartService.sumQuantityCart()
-            .then(function successCallback(response) {
-                $rootScope.quantity_cart = response.data;
-            }, function errorCallback(response) {
-                console.log(response.data);
-            });
+        CartService.sumQuantityCart().then(function successCallback(response) {
+            $rootScope.quantity_cart = response.data;
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
     }
 
     // xoá sản phẩm trong giỏ hàng
@@ -101,6 +100,7 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
                         }
                     }
 
+                    $rootScope.sum_quantity_cart();
                     $scope.calculate_total();
                     $scope.sum_quantity_cart();
 

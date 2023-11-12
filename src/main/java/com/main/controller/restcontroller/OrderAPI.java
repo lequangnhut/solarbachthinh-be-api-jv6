@@ -52,10 +52,13 @@ public class OrderAPI {
 
     @PostMapping(value = "order/create-order", consumes = {"application/json;charset=UTF-8"})
     private void createOrder(@RequestBody OrdersDto ordersDto) {
-        System.out.println("cccc");
         String orderId = ordersDto.getOrderId();
-        BigDecimal price = BigDecimal.valueOf(ordersDto.getTotal());
         String discountId = ordersDto.getDiscountId();
+
+        int paymentStatus = ordersDto.getPaymentStatus();
+
+        BigDecimal price = BigDecimal.valueOf(ordersDto.getTotal());
+
         boolean paymentType = "COD".equals(ordersDto.getPaymentMethod());
 
         Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
@@ -66,8 +69,8 @@ public class OrderAPI {
         if (StringUtils.isNotEmpty(discountId)) {
             orders.setDiscountId(discountId);
         }
+        orders.setPaymentStatus(paymentStatus == 0 || paymentStatus == 1 ? paymentStatus : 2);
         orders.setPaymentType(paymentType);
-        orders.setPaymentStatus(paymentType);
         orders.setOrderStatus("Đã đặt hàng");
         orders.setOrderShipCost(BigDecimal.valueOf(ordersDto.getShippingFee()));
 

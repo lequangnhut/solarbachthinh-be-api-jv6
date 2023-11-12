@@ -42,12 +42,11 @@ let API_ChangePassword = '/api/change-password/'
 let solar_app = angular.module('solar_app', ['ngRoute'])
     .run(function ($rootScope, $http, CartService) {
         // lấy ra tổng số lượng giỏ hàng
-        CartService.sumQuantityCart()
-            .then(function successCallback(response) {
-                $rootScope.quantity_cart = response.data;
-            }, function errorCallback(response) {
-                console.log(response.data);
-            });
+        CartService.sumQuantityCart().then(function successCallback(response) {
+            $rootScope.quantity_cart = response.data;
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
     });
 
 solar_app.config(['$qProvider', function ($qProvider) {

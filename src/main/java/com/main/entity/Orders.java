@@ -32,8 +32,8 @@ public class Orders {
     @Column(name = "payment_type", nullable = true)
     private Boolean paymentType;
 
-    @Column(name = "payment_stauts", nullable = true)
-    private Boolean paymentStatus;
+    @Column(name = "payment_status", nullable = true)
+    private Integer paymentStatus;
 
     @Basic
     @Column(name = "discount_id", nullable = true, length = 20)

@@ -1,4 +1,4 @@
-solar_app.controller('product_details', function ($scope, $http, $timeout, $location, $sce, UserService, ProductService, CategoryService, CartService) {
+solar_app.controller('product_details', function ($scope, $http, $timeout, $location, $sce, $rootScope, UserService, ProductService, CategoryService, CartService) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
@@ -71,13 +71,13 @@ solar_app.controller('product_details', function ($scope, $http, $timeout, $loca
 
     // thêm vào giỏ hàng
     function sendDataToController(productId, quantity) {
-        CartService.addProductToCart(productId, quantity)
-            .then(function successCallback() {
-                toastAlert('success', 'Thêm vào giỏ hàng thành công!');
-                window.location.href = '#!/gio-hang'
-            }, function errorCallback(response) {
-                console.log(response.data)
-            });
+        CartService.addProductToCart(productId, quantity).then(function successCallback() {
+            toastAlert('success', 'Thêm vào giỏ hàng thành công!');
+            window.location.href = '#!/gio-hang';
+            $rootScope.sum_quantity_cart();
+        }, function errorCallback(response) {
+            console.log(response.data)
+        });
     }
 
     // lỗi tài nguyên tĩnh

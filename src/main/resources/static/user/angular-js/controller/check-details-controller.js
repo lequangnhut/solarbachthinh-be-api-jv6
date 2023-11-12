@@ -284,11 +284,14 @@ solar_app.controller('check_details_controller', function ($scope, $http, $timeo
         DiscountService.findDiscountByDiscountId(discount_code_db.id).then(function successCallback(response) {
             let discounts = $scope.discount = response.data;
 
-            // Đặt lại biến để hiện component
-            $scope.discountApplied = true;
-
             // Lưu thông tin mã giảm giá vào local storage
             localStorage.setItem('appliedDiscount', JSON.stringify(discounts));
+
+            // lưu local storage vào trong $scope.appliedDiscount
+            $scope.appliedDiscount = JSON.parse(localStorage.getItem('appliedDiscount'))
+
+            // Đặt lại biến để hiện component
+            $scope.discountApplied = true;
 
             centerAlert('Thành công !', 'Sử dụng mã giảm giá thành công và được giảm giá ' + $scope.formatPrice(discounts.discountCost) + ' ₫ !', 'success')
 
@@ -301,15 +304,33 @@ solar_app.controller('check_details_controller', function ($scope, $http, $timeo
 
     // Xoá discount khỏi localsoted nếu người dùng muốn
     $scope.deleteDiscount = function () {
-        localStorage.removeItem('appliedDiscount');
+        let discountId = $scope.appliedDiscount.id;
 
-        // Gọi hàm tính lại tiền nếu cần
-        $scope.calculate_total($scope.object_cart, null);
+        Swal.fire({
+            title: 'Cảnh báo ?',
+            text: "Bạn có chắc chắn muốn xoá mã giảm giá " + discountId + " này không ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý !',
+            cancelButtonText: 'Huỷ !'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('appliedDiscount');
 
-        // Đặt lại biến để ẩn component
-        $scope.discountApplied = false;
-        $scope.appliedDiscount = null;
-    }
+                // Gọi hàm tính lại tiền
+                $scope.calculate_total($scope.object_cart, null);
+
+                // Đặt lại biến để ẩn component
+                $scope.discountApplied = false;
+                $scope.appliedDiscount = null;
+
+                // Cập nhật giao diện người dùng
+                $scope.$apply();
+            }
+        });
+    };
 
     // tính tổng giá tiền và tạm tính
     $scope.calculate_total = function (object_cart, discounts) {

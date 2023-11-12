@@ -15,6 +15,8 @@ public class OrdersDto implements Serializable {
 
     private String paymentMethod;
 
+    private Integer paymentStatus;
+
     private String serviceName;
 
     private String discountId;
