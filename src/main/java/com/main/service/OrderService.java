@@ -11,4 +11,8 @@ public interface OrderService {
     Orders findByOrderId(String orderId);
 
     Orders save(Orders orders);
+
+    Integer sumOrderPrice(Integer userId);
+
+    Integer countOrdersByAccountId(Integer userId);
 }

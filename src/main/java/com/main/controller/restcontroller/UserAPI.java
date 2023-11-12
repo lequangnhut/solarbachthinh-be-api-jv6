@@ -2,9 +2,11 @@ package com.main.controller.restcontroller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.main.dto.RegisterDto;
+import com.main.dto.ProfileDto;
 import com.main.dto.UsersDto;
 import com.main.entity.Users;
 import com.main.service.EmailService;
+import com.main.service.OrderService;
 import com.main.service.UserService;
 import com.main.utils.EntityDtoUtils;
 import com.main.utils.SessionAttr;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +28,9 @@ public class UserAPI {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    OrderService orderService;
 
     @Autowired
     EmailService emailService;
@@ -48,15 +54,33 @@ public class UserAPI {
         Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
 
         if (users != null) {
+            Integer userId = users.getId();
+
+            Integer sumResult = orderService.sumOrderPrice(userId); // Sử dụng truy vấn của bạn
+            Integer countResult = orderService.countOrdersByAccountId(userId);
+
+            if (sumResult == null) {
+                sumResult = 0;
+            }
+            if (countResult == null) {
+                countResult = 0;
+            }
+
             UsersDto usersDto = new UsersDto();
             usersDto.setId(users.getId());
+            usersDto.setPasswords(users.getPasswords());
             usersDto.setEmail(users.getEmail());
             usersDto.setFullname(users.getFullname());
+            usersDto.setGender(users.getGender());
             usersDto.setPhoneNumber(users.getPhoneNumber());
-            usersDto.setDistrictName(users.getDistrictName());
+            usersDto.setBirth(users.getBirth());
+            usersDto.setDateCreated(users.getDateCreated());
             usersDto.setProvinceName(users.getProvinceName());
+            usersDto.setDistrictName(users.getDistrictName());
             usersDto.setWardName(users.getWardName());
             usersDto.setAddress(users.getAddress());
+            usersDto.setTotalOrderPrice(sumResult);
+            usersDto.setOrderCount(countResult);
 
             ObjectMapper objectMapper = new ObjectMapper();
             try {
@@ -69,6 +93,12 @@ public class UserAPI {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found in session");
         }
+    }
+
+    @PostMapping("user")
+    public Users addUser(@RequestBody Users users) {
+        users.setAcctive(Boolean.FALSE);
+        return userService.save(users);
     }
 
     @GetMapping("user/find-by-email/{email}")
@@ -84,20 +114,51 @@ public class UserAPI {
     public Users addUser(@RequestBody RegisterDto registerDto) {
         // send mail
         emailService.queueEmailRegister(registerDto);
-
         // mapper và lưu đối tượng user
         Users user = EntityDtoUtils.convertToEntity(registerDto, Users.class);
         return userService.register(user);
     }
 
-    @PutMapping("user/{userId}")
-    public ResponseEntity<Users> updateAccount(@PathVariable int userId, @RequestBody Users userEntity) {
-        Users users = userService.findById(userId);
-        users.setEmail(userEntity.getEmail());
+    @GetMapping("check-phone-profile/{phoneNumber}")
+    public Map<String, Boolean> checkDuplicatePhone(@PathVariable String phoneNumber) {
+        Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
+        Map<String, Boolean> response = new HashMap<>();
 
-        Users updateUser = userService.save(users);
-        return ResponseEntity.ok().body(updateUser);
+        if (users != null) {
+            Integer userId = userService.findIdByPhoneNumberAndNotCurrentUser(phoneNumber, users.getId());
+            if (userId != null) {
+                response.put("exists", true);
+            } else {
+                response.put("exists", false);
+            }
+        }
+        return response;
     }
+
+    @PutMapping("user/{userId}")
+    public ResponseEntity<Users> updateAccount(@PathVariable int userId, @RequestBody ProfileDto profileDto) {
+        Users users = userService.findById(userId);
+        System.out.println(users);
+        users.setFullname(profileDto.getFullname());
+        users.setGender(profileDto.getGender());
+        users.setBirth(profileDto.getBirth());
+        users.setAddress(profileDto.getAddress());
+        users.setPhoneNumber(profileDto.getPhoneNumber());
+        users.setProvinceName(profileDto.getProvinceName());
+        users.setDistrictName(profileDto.getDistrictName());
+        users.setWardName(profileDto.getWardName());
+
+        Users updateUser = userService.update(users);
+        if (updateUser != null) {
+            session.setAttribute(SessionAttr.CURRENT_USER, users);
+            session.setAttribute("toastSuccess", "Cập nhật thông tin thành công !");
+            return ResponseEntity.ok().body(updateUser);
+        }else {
+            session.setAttribute("toastError", "Cập nhật thông tin không thành công.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
     @DeleteMapping("user/{userId}")
     public String deleteAccount(@PathVariable int userId) {
