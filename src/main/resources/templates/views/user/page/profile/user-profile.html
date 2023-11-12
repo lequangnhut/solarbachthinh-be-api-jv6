@@ -32,27 +32,23 @@
                                              width="60%" alt="">
                                     </div>
                                     <div class="link-profile">
-                                        <h5 class="text-secondary"
-                                            th:text="${customers.accountsByAccountId.fullname}">
-                                        </h5>
-                                        <h5 class="text-secondary mt-2"
-                                            th:text="'ID: '+ ${customers.accountsByAccountId.accountId}">
-                                        </h5>
+                                        <h5 class="text-secondary">{{users.fullname}}</h5>
+                                        <h5 class="text-secondary mt-2">ID: {{users.id}}</h5>
                                         <div class="">
                                             <h5>
                                                 <a style="color: #32C36C"
-                                                   th:href="@{'/thong-tin/sua-thong-tin/' + ${customers.accountsByAccountId.accountId}}"
+                                                   href="#!/thong-tin/sua-thong-tin"
                                                    class="fs-5 text-decoration-none">
                                                     Chỉnh sửa thông tin
                                                 </a>
                                             </h5>
                                         </div>
                                         <hr>
-                                        <h6 class="text-secondary mt-2"
-                                            th:text="'Tổng số lượng đơn hàng: '+ ${sumOrder}">
+                                        <h6 class="text-secondary mt-2">
+                                            Tổng số lượng đơn hàng: {{users.orderCount}}
                                         </h6>
-                                        <h6 class="text-secondary mt-2" th:if="${sumOrderPrice}"
-                                            th:text="'Tổng số tiền: '+ ${#numbers.formatDecimal(sumOrderPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}">
+                                        <h6 class="text-secondary mt-2" >
+                                            Tổng số tiền: {{ (users.totalOrderPrice | number:0) + ' ₫' }}
                                         </h6>
                                     </div>
                                 </div>
@@ -76,26 +72,18 @@
                                             </div>
 
                                             <div class="col-7 col-md-6 col-lg-6">
-                                                <h6 class="text-dark mt-4 ng-binding"
-                                                    th:text="${customers.accountsByAccountId.email}">
+                                                <h6 class="text-dark mt-4 ng-binding">{{users.email}}
                                                 </h6>
-                                                <h6 class="text-dark mt-4 ng-binding"
-                                                    th:text="${customers.accountsByAccountId.phoneNumber}">
+                                                <h6 class="text-dark mt-4 ng-binding">{{users.phoneNumber}}
                                                 </h6>
-                                                <h6 class="text-dark mt-4 ng-binding"
-                                                    th:text="${#dates.format(customers.birthDay, 'dd/MM/yyyy')}">
-                                                </h6>
-                                                <h6 class="text-dark mt-4 ng-binding"
-                                                    th:if="${customers.gender == null}"
-                                                    th:text="${customers.gender}"></h6>
-                                                <h6 class="text-dark mt-4 ng-binding"
-                                                    th:unless="${customers.gender == null}"
-                                                    th:text="${customers.gender ? 'Nam' : 'Nữ'}"></h6>
+                                                <h6 class="text-dark mt-4 ng-binding">{{users.birth | date:'dd-MM-yyyy'}}</h6>
+                                                <h6 class="text-dark mt-4 ng-binding" ng-if="!users.gender">Nữ</h6>
+                                                <h6 class="text-dark mt-4 ng-binding" ng-if="users.gender">Nam</h6>
                                                 <div class="text-dark mt-4 ng-binding">
-                                                    <span th:text="${customers.address}"></span>,
-                                                    <span th:text="${customers.village}"></span>,
-                                                    <span th:text="${customers.district}"></span>,
-                                                    <span th:text="${customers.province}"></span>
+                                                    <span>{{users.address}}</span>,
+                                                    <span>{{users.wardName}}</span>,
+                                                    <span>{{users.districtName}}</span>,
+                                                    <span>{{users.provinceName}}</span>
                                                 </div>
                                             </div>
                                         </div>

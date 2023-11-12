@@ -85,12 +85,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Integer findIdByPhoneNumberAndNotCurrentUser(String phoneNumber, Integer userId) {
+        return userRepository.findIdByPhoneNumberAndNotCurrentUser(phoneNumber, userId);
+    }
+
+    @Override
+    public boolean findByIdAndPasswords(int userId, String currentPass) {
+        return userRepository.findByIdAndPasswords(userId, currentPass);
+    }
+
+    @Override
     public Users delete(int userId) {
         Users users = findById(userId);
         if (users != null) {
             users.setAcctive(Boolean.FALSE);
         }
         return users;
+    }
+
+    @Override
+    public Users updatePass(int userId, String password) {
+        Users users = userRepository.findById(userId);
+
+        if (users == null) {
+            System.out.println("Người dùng không tồn tại");
+            return null;
+        }
+        users.setPasswords(password);
+        return userRepository.save(users);
     }
 
     private Roles checkRoleExist() {

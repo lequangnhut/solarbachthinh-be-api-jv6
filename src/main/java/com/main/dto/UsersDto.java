@@ -42,4 +42,9 @@ public class UsersDto implements Serializable {
     Collection<Roles> roles;
 
     String token;
+
+    Integer totalOrderPrice;
+
+    Integer orderCount;
+
 }

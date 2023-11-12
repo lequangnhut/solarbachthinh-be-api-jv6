@@ -28,4 +28,14 @@ public class OrderServiceImpl implements OrderService {
     public Orders save(Orders orders) {
         return orderRepository.save(orders);
     }
+
+    @Override
+    public Integer sumOrderPrice(Integer userId) {
+        return orderRepository.sumOrdersPriceByAccountId(userId);
+    }
+
+    @Override
+    public Integer countOrdersByAccountId(Integer userId) {
+        return orderRepository.countOrdersByAccountId(userId);
+    }
 }

@@ -17,7 +17,7 @@ promise.then(function (result) {
         renderCityEdit(result.data);
     } else if (currentURL.indexOf("them-tai-khoan") !== -1) {
         renderCityEdit(result.data);
-    } else if (currentURL.indexOf("sua-thong-tin") !== -1) {
+    } else if (currentURL.indexOf("thong-tin/sua-thong-tin") !== -1) {
         renderCityEdit(result.data);
     } else {
         renderCity(result.data);
@@ -85,6 +85,7 @@ function renderCityEdit(data) {
         if (previousDistrictsValue !== this.value) {
             // Districts đã thay đổi giá trị
             previousDistrictsValue = this.value; // Cập nhật giá trị của province trước khi thay đổi
+            console.log(previousDistrictsValue)
             wards.innerHTML = '<option value="" selected>Chọn Phường/Xã</option>';
         }
         // Thực hiện các xử lý khác ở đây sau khi province thay đổi
