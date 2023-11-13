@@ -27,4 +27,6 @@ public interface ProductService {
     List<Products> findByCategoryIdAndProductNameContaining(int categoryId, String productName);
 
     List<Products> findByCategoryByProductTypeByProducts(int categoryId);
+
+    List<Object[]> findByCategoryIdAndProductTypeId(int categoryId, int productTypeId);
 }

@@ -25,7 +25,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
     @Override
     public List<ProductTypes> findByCategoryId(int categoryId) {
-        return repo.findById(categoryId);
+        return repo.findByCategoryId(categoryId);
     }
 
     @Override

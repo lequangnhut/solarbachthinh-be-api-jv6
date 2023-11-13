@@ -54,4 +54,10 @@ solar_app.service('ProductService', function ($http) {
             url: API_Product + '/find-product-by-category-id-by-key/' + categoryId + '/' + search
         })
     }
+    this.findProductByCategoryIdAndProductTypeId = function (categoryId, productTypeId) {
+        return $http({
+            method: 'GET',
+            url: API_Product + '/find-by-category-id-by-product-type-id/' + categoryId + '/' + productTypeId
+        })
+    }
 });
