@@ -1,5 +1,5 @@
 <!-- Page Header Start -->
-<div class="container-fluid page-header py-5 mb-5">
+<div class="container-fluid page-header py-5 mb-5" xmlns:th="http://www.w3.org/1999/html" xmlns:th="http://www.w3.org/1999/html">
     <div class="container py-5">
         <h1 class="display-3 text-white mb-3 animated slideInDown">Sản Phẩm</h1>
         <nav aria-label="breadcrumb animated slideInDown">
@@ -18,10 +18,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 col-md-12 col-xl-6 d-flex align-items-center">
-                    <form action="/san-pham" method="get">
+                    <form ng-submit="searchProduct(productName)">
                         <div class="find d-flex align-items-center justify-content-center">
-                            <input type="text" class="input-text" name="ten-san-pham" placeholder="Tìm sản phẩm">
-                            <button type="submit" class="btn-find btn"><i class='bx bx-search-alt-2'></i></button>
+                            <input type="text" class="input-text" ng-model="productName" placeholder="Tìm sản phẩm">
+                            <button type="submit" class="btn-find btn"><i class="bx bx-search-alt-2"></i></button>
                         </div>
                     </form>
                 </div>
@@ -48,78 +48,64 @@
 <!-- Navbar End -->
 
 <!-- Product Start -->
-<!--<main id="product mt-5">-->
-<!--    <div class="container">-->
-<!--        <div class="page mt-5 mb-4"><h1>Danh sách sản phẩm</h1></div>-->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="product_template mt-4 mb-4 wow fadeInUp" data-wow-delay="fade-up"
+             ng-repeat="category in categories" ng-if="category.isActive && category.productsTypeProducts.length != 0">
 
-<!--        &lt;!&ndash;Start Solar Light&ndash;&gt;-->
-<!--        <div class="product_template mt-4 mb-4" data-aos="fade-up"-->
-<!--             th:each="category : ${categories_productsType_products}">-->
-<!--            <th:block-->
-<!--                    th:with="result=${@productController.isProductListInCategoryNotEmpty(categories_productsType_products, category.getCategoryId())}">-->
-<!--                &lt;!&ndash; Kiểm tra xem danh sách loại sản phẩm của danh mục có rỗng không &ndash;&gt;-->
-<!--                <th:block th:if="${result}">-->
-<!--                    <div class="title_cart mt-4 d-flex align-items-center mb-3">-->
-<!--                        <div class="title-card-box d-flex align-items-center h-100">-->
-<!--                            <div class="category_product">-->
-<!--                                <span th:text="${category.categoryName}"></span>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <a class="see_more"-->
-<!--                           th:href="@{'/san-pham/loai-danh-muc?danh-muc=' + ${category.categoryId}}">Xem-->
-<!--                            thêm...</a>-->
-<!--                    </div>-->
-<!--                    <div class="slide_product">-->
-<!--                        &lt;!&ndash; Swiper &ndash;&gt;-->
-<!--                        <div class="swiper" id="product_light">-->
-<!--                            <div class="swiper-wrapper">-->
-<!--                                &lt;!&ndash; Lặp qua loại sản phẩm trong danh mục &ndash;&gt;-->
-<!--                                <th:block th:each="productType : ${category.productTypesByCategoryId}">-->
-<!--                                    &lt;!&ndash; Kiểm tra xem danh sách sản phẩm của loại sản phẩm có rỗng không &ndash;&gt;-->
-<!--                                    <th:block th:if="${productType.productsByProductTypeId.size() > 0}">-->
-<!--                                        &lt;!&ndash; Lặp qua danh sách sản phẩm của loại sản phẩm &ndash;&gt;-->
-<!--                                        <th:block th:each="product : ${productType.productsByProductTypeId}"-->
-<!--                                                  th:if="${product.isStatusDelete == 'Đang bán'}">-->
-<!--                                            <div class="swiper-slide">-->
-<!--                                                <div class="item-product d-flex align-items-center">-->
-<!--                                                    <div class="img">-->
-<!--                                                        <img th:if="${product.productImagesByProductId.size() > 0}"-->
-<!--                                                             th:src="@{'/upload/'+${product.productImagesByProductId[0].imagePath}}"-->
-<!--                                                             class="img-fluid" style="width: 200px" alt="...">-->
-<!--                                                        <img th:unless="${product.productImagesByProductId.size() > 0}"-->
-<!--                                                             th:src="@{'/upload/default-img.jpg'}"-->
-<!--                                                             class="img-fluid" style="width: 200px" alt="...">-->
-<!--                                                    </div>-->
-<!--                                                    <div class="card-body-product">-->
-<!--                                                        <p class="name-product"-->
-<!--                                                           th:text="${product.productName}"></p>-->
-<!--                                                        <div class="content-product mb-3">-->
-<!--                                                                <span>Công suất: <b-->
-<!--                                                                        th:text="${product.power}"></b></span>-->
-<!--                                                            <span>Hãng: <b-->
-<!--                                                                    th:text="${product.brandsByBrandId.brandName}"></b></span>-->
-<!--                                                        </div>-->
-<!--                                                        <div class="btn-add-cart">-->
-<!--                                                            <a th:href="@{'/san-pham/san-pham-chi-tiet?ma-san-pham=' + ${product.productId}}"-->
-<!--                                                               role="button"-->
-<!--                                                               class="btn btn-primary w-100">Xem chi tiết-->
-<!--                                                            </a>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </th:block>-->
-<!--                                    </th:block>-->
-<!--                                </th:block>-->
-<!--                            </div>-->
-<!--                            <div class="swiper-button-next"></div>-->
-<!--                            <div class="swiper-button-prev"></div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </th:block>-->
-<!--            </th:block>-->
-<!--        </div>-->
-<!--        &lt;!&ndash;End Solar Light&ndash;&gt;-->
-<!--    </div>-->
-<!--</main>-->
+            <!-- Kiểm tra xem danh sách loại sản phẩm của danh mục có rỗng không -->
+            <div class="title_cart d-flex align-items-center mb-3">
+                <div class="title-card-box d-flex align-items-center h-100">
+                    <div class="category_product">
+                        <span ng-bind="category.categoryName"></span>
+                    </div>
+                    <label class="mx-3">
+                            <select class="form-select" id="selectedCategory_products" ng-model="selectedProductTypeId" ng-change="onProductTypeChange(selectedProductTypeId)">
+                            <option value="" disabled>Loại</option>
+                            <option ng-repeat="productType in category.productTypesById" value="{{productType.id}}">
+                                {{productType.productTypeName}}
+                            </option>
+                        </select>
+                    </label>
+                </div>
+                <div class="see_more">
+                    <a class="see_more" href="#!/san-pham/loai-danh-muc?danh-muc={{category.id}}">Xem thêm...</a>
+                </div>
+            </div>
+            <div class="slide_product">
+                <!-- Swiper -->
+                <div class="swiper" id="product_light" style="height: 100%;">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" ng-repeat="product in category.productsTypeProducts">
+                            <div class="item">
+                                <div class="item-product d-flex align-items-center">
+                                    <div class="img">
+                                        <img ng-src="{{product.productImagesById.length > 0 ? '/upload/' + product.productImagesById[0].imagePath : '/upload/default-img.jpg'}}"
+                                             class="img-fluid" style="width: 200px" alt="..." src="">
+                                    </div>
+                                    <div class="card-body-product">
+                                        <p class="name-product" ng-bind="product.productName"></p>
+                                        <div class="content-product mb-3">
+                                            <span>Công suất: <b ng-bind="product.powers"></b></span>
+                                            <span>Hãng:
+                                            <b ng-bind="product.BrandName"></b>
+                                        </span>
+                                        </div>
+                                        <div class="btn-add-cart">
+                                            <a href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product.id}}"
+                                               role="button" class="btn btn-primary w-100">Xem chi tiết</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Product End -->

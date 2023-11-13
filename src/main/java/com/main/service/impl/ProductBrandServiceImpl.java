@@ -30,6 +30,11 @@ public class ProductBrandServiceImpl implements ProductBrandService {
     }
 
     @Override
+    public ProductBrands findBandByProductId(String productBrandId) {
+        return productBrandRepository.findBandByProductId(productBrandId);
+    }
+
+    @Override
     public List<ProductBrands> findAll() {
         return productBrandRepository.findAll();
     }

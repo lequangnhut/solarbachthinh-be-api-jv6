@@ -1,9 +1,12 @@
 package com.main.controller.restcontroller;
 
+import com.main.entity.ProductBrands;
 import com.main.entity.ProductCategories;
 import com.main.entity.Products;
+import com.main.service.ProductBrandService;
 import com.main.service.ProductCategoryService;
 import com.main.service.ProductService;
+import com.main.service.ProductTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +21,13 @@ import java.util.List;
 public class ProductAPI {
 
     @Autowired
-    ProductCategoryService productCategoryService;
+    private ProductService productService;
 
     @Autowired
-    ProductService productService;
+    private ProductCategoryService categoryService;
+
+    @Autowired
+    private ProductBrandService productBrandService;
 
     @GetMapping("product")
     public List<Products> productList() {
@@ -44,7 +50,7 @@ public class ProductAPI {
     @GetMapping("product/get-top4-category")
     public List<ProductCategories> showCategory() {
         Pageable pageable = PageRequest.of(0, 4);
-        return productCategoryService.findAllTop4(pageable);
+        return categoryService.findAllTop4(pageable);
     }
 
     // tìm ra sản phẩm bằng mã danh mục
@@ -52,4 +58,37 @@ public class ProductAPI {
     public List<Object[]> productGetById(@PathVariable int categoryId) {
         return productService.findTopProductByCategoryId(categoryId);
     }
+
+    @GetMapping("products/{categoryId}")
+    public List<Products> productsList(@PathVariable int categoryId) {
+        return productService.findByCategoryByProductTypeByProducts(categoryId);
+    }
+
+    @GetMapping("product/brandName/{productBrandId}")
+    public ProductBrands brandNameByProduct(@PathVariable String productBrandId) {
+        return productBrandService.findBandByProductId(productBrandId);
+    }
+
+    @GetMapping("product/find-all")
+    public List<Products> getAllProducts() {
+        return productService.findAll();
+    }
+
+    @GetMapping("product/find-product-by-product-type/{productTypeId}")
+    public List<Products> findProductByProductType(@PathVariable int productTypeId) {
+        return productService.findByProductTypeId(productTypeId);
+    }
+
+    @GetMapping("product/find-product-by-category-id-by-key/{categoryId}/{ten-san-pham}")
+    public List<Products> findProductByCategoryIdAndKey
+            (@PathVariable(name = "categoryId") int categoryId, @PathVariable(name = "ten-san-pham") String search) {
+        return productService.findByCategoryIdAndProductNameContaining(categoryId, search);
+    }
+
+    @GetMapping("product/find-by-category-id-by-product-type-id/{categoryId}/{productTypeId}")
+    public List<Object[]> findProductByCategoryIdAndProductTypeId
+            (@PathVariable(name = "categoryId") int categoryId, @PathVariable(name = "productTypeId") int productTypeId) {
+        return productService.findByCategoryIdAndProductTypeId(categoryId, productTypeId);
+    }
+
 }

@@ -132,3 +132,11 @@
 .slide_product .swiper-slide {
     border: 1px solid #cccccc;
 }
+
+#selectedCategory_products {
+    border: none;
+    background-color: #F7F7F7;
+    width: max-content; /* Tự động mở rộng theo nội dung được chọn */
+}
+
+
