@@ -59,7 +59,6 @@ solar_app.controller('product_type', function ($scope, $http, $timeout, $locatio
 
     // Xử lý sự kiện khi thay đổi loại sản phẩm
     $scope.onChangeSelectProductType = function (categoryId, productTypeId) {
-        console.log("onChangeSelectProductType: ", categoryId, productTypeId);
         $scope.isLoading = true;
         if (!categoryId === null || !categoryId === undefined) {
             $scope.categoryId = categoryId;
