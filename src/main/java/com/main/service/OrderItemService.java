@@ -8,5 +8,7 @@ public interface OrderItemService {
 
     List<Object[]> findByOrderId(String orderId);
 
+    List<OrderItems> findAllOrderItemByOrderId(String orderId);
+
     OrderItems save(OrderItems orderItems);
 }

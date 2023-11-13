@@ -8,15 +8,15 @@ import lombok.*;
 @NoArgsConstructor
 public class UserPaymentDto {
 
-    String fullname;
+    private String fullname;
 
-    String phoneNumber;
+    private String phoneNumber;
 
-    String provinceName;
+    private String provinceName;
 
-    String districtName;
+    private String districtName;
 
-    String wardName;
+    private String wardName;
 
-    String address;
+    private String address;
 }

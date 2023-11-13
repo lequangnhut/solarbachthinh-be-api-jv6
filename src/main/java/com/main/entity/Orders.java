@@ -88,7 +88,7 @@ public class Orders {
     @JsonBackReference
     private Users usersByUserId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "discount_id", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonBackReference
     private Discounts discountsByDiscountId;

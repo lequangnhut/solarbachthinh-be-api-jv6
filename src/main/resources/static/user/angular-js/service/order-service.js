@@ -24,4 +24,11 @@ solar_app.service('OrderService', function ($http) {
             url: API_Order + '/history-payment/' + userId,
         })
     }
+
+    this.cancelOrderById = function (orderId) {
+        return $http({
+            method: 'GET',
+            url: API_Order + '/cancel-order/' + orderId,
+        })
+    }
 });

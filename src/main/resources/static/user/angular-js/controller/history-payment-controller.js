@@ -1,4 +1,10 @@
-solar_app.controller('history_controller', function ($scope, UserService, OrderService, OrderItermService, DiscountService) {
+solar_app.controller('history_payment_controller', function ($scope, $window, UserService, OrderService, OrderItermService, DiscountService) {
+
+    $scope.activeTab = 'confirm';
+
+    $scope.setActiveTab = function (tab) {
+        $scope.activeTab = tab;
+    };
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
@@ -50,7 +56,8 @@ solar_app.controller('history_controller', function ($scope, UserService, OrderS
 
                 for (let i = 0; i < listOrderItemAndProduct.length; i++) {
                     let data = {
-                        product: listOrderItemAndProduct[i][1], orderItem: listOrderItemAndProduct[i][0]
+                        product: listOrderItemAndProduct[i][1],
+                        orderItem: listOrderItemAndProduct[i][0]
                     };
                     combinedData.push(data);
 
@@ -82,4 +89,26 @@ solar_app.controller('history_controller', function ($scope, UserService, OrderS
             }
         });
     };
+
+    $scope.cancelOrder = function (orderId) {
+        Swal.fire({
+            title: 'Cảnh báo ?',
+            text: "Bạn có chắc chắn muốn huỷ đơn hàng " + orderId + " không ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý !',
+            cancelButtonText: 'Huỷ !'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                OrderService.cancelOrderById(orderId).then(function successCallback() {
+                    centerAlert('Thành công !', 'Đơn hàng ' + orderId + ' của bạn đã được huỷ thành công !', 'success');
+                    $window.location.reload();
+                    $scope.apply();
+                })
+            }
+        })
+    }
 });

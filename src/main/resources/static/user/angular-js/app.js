@@ -110,7 +110,7 @@ solar_app.config(function ($routeProvider) {
         })
         .when('/lich-su-mua-hang', {
             templateUrl: API_Template + 'history/history-payment.html',
-            controller: 'history_controller'
+            controller: 'history_payment_controller'
         })
 
         // vnpay

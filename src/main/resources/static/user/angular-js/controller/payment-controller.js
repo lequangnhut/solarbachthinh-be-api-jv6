@@ -61,6 +61,7 @@ solar_app.controller('payment_controller', function ($scope, $rootScope, OrderSe
 
         const data = {
             orderId: OrderCodeService.generateOrderCode(),
+            email: $scope.user.email,
             user_payment: $scope.user_payment,
             productCartDto: productCartDto,
             discountId: $scope.discountId,
@@ -112,6 +113,7 @@ solar_app.controller('payment_controller', function ($scope, $rootScope, OrderSe
         };
 
         const data = {
+            email: $scope.user.email,
             user_payment: $scope.user_payment,
             productCartDto: productCartDto,
             discountId: $scope.discountId,

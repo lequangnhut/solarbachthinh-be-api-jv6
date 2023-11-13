@@ -179,49 +179,50 @@ $(document).ready(function () {
 });
 
 // mấy bảng này đang bị lỗi
-$(document).ready(function () {
-    $('#sortConfirmOder').DataTable({
-        "order": [],
-        "paging": true,
-        "ordering": true,
-        "info": true,
-        language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
-        },
-    })
-});
-
-$(document).ready(function () {
-    $('#sortCloseOrder').DataTable({
-        "order": [],
-        "paging": true,
-        "ordering": true,
-        "info": true,
-        language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
-        },
-    })
-});
-
-$(document).ready(function () {
-    $('#sortShipOrder').DataTable({
-        "order": [],
-        "paging": true,
-        "ordering": true,
-        "info": true,
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
-        }
-    });
-});
-
-
-
-
-
-
-
-
-
-
-
+// $(document).ready(function () {
+//     $('#table-confirm').DataTable({
+//         "order": [],
+//         "paging": true,
+//         "ordering": true,
+//         "info": true,
+//         language: {
+//             url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
+//         },
+//     })
+// });
+//
+// $(document).ready(function () {
+//     $('#table-deliver').DataTable({
+//         "order": [],
+//         "paging": true,
+//         "ordering": true,
+//         "info": true,
+//         language: {
+//             url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
+//         },
+//     })
+// });
+//
+// $(document).ready(function () {
+//     $('#table-delivered').DataTable({
+//         "order": [],
+//         "paging": true,
+//         "ordering": true,
+//         "info": true,
+//         "language": {
+//             "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+//         }
+//     });
+// });
+//
+// $(document).ready(function () {
+//     $('#table-cancelled').DataTable({
+//         "order": [],
+//         "paging": true,
+//         "ordering": true,
+//         "info": true,
+//         "language": {
+//             "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+//         }
+//     });
+// });

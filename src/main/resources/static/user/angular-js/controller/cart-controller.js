@@ -90,8 +90,7 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
         }).then((result) => {
             if (result.isConfirmed) {
                 $http({
-                    method: 'GET',
-                    url: API_Cart + '/xoa-gio-hang/' + cartId
+                    method: 'GET', url: API_Cart + '/xoa-gio-hang/' + cartId
                 }).then(function successCallback() {
                     for (let i = 0; i < $scope.object_cart.length; i++) {
                         if ($scope.object_cart[0].id !== cartId) {
