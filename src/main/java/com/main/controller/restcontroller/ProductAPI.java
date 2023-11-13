@@ -85,4 +85,10 @@ public class ProductAPI {
         return productService.findByCategoryIdAndProductNameContaining(categoryId, search);
     }
 
+    @GetMapping("product/find-by-category-id-by-product-type-id/{categoryId}/{productTypeId}")
+    public List<Object[]> findProductByCategoryIdAndProductTypeId
+            (@PathVariable(name = "categoryId") int categoryId, @PathVariable(name = "productTypeId") int productTypeId) {
+        return productService.findByCategoryIdAndProductTypeId(categoryId, productTypeId);
+    }
+
 }
