@@ -13,4 +13,6 @@ public interface ProductBrandService {
     void save(ProductBrands productBrands);
 
     boolean doesProductBrandExist(String id);
+
+    ProductBrands findBandByProductId(String productBrandId);
 }

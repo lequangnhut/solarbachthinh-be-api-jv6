@@ -50,4 +50,24 @@ public class ProductServiceImpl implements ProductService {
     public boolean doesProductExist(String productId) {
         return productsRepository.existsById(productId);
     }
+
+    @Override
+    public List<Products> findByProductTypeId(int productTypeId) {
+        return productsRepository.findByProductTypeId(productTypeId);
+    }
+
+    @Override
+    public List<Products> findByCategoryIdAndProductNameContaining(int categoryId, String productName) {
+        return productsRepository.findByCategoryIdAndProductNameContaining(categoryId, productName);
+    }
+
+    @Override
+    public List<Products> findByCategoryByProductTypeByProducts(int categoryId) {
+        return productsRepository.findByCategoryByProductTypeByProducts(categoryId);
+    }
+
+    @Override
+    public List<Object[]> findByCategoryIdAndProductTypeId(int categoryId, int productTypeId) {
+        return productsRepository.findByCategoryIdAndProductTypeId(categoryId, productTypeId);
+    }
 }
