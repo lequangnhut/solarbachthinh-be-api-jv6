@@ -12,6 +12,12 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
 
     List<Orders> findByUserIdOrderByDateCreatedDesc(int userId);
 
+    @Query("SELECT CalculateTotalOrderPrice(:userId)")
+    BigDecimal sumOrdersPriceByAccountIdProfile(@Param("userId") Integer userId);
+
+    @Query("SELECT COUNT(o) FROM Orders o JOIN o.usersByUserId a WHERE a.id = :userId")
+    BigDecimal countOrdersByAccountIdPro(@Param("userId") Integer userId);
+
     @Query("SELECT SUM(ct.price * ct.quantity + o.orderShipCost) " +
             "FROM Orders o JOIN o.orderItemsById ct JOIN o.usersByUserId a WHERE a.id = :userId")
     Integer sumOrdersPriceByAccountId(@Param("userId") Integer userId);

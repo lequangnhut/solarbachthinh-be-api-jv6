@@ -6,6 +6,7 @@ import com.main.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -30,12 +31,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Integer sumOrderPrice(Integer userId) {
+    public BigDecimal sumOrderPrice(Integer userId) {
         return orderRepository.sumOrdersPriceByAccountId(userId);
     }
 
     @Override
-    public Integer countOrdersByAccountId(Integer userId) {
+    public BigDecimal countOrdersByAccountId(Integer userId) {
         return orderRepository.countOrdersByAccountId(userId);
     }
 }
