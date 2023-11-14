@@ -18,5 +18,4 @@ public interface RevenueService {
     List<Object[]> findTopSellingProducts();
 
     List<RevenueDto> getRevenueByYear(int year);
-
 }
