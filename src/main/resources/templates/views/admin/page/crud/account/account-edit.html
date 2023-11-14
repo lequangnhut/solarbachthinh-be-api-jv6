@@ -89,45 +89,45 @@
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="city" th:field="*{getProvinceName}"
+                                    <select class="form-select" id="city" th:field="*{provinceName}"
                                             aria-label="Floating label select example">
-                                        <option th:value="${users.getProvinceName}" th:text="${users.getProvinceName}"
+                                        <option th:value="${users.provinceName}" th:text="${users.provinceName}"
                                                 selected>Chọn Tỉnh Thành
                                         </option>
                                         <!-- Các tùy chọn cho Tỉnh Thành -->
                                     </select>
                                     <label for="city">Tỉnh Thành</label>
-                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('city')}"
-                                          th:errors="*{getProvinceName}"></span>
+                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('provinceName')}"
+                                          th:errors="*{provinceName}"></span>
                                     <span class="text-danger" id="invalid-city"></span>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="province" th:field="*{getDistrictName}"
+                                    <select class="form-select" id="province" th:field="*{districtName}"
                                             aria-label="Floating label select example">
-                                        <option id="provinceOption" th:value="${users.getDistrictName}"
-                                                th:text="${users.getDistrictName}"
+                                        <option id="provinceOption" th:value="${users.districtName}"
+                                                th:text="${users.districtName}"
                                                 selected>Chọn Quận/Huyện
                                         </option>
                                         <!-- Các tùy chọn cho Quận/Huyện -->
                                     </select>
                                     <label for="province">Quận/Huyện</label>
-                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('province')}"
-                                          th:errors="*{getDistrictName}"></span>
+                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('districtName')}"
+                                          th:errors="*{districtName}"></span>
                                     <span class="text-danger" id="invalid-province"></span>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="ward" th:field="*{getWardName}"
+                                    <select class="form-select" id="ward" th:field="*{wardName}"
                                             aria-label="Floating label select example">
-                                        <option th:value="${users.getWardName}" th:text="${users.getWardName}"
+                                        <option th:value="${users.wardName}" th:text="${users.wardName}"
                                                 selected>Chọn Phường/Xã
                                         </option>
                                         <!-- Các tùy chọn cho Phường/Xã -->
                                     </select>
                                     <label for="ward">Phường/Xã</label>
-                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('ward')}"
-                                          th:errors="*{getWardName}"></span>
+                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('wardName')}"
+                                          th:errors="*{wardName}"></span>
                                     <span class="text-danger" id="invalid-ward"></span>
                                 </div>
 

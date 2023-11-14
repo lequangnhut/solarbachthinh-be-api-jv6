@@ -6,9 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Data
 public class UsersDto implements Serializable {

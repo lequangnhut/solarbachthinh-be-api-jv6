@@ -99,6 +99,7 @@ solar_app.controller('product', function ($scope, CategoryService, ProductServic
     CategoryService.findAllCategory()
         .then(function successCallback(response) {
             $scope.categories = response.data;
+            console.log($scope.categories)
             return updateAllCategoriesAndSwiper($scope.categories);
         });
 

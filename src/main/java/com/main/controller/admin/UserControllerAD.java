@@ -75,9 +75,9 @@ public class UserControllerAD {
 
     @PostMapping("sua-tai-khoan")
     public String account_edit(@ModelAttribute("usersDto") UsersDto usersDto) {
-        String encodedPassword = encoder.encode(usersDto.getPasswords());
-
-        usersDto.setPasswords(encodedPassword);
+//        String encodedPassword = encoder.encode(usersDto.getPasswords());
+//
+//        usersDto.setPasswords(encodedPassword);
         userService.update(EntityDtoUtils.convertToEntity(usersDto, Users.class));
 
         session.setAttribute("toastSuccess", "Cập nhật thành công !");
