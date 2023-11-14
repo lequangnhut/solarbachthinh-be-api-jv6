@@ -34,7 +34,8 @@
                                     <div class="card-body">
                                         <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
                                             <div class="mb-3 mb-sm-0">
-                                                <h5 class="card-title fw-semibold">Biểu đồ thống kê doanh thu năm</h5>
+                                                <h5 class="card-title fw-semibold">Biểu đồ thống kê doanh thu của các
+                                                    tháng trong năm</h5>
                                             </div>
                                             <div>
                                                 <select class="form-select" id="yearSelector" onchange="updateChart()">
@@ -95,7 +96,7 @@
                                                 <div class="row alig n-items-start">
                                                     <div class="col-8">
                                                         <h5 class="card-title mb-9 fw-semibold">Thu nhập trung bình
-                                                            trong năm các năm</h5>
+                                                            trong các năm</h5>
                                                         <h4 class="fw-semibold mb-3"
                                                             th:text="${#numbers.formatDecimal(AverageRevenueByYear, 0, 'COMMA', 0, 'POINT').replace(',', '.') + ' ₫'}">
                                                             $6,820</h4>
