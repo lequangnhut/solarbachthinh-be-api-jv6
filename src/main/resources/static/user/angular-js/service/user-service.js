@@ -1,4 +1,5 @@
 solar_app.service('UserService', function ($http) {
+
     this.findUserBySession = function () {
         return $http({
             method: 'GET',
@@ -6,15 +7,24 @@ solar_app.service('UserService', function ($http) {
         })
     };
 
+    //fill form thông tin cá nhân
+    this.fillProfileUserBySession = function () {
+        return $http({
+            method: 'GET',
+            url: API_ProfileSession
+        })
+    };
+
     // Update thông tin người dùng
-    this.updateUser = function (userId ,userData) {
+    this.updateProfileUser = function (userId ,userData) {
         return $http({
             method: 'PUT',
-            url: API_User + '/' + userId,
+            url: API_Profile + '/' + userId,
             data: userData
         });
     };
 
+    // Check số điện thoại trùng lặp khi update thông tin
     this.checkExistPhoneProfile = function (phone) {
         return $http({
             method: 'GET',
@@ -23,22 +33,19 @@ solar_app.service('UserService', function ($http) {
         })
     }
 
-    this.checkCorrectCurrentPassSV = function (currentPass){
+    this.checkCorrectCurrentPass = function (currentPass){
         return $http({
             method: 'GET',
-            url: API_CorrectCurrentPass,
-            param: 'phoneNumber' + phone
+            url: API_CorrectCurrentPass + currentPass,
+            param: 'currentPass' + currentPass
         })
     }
 
-    this.changePass = function (userId, currentPass, newPass) {
+    this.changePass = function (userData) {
         return $http({
             method: 'PUT',
-            url: API_ChangePassword + userId,
-            params: {
-                currentPass: currentPass,
-                newPass: newPass
-            }
+            url: API_Profile + '/change-password',
+            data: userData
         })
     };
 

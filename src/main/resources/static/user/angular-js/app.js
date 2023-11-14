@@ -4,6 +4,10 @@ let API_Template = '/page/';
 let API_UserSession = '/api/user/session-user';
 let API_User = '/api/user';
 
+// api profile và mật khẩu
+let API_ProfileSession = '/api/profile/profile-session-user'
+let API_Profile = '/api/profile'
+
 // api category
 let API_GetTop4Category = '/api/product/get-top4-category'
 let API_ProductCategory = '/api/product-category';
@@ -24,19 +28,17 @@ let API_Order = 'api/order';
 // api vnpay
 let API_VNPAY = '/api/vnpay'
 
-// api check tồn tại email, số điện thoại
+// api check tồn tại email, số điện thoại, mật khẩu
 let API_ExistEmail = '/api/check-duplicate-email/'
 let API_ExistPhone = '/api/check-duplicate-phone/'
-let API_ExistPhoneProfile = '/api/check-phone-profile/'
+let API_ExistPhoneProfile = '/api/check-phone-user/'
 
 //api check mật khẩu hiện tại đúng (dùng cho đổi mật khẩu)
-let API_CorrectCurrentPass = '/api/check-current-password'
+let API_CorrectCurrentPass = '/api/check-current-password/'
 
 // api order item
 let API_OrderItem = '/api/order-item'
 
-//api cho đổi mật khẩu
-let API_ChangePassword = '/api/change-password/'
 
 // khởi tạo ứng dụng
 let solar_app = angular.module('solar_app', ['ngRoute'])

@@ -52,20 +52,7 @@ public class UserAPI {
     @GetMapping("user/session-user")
     public ResponseEntity<String> sessionUser() {
         Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
-
         if (users != null) {
-//            Integer userId = users.getId();
-//
-//            Integer sumResult = orderService.sumOrderPrice(userId); // Sử dụng truy vấn của bạn
-//            Integer countResult = orderService.countOrdersByAccountId(userId);
-//
-//            if (sumResult == null) {
-//                sumResult = 0;
-//            }
-//            if (countResult == null) {
-//                countResult = 0;
-//            }
-
             UsersDto usersDto = new UsersDto();
             usersDto.setId(users.getId());
             usersDto.setPasswords(users.getPasswords());
@@ -79,8 +66,6 @@ public class UserAPI {
             usersDto.setDistrictName(users.getDistrictName());
             usersDto.setWardName(users.getWardName());
             usersDto.setAddress(users.getAddress());
-//            usersDto.setTotalOrderPrice(sumResult);
-//            usersDto.setOrderCount(countResult);
 
             ObjectMapper objectMapper = new ObjectMapper();
             try {
@@ -157,7 +142,6 @@ public class UserAPI {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
     @DeleteMapping("user/{userId}")
     public String deleteAccount(@PathVariable int userId) {

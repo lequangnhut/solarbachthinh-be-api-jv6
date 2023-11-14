@@ -60,9 +60,9 @@
                         <span ng-bind="category.categoryName"></span>
                     </div>
                     <label class="mx-3">
-                            <select class="form-select" id="selectedCategory_products" ng-model="selectedProductTypeId" ng-change="onProductTypeChange(selectedProductTypeId)">
+                        <select class="form-select" id="selectedCategory_products" ng-model="selectedProductTypeId" ng-change="onProductTypeChange(selectedProductTypeId)">
                             <option value="" disabled>Loại</option>
-                            <option ng-repeat="productType in category.productTypesById" value="{{productType.id}}">
+                            <option ng-repeat="productType in category.productTypesById" ng-value="productType.id" ng-if="productType.productsById.length > 0">
                                 {{productType.productTypeName}}
                             </option>
                         </select>

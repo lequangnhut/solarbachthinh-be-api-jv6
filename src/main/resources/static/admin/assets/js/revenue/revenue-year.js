@@ -1,17 +1,17 @@
 function updateChart() {
-    var selectedYear = $("#yearSelector").val();
-    var revenueText = $("#revenue");
-    var namDanhThu = $("#nam-doanh-thu");
 
-    var topSellingProducts_Id = $("#topSellingProducts_Id");
+    const selectedYear = $("#yearSelector").val();
+    const revenueText = $("#revenue");
+    const namDanhThu = $("#nam-doanh-thu");
+    const topSellingProducts_Id = $("#topSellingProducts_Id");
 
+    //xóa tất cả html của id
     namDanhThu.empty();
     topSellingProducts_Id.empty();
 
     // Kiểm tra xem biểu đồ đã được khởi tạo chưa
     if (charts) {
-        var url = "/admin/doanhthu/load-bieu-do?year=" + selectedYear;
-
+        const url = "/quan-tri/doanh-thu-nam/load-bieu-do?year=" + selectedYear;
         $.ajax({
             url: url,
             type: "GET",
@@ -40,31 +40,30 @@ function updateChart() {
                     </div>
                 `);
 
-                for (const topSellingProduct of topSellingProducts) {
+                $.each(topSellingProducts, function (index, topSellingProduct) {
                     topSellingProducts_Id.append(`
-                                                <tr>
-                                                <td class="border-bottom-0">
-                                                    <p class="mb-0 fw-normal">${topSellingProduct[0]}</p>
-                                                </td>
-                                                <td class="border-bottom-0">
-                                                    <span class="fw-normal">${topSellingProduct[1]}</span>
-                                                </td>
-                                                <td class="border-bottom-0">
-                                                    <p class="mb-0 fw-normal">${topSellingProduct[2]}
-                                                        Admin</p>
-                                                </td>
-                                                <td class="border-bottom-0">
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <span class="badge bg-primary rounded-3 fw-semibold">${topSellingProduct[3]}</span>
-                                                    </div>
-                                                </td>
-                                                <td class="border-bottom-0">
-                                                    <p class="mb-0 fw-normal">
-                                                    ${formatCurrency(topSellingProduct[4])}</p>
-                                                </td>
-                                            </tr>
-                        `);
-                }
+                        <tr>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal">${topSellingProduct[0]}</p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal">${topSellingProduct[1]}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal">${topSellingProduct[2]}</p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <div class="d-flex align-items-center gap-2">
+                                     <span class="badge bg-primary rounded-3 fw-semibold">${topSellingProduct[3]}</span>
+                                </div>
+                            </td>
+                            <td class="border-bottom-0">
+                                 <p class="mb-0 fw-normal">
+                                 ${formatCurrency(topSellingProduct[4])}</p>
+                            </td>
+                        </tr>
+                    `);
+                });
             },
             error: function (error) {
                 console.error("Lỗi khi lấy dữ liệu: " + error.responseText);
@@ -74,3 +73,5 @@ function updateChart() {
         console.error("Biểu đồ không tồn tại. Hãy đảm bảo rằng bạn đã khởi tạo biểu đồ trước khi cố gắng cập nhật nó.");
     }
 }
+
+
