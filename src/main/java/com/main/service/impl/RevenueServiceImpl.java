@@ -13,6 +13,7 @@ import java.util.List;
 
 @Service
 public class RevenueServiceImpl implements RevenueService {
+
     @Autowired
     private OrderRepository orderRepository;
 

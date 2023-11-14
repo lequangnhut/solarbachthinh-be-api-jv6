@@ -16,23 +16,16 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
     BigDecimal sumOrdersPriceByAccountIdProfile(@Param("userId") Integer userId);
 
     @Query("SELECT COUNT(o) FROM Orders o JOIN o.usersByUserId a WHERE a.id = :userId")
-    BigDecimal countOrdersByAccountIdPro(@Param("userId") Integer userId);
+    BigDecimal countOrdersByAccountIdProfile(@Param("userId") Integer userId);
 
-    @Query("SELECT SUM(ct.price * ct.quantity + o.orderShipCost) " +
-            "FROM Orders o JOIN o.orderItemsById ct JOIN o.usersByUserId a WHERE a.id = :userId")
-    Integer sumOrdersPriceByAccountId(@Param("userId") Integer userId);
-
-    @Query("SELECT COUNT(o) FROM Orders o JOIN o.usersByUserId a WHERE a.id = :userId")
-    Integer countOrdersByAccountId(@Param("userId") Integer userId);
-
-    //doanh thu nam
+    // doanh thu năm
 
     @Query("SELECT DISTINCT YEAR(o.dateCreated) FROM Orders o")
     List<Integer> findDistinctOrdersByYear();
 
     @Query("SELECT SUM(ct.price * ct.quantity + o.orderShipCost) as totalAmount, o" +
             " FROM Orders o JOIN o.orderItemsById ct" +
-            " WHERE EXTRACT(YEAR FROM o.dateCreated) = :year and o.paymentStatus = true" +
+            " WHERE EXTRACT(YEAR FROM o.dateCreated) = :year and o.paymentStatus = 1" +
             " GROUP BY o")
     List<Object[]> getOrdersByCreatedAt_Year(@Param("year") int year);
 
@@ -40,13 +33,13 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
     @Query("SELECT SUM(ct.price * ct.quantity + o.orderShipCost) FROM Orders o " +
             "JOIN o.orderItemsById ct " +
             "JOIN o.usersByUserId a " +
-            "WHERE EXTRACT(YEAR FROM o.dateCreated) = :year and o.paymentStatus = true")
+            "WHERE EXTRACT(YEAR FROM o.dateCreated) = :year and o.paymentStatus = 1")
     BigDecimal calculateRevenueForYear(@Param("year") int year);
 
     @Query("SELECT AVG(ct.price * ct.quantity + o.orderShipCost) FROM Orders o " +
             "JOIN o.orderItemsById ct " +
             "JOIN o.usersByUserId a " +
-            "WHERE o.paymentStatus = true ")
+            "WHERE o.paymentStatus = 1 ")
     List<Integer> calculateAverageRevenue();
 
     @Query("SELECT p.id, b.brandName, p.productName, SUM(ot.quantity) AS total_sold, SUM(ot.price * ot.quantity + o.orderShipCost) AS total_revenue FROM Orders o" +

@@ -37,11 +37,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public BigDecimal sumOrderPrice(Integer userId) {
-        return orderRepository.sumOrdersPriceByAccountId(userId);
+        return orderRepository.sumOrdersPriceByAccountIdProfile(userId);
     }
 
     @Override
     public BigDecimal countOrdersByAccountId(Integer userId) {
-        return orderRepository.countOrdersByAccountId(userId);
+        return orderRepository.countOrdersByAccountIdProfile(userId);
     }
 }
