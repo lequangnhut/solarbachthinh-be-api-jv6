@@ -161,11 +161,12 @@
                                                                 name="provinceName"
                                                                 ng-model="users.provinceName"
                                                                 ng-change="onProvinceSelect(users.provinceName)"
+                                                                ng-pattern="/^[^.]*$/"
                                                                 required>
                                                             <option selected>{{users.provinceName}}</option>
                                                         </select>
                                                         <small class="text-danger"
-                                                               ng-show="editProfileForm.provinceName.$error.required">
+                                                               ng-show="editProfileForm.provinceName.$error.required || editProfileForm.provinceName.$error.pattern">
                                                             Tỉnh/thành không được để trống!
                                                         </small>
                                                     </div>
@@ -177,11 +178,12 @@
                                                                 name="districtName"
                                                                 ng-model="users.districtName"
                                                                 ng-change="onDistrictSelect(users.districtName)"
+                                                                ng-pattern="/^[^.]*$/"
                                                                 required>
                                                             <option selected>{{users.districtName}}</option>
                                                         </select>
                                                         <small class="text-danger"
-                                                               ng-show="editProfileForm.districtName.$error.required">
+                                                               ng-show="editProfileForm.districtName.$error.required || editProfileForm.districtName.$error.pattern">
                                                             Quận/huyện không được để trống!
                                                         </small>
                                                     </div>
@@ -193,11 +195,12 @@
                                                                 name="wardName"
                                                                 ng-model="users.wardName"
                                                                 ng-change="onWardSelect(users.wardName)"
+                                                                ng-pattern="/^[^.]*$/"
                                                                 required>
                                                             <option selected>{{users.wardName}}</option>
                                                         </select>
                                                         <small class="text-danger"
-                                                               ng-show="editProfileForm.wardName.$error.required">
+                                                               ng-show="editProfileForm.wardName.$error.required || editProfileForm.wardName.$error.pattern">
                                                             Phường/xã không được để trống!
                                                         </small>
                                                     </div>

@@ -2,6 +2,7 @@ package com.main.service;
 
 import com.main.entity.Orders;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface OrderService {
@@ -12,7 +13,7 @@ public interface OrderService {
 
     Orders save(Orders orders);
 
-    Integer sumOrderPrice(Integer userId);
+    BigDecimal sumOrderPrice(Integer userId);
 
-    Integer countOrdersByAccountId(Integer userId);
+    BigDecimal countOrdersByAccountId(Integer userId);
 }

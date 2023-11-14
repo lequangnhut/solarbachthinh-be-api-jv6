@@ -77,8 +77,9 @@
                                                 <h6 class="text-dark mt-4 ng-binding">{{users.phoneNumber}}
                                                 </h6>
                                                 <h6 class="text-dark mt-4 ng-binding">{{users.birth | date:'dd-MM-yyyy'}}</h6>
-                                                <h6 class="text-dark mt-4 ng-binding" ng-if="!users.gender">Nữ</h6>
-                                                <h6 class="text-dark mt-4 ng-binding" ng-if="users.gender">Nam</h6>
+                                                <h6 class="text-dark mt-4 ng-binding" ng-if="(users.gender) == null">. . .</h6>
+                                                <h6 class="text-dark mt-4 ng-binding" ng-if="(users.gender) == false">Nữ</h6>
+                                                <h6 class="text-dark mt-4 ng-binding" ng-if="(users.gender) == true">Nam</h6>
                                                 <div class="text-dark mt-4 ng-binding">
                                                     <span>{{users.address}}</span>,
                                                     <span>{{users.wardName}}</span>,

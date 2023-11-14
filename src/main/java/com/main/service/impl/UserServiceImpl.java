@@ -106,9 +106,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Users updatePass(int userId, String password) {
         Users users = userRepository.findById(userId);
-
         if (users == null) {
-            System.out.println("Người dùng không tồn tại");
             return null;
         }
         users.setPasswords(password);

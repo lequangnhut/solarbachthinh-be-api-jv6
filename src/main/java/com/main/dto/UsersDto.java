@@ -4,6 +4,7 @@ import com.main.entity.Roles;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -43,8 +44,8 @@ public class UsersDto implements Serializable {
 
     String token;
 
-    Integer totalOrderPrice;
+    BigDecimal totalOrderPrice;
 
-    Integer orderCount;
+    BigDecimal orderCount;
 
 }

@@ -85,7 +85,6 @@ function renderCityEdit(data) {
         if (previousDistrictsValue !== this.value) {
             // Districts đã thay đổi giá trị
             previousDistrictsValue = this.value; // Cập nhật giá trị của province trước khi thay đổi
-            console.log(previousDistrictsValue)
             wards.innerHTML = '<option value="" selected>Chọn Phường/Xã</option>';
         }
         // Thực hiện các xử lý khác ở đây sau khi province thay đổi
