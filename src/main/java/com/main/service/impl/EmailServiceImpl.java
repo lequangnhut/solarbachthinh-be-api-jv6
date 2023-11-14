@@ -1,11 +1,10 @@
 package com.main.service.impl;
 
+import com.main.dto.OrdersDto;
 import com.main.dto.RegisterDto;
-import com.main.dto.UsersDto;
+import com.main.entity.OrderItems;
 import com.main.entity.Users;
-import com.main.service.EmailService;
-import com.main.service.ThymeleafService;
-import com.main.service.UserService;
+import com.main.service.*;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -24,7 +24,8 @@ import java.util.*;
 @EnableScheduling
 public class EmailServiceImpl implements EmailService {
 
-    Queue<RegisterDto> emailQueue = new LinkedList<>();
+    Queue<RegisterDto> emailQueueRegister = new LinkedList<>();
+    Queue<OrdersDto> emailQueueOrder = new LinkedList<>();
 
     @Autowired
     JavaMailSender sender;
@@ -35,18 +36,24 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    OrderItemService orderItemService;
+
+    @Autowired
+    DiscountService discountService;
+
     @Value("${spring.mail.username}")
     private String email;
 
     @Override
     public void queueEmailRegister(RegisterDto registerDto) {
-        emailQueue.add(registerDto);
+        emailQueueRegister.add(registerDto);
     }
 
     @Override
     public void sendMailRegister() {
-        while (!emailQueue.isEmpty()) {
-            RegisterDto registerDto = emailQueue.poll();
+        while (!emailQueueRegister.isEmpty()) {
+            RegisterDto registerDto = emailQueueRegister.poll();
             Users users = userService.findByEmail(registerDto.getEmail());
             try {
                 MimeMessage message = sender.createMimeMessage();
@@ -67,7 +74,7 @@ public class EmailServiceImpl implements EmailService {
 
                 helper.setFrom(email);
                 helper.setText(thymeleafService.createContent("verify-email", variables), true);
-                helper.setSubject("SOLAR BÁCH THỊNH XIN CHÂN THÀNH CẢM ƠN QUÝ KHÁCH HÀNG");
+                helper.setSubject("SOLAR BÁCH THỊNH XIN CHÂN THÀNH CẢM ƠN QUÝ KHÁCH HÀNG ĐÃ ĐĂNG KÝ TÀI KHOẢN");
 
                 sender.send(message);
             } catch (MessagingException e) {
@@ -76,8 +83,69 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Override
+    public void queueMailCreateOrder(OrdersDto ordersDto) {
+        emailQueueOrder.add(ordersDto);
+    }
+
+    @Override
+    public void sendMailCreateOrder() {
+        while (!emailQueueOrder.isEmpty()) {
+            int priceProduct = 0;
+            BigDecimal discountCost = BigDecimal.valueOf(0);
+
+            OrdersDto ordersDto = emailQueueOrder.poll();
+
+            List<OrderItems> orderItems = orderItemService.findAllOrderItemByOrderId(ordersDto.getOrderId());
+
+            for (OrderItems items : orderItems) {
+                BigDecimal price = items.getProductsByProductId().getPrice();
+
+                priceProduct = price.intValue();
+
+                if (items.getOrdersByOrderId().getDiscountsByDiscountId() != null) {
+                    discountCost = items.getOrdersByOrderId().getDiscountsByDiscountId().getDiscountCost();
+                } else {
+                    discountCost = BigDecimal.ZERO;
+                }
+            }
+
+            try {
+                MimeMessage message = sender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+
+                helper.setTo(ordersDto.getEmail());
+
+                Map<String, Object> variables = new HashMap<>();
+                variables.put("order", ordersDto);
+                variables.put("full_name", ordersDto.getUser_payment().getFullname());
+                variables.put("orderItem", orderItems);
+                variables.put("priceProduct", priceProduct);
+                variables.put("discountCost", discountCost);
+
+                SimpleDateFormat sdfdate = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdftime = new SimpleDateFormat("HH:mm:ss");
+                variables.put("date", sdfdate.format(new Date()));
+                variables.put("time", sdftime.format(new Date()));
+
+                helper.setFrom(email);
+                helper.setText(thymeleafService.createContent("mail-payment", variables), true);
+                helper.setSubject("SOLAR BÁCH THỊNH XIN CHÂN THÀNH CẢM ƠN QUÝ KHÁCH HÀNG ĐÃ MUA HÀNG");
+
+                sender.send(message);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     @Scheduled(fixedDelay = 5000)
     public void processRegister() {
         sendMailRegister();
+    }
+
+    @Scheduled(fixedDelay = 5000)
+    public void processCreateOrder() {
+        sendMailCreateOrder();
     }
 }

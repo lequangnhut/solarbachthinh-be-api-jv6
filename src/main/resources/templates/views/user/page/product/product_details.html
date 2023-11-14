@@ -4,12 +4,12 @@
         <h1 class="display-3 text-white mb-3 animated slideInDown">Sản Phẩm Chi Tiết</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu">Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu" scroll-to-top>Trang Chủ</a></li>
                 <li class="breadcrumb-item" aria-current="page">
-                    <a class="text-white" href="#!/san-pham">Sản Phẩm</a>
+                    <a class="text-white" href="#!/san-pham" scroll-to-top>Sản Phẩm</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a class="text-white" href="#!/san-pham/loai-danh-muc?danh-muc=1">
+                    <a class="text-white" href="#!/san-pham/loai-danh-muc?danh-muc=1" scroll-to-top>
                         Loại Sản Phẩm
                     </a>
                 </li>
@@ -149,7 +149,7 @@
                class="view_more d-flex justify-content-center">
                 Thêm vào giỏ hàng
             </a>
-            <a href="#!/dang-nhap" ng-if="session_user == null"
+            <a href="#!/dang-nhap" ng-if="session_user == null" scroll-to-top
                class="view_more d-flex justify-content-center">
                 Vui lòng đăng nhập
             </a>
@@ -229,7 +229,7 @@
                         ng-click="changes(category.id)"
                         ng-class="{'active': category.id == categoryId}"
                     >
-                        <a href="#!/san-pham/loai-danh-muc?danh-muc={{category.id}}">
+                        <a href="#!/san-pham/loai-danh-muc?danh-muc={{category.id}}" scroll-to-top>
                             <img class="m-auto pb-3"
                                  ng-src="/upload/{{category.categoryImage}}"
                                  alt="den-nang-luong-mat-troi-thumbnail">
@@ -238,7 +238,7 @@
                         <input type="hidden" id="categorySelect" ng-value="category.id">
                     </li>
                     <li>
-                        <a href="#!/san-pham">
+                        <a href="#!/san-pham" scroll-to-top>
                             <img class="m-auto pb-3"
                                  src="/upload/clipboard-1.png"
                                  alt="den-nang-luong-mat-troi-thumbnail">
@@ -258,7 +258,7 @@
                         </div>
                     </div>
                     <div class="see_more">
-                        <a href="#!/san-pham">Xem thêm...</a>
+                        <a href="#!/san-pham" scroll-to-top>Xem thêm...</a>
                     </div>
                 </div>
                 <div class="slide_product">
@@ -280,7 +280,8 @@
                                             </div>
                                             <div class="btn-add-cart">
                                                 <a href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product[0].id}}"
-                                                   role="button" type="submit" class="btn btn-primary w-100">
+                                                   scroll-to-top role="button" type="submit"
+                                                   class="btn btn-primary w-100">
                                                     Mua hàng</a>
                                             </div>
                                         </div>

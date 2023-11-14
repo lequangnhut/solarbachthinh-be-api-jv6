@@ -11,31 +11,26 @@ solar_app.controller('product_type', function ($scope, $http, $timeout, $locatio
 
     // Hàm callback chung cho việc cập nhật dữ liệu sản phẩm
     function updateProducts(categoryId) {
-        ProductService.findProductByCategoryId(categoryId)
-            .then(function successCallback(response) {
-                $scope.products = response.data;
-                $scope.isLoading = false;
-            }, errorCallback);
+        ProductService.findProductByCategoryId(categoryId).then(function successCallback(response) {
+            $scope.products = response.data;
+            $scope.isLoading = false;
+        }, errorCallback);
     }
 
     // Lấy danh sách danh mục
-    CategoryService.findAllCategory()
-        .then(function successCallback(response) {
-            $scope.categories = response.data;
-        }, errorCallback);
+    CategoryService.findAllCategory().then(function successCallback(response) {
+        $scope.categories = response.data;
+    }, errorCallback);
 
     // Lấy danh sách sản phẩm theo category id
-    ProductService.findProductByCategoryId($scope.categoryId)
-        .then(function successCallback(response) {
-            $scope.products = response.data;
-        }, errorCallback);
+    ProductService.findProductByCategoryId($scope.categoryId).then(function successCallback(response) {
+        $scope.products = response.data;
+    }, errorCallback);
 
     // Lấy ra product type đầu tiên khi vào product type
-    ProductTypeService.findProductTypeByCategoryId($scope.categoryId)
-        .then(function successCallback(response) {
-            $scope.product_type = response.data;
-            console.log($scope.product_type)
-        }, errorCallback);
+    ProductTypeService.findProductTypeByCategoryId($scope.categoryId).then(function successCallback(response) {
+        $scope.product_type = response.data;
+    }, errorCallback);
 
     $scope.isLoading = false;
 
@@ -45,11 +40,9 @@ solar_app.controller('product_type', function ($scope, $http, $timeout, $locatio
         $scope.categoryId = categoryId;
 
         // Lấy danh sách product type theo category id
-        ProductTypeService.findProductTypeByCategoryId(categoryId)
-            .then(function successCallback(response) {
-                $scope.product_type = response.data;
-                console.log('change: ', $scope.product_type)
-            }, errorCallback);
+        ProductTypeService.findProductTypeByCategoryId(categoryId).then(function successCallback(response) {
+            $scope.product_type = response.data;
+        }, errorCallback);
 
         // Thiết lập timeout trước khi cập nhật sản phẩm
         $timeout(function () {
@@ -72,11 +65,10 @@ solar_app.controller('product_type', function ($scope, $http, $timeout, $locatio
         } else {
             $timeout(function () {
                 // Lấy danh sách sản phẩm theo category id và product type id
-                ProductService.findProductByCategoryIdAndProductTypeId(categoryId, productTypeId)
-                    .then(function successCallback(response) {
-                        $scope.products = response.data;
-                        $scope.isLoading = false;
-                    }, errorCallback);
+                ProductService.findProductByCategoryIdAndProductTypeId(categoryId, productTypeId).then(function successCallback(response) {
+                    $scope.products = response.data;
+                    $scope.isLoading = false;
+                }, errorCallback);
             }, 1500);
         }
     }

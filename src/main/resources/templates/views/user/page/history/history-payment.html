@@ -4,8 +4,8 @@
         <h1 class="display-3 text-white mb-3 animated slideInDown">Lịch sử đặt hàng</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu">Trang Chủ</a></li>
-                <li class="breadcrumb-item"><a class="text-white" href="#!/lich-su-mua-hang">
+                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu" scroll-to-top>Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/lich-su-mua-hang" scroll-to-top>
                     Lịch sử mua hàng</a></li>
             </ol>
         </nav>
@@ -21,8 +21,35 @@
             <div class="col-lg-12 py-5 wow fadeIn" data-wow-delay="0.5s">
                 <h4 class="text-center">Lịch sử mua hàng - khách hàng {{users.fullname}}</h4>
 
-                <div class="table-responsive mt-4">
-                    <table id="sortHistoryOrder" class="table">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" ng-class="{ 'active': activeTab === 'confirm' }" href="javascript:void(0)"
+                           ng-click="setActiveTab('confirm')">
+                            Chờ xác nhận
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ng-class="{ 'active': activeTab === 'deliver' }" href="javascript:void(0)"
+                           ng-click="setActiveTab('deliver')">
+                            Đang vận chuyển
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ng-class="{ 'active': activeTab === 'delivered' }" href="javascript:void(0)"
+                           ng-click="setActiveTab('delivered')">
+                            Đã giao
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ng-class="{ 'active': activeTab === 'cancelled' }" href="javascript:void(0)"
+                           ng-click="setActiveTab('cancelled')">
+                            Đã huỷ
+                        </a>
+                    </li>
+                </ul>
+
+                <div ng-show="activeTab === 'confirm'" class="table-responsive mt-4">
+                    <table class="table">
                         <thead class="thead-inverse">
                         <tr>
                             <th>#</th>
@@ -36,14 +63,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="order in history_order">
+                        <tr ng-repeat="order in history_order" ng-if="order.orderStatus == 'Chờ xác nhận'">
                             <td>{{$index + 1}}</td>
                             <td>{{order.id}}</td>
                             <td>{{order.toName}}</td>
                             <td>{{order.toPhone}}</td>
                             <td>{{order.toProvince}}</td>
                             <td>{{order.orderStatus}}</td>
-                            <td>{{order.paymentStatus ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}</td>
+                            <td>{{order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}</td>
                             <td>
                                 <a href="javascript:void(0)" class="show-info" ng-click="getInfoOrder(order.id)"
                                    data-bs-toggle="modal"
@@ -55,7 +82,121 @@
                         </tbody>
                     </table>
                     <h6 class="text-center text-secondary mb-5" ng-if="!history_order || history_order.length === 0">
-                        Bạn chưa có lịch sử mua hàng, nhấn <a href="#!/san-pham">vào đây</a> để mua hàng
+                        Bạn chưa có lịch sử mua hàng, nhấn <a href="#!/san-pham" scroll-to-top>vào đây</a> để mua hàng
+                    </h6>
+                </div>
+
+                <div ng-show="activeTab === 'deliver'" class="table-responsive mt-4">
+                    <table class="table">
+                        <thead class="thead-inverse">
+                        <tr>
+                            <th>#</th>
+                            <th>Mã đơn hàng</th>
+                            <th>Tên khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th>Trạng thái đơn hàng</th>
+                            <th>Trạng thái thanh toán</th>
+                            <th>Cụ thể</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="order in history_order" ng-if="order.orderStatus == 'Đang vận chuyển'">
+                            <td>{{$index + 1}}</td>
+                            <td>{{order.id}}</td>
+                            <td>{{order.toName}}</td>
+                            <td>{{order.toPhone}}</td>
+                            <td>{{order.toProvince}}</td>
+                            <td>{{order.orderStatus}}</td>
+                            <td>{{order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}</td>
+                            <td>
+                                <a href="javascript:void(0)" class="show-info" ng-click="getInfoOrder(order.id)"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#modal-confirm-data">
+                                    Xem chi tiết
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h6 class="text-center text-secondary mb-5" ng-if="!history_order || history_order.length === 0">
+                        Bạn chưa có lịch sử mua hàng, nhấn <a href="#!/san-pham" scroll-to-top>vào đây</a> để mua hàng
+                    </h6>
+                </div>
+
+                <div ng-show="activeTab === 'delivered'" class="table-responsive mt-4">
+                    <table class="table">
+                        <thead class="thead-inverse">
+                        <tr>
+                            <th>#</th>
+                            <th>Mã đơn hàng</th>
+                            <th>Tên khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th>Trạng thái đơn hàng</th>
+                            <th>Trạng thái thanh toán</th>
+                            <th>Cụ thể</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="order in history_order" ng-if="order.orderStatus == 'Đã giao hàng'">
+                            <td>{{$index + 1}}</td>
+                            <td>{{order.id}}</td>
+                            <td>{{order.toName}}</td>
+                            <td>{{order.toPhone}}</td>
+                            <td>{{order.toProvince}}</td>
+                            <td>{{order.orderStatus}}</td>
+                            <td>{{order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}</td>
+                            <td>
+                                <a href="javascript:void(0)" class="show-info" ng-click="getInfoOrder(order.id)"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#modal-confirm-data">
+                                    Xem chi tiết
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h6 class="text-center text-secondary mb-5" ng-if="!history_order || history_order.length === 0">
+                        Bạn chưa có lịch sử mua hàng, nhấn <a href="#!/san-pham" scroll-to-top>vào đây</a> để mua hàng
+                    </h6>
+                </div>
+
+                <div ng-show="activeTab === 'cancelled'" class="table-responsive mt-4">
+                    <table class="table">
+                        <thead class="thead-inverse">
+                        <tr>
+                            <th>#</th>
+                            <th>Mã đơn hàng</th>
+                            <th>Tên khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th>Trạng thái đơn hàng</th>
+                            <th>Trạng thái thanh toán</th>
+                            <th>Cụ thể</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="order in history_order" ng-if="order.orderStatus == 'Đã huỷ đơn'">
+                            <td>{{$index + 1}}</td>
+                            <td>{{order.id}}</td>
+                            <td>{{order.toName}}</td>
+                            <td>{{order.toPhone}}</td>
+                            <td>{{order.toProvince}}</td>
+                            <td>{{order.orderStatus}}</td>
+                            <td>{{order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}</td>
+                            <td>
+                                <a href="javascript:void(0)" class="show-info" ng-click="getInfoOrder(order.id)"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#modal-confirm-data">
+                                    Xem chi tiết
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h6 class="text-center text-secondary mb-5" ng-if="!history_order || history_order.length === 0">
+                        Bạn chưa có lịch sử mua hàng, nhấn <a href="#!/san-pham" scroll-to-top>vào đây</a> để mua hàng
                     </h6>
                 </div>
             </div>
@@ -87,23 +228,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="text" class="form-control" ng-value="users.email" id="email" readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="city" class="form-label">Tỉnh thành</label>
-                            <input type="text" class="form-control" ng-value="order.toProvince" id="city" readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="district" class="form-label">Quận/Huyện</label>
-                            <input type="text" class="form-control" ng-value="order.toDistrict" id="district" readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="ward" class="form-label">Phường/Xã</label>
-                            <input type="text" class="form-control" ng-value="order.toWard" id="ward" readonly>
+                            <label for="datePayment" class="form-label">Ngày đặt hàng</label>
+                            <input type="text" class="form-control" id="datePayment"
+                                   ng-value="order.dateCreated | vietnameseDateTime" readonly>
                         </div>
                     </div>
                 </div>
@@ -115,37 +242,28 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="address" class="form-label">Địa chỉ cụ thể</label>
-                            <input type="text" class="form-control" id="address" ng-value="order.toAddress" readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="datePayment" class="form-label">Ngày đặt hàng</label>
-                            <input type="text" class="form-control" id="datePayment"
-                                   ng-value="order.dateCreated | vietnameseDateTime" readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="payment" class="form-label">Hình thức thanh toán</label>
-                            <input type="text" class="form-control" id="payment"
-                                   ng-value="order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'"
+                            <label for="statusOrder" class="form-label">Trạng thái đơn hàng</label>
+                            <input type="text" class="form-control" id="statusOrder" ng-value="order.orderStatus"
                                    readonly>
                         </div>
 
                         <div class="mb-3">
                             <label for="statusPay" class="form-label">Trang thái thanh toán</label>
                             <input type="text" class="form-control" id="statusPay"
-                                   ng-value="order.paymentStatus ? 'Chưa thanh toán' : 'Đã thanh toán'" readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="statusOrder" class="form-label">Trạng thái đơn hàng</label>
-                            <input type="text" class="form-control" id="statusOrder" ng-value="order.orderStatus"
-                                   readonly>
+                                   ng-value="paymentStatusDisplay = getStatusText()" readonly>
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-6">
+                    <div class="ms-3 mx-3 mb-4">
+                        <label for="address">Địa chỉ</label>
+                        <textarea class="form-control" id="address" rows="2"
+                                  ng-value="order.toProvince + ', ' + order.toDistrict + ', ' + order.toWard + ', ' + order.toAddress"
+                                  readonly>
+                        </textarea>
+                    </div>
+                </div>
+                <div class="col-6">
                     <div class="ms-3 mx-3 mb-4">
                         <label for="noted">Ghi chú</label>
                         <textarea class="form-control" id="noted" rows="2"
@@ -162,7 +280,7 @@
                             <th>Tên sản phẩm</th>
                             <th>Giá tiền</th>
                             <th>Số lượng</th>
-                            <th>Giá tiền</th>
+                            <th>Tổng tiền</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -171,7 +289,7 @@
                             <td>{{data.product.productName}}</td>
                             <td>{{formatPrice(data.product.price)}} ₫</td>
                             <td>{{data.orderItem.quantity}}</td>
-                            <td>{{formatPrice(data.product.price)}} ₫</td>
+                            <td>{{formatPrice(data.product.price * data.orderItem.quantity)}} ₫</td>
                         </tr>
                         </tbody>
                     </table>
@@ -190,7 +308,11 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                <button type="button" ng-if="order.orderStatus == 'Chờ xác nhận'" ng-click="cancelOrder(order.id)"
+                        class="btn btn-success">
+                    Huỷ đơn
+                </button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Thoát</button>
             </div>
         </div>
     </div>

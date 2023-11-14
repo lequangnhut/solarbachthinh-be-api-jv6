@@ -69,12 +69,11 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
 
     // tổng số lượng sp trong giỏ hàng
     $rootScope.sum_quantity_cart = function () {
-        CartService.sumQuantityCart()
-            .then(function successCallback(response) {
-                $rootScope.quantity_cart = response.data;
-            }, function errorCallback(response) {
-                console.log(response.data);
-            });
+        CartService.sumQuantityCart().then(function successCallback(response) {
+            $rootScope.quantity_cart = response.data;
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
     }
 
     // xoá sản phẩm trong giỏ hàng
@@ -91,8 +90,7 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
         }).then((result) => {
             if (result.isConfirmed) {
                 $http({
-                    method: 'GET',
-                    url: API_Cart + '/xoa-gio-hang/' + cartId
+                    method: 'GET', url: API_Cart + '/xoa-gio-hang/' + cartId
                 }).then(function successCallback() {
                     for (let i = 0; i < $scope.object_cart.length; i++) {
                         if ($scope.object_cart[0].id !== cartId) {
@@ -101,6 +99,7 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
                         }
                     }
 
+                    $rootScope.sum_quantity_cart();
                     $scope.calculate_total();
                     $scope.sum_quantity_cart();
 

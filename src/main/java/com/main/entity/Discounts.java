@@ -19,7 +19,6 @@ import java.util.Collection;
 @Table(name = "discounts", schema = "solardb")
 public class Discounts {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false, length = 20)
     private String id;

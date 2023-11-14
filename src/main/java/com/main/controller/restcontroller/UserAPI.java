@@ -53,7 +53,6 @@ public class UserAPI {
     public ResponseEntity<String> sessionUser() {
         Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
         if (users != null) {
-
             UsersDto usersDto = new UsersDto();
             usersDto.setId(users.getId());
             usersDto.setPasswords(users.getPasswords());
@@ -89,7 +88,6 @@ public class UserAPI {
 
     @GetMapping("user/find-by-email/{email}")
     public ResponseEntity<Map<String, Object>> getUser(@PathVariable String email) {
-        System.out.println(email);
         Map<String, Object> response = new HashMap<>();
         Users users = userService.findByEmail(email);
         response.put("users", users);
@@ -139,7 +137,7 @@ public class UserAPI {
             session.setAttribute(SessionAttr.CURRENT_USER, users);
             session.setAttribute("toastSuccess", "Cập nhật thông tin thành công !");
             return ResponseEntity.ok().body(updateUser);
-        }else {
+        } else {
             session.setAttribute("toastError", "Cập nhật thông tin không thành công.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

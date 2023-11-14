@@ -21,6 +21,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Orders> findAll() {
+        return orderRepository.findAll();
+    }
+
+    @Override
     public Orders findByOrderId(String orderId) {
         return orderRepository.getReferenceById(orderId);
     }

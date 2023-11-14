@@ -44,12 +44,11 @@ let API_OrderItem = '/api/order-item'
 let solar_app = angular.module('solar_app', ['ngRoute'])
     .run(function ($rootScope, $http, CartService) {
         // lấy ra tổng số lượng giỏ hàng
-        CartService.sumQuantityCart()
-            .then(function successCallback(response) {
-                $rootScope.quantity_cart = response.data;
-            }, function errorCallback(response) {
-                console.log(response.data);
-            });
+        CartService.sumQuantityCart().then(function successCallback(response) {
+            $rootScope.quantity_cart = response.data;
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
     });
 
 solar_app.config(['$qProvider', function ($qProvider) {
@@ -113,7 +112,7 @@ solar_app.config(function ($routeProvider) {
         })
         .when('/lich-su-mua-hang', {
             templateUrl: API_Template + 'history/history-payment.html',
-            controller: 'history_controller'
+            controller: 'history_payment_controller'
         })
 
         // vnpay

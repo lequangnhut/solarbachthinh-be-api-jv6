@@ -15,3 +15,11 @@ function toastAlert(type, message) {
         icon: type, title: message
     })
 }
+
+function centerAlert(text, message, type) {
+    Swal.fire(
+        text,
+        message,
+        type
+    )
+}

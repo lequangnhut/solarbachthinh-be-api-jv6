@@ -1,4 +1,4 @@
-solar_app.controller('payment_controller', function ($scope, OrderService, OrderCodeService, DiscountService) {
+solar_app.controller('payment_controller', function ($scope, $rootScope, OrderService, OrderCodeService, DiscountService) {
 
     $scope.payment_calculator = function () {
         Swal.fire({
@@ -28,8 +28,11 @@ solar_app.controller('payment_controller', function ($scope, OrderService, Order
 
             // Xoá local mã giảm giá đi
             localStorage.removeItem('appliedDiscount');
+
+            $rootScope.sum_quantity_cart();
         } else if ($scope.paymentMethod === 'TRANSFER') {
-            // chuyêển đến trang xác nhận thông tin để thanh toán
+            // chuyển đến trang xác nhận thông tin để thanh toán
+            $scope.shareData();
             window.location.href = '#!/gio-hang/xac-nhan-thong-tin-don-hang/thanh-toan?tong-tien=' + $scope.total;
         } else {
             console.log('Không có lựa chọn thanh toán nào được chọn');
@@ -58,9 +61,11 @@ solar_app.controller('payment_controller', function ($scope, OrderService, Order
 
         const data = {
             orderId: OrderCodeService.generateOrderCode(),
+            email: $scope.user.email,
             user_payment: $scope.user_payment,
             productCartDto: productCartDto,
             discountId: $scope.discountId,
+            paymentStatus: 0,
             serviceName: $scope.serviceName.short_name,
             shippingFee: $scope.shippingFee,
             total: $scope.total,
@@ -86,4 +91,40 @@ solar_app.controller('payment_controller', function ($scope, OrderService, Order
         $scope.checkDiscount();
         OrderService.createOrder(data);
     }
+
+    // lấy dữ liệu người dùng đặt hàng qua controller creat-order-controller để thanh toán vnpay
+    $scope.shareData = function () {
+        let productCartDto = {
+            cartsList: [], productsList: []
+        };
+
+        for (let i = 0; i < $scope.object_cart.length; i++) {
+            productCartDto.cartsList.push($scope.object_cart[i][0]);
+            productCartDto.productsList.push($scope.object_cart[i][1]);
+        }
+
+        $scope.user_payment = {
+            fullname: $scope.user.fullname,
+            phoneNumber: $scope.user.phoneNumber,
+            provinceName: $scope.user.provinceName.ProvinceName,
+            districtName: $scope.user.districtName.DistrictName,
+            wardName: $scope.user.wardName.WardName,
+            address: $scope.user.address,
+        };
+
+        const data = {
+            email: $scope.user.email,
+            user_payment: $scope.user_payment,
+            productCartDto: productCartDto,
+            discountId: $scope.discountId,
+            discountCost: $scope.discount,
+            serviceName: $scope.serviceName.short_name,
+            shippingFee: $scope.shippingFee,
+            noted: $scope.noted,
+            paymentMethod: $scope.paymentMethod
+        };
+
+        // Lưu dữ liệu vào Local Storage
+        localStorage.setItem('sharedData', JSON.stringify(data));
+    };
 });

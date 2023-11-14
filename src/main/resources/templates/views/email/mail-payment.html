@@ -123,7 +123,7 @@
                                     </p>
                                     <p style="margin:0 15px 15px;">
                                         Số tiền <strong
-                                            th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')}"></strong>
+                                            th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}"></strong>
                                         đã được thanh toán vào ngày
                                         <strong th:text="${date}"></strong> lúc <strong th:text="${time}"></strong>
                                         thành công. Chi tiết về các khoản thanh toán của bạn như sau.
@@ -147,28 +147,34 @@
                                         </thead>
                                         <tbody>
                                         <!--BE foreach area begin-->
-                                        <tr th:each="product, index : ${products}">
+                                        <tr th:each="orderitem : ${orderItem}">
                                             <td style="border: 1px solid #dddddd; font-size: 12px; line-height: 14px; width:25%; padding: 10px; border-right:0; border-bottom:0;">
-                                                <span th:text="${product.productName}"></span>
+                                                <span th:text="${orderitem.productsByProductId.productName}"></span>
                                             </td>
                                             <td style="border: 1px solid #dddddd; font-size: 12px; font-weight: bold; line-height: 14px; width:25%; padding: 10px; border-right:0; border-bottom:0;">
-                                                <span th:text="${cartItems[index.index].amount}"></span>
+                                                <span th:text="${orderitem.quantity}"></span>
                                             </td>
                                             <td style="border: 1px solid #dddddd; font-size: 12px; font-weight: bold; line-height: 14px; width:25%; padding: 10px; border-right:0; border-bottom:0;">
-                                                <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                                                <span th:text="${#numbers.formatDecimal(orderitem.productsByProductId.price, 0, 'COMMA', 0, 'POINT')}"></span>
                                             </td>
                                             <td style="border: 1px solid #dddddd; font-size: 12px; font-weight: bold; line-height: 14px; width:25%; padding: 10px; border-bottom:0;">
-                                                <span th:text="${#numbers.formatDecimal(cartItems[index.index].price, 0, 'COMMA', 0, 'POINT')}"></span>
+                                                <span th:text="${#numbers.formatDecimal(orderitem.productsByProductId.price * orderitem.quantity, 0, 'COMMA', 0, 'POINT')}"></span>
                                             </td>
                                         </tr>
                                         <!--BE foreach area end-->
                                         <tr>
                                             <td style="border: 1px solid #dddddd; border-radius:0 0 0 10px; border-right: 0px;"
                                                 colspan="2"></td>
-                                            <td style="border: 1px solid #dddddd; text-align:center; border-radius:0 0 10px 0; padding:10px; border-left: 0px;"
+                                            <td style="border: 1px solid #dddddd; text-align:left; border-radius:0 0 10px 0; padding:10px; border-left: 0px;"
                                                 colspan="2">
+                                                Giảm giá: <strong
+                                                    th:text="${#numbers.formatDecimal(discountCost, 0, 'COMMA', 0, 'POINT')}"></strong>
+                                                <br>
+                                                Phí vận chuyển: <strong
+                                                    th:text="${#numbers.formatDecimal(order.shippingFee, 0, 'COMMA', 0, 'POINT')}"></strong>
+                                                <br>
                                                 Tổng tiền: <strong
-                                                    th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')}"></strong>
+                                                    th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}"></strong>
                                             </td>
                                         </tr>
                                         </tbody>

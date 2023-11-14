@@ -9,11 +9,15 @@ import java.io.Serializable;
 @Setter
 public class OrdersDto implements Serializable {
 
+    private String email;
+
     private String orderId;
 
     private String noted;
 
     private String paymentMethod;
+
+    private Integer paymentStatus;
 
     private String serviceName;
 
@@ -23,7 +27,7 @@ public class OrdersDto implements Serializable {
 
     private double total;
 
-    UserPaymentDto user_payment;
+    private UserPaymentDto user_payment;
 
-    ProductCartDto productCartDto;
+    private ProductCartDto productCartDto;
 }

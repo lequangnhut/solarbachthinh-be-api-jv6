@@ -4,8 +4,8 @@
         <h1 class="display-3 text-white mb-3 animated slideInDown">Sản Phẩm</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu">Trang Chủ</a></li>
-                <li class="breadcrumb-item"><a class="text-white" href="#!/san-pham">Sản Phẩm</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu" scroll-to-top>Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/san-pham" scroll-to-top>Sản Phẩm</a></li>
             </ol>
         </nav>
     </div>
@@ -29,7 +29,7 @@
                     <div ng-repeat="category in categories" ng-if="category.isActive"
                          class="category-product d-flex justify-content-center align-items-center">
                         <div class="category-product-item">
-                            <a href="#!/san-pham/loai-danh-muc?danh-muc={{category.id}}">
+                            <a href="#!/san-pham/loai-danh-muc?danh-muc={{category.id}}" scroll-to-top>
                                 <div class="card-category text-center">
                                     <div class="img text-center">
                                         <img ng-src="/upload/{{category.categoryImage}}"

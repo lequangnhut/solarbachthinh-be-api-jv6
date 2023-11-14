@@ -1,4 +1,10 @@
-solar_app.controller('history_controller', function ($scope, UserService, OrderService, OrderItermService, DiscountService) {
+solar_app.controller('history_payment_controller', function ($scope, $window, UserService, OrderService, OrderItermService, DiscountService) {
+
+    $scope.activeTab = 'confirm';
+
+    $scope.setActiveTab = function (tab) {
+        $scope.activeTab = tab;
+    };
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
@@ -22,6 +28,20 @@ solar_app.controller('history_controller', function ($scope, UserService, OrderS
         OrderService.findByOrderId(orderId).then(function successCallback(response) {
             discountId = response.data.discountId;
             $scope.order = response.data;
+
+            $scope.getStatusText = function () {
+                let paymentStatus = $scope.order.paymentStatus
+                switch (paymentStatus) {
+                    case 0:
+                        return 'Chưa thanh toán';
+                    case 1:
+                        return 'Đã thanh toán';
+                    case 2:
+                        return 'Thanh toán thất bại';
+                    default:
+                        return 'Trạng thái không xác định';
+                }
+            };
 
             if (discountId !== null) {
                 DiscountService.findDiscountByDiscountId(discountId).then(function successCallback(response) {
@@ -69,4 +89,26 @@ solar_app.controller('history_controller', function ($scope, UserService, OrderS
             }
         });
     };
+
+    $scope.cancelOrder = function (orderId) {
+        Swal.fire({
+            title: 'Cảnh báo ?',
+            text: "Bạn có chắc chắn muốn huỷ đơn hàng " + orderId + " không ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý !',
+            cancelButtonText: 'Huỷ !'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                OrderService.cancelOrderById(orderId).then(function successCallback() {
+                    centerAlert('Thành công !', 'Đơn hàng ' + orderId + ' của bạn đã được huỷ thành công !', 'success');
+                    $window.location.reload();
+                    $scope.apply();
+                })
+            }
+        })
+    }
 });

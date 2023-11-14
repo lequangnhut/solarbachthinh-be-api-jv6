@@ -2,13 +2,8 @@ package com.main.controller.restcontroller;
 
 import com.main.dto.OrdersDto;
 import com.main.dto.UserPaymentDto;
-import com.main.entity.Carts;
-import com.main.entity.OrderItems;
-import com.main.entity.Orders;
-import com.main.entity.Users;
-import com.main.service.CartService;
-import com.main.service.OrderItemService;
-import com.main.service.OrderService;
+import com.main.entity.*;
+import com.main.service.*;
 import com.main.utils.EntityDtoUtils;
 import com.main.utils.SessionAttr;
 import jakarta.servlet.http.HttpSession;
@@ -37,6 +32,12 @@ public class OrderAPI {
     OrderItemService orderItemService;
 
     @Autowired
+    ProductService productService;
+
+    @Autowired
+    EmailService emailService;
+
+    @Autowired
     HttpSession session;
 
     @GetMapping("order/history-payment/{userId}")
@@ -50,12 +51,23 @@ public class OrderAPI {
         return ResponseEntity.ok().body(order);
     }
 
+    @GetMapping("order/cancel-order/{orderId}")
+    private void cancelOrder(@PathVariable String orderId) {
+        Orders order = orderService.findByOrderId(orderId);
+        order.setOrderStatus("Đã huỷ đơn");
+        order.setPaymentStatus(2);
+        orderService.save(order);
+    }
+
     @PostMapping(value = "order/create-order", consumes = {"application/json;charset=UTF-8"})
     private void createOrder(@RequestBody OrdersDto ordersDto) {
-        System.out.println("cccc");
         String orderId = ordersDto.getOrderId();
-        BigDecimal price = BigDecimal.valueOf(ordersDto.getTotal());
         String discountId = ordersDto.getDiscountId();
+
+        int paymentStatus = ordersDto.getPaymentStatus();
+
+        BigDecimal price = BigDecimal.valueOf(ordersDto.getTotal());
+
         boolean paymentType = "COD".equals(ordersDto.getPaymentMethod());
 
         Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
@@ -66,9 +78,9 @@ public class OrderAPI {
         if (StringUtils.isNotEmpty(discountId)) {
             orders.setDiscountId(discountId);
         }
+        orders.setPaymentStatus(paymentStatus == 0 || paymentStatus == 1 ? paymentStatus : 2);
         orders.setPaymentType(paymentType);
-        orders.setPaymentStatus(paymentType);
-        orders.setOrderStatus("Đã đặt hàng");
+        orders.setOrderStatus("Chờ xác nhận");
         orders.setOrderShipCost(BigDecimal.valueOf(ordersDto.getShippingFee()));
 
         UserPaymentDto userPayment = ordersDto.getUser_payment();
@@ -84,9 +96,13 @@ public class OrderAPI {
         orders.setOrderNote(ordersDto.getNoted());
         orders.setDateCreated(new Timestamp(System.currentTimeMillis()));
 
+        // lưu đơn hàng vào db
         orderService.save(orders);
 
-        // tạo ra đơn hàng mới sau khi save đơn hàng
+        // gửi mail đơn hàng
+        emailService.queueMailCreateOrder(ordersDto);
+
+        // tạo ra order item sau khi lưu đơn hàng
         Object[] cartsList = ordersDto.getProductCartDto().getCartsList();
         createOrderItem(orderId, cartsList, price);
 
@@ -94,6 +110,7 @@ public class OrderAPI {
         deleteCart(cartsList);
     }
 
+    // // tạo ra order item sau khi lưu đơn hàng
     private void createOrderItem(String orderId, Object[] cartsList, BigDecimal price) {
         for (Object cart : cartsList) {
             if (cart instanceof LinkedHashMap) {
@@ -105,15 +122,33 @@ public class OrderAPI {
                 orderItems.setProductId(carts.getProductId());
                 orderItems.setQuantity(carts.getQuantity());
                 orderItemService.save(orderItems);
+
+                decreaseQuantityProduct(orderItems.getProductId(), orderItems.getQuantity());
             }
         }
     }
 
+    // xoá giỏ hàng sau khi đặt hàng thành công
     private void deleteCart(Object[] cartsList) {
         for (Object cart : cartsList) {
             if (cart instanceof LinkedHashMap) {
                 Carts carts = EntityDtoUtils.convertToEntity(cart, Carts.class);
                 cartService.delete(carts.getId());
+            }
+        }
+    }
+
+    // giảm số lượng sp trong đơn hàng vừa đặt
+    private void decreaseQuantityProduct(String productId, int quantity) {
+        Products product = productService.findProductByProductId(productId);
+
+        if (product != null) {
+            int currentQuantity = product.getQuantity();
+
+            if (currentQuantity >= quantity) {
+                int newQuantity = currentQuantity - quantity;
+                product.setQuantity(newQuantity);
+                productService.save(product);
             }
         }
     }

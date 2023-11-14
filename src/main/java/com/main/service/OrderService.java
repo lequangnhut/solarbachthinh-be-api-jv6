@@ -9,6 +9,8 @@ public interface OrderService {
 
     List<Orders> findByUserId(int userId);
 
+    List<Orders> findAll();
+
     Orders findByOrderId(String orderId);
 
     Orders save(Orders orders);
