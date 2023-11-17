@@ -58,7 +58,7 @@
                             <th>Số điện thoại</th>
                             <th>Địa chỉ</th>
                             <th>Trạng thái đơn hàng</th>
-                            <th>Trạng thái thanh toán</th>
+                            <th>Hình thức thanh toán</th>
                             <th>Cụ thể</th>
                         </tr>
                         </thead>
@@ -248,7 +248,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="statusPay" class="form-label">Trang thái thanh toán</label>
+                            <label for="statusPay" class="form-label">Trạng thái thanh toán</label>
                             <input type="text" class="form-control" id="statusPay"
                                    ng-value="paymentStatusDisplay = getStatusText()" readonly>
                         </div>
@@ -258,7 +258,7 @@
                     <div class="ms-3 mx-3 mb-4">
                         <label for="address">Địa chỉ</label>
                         <textarea class="form-control" id="address" rows="2"
-                                  ng-value="order.toProvince + ', ' + order.toDistrict + ', ' + order.toWard + ', ' + order.toAddress"
+                                  ng-value="order.toAddress + ', ' + order.toWard + ', ' + order.toDistrict + ', ' + order.toProvince"
                                   readonly>
                         </textarea>
                     </div>

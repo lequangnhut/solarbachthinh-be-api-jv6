@@ -58,3 +58,13 @@ solar_app.filter('vietnameseDateTime', function () {
         return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
     };
 });
+
+solar_app.filter('formatDateTime', function () {
+    return function (apiDateTime) {
+        // Chuyển đổi chuỗi đầu vào thành đối tượng Moment
+        const momentObj = moment(apiDateTime, 'YYYYMMDDHHmmss');
+
+        // Format theo định dạng mong muốn (dd/mm/yyyy HHmmss)
+        return momentObj.format('DD/MM/YYYY HH:mm:ss');
+    };
+});

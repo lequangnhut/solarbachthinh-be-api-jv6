@@ -112,7 +112,7 @@
                 <div class="d-flex mt-4" style="max-width: 300px"
                      ng-if="product.isStatusDelete == 'Đang kinh doanh' && session_user != null">
                     <div class="mb-3">
-                        <label for="form" class="form-label">Số lượng</label>
+                        <label for="form" class="form-label">Số lượng | Kho: {{product.quantity}}</label>
                         <br>
                         <div class="float-end button-quantity d-flex align-items-center">
                             <button class="btn btn-primary d-flex justify-content-center align-items-center"
@@ -126,7 +126,8 @@
                                    id="form"
                                    min="1"
                                    max="{{max_quantity}}"
-                                   ng-change="check_quantity_input(quantity)"
+                                   ng-change="check_quantity_input(quantity, product)"
+                                   ng-click="check_quantity_input(quantity, product)"
                             >
 
                             <button class="btn btn-primary d-flex justify-content-center align-items-center"

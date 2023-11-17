@@ -21,7 +21,7 @@
         <div th:replace="~{views/admin/components/header}"></div>
         <!--  Header End -->
 
-        <div class="container-fluid">
+        <div class="container-fluid" style="max-width: 1900px;">
             <div class="card">
                 <div class="card-body">
                     <a class="btn btn-primary float-end mx-2" href="/quan-tri/san-pham/them-san-pham" role="button">
@@ -54,10 +54,13 @@
                                     <tr th:each="product,start : ${listProduct}">
                                         <td th:text="${start.index + 1}" th:title="${start.index + 1}"></td>
                                         <td th:text="${product.id}" th:title="${product.id}"></td>
-                                        <td th:text="${product.productName}" th:title="${product.productName}" class="hidden-text-table"></td>
-                                        <td th:text="${product.productTypesByProductTypeId.productTypeName}" th:title="${product.productTypesByProductTypeId.productTypeName}"></td>
+                                        <td th:text="${product.productName}" th:title="${product.productName}"
+                                            class="hidden-text-table"></td>
+                                        <td th:text="${product.productTypesByProductTypeId.productTypeName}"
+                                            th:title="${product.productTypesByProductTypeId.productTypeName}"></td>
                                         <td th:text="${product.quantity}" th:title="${product.quantity}"></td>
-                                        <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}" th:title="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></td>
+                                        <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"
+                                            th:title="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></td>
                                         <td th:if="${product.isStatusDelete == 'Đang kinh doanh'}">
                                             <i class='bx bxs-circle' style='color:#3a9b54'></i> Đang bán
                                         </td>
@@ -136,7 +139,7 @@
             }
         })
     </script>
-<th:block></th:block>
+    <th:block></th:block>
 </div>
 </body>
 </html>

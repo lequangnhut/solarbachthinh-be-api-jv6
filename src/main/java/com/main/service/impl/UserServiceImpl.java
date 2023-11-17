@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         users.setDateCreated(new Timestamp(System.currentTimeMillis()));
         users.setAcctive(Boolean.FALSE);
 
-        Roles role = roleRepository.findByNameRole("USER");
+        Roles role = roleRepository.findByNameRole("ROLE_USER");
         if (role == null) {
             role = checkRoleExist();
         }
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
 
     private Roles checkRoleExist() {
         Roles role = new Roles();
-        role.setNameRole("USER");
+        role.setNameRole("ROLE_USER");
         return roleRepository.save(role);
     }
 }

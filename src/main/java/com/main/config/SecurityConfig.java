@@ -8,6 +8,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
+import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -24,12 +30,22 @@ public class SecurityConfig {
     }
 
     @Bean
+    public AuthorizationRequestRepository<OAuth2AuthorizationRequest> getRepository() {
+        return new HttpSessionOAuth2AuthorizationRequestRepository();
+    }
+
+    @Bean
+    public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> getToken() {
+        return new DefaultAuthorizationCodeTokenResponseClient();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
                         authorize
                                 .requestMatchers("/user/**", "/admin/**").permitAll()
-                                .requestMatchers("/quan-tri/**").hasAuthority("ADMIN")
+                                .requestMatchers("/quan-tri/**").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers("/**").permitAll()
                 ).formLogin(
                         form -> form
@@ -46,6 +62,16 @@ public class SecurityConfig {
                                 .deleteCookies("JSESSIONID")
                                 .logoutSuccessUrl("/redirect-logout")
                                 .permitAll()
+                ).oauth2Login(
+                        oauth2 -> oauth2
+                                .loginPage("/dang-nhap")
+                                .defaultSuccessUrl("/login-google-success")
+                                .authorizationEndpoint()
+                                .baseUri("/oauth2/authorization")
+                                .authorizationRequestRepository(getRepository())
+                                .and()
+                                .tokenEndpoint()
+                                .accessTokenResponseClient(getToken())
                 );
         return http.build();
     }

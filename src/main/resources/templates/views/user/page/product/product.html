@@ -1,5 +1,5 @@
 <!-- Page Header Start -->
-<div class="container-fluid page-header py-5 mb-5" xmlns:th="http://www.w3.org/1999/html" xmlns:th="http://www.w3.org/1999/html">
+<div class="container-fluid page-header py-5 mb-5">
     <div class="container py-5">
         <h1 class="display-3 text-white mb-3 animated slideInDown">Sản Phẩm</h1>
         <nav aria-label="breadcrumb animated slideInDown">
@@ -60,9 +60,11 @@
                         <span ng-bind="category.categoryName"></span>
                     </div>
                     <label class="mx-3">
-                        <select class="form-select" id="selectedCategory_products" ng-model="selectedProductTypeId" ng-change="onProductTypeChange(selectedProductTypeId)">
+                        <select class="form-select" id="selectedCategory_products" ng-model="selectedProductTypeId"
+                                ng-change="onProductTypeChange(selectedProductTypeId)">
                             <option value="" disabled>Loại</option>
-                            <option ng-repeat="productType in category.productTypesById" ng-value="productType.id" ng-if="productType.productsById.length > 0">
+                            <option ng-repeat="productType in category.productTypesById" ng-value="productType.id"
+                                    ng-if="productType.productsById.length > 0">
                                 {{productType.productTypeName}}
                             </option>
                         </select>
@@ -87,8 +89,7 @@
                                         <p class="name-product" ng-bind="product.productName"></p>
                                         <div class="content-product mb-3">
                                             <span>Công suất: <b ng-bind="product.powers"></b></span>
-                                            <span>Hãng:
-                                            <b ng-bind="product.BrandName"></b>
+                                            <span>Hãng: <b ng-bind="product.BrandName"></b>
                                         </span>
                                         </div>
                                         <div class="btn-add-cart">
