@@ -1,5 +1,5 @@
-const passwordSignup = document.getElementById('passwordSignup');
-const passwordConfirm = document.getElementById('passwordConfirm');
+const passwordSignup = document.getElementById('passwordLogin');
+const passwordConfirm = document.getElementById('passwordLogin');
 const togglePasswordSignup = document.getElementById('togglePasswordSignup');
 const togglePasswordConfirm = document.getElementById('togglePasswordConfirm');
 
