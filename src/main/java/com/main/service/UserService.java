@@ -26,7 +26,7 @@ public interface UserService {
 
     Integer findIdByPhoneNumberAndNotCurrentUser(String phoneNumber, Integer userId);
 
-    boolean findByIdAndPasswords (int userId, String currentPass);
+    boolean findByIdAndPasswords(int userId, String currentPass);
 
     Users delete(int userId);
 

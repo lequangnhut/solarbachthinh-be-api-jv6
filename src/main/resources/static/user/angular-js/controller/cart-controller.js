@@ -1,17 +1,16 @@
-solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $timeout, CartService) {
+solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $timeout, $location, CartService, ProductService) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
     };
 
     // lấy ra object giỏ hàng sp, thương hiệu, img'
-    CartService.findAllCart()
-        .then(function successCallback(response) {
-            $scope.object_cart = response.data;
-            $scope.calculate_total();
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
+    CartService.findAllCart().then(function successCallback(response) {
+        $scope.object_cart = response.data;
+        $scope.calculate_total();
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
 
     // trừ số lượng
     $scope.decrease_quantity = function (cartItem) {
@@ -25,12 +24,24 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
     }
 
     // kiểm tra số lượng trong input
-    $scope.check_quantity = function (cartItem) {
-        console.log(cartItem)
-        // if (cartItem.quantity > $scope.object_cart[1].quantity) {
-        //     cartItem.quantity = $scope.object_cart[1].quantity;
-        // }
-    }
+    $scope.checkQuantity = function (quantity, cartItem) {
+        let quantityInDb;
+        let productId = cartItem.productId;
+
+        ProductService.findProductByProductId(productId).then(function successCallback(response) {
+            quantityInDb = response.data.quantity;
+
+            if (quantity <= quantityInDb) {
+                updateCartItemInDB(cartItem);
+                $scope.calculate_total();
+            } else {
+                cartItem.quantity = quantityInDb;
+                centerAlert('Cảnh Báo !', 'Ôi hỏng rồi !!!, Bạn đã nhập quá số lượng giới hạn.', 'warning');
+            }
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
+    };
 
     // cộng số lượng
     $scope.increase_quantity = function (cartItem) {
@@ -75,6 +86,11 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
             console.log(response.data);
         });
     }
+
+    // chuyển hướng tới checkdetails
+    $scope.proceedToCheckout = function () {
+        $location.path('/gio-hang/xac-nhan-thong-tin-don-hang');
+    };
 
     // xoá sản phẩm trong giỏ hàng
     $scope.delete_cart = function (cartId) {

@@ -4,7 +4,8 @@
         <h1 class="display-3 text-white mb-3 animated slideInDown">Đăng Ký Tài Khoản</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-white" href="#!/dang-nhap" scroll-to-top>Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/dang-nhap" scroll-to-top>Trang chủ</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/dang-ky" scroll-to-top>Đăng ký</a></li>
             </ol>
         </nav>
     </div>
@@ -159,13 +160,11 @@
                         <div class="d-grid gap-2 d-md-block">
                             <p class="fs-4 mb-2">Hoặc có thể đăng nhập với: </p>
                             <!-- Nút đăng nhập bằng Facebook -->
-                            <a href="#" class="btn btn-outline-success mb-3">
+                            <a href="/oauth2/authorization/facebook" class="btn btn-outline-success mb-3">
                                 <i class="fab fa-facebook"></i>
                             </a>
-                            <a href="https://accounts.google.com/o/oauth2/auth?scope=email
-                                &redirect_uri=http://localhost:8080/dang-nhap&response_type=code
-                                &client_id=636980262370-vmvistc4ins2e1e3k52polikokp1tkm0.apps.googleusercontent.com
-                                &approval_prompt=force" class="btn btn-outline-success mb-3"
+                            <!-- Nút đăng nhập bằng Google -->
+                            <a href="/oauth2/authorization/google" class="btn btn-outline-success mb-3"
                             >
                                 <i class="fab fa-google"></i>
                             </a>

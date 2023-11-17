@@ -2,6 +2,10 @@ solar_app.controller('product', function ($scope, CategoryService, ProductServic
 
     let mySwiper;
 
+    $scope.formatPrice = function (price) {
+        return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
+    };
+
     function initializeSwiper() {
         mySwiper = new Swiper('#product_light', {
             slidesPerView: 3,
@@ -31,41 +35,36 @@ solar_app.controller('product', function ($scope, CategoryService, ProductServic
     }
 
     function fetchProducts(category) {
-        return ProductService.showProductByCategory(category.id)
-            .then(function successCallback(response) {
-                let products = response.data;
+        return ProductService.showProductByCategory(category.id).then(function successCallback(response) {
+            let products = response.data;
 
-                let brandPromises = products.map(product => {
-                    return ProductService.showBrandNameByProductBrandId(product.productBrandId)
-                        .then(function successCallback(response) {
-                            product.BrandName = response.data.brandName;
-                        });
+            let brandPromises = products.map(product => {
+                return ProductService.showBrandNameByProductBrandId(product.productBrandId).then(function successCallback(response) {
+                    product.BrandName = response.data.brandName;
                 });
-
-                return Promise.all(brandPromises)
-                    .then(function () {
-                        category.productsTypeProducts = products;
-                        return category;
-                    });
             });
+
+            return Promise.all(brandPromises).then(function () {
+                category.productsTypeProducts = products;
+                return category;
+            });
+        });
     }
 
     function updateCategoryAndSwiper(category) {
-        return fetchProducts(category)
-            .then(function (updatedCategory) {
-                return updatedCategory; // Trả về category đã được cập nhật
-            })
-            .catch(function errorCallback(response) {
-                console.log(response.data);
-            });
+        return fetchProducts(category).then(function (updatedCategory) {
+            return updatedCategory; // Trả về category đã được cập nhật
+        }).catch(function errorCallback(response) {
+            console.log(response.data);
+        });
     }
 
     function updateAllCategoriesAndSwiper(categories) {
         let updatePromises = categories.map(updateCategoryAndSwiper);
-        return Promise.all(updatePromises)
-            .then(function (updatedCategories) {
-                initializeSwiper(); // Gọi initializeSwiper chỉ một lần sau khi tất cả danh mục đã được cập nhật
-            });
+
+        return Promise.all(updatePromises).then(function (updatedCategories) {
+            initializeSwiper(); // Gọi initializeSwiper chỉ một lần sau khi tất cả danh mục đã được cập nhật
+        });
     }
 
     function updateSwiper() {
@@ -75,37 +74,27 @@ solar_app.controller('product', function ($scope, CategoryService, ProductServic
     }
 
     function onProductChange(selectedProductTypeId, selectedCategory) {
-        ProductService.findProductByProductType(selectedProductTypeId)
-            .then(function successCallback(response) {
-                let products = response.data;
-                selectedCategory.productsTypeProducts = products;
-                updateSwiper();
-            }, function errorCallback(response) {
-                console.log(response.data);
-            });
+        ProductService.findProductByProductType(selectedProductTypeId).then(function successCallback(response) {
+            selectedCategory.productsTypeProducts = response.data;
+            updateSwiper();
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
     }
 
     function onSearchProduct(productName, category) {
-        ProductService.findByProductName(category.id, productName)
-            .then(function successCallback(response) {
-                let products = response.data;
-                category.productsTypeProducts = products;
-                updateSwiper();
-            }, function errorCallback(response) {
-                console.log(response.data);
-            });
+        ProductService.findByProductName(category.id, productName).then(function successCallback(response) {
+            category.productsTypeProducts = response.data;
+            updateSwiper();
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
     }
 
-    CategoryService.findAllCategory()
-        .then(function successCallback(response) {
-            $scope.categories = response.data;
-            console.log($scope.categories)
-            return updateAllCategoriesAndSwiper($scope.categories);
-        });
-
-    $scope.formatPrice = function (price) {
-        return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
-    };
+    CategoryService.findAllCategory().then(function successCallback(response) {
+        $scope.categories = response.data;
+        return updateAllCategoriesAndSwiper($scope.categories);
+    });
 
     $scope.onProductTypeChange = function (selectedProductTypeId) {
         let selectedCategory = $scope.categories.find(category =>
@@ -124,5 +113,4 @@ solar_app.controller('product', function ($scope, CategoryService, ProductServic
             });
         }
     };
-
 });

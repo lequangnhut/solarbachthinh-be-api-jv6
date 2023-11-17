@@ -4,12 +4,15 @@ import com.main.entity.Users;
 import com.main.service.EmailService;
 import com.main.service.UserService;
 import com.main.utils.ParamService;
+import com.main.utils.RandomUtils;
 import com.main.utils.SessionAttr;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,14 +59,14 @@ public class AuthController {
             UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
             Users users = userService.findByEmail(userDetails.getUsername());
 
-            if (userDetails.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ADMIN"))) {
+            if (userDetails.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"))) {
                 if (users != null) {
                     session.setAttribute(SessionAttr.CURRENT_USER, users);
                     session.setAttribute("toastSuccess", "Đăng nhập thành công !");
-                    return "redirect:/quan-tri/san-pham";
+                    return "redirect:/quan-tri/dashboard";
                 }
 
-            } else if (userDetails.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("USER"))) {
+            } else if (userDetails.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_USER"))) {
                 if (users != null) {
                     session.setAttribute(SessionAttr.CURRENT_USER, users);
                     session.setAttribute("toastSuccess", "Đăng nhập thành công !");
@@ -73,6 +76,41 @@ public class AuthController {
                 return "redirect:/error";
             }
         }
+        session.setAttribute("toastFailed", "Sai thông tin đăng nhập !");
+        return "redirect:#!/dang-nhap";
+    }
+
+    @GetMapping("/login-google-success")
+    public String success(Principal principal, OAuth2AuthenticationToken oauth) {
+        if (principal != null && oauth != null) {
+            OAuth2User oauth2User = oauth.getPrincipal();
+
+            Users users = userService.findByEmail(oauth2User.getAttribute("email"));
+
+            if (users != null) {
+                if (users.isAcctive()) {
+                    session.setAttribute(SessionAttr.CURRENT_USER, users);
+                    session.setAttribute("toastSuccess", "Đăng nhập thành công !");
+
+                } else {
+                    session.setAttribute("centerWarning", "Tài khoản '" + users.getEmail() + "' hiện tại đang bị tạm khoá vui lòng liên hệ hotline để biết thêm chi tiết !");
+                }
+                
+            } else {
+                Users user = new Users();
+                user.setEmail(oauth2User.getAttribute("email"));
+                user.setFullname(oauth2User.getAttribute("name"));
+                user.setPasswords(RandomUtils.RandomToken(10));
+                user.setAcctive(Boolean.TRUE);
+
+                userService.save(user);
+
+                session.setAttribute(SessionAttr.CURRENT_USER, user);
+                session.setAttribute("toastSuccess", "Đăng nhập thành công !");
+            }
+            return "redirect:#!/trang-chu";
+        }
+
         session.setAttribute("toastFailed", "Sai thông tin đăng nhập !");
         return "redirect:#!/dang-nhap";
     }

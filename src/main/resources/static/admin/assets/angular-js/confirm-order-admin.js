@@ -7,8 +7,9 @@ let API_findOrderItemByOrderId = '/quan-tri/api/findOrderItemByOrderId';
 let API_CancelOrder = '/quan-tri/api/cancelOrder'
 let API_ConfirmOrder = '/quan-tri/api/confirmOrder'
 let API_DeliveredOrder = '/quan-tri/api/deliveredOrder'
+let API_Discount = '/api/discount'
 
-confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http, $window) {
+confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http) {
     $scope.activeTab = 'confirm';
 
     $scope.setActiveTab = function (tab) {
@@ -55,7 +56,10 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http, $window) 
             };
 
             if (discountId !== null) {
-                DiscountService.findDiscountByDiscountId(discountId).then(function successCallback(response) {
+                $http({
+                    method: 'GET',
+                    url: '/api/discount/' + discountId
+                }).then(function successCallback(response) {
                     $scope.discountCost = response.data.discountCost;
                 });
             } else {
@@ -92,7 +96,10 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http, $window) 
         $scope.$watch('discountId', function (newDiscountId, oldDiscountId) {
             if (newDiscountId !== oldDiscountId) {
                 if (newDiscountId !== null) {
-                    DiscountService.findDiscountByDiscountId(newDiscountId).then(function successCallback(response) {
+                    $http({
+                        method: 'GET',
+                        url: '/api/discount/' + newDiscountId
+                    }).then(function successCallback(response) {
                         $scope.discountCost = response.data.discountCost;
                     });
                 } else {
@@ -170,5 +177,21 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http, $window) 
                 });
             }
         });
+    };
+});
+
+confirm_order.filter('vietnameseDateTimeAdmin', function () {
+    return function (isoDateTime) {
+        const date = new Date(isoDateTime);
+
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const seconds = date.getSeconds().toString().padStart(2, '0');
+
+        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
     };
 });
