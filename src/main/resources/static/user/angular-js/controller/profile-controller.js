@@ -117,3 +117,4 @@ solar_app.controller('profile-controller', function ($scope, $route, UserService
         });
     };
 })
+

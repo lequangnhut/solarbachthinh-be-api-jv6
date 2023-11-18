@@ -1,6 +1,7 @@
 package com.main.service;
 
 import com.main.dto.OrdersDto;
+import com.main.dto.PasswordsDto;
 import com.main.dto.RegisterDto;
 
 public interface EmailService {
@@ -12,4 +13,8 @@ public interface EmailService {
     void sendMailCreateOrder();
 
     void queueMailCreateOrder(OrdersDto ordersDto);
+
+    void sendMailForgot();
+
+    void queueEmailForgot(PasswordsDto passwordsDto);
 }

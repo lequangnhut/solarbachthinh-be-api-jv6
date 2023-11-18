@@ -7,6 +7,7 @@ let API_User = '/api/user';
 // api profile và mật khẩu
 let API_ProfileSession = '/api/profile/profile-session-user'
 let API_Profile = '/api/profile'
+let API_Password = '/api/password'
 
 // api category
 let API_GetTop4Category = '/api/product/get-top4-category'
@@ -32,6 +33,8 @@ let API_VNPAY = '/api/vnpay'
 let API_ExistEmail = '/api/check-duplicate-email/'
 let API_ExistPhone = '/api/check-duplicate-phone/'
 let API_ExistPhoneProfile = '/api/check-phone-user/'
+let API_ExistEmailForgot = '/api/check-email-user-active/'
+let API_VerifyCodeOnTime = '/api/check-code-on-time'
 
 //api check mật khẩu hiện tại đúng (dùng cho đổi mật khẩu)
 let API_CorrectCurrentPass = '/api/check-current-password/'
@@ -156,7 +159,15 @@ solar_app.config(function ($routeProvider) {
         })
         .when('/quen-mat-khau', {
             templateUrl: API_Template + 'password/forgot-password.html',
-            controller: ''
+            controller: 'password-controller'
+        })
+        .when('/xac-nhan-otp', {
+            templateUrl: API_Template + 'password/verify.html',
+            controller: 'password-controller'
+        })
+        .when('/mat-khau-moi', {
+            templateUrl: API_Template + 'password/new-password.html',
+            controller: 'password-controller'
         })
         .otherwise({
             redirectTo: '/trang-chu'

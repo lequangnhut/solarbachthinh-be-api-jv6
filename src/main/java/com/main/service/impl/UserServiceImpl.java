@@ -113,6 +113,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(users);
     }
 
+    @Override
+    public Users findUserByRoleAndActive(String email) {
+        return userRepository.findUserByRoleAndActive(email);
+    }
+
     private Roles checkRoleExist() {
         Roles role = new Roles();
         role.setNameRole("ROLE_USER");

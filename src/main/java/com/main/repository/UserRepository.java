@@ -19,9 +19,12 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     boolean findByIdAndPasswords (int userId, String currentPass);
 
-    @Query("SELECT u FROM Users u JOIN u.roles r  WHERE u.isAcctive = true AND r.nameRole LIKE 'USER' ORDER BY u.dateCreated DESC LIMIT 90")
+    @Query("SELECT u FROM Users u JOIN u.roles r  WHERE u.isAcctive = true AND r.nameRole LIKE 'ROLE_USER' ORDER BY u.dateCreated DESC LIMIT 90")
     List<Users> findByActiveIsTrue();
 
     @Query("SELECT u.id FROM Users u WHERE u.phoneNumber = :phoneNumber AND u.id <> :currentUserId")
     Integer findIdByPhoneNumberAndNotCurrentUser(@Param("phoneNumber") String phoneNumber, @Param("currentUserId") Integer currentUserId);
+
+    @Query("SELECT u FROM Users u JOIN u.roles r  WHERE u.isAcctive = true AND r.nameRole LIKE 'ROLE_USER' AND u.email = :email")
+    Users findUserByRoleAndActive (String email);
 }
