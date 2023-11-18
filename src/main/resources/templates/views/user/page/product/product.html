@@ -1,11 +1,11 @@
 <!-- Page Header Start -->
-<div class="container-fluid page-header py-5 mb-5">
+<div class="container-fluid page-header py-5 mb-5" xmlns:th="http://www.w3.org/1999/html" xmlns:th="http://www.w3.org/1999/html">
     <div class="container py-5">
         <h1 class="display-3 text-white mb-3 animated slideInDown">Sản Phẩm</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu" scroll-to-top>Trang Chủ</a></li>
-                <li class="breadcrumb-item"><a class="text-white" href="#!/san-pham" scroll-to-top>Sản Phẩm</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu">Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/san-pham">Sản Phẩm</a></li>
             </ol>
         </nav>
     </div>
@@ -29,7 +29,7 @@
                     <div ng-repeat="category in categories" ng-if="category.isActive"
                          class="category-product d-flex justify-content-center align-items-center">
                         <div class="category-product-item">
-                            <a href="#!/san-pham/loai-danh-muc?danh-muc={{category.id}}" scroll-to-top>
+                            <a href="#!/san-pham/loai-danh-muc?danh-muc={{category.id}}">
                                 <div class="card-category text-center">
                                     <div class="img text-center">
                                         <img ng-src="/upload/{{category.categoryImage}}"
@@ -60,11 +60,9 @@
                         <span ng-bind="category.categoryName"></span>
                     </div>
                     <label class="mx-3">
-                        <select class="form-select" id="selectedCategory_products" ng-model="selectedProductTypeId"
-                                ng-change="onProductTypeChange(selectedProductTypeId)">
-                            <option value="" disabled>Loại</option>
-                            <option ng-repeat="productType in category.productTypesById" ng-value="productType.id"
-                                    ng-if="productType.productsById.length > 0">
+                        <select class="form-select" id="selectedCategory_products" ng-model="selectedProductTypeId" ng-change="onProductTypeChange(selectedProductTypeId, category)">
+                            <option ng-value="">Tất cả</option>
+                            <option ng-repeat="productType in category.productTypesById" ng-value="productType.id" ng-if="productType.productsById.length > 0">
                                 {{productType.productTypeName}}
                             </option>
                         </select>
@@ -89,7 +87,8 @@
                                         <p class="name-product" ng-bind="product.productName"></p>
                                         <div class="content-product mb-3">
                                             <span>Công suất: <b ng-bind="product.powers"></b></span>
-                                            <span>Hãng: <b ng-bind="product.BrandName"></b>
+                                            <span>Hãng:
+                                            <b ng-bind="product.BrandName"></b>
                                         </span>
                                         </div>
                                         <div class="btn-add-cart">

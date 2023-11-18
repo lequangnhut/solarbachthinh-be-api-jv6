@@ -2,31 +2,19 @@ solar_app.controller('product', function ($scope, CategoryService, ProductServic
 
     let mySwiper;
 
-    $scope.formatPrice = function (price) {
-        return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
-    };
-
+    //sự kiện lướt của swiper
     function initializeSwiper() {
         mySwiper = new Swiper('#product_light', {
-            slidesPerView: 3,
-            spaceBetween: 30,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            breakpoints: {
+            slidesPerView: 3, spaceBetween: 30, autoplay: {
+                delay: 3000, disableOnInteraction: false,
+            }, navigation: {
+                nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev",
+            }, breakpoints: {
                 0: {slidesPerView: 1},
                 600: {slidesPerView: 1, spaceBetween: 10},
                 1000: {slidesPerView: 2, spaceBetween: 20},
                 1300: {slidesPerView: 3, spaceBetween: 30},
-            },
-            observer: true,
-            observeParents: true,
-            on: {
+            }, observer: true, observeParents: true, on: {
                 observerUpdate: function () {
                     this.update();
                 }
@@ -34,83 +22,160 @@ solar_app.controller('product', function ($scope, CategoryService, ProductServic
         });
     }
 
-    function fetchProducts(category) {
-        return ProductService.showProductByCategory(category.id).then(function successCallback(response) {
-            let products = response.data;
+    $scope.formatPrice = function (price) {
+        return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
+    };
 
-            let brandPromises = products.map(product => {
-                return ProductService.showBrandNameByProductBrandId(product.productBrandId).then(function successCallback(response) {
-                    product.BrandName = response.data.brandName;
-                });
-            });
+    //start show category
+    findAllCategory();
 
-            return Promise.all(brandPromises).then(function () {
-                category.productsTypeProducts = products;
-                return category;
+    function findAllCategory() {
+        CategoryService.findAllCategory()
+            .then(function successCallback(response) {
+                $scope.categories = response.data;
+                return updateAllCategoriesAndSwiper($scope.categories);
             });
-        });
     }
 
-    function updateCategoryAndSwiper(category) {
-        return fetchProducts(category).then(function (updatedCategory) {
-            return updatedCategory; // Trả về category đã được cập nhật
-        }).catch(function errorCallback(response) {
-            console.log(response.data);
-        });
+    function fetchProducts(category) {
+        return ProductService.showProductByCategory(category.id)
+            .then(function successCallback(response) {
+                let products = response.data;
+
+                let brandPromises = products.map(product => {
+                    return ProductService.showBrandNameByProductBrandId(product.productBrandId)
+                        .then(function successCallback(response) {
+                            product.BrandName = response.data.brandName;
+                        });
+                });
+
+                return Promise.all(brandPromises)
+                    .then(function () {
+                        category.productsTypeProducts = products;
+                        return category;
+                    });
+            });
     }
 
     function updateAllCategoriesAndSwiper(categories) {
         let updatePromises = categories.map(updateCategoryAndSwiper);
-
-        return Promise.all(updatePromises).then(function (updatedCategories) {
-            initializeSwiper(); // Gọi initializeSwiper chỉ một lần sau khi tất cả danh mục đã được cập nhật
-        });
+        return Promise.all(updatePromises)
+            .then(function (updatedCategories) {
+                initializeSwiper(); // Gọi initializeSwiper chỉ một lần sau khi tất cả danh mục đã được cập nhật
+            });
     }
 
-    function updateSwiper() {
-        if (mySwiper) {
-            mySwiper.update();
-        }
+    function updateCategoryAndSwiper(category) {
+        return fetchProducts(category)
+            .then(function (updatedCategory) {
+                return updatedCategory; // Trả về category đã được cập nhật
+            })
+            .catch(function errorCallback(response) {
+                console.log(response.data);
+            });
     }
 
-    function onProductChange(selectedProductTypeId, selectedCategory) {
-        ProductService.findProductByProductType(selectedProductTypeId).then(function successCallback(response) {
-            selectedCategory.productsTypeProducts = response.data;
-            updateSwiper();
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
-    }
+    //end show category
 
-    function onSearchProduct(productName, category) {
-        ProductService.findByProductName(category.id, productName).then(function successCallback(response) {
-            category.productsTypeProducts = response.data;
-            updateSwiper();
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
-    }
+    //start selected
+    $scope.onProductTypeChange = function (selectedProductTypeId, category) {
+        if (selectedProductTypeId === '' || selectedProductTypeId === undefined || selectedProductTypeId === null) {
+            ProductService.showProductByCategory(category.id)
+                .then(response => {
+                    let products = response.data;
+                    let brandPromises = products.map(product => {
+                        return ProductService.showBrandNameByProductBrandId(product.productBrandId)
+                            .then(response => {
+                                const brandName = response.data.brandName;
+                                if (product.BrandName !== brandName) {
+                                    product.BrandName = brandName;
+                                    return product;
+                                }
+                            });
+                    });
 
-    CategoryService.findAllCategory().then(function successCallback(response) {
-        $scope.categories = response.data;
-        return updateAllCategoriesAndSwiper($scope.categories);
-    });
-
-    $scope.onProductTypeChange = function (selectedProductTypeId) {
-        let selectedCategory = $scope.categories.find(category =>
-            category.productTypesById.some(productType => productType.id === parseInt(selectedProductTypeId))
-        );
-
-        if (selectedCategory) {
-            onProductChange(selectedProductTypeId, selectedCategory);
+                    return Promise.all(brandPromises)
+                        .then(updatedProducts => {
+                            const productsChanged = updatedProducts.filter(product => product !== undefined);
+                            if (productsChanged.length > 0) {
+                                category.productsTypeProducts = productsChanged;
+                                return category;
+                            }
+                        });
+                })
+                .catch(error => {
+                    console.log(error.data);
+                });
+        } else {
+            onProductChange(selectedProductTypeId, category);
         }
     };
 
+    function onProductChange(selectedProductTypeId, category) {
+        ProductService.findProductByProductType(selectedProductTypeId)
+            .then(response => {
+                let products = response.data;
+
+                let brandPromises = products.map(product => {
+                    return ProductService.showBrandNameByProductBrandId(product.productBrandId)
+                        .then(response => {
+                            const brandName = response.data.brandName;
+                            if (product.BrandName !== brandName) {
+                                product.BrandName = brandName;
+                                return product;
+                            }
+                        });
+                });
+
+                return Promise.all(brandPromises)
+                    .then(updatedProducts => {
+                        const productsChanged = updatedProducts.filter(product => product !== undefined);
+                        if (productsChanged.length > 0) {
+                            category.productsTypeProducts = productsChanged;
+                            return category;
+                        }
+                    });
+            })
+            .catch(error => {
+                console.log(error.data);
+            });
+    }
+
+    //end selected
+
+    //start search
     $scope.searchProduct = function (productName) {
         if (productName !== '' && productName !== undefined && productName !== null) {
             $scope.categories.forEach(function (category) {
                 onSearchProduct(productName, category);
             });
+        } else {
+            findAllCategory();
         }
     };
+
+    function onSearchProduct(productName, category) {
+        ProductService.findByProductName(category.id, productName)
+            .then(function successCallback(response) {
+                let products = response.data;
+
+                let brandPromises = products.map(product => {
+                    return ProductService.showBrandNameByProductBrandId(product.productBrandId)
+                        .then(function successCallback(response) {
+                            product.BrandName = response.data.brandName;
+                        });
+                });
+
+                return Promise.all(brandPromises)
+                    .then(function () {
+                        category.productsTypeProducts = products;
+                        return category;
+                    });
+            }, function errorCallback(response) {
+                console.log(response.data);
+            });
+    }
+
+    //end search
+
 });
