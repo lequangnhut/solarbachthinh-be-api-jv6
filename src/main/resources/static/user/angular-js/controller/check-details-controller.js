@@ -241,6 +241,7 @@ solar_app.controller('check_details_controller', function ($scope, $http, $timeo
 
     // tính toán và áp dụng discount
     $scope.load_discount = function () {
+        let userId = $scope.user.id;
         let date_time = new Date();
         let subtotal = 0;
 
@@ -271,12 +272,20 @@ solar_app.controller('check_details_controller', function ($scope, $http, $timeo
             return;
         }
 
-        if (discountEndDate < date_time && !validDiscount.isActive) {
+        if (discountEndDate < date_time || !validDiscount.isActive) {
             toastAlert('warning', 'Mã giảm giá đã hết hạn !');
             return;
         }
 
-        $scope.apply_discount(validDiscount);
+        DiscountService.checkDiscountByUserIdAndDiscountId(userId, discount_code_input).then(function (response) {
+            let userUseDiscount = response.data;
+
+            if (userUseDiscount === true) {
+                centerAlert('Thất Bại !', 'Mã giảm giá ' + discount_code_input + ' này bạn đã sử dụng rồi !', 'warning');
+            } else {
+                $scope.apply_discount(validDiscount);
+            }
+        });
     };
 
     // áp dụng discount

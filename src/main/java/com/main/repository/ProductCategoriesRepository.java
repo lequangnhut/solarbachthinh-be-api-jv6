@@ -11,4 +11,6 @@ public interface ProductCategoriesRepository extends JpaRepository<ProductCatego
 
     @Query("SELECT c FROM ProductCategories c")
     List<ProductCategories> findTop4Categories(Pageable pageable);
+
+    ProductCategories findByCategoryName(String categoryName);
 }

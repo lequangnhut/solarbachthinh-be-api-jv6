@@ -21,18 +21,18 @@ public class AuthInterceptor implements HandlerInterceptor {
         String uri = request.getRequestURI();
 
         if (user == null && checkURIUser(uri)) {
-            response.sendRedirect("#!/dang-nhap");
+            response.sendRedirect("/#!/dang-nhap");
             return false;
         }
         if (user != null && checkURIExits(uri)) {
-            response.sendRedirect("#!/trang-chu");
+            response.sendRedirect("/#!/trang-chu");
             return false;
         }
         return true;
     }
 
     private boolean checkURIExits(String uri) {
-        return uri.contains("#!/**");
+        return uri.contains("/#!/**");
     }
 
 

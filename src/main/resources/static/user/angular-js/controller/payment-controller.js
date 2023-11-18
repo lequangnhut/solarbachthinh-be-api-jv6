@@ -2,7 +2,7 @@ solar_app.controller('payment_controller', function ($scope, $rootScope, OrderSe
 
     $scope.payment_calculator = function () {
         Swal.fire({
-            title: 'Cảnh báo ?',
+            title: 'Xác nhận !',
             text: "Bạn có chắc chắn muốn đặt hàng không ?",
             icon: 'warning',
             showCancelButton: true,
@@ -21,15 +21,18 @@ solar_app.controller('payment_controller', function ($scope, $rootScope, OrderSe
     // Trong AngularJS controller
     $scope.processPayment = function () {
         if ($scope.paymentMethod === 'COD') {
+
             $scope.userPayment();
             centerAlert('Thành công !', 'Đơn hàng của bạn đã được đặt thành công !', 'success');
+
             // Chuyển đến trang chủ
             window.location.href = '#!/trang-chu';
 
             // Xoá local mã giảm giá đi
             localStorage.removeItem('appliedDiscount');
 
-            $rootScope.sum_quantity_cart();
+            $rootScope.quantity_cart = 0;
+
         } else if ($scope.paymentMethod === 'TRANSFER') {
             // chuyển đến trang xác nhận thông tin để thanh toán
             $scope.shareData();

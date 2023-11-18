@@ -19,4 +19,11 @@ solar_app.service('DiscountService', function ($http) {
             url: API_Discount + '/decrease_quantity/' + discountId
         })
     }
+
+    this.checkDiscountByUserIdAndDiscountId = function (userId, discountId) {
+        return $http({
+            method: 'GET',
+            url: API_Discount + '/user-discount/' + userId + '/' + discountId
+        })
+    };
 });

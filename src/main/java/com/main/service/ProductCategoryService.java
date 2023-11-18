@@ -11,6 +11,8 @@ public interface ProductCategoryService {
 
     List<ProductCategories> findAllTop4(Pageable pageable);
 
+    ProductCategories existsByCategoryName(String categoryName);
+
     ProductCategories findById(int id);
 
     ProductCategories save(ProductCategories productCategories);

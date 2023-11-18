@@ -26,6 +26,11 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
+    public ProductCategories existsByCategoryName(String categoryName) {
+        return repo.findByCategoryName(categoryName);
+    }
+
+    @Override
     public ProductCategories findById(int id) {
         return repo.getReferenceById(id);
     }

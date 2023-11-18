@@ -8,5 +8,7 @@ public interface UserDiscountService {
 
     List<UserDiscounts> findAll();
 
+    UserDiscounts findByUserIdAndDiscountI(int userId, String discountId);
+
     UserDiscounts save(UserDiscounts userDiscounts);
 }

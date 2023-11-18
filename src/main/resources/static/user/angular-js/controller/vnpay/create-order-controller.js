@@ -1,4 +1,4 @@
-solar_app.controller('create_order_controller', function ($scope, $routeParams, OrderService, DiscountService) {
+solar_app.controller('create_order_controller', function ($scope, $routeParams, $rootScope, OrderService, DiscountService) {
 
     $scope.formatPriceVNPAY = function (price) {
         let formattedPrice = price / 100;
@@ -23,7 +23,7 @@ solar_app.controller('create_order_controller', function ($scope, $routeParams, 
 
             // Thêm trường vào đối tượng data
             data.orderId = $scope.orderInfo;
-            data.total = $scope.totalPrice;
+            data.total = $scope.totalPrice / 100;
 
             // kiểm tra ma giảm giá
             let discountId = data.discountId;
@@ -47,4 +47,5 @@ solar_app.controller('create_order_controller', function ($scope, $routeParams, 
     }
 
     $scope.userPaymentTransfer();
+    $rootScope.quantity_cart = 0;
 });

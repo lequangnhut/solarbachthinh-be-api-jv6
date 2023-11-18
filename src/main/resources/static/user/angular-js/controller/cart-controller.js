@@ -36,6 +36,8 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
                 $scope.calculate_total();
             } else {
                 cartItem.quantity = quantityInDb;
+                updateCartItemInDB(cartItem);
+                $scope.calculate_total();
                 centerAlert('Cảnh Báo !', 'Ôi hỏng rồi !!!, Bạn đã nhập quá số lượng giới hạn.', 'warning');
             }
         }, function errorCallback(response) {

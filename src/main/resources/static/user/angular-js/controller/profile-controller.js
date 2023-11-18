@@ -1,9 +1,6 @@
 solar_app.controller('profile-controller', function ($scope, $route, UserService) {
 
-    $scope.genderOptions = [
-        {label: 'Nam', value: true},
-        {label: 'Nữ', value: false}
-    ];
+    $scope.genderOptions = [{label: 'Nam', value: true}, {label: 'Nữ', value: false}];
 
 
     UserService.fillProfileUserBySession()
@@ -18,30 +15,27 @@ solar_app.controller('profile-controller', function ($scope, $route, UserService
     //Thao tác lấy giá trị tỉnh/thành mới
     $scope.onProvinceSelect = function () {
         $scope.users.provinceName = "null";
-        var selectElement = document.getElementById("city");
-        var selectedText = selectElement.options[selectElement.selectedIndex].text;
-        $scope.users.provinceName = selectedText;
+        const selectElement = document.getElementById("city");
+        $scope.users.provinceName = selectElement.options[selectElement.selectedIndex].text;
     };
 
     //Thao tác lấy giá trị quận/huyện mới
     $scope.onDistrictSelect = function () {
         $scope.users.districtName = "null";
-        var selectElement = document.getElementById("province");
-        var selectedText = selectElement.options[selectElement.selectedIndex].text;
-        $scope.users.districtName = selectedText;
+        const selectElement = document.getElementById("province");
+        $scope.users.districtName = selectElement.options[selectElement.selectedIndex].text;
     };
 
     //Thao tác lấy giá trị phường/xã mới
     $scope.onWardSelect = function () {
         $scope.users.wardName = "null";
-        var selectElement = document.getElementById("ward");
-        var selectedText = selectElement.options[selectElement.selectedIndex].text;
-        $scope.users.wardName = selectedText;
+        const selectElement = document.getElementById("ward");
+        $scope.users.wardName = selectElement.options[selectElement.selectedIndex].text;
     };
 
     $scope.submit_editProfile = function (userId) {
         Swal.fire({
-            title: 'Cảnh báo ?',
+            title: 'Xác nhận !',
             text: "Bạn có chắc chắn muốn cập nhật thông tin không ?",
             icon: 'warning',
             showCancelButton: true,
@@ -71,16 +65,26 @@ solar_app.controller('profile-controller', function ($scope, $route, UserService
         });
     };
 
+    $scope.currentPassError = false;
+
+    $scope.checkPasswordMatch = function () {
+        const currentPass = $scope.users.currentPass;
+        const newPass = $scope.users.newPass;
+
+        // Kiểm tra mật khẩu mới có trùng với mật khẩu hiện tại hay không
+        $scope.passwordMatchError = newPass === currentPass;
+
+        // Kiểm tra mật khẩu hiện tại có chính xác hay không
+        UserService.checkCorrectCurrentPass(currentPass).then(function successCallback(response) {
+            $scope.currentPassError = !response.data.exists;
+        });
+    };
+
     $scope.submit_changePass = function () {
         let currentPass = $scope.users.currentPass;
-        let newPass = $scope.users.newPass;
 
-        if (newPass === currentPass) {
-            centerAlert('Cảnh báo !', 'Mật khẩu mới không được trùng mật khẩu cũ!', 'warning');
-            return;
-        }
         Swal.fire({
-            title: 'Cảnh báo ?',
+            title: 'Xác nhận !',
             text: "Bạn có chắc chắn muốn cập nhật mật khẩu không ?",
             icon: 'warning',
             showCancelButton: true,
@@ -90,30 +94,26 @@ solar_app.controller('profile-controller', function ($scope, $route, UserService
             cancelButtonText: 'Huỷ !'
         }).then((result) => {
             if (result.isConfirmed) {
-                UserService.checkCorrectCurrentPass(currentPass)
-                    .then(function successCallback(response) {
-                        currentPass = response.data.exists;
-                        if (currentPass) {
-                            UserService.changePass($scope.users)
-                                .then(function successCallback(response) {
-                                    Swal.fire({
-                                        title: 'Cảnh báo !',
-                                        text: "Đổi mật khẩu thành công. Mời đăng nhập lại!",
-                                        icon: 'success',
-                                        showConfirmButton: false, // Tắt nút "Đồng ý"
-                                        timer: 3000 // Tự động đóng thông báo sau 3 giây
-                                    }).then((result) => {
-                                        window.location.href = "/dang-xuat";
-                                    });
-                                    }, function errorCallback(response) {
-                                    console.log('Lỗi khi đổi mật khẩu người dùng', response);
-                                });
-                        } else {
-                            centerAlert('Cảnh báo !', 'Mật khẩu hiện tại không chính xác!', 'warning');
-                        }
-                    });
+                UserService.checkCorrectCurrentPass(currentPass).then(function successCallback(response) {
+                    currentPass = response.data.exists;
+
+                    if (currentPass) {
+                        UserService.changePass($scope.users).then(function successCallback() {
+                            Swal.fire({
+                                title: 'Xác nhận !',
+                                text: "Đổi mật khẩu thành công. Mời đăng nhập lại!",
+                                icon: 'success',
+                                showConfirmButton: false, // Tắt nút "Đồng ý"
+                                timer: 3000 // Tự động đóng thông báo sau 3 giây
+                            }).then((result) => {
+                                window.location.href = "/dang-xuat";
+                            });
+                        }, function errorCallback(response) {
+                            console.log('Lỗi khi đổi mật khẩu người dùng', response);
+                        });
+                    }
+                });
             }
         });
     };
-
 })
