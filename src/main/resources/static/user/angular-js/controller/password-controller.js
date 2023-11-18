@@ -63,4 +63,22 @@ solar_app.controller('password-controller', function ($scope, $route, PasswordSe
     };
 
 
+    $scope.submitNewPassword = function () {
+        PasswordService.checkNewPassword($scope.users).then(function successCallback(response) {
+            Swal.fire({
+                title: 'Tạo mật khẩu mới thành công!',
+                text: "Mời người dùng đăng nhập lại!",
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 3000
+            }).then((result) => {
+                // Chuyển hướng đến trang đặt lại mật khẩu mới
+                window.location.href = "#!/dang-nhap";
+            });
+        }).catch(function errorCallback(response) {
+            console.log('Lỗi khi kiểm tra thời gian', response.data);
+        });
+    }
+
+
 })

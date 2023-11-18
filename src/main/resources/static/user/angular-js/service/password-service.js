@@ -31,4 +31,12 @@ solar_app.service('PasswordService', function ($http) {
         })
     }
 
+    this.checkNewPassword = function(newPassData){
+        return $http({
+            method: 'PUT',
+            url: API_Password + "/new-password",
+            data: newPassData
+        })
+    }
+
 });

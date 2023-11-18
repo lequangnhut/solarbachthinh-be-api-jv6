@@ -49,7 +49,7 @@
                 </ul>
 
                 <div ng-show="activeTab === 'confirm'" class="table-responsive mt-4">
-                    <table class="table">
+                    <table class="table" id="sortWaitForConfirmation">
                         <thead class="thead-inverse">
                         <tr>
                             <th>#</th>
@@ -87,7 +87,7 @@
                 </div>
 
                 <div ng-show="activeTab === 'deliver'" class="table-responsive mt-4">
-                    <table class="table">
+                    <table class="table" id="sortHistoryOrder">
                         <thead class="thead-inverse">
                         <tr>
                             <th>#</th>
@@ -125,7 +125,7 @@
                 </div>
 
                 <div ng-show="activeTab === 'delivered'" class="table-responsive mt-4">
-                    <table class="table">
+                    <table class="table" id="sortDelivered">
                         <thead class="thead-inverse">
                         <tr>
                             <th>#</th>
@@ -163,7 +163,7 @@
                 </div>
 
                 <div ng-show="activeTab === 'cancelled'" class="table-responsive mt-4">
-                    <table class="table">
+                    <table class="table" id="sortCanceled">
                         <thead class="thead-inverse">
                         <tr>
                             <th>#</th>
@@ -317,3 +317,6 @@
         </div>
     </div>
 </div>
+
+<!-- Js Sort table-->
+<script src="/user/assets/js/sort-table.js"></script>

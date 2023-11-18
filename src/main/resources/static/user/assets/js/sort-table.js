@@ -9,3 +9,38 @@ $(document).ready(function () {
         },
     })
 });
+$(document).ready(function () {
+    $('#sortWaitForConfirmation').DataTable({
+        "order": [],
+        "paging": false,
+        "ordering": true,
+        "info": true,
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
+        },
+    })
+});
+
+$(document).ready(function () {
+    $('#sortDelivered').DataTable({
+        "order": [],
+        "paging": false,
+        "ordering": true,
+        "info": true,
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
+        },
+    })
+});
+$(document).ready(function () {
+    $('#sortCanceled').DataTable({
+        "order": [],
+        "paging": false,
+        "ordering": true,
+        "info": true,
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
+        },
+    })
+});
+
