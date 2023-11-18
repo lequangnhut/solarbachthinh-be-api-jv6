@@ -31,4 +31,6 @@ public interface UserService {
     Users delete(int userId);
 
     Users updatePass(int userId, String password);
+
+    Users findUserByRoleAndActive (String email);
 }

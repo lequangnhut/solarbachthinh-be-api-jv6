@@ -1,6 +1,7 @@
 package com.main.service.impl;
 
 import com.main.dto.OrdersDto;
+import com.main.dto.PasswordsDto;
 import com.main.dto.RegisterDto;
 import com.main.entity.OrderItems;
 import com.main.entity.Users;
@@ -26,6 +27,8 @@ public class EmailServiceImpl implements EmailService {
 
     Queue<RegisterDto> emailQueueRegister = new LinkedList<>();
     Queue<OrdersDto> emailQueueOrder = new LinkedList<>();
+
+    Queue<PasswordsDto> emailQueueForgot = new LinkedList<>();
 
     @Autowired
     JavaMailSender sender;
@@ -139,6 +142,36 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Override
+    public void queueEmailForgot(PasswordsDto passwordsDto) {
+        emailQueueForgot.add(passwordsDto);
+    }
+
+    @Override
+    public void sendMailForgot() {
+        while (!emailQueueForgot.isEmpty()) {
+            PasswordsDto passwordsDto = emailQueueForgot.poll();
+            try {
+                MimeMessage message = sender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+
+                helper.setTo(passwordsDto.getEmail());
+
+                Map<String, Object> variables = new HashMap<>();
+                variables.put("full_name", passwordsDto.getFull_name());
+                variables.put("verifyCode", passwordsDto.getVerifyCode());
+
+                helper.setFrom(email);
+                helper.setText(thymeleafService.createContent("send-otp", variables), true);
+                helper.setSubject("SOLAR BÁCH THỊNH - XÁC NHẬN OTP");
+
+                sender.send(message);
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     @Scheduled(fixedDelay = 5000)
     public void processRegister() {
         sendMailRegister();
@@ -147,5 +180,10 @@ public class EmailServiceImpl implements EmailService {
     @Scheduled(fixedDelay = 5000)
     public void processCreateOrder() {
         sendMailCreateOrder();
+    }
+
+    @Scheduled(fixedDelay = 5000)
+    public void processEmailForgot() {
+        sendMailForgot();
     }
 }

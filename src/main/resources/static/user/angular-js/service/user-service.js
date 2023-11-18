@@ -16,7 +16,7 @@ solar_app.service('UserService', function ($http) {
     };
 
     // Update thông tin người dùng
-    this.updateProfileUser = function (userId ,userData) {
+    this.updateProfileUser = function (userId, userData) {
         return $http({
             method: 'PUT',
             url: API_Profile + '/' + userId,
@@ -33,7 +33,7 @@ solar_app.service('UserService', function ($http) {
         })
     }
 
-    this.checkCorrectCurrentPass = function (currentPass){
+    this.checkCorrectCurrentPass = function (currentPass) {
         return $http({
             method: 'GET',
             url: API_CorrectCurrentPass + currentPass,
