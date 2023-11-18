@@ -37,6 +37,12 @@ public class DiscountAPI {
         return discountService.findById(discount_code);
     }
 
+    @GetMapping("discount/user-discount/{userId}/{discountId}")
+    private boolean hasUserDiscount(@PathVariable int userId, @PathVariable String discountId) {
+        UserDiscounts userDiscount = userDiscountService.findByUserIdAndDiscountI(userId, discountId);
+        return userDiscount != null;
+    }
+
     @PostMapping("discount/decrease_quantity/{discountId}")
     private void decreaseQuantity(@PathVariable String discountId) {
         Discounts discounts = discountService.findById(discountId);

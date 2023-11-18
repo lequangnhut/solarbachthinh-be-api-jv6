@@ -49,6 +49,11 @@ public class CategoryControllerAD {
 
     @PostMapping("them-danh-muc/submit")
     public String addFormCategory(ProductCategoriesDto categoryDTO, @RequestParam("img") MultipartFile file) {
+        if (isCategoryNameExists(categoryDTO.getCategoryName())) {
+            session.setAttribute("toastWarning", "Tên danh mục đã tồn tại!");
+            return "redirect:/quan-tri/danh-muc/them-danh-muc";
+        }
+
         if (!file.isEmpty()) {
             Path path = Paths.get("src/main/resources/static/upload/");
 
@@ -93,7 +98,7 @@ public class CategoryControllerAD {
         categoryDTO.setIsActive(categoryDTO.getIsActive());
         ProductCategories categories = EntityDtoUtils.convertToEntity(categoryDTO, ProductCategories.class);
         productCategoryService.save(categories);
-        session.setAttribute("toastSuccess", "Cập nhật danh mục thành công!");
+        session.setAttribute("toastSuccess", "Cập nhật thành công!");
         return "redirect:/quan-tri/danh-muc";
     }
 
@@ -105,5 +110,10 @@ public class CategoryControllerAD {
 
         session.setAttribute("toastSuccess", "Xoá danh mục thành công!");
         return "redirect:/quan-tri/danh-muc";
+    }
+
+    public boolean isCategoryNameExists(String categoryName) {
+        ProductCategories categories = productCategoryService.existsByCategoryName(categoryName);
+        return categories != null;
     }
 }

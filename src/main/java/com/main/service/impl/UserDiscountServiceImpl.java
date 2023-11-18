@@ -20,6 +20,11 @@ public class UserDiscountServiceImpl implements UserDiscountService {
     }
 
     @Override
+    public UserDiscounts findByUserIdAndDiscountI(int userId, String discountId) {
+        return userDiscountsRepository.findByUserIdAndDiscountId(userId, discountId);
+    }
+
+    @Override
     public UserDiscounts save(UserDiscounts userDiscounts) {
         return userDiscountsRepository.save(userDiscounts);
     }

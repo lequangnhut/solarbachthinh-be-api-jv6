@@ -1,5 +1,8 @@
 solar_app.controller('auth_controller', function ($scope, $http, AuthService) {
 
+    $scope.emailError = false;
+    $scope.phoneError = false;
+
     $scope.submit_login = function () {
         let email = $scope.email;
         let password = $scope.password;
@@ -9,27 +12,22 @@ solar_app.controller('auth_controller', function ($scope, $http, AuthService) {
         });
     };
 
-    $scope.submit_signup = function () {
-        let email;
-        let phone
-
+    $scope.checkDuplicateEmail = function () {
         AuthService.checkExistEmail($scope.user.email).then(function successCallback(response) {
-            email = response.data.exists;
+            $scope.emailError = response.data.exists;
+        });
+    };
 
-            AuthService.checkExistPhone($scope.user.phoneNumber).then(function successCallback(response) {
-                phone = response.data.exists;
+    $scope.checkDuplicatePhone = function () {
+        AuthService.checkExistPhone($scope.user.phoneNumber).then(function successCallback(response) {
+            $scope.phoneError = response.data.exists;
+        });
+    };
 
-                if (email) {
-                    centerAlert('Cảnh báo !', 'Email đã tồn tại ở một tài khoản khác !', 'warning');
-                } else if (phone) {
-                    centerAlert('Cảnh báo !', 'Số điện thoại đã tồn tại ở một tài khoản khác !', 'warning');
-                } else {
-                    AuthService.creatAuth($scope.user).then(function successCallback() {
-                        window.location.href = "#!/dang-nhap";
-                        centerAlert('Thành công !', 'Đăng ký tài khoản thành công. Vui lòng xác thực email để đăng nhập !', 'success');
-                    });
-                }
-            });
+    $scope.submit_signup = function () {
+        AuthService.creatAuth($scope.user).then(function successCallback() {
+            window.location.href = "#!/dang-nhap";
+            centerAlert('Thành công !', 'Đăng ký tài khoản thành công. Vui lòng xác thực email để đăng nhập !', 'success');
         });
     };
 });

@@ -92,7 +92,7 @@ solar_app.controller('history_payment_controller', function ($scope, $window, Us
 
     $scope.cancelOrder = function (orderId) {
         Swal.fire({
-            title: 'Cảnh báo ?',
+            title: 'Xác nhận !',
             text: "Bạn có chắc chắn muốn huỷ đơn hàng " + orderId + " không ?",
             icon: 'warning',
             showCancelButton: true,
