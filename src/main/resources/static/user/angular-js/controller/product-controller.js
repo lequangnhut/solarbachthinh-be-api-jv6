@@ -178,4 +178,10 @@ solar_app.controller('product', function ($scope, CategoryService, ProductServic
 
     //end search
 
+    ProductService.findAllProducts()
+        .then(function successCallback(response) {
+            // Lọc danh sách để chỉ giữ lại các giá trị duy nhất
+            $scope.producsNameOptions = Array.from(new Set(response.data.map(product => product.productName)));
+        });
+
 });

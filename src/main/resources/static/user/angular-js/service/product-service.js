@@ -1,4 +1,11 @@
 solar_app.service('ProductService', function ($http) {
+    this.findAllProducts = function () {
+        return $http({
+            method: 'GET',
+            url: API_Product
+        })
+    };
+
     this.findProductByIdOne = function () {
         return $http({
             method: 'GET',
