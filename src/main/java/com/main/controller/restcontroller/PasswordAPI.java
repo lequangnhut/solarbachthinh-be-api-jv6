@@ -1,5 +1,6 @@
 package com.main.controller.restcontroller;
 
+import com.main.dto.ChangePassDto;
 import com.main.dto.PasswordsDto;
 import com.main.entity.Users;
 import com.main.service.EmailService;
@@ -7,6 +8,7 @@ import com.main.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +45,8 @@ public class PasswordAPI {
         passwordsDto.setFull_name(users.getFullname());
         passwordsDto.setVerifyCode(verifyCode);
 
-        session.setAttribute("forgotEmail", passwordsDto.getEmail());;
+        session.setAttribute("forgotEmail", passwordsDto.getEmail());
+        ;
         emailService.queueEmailForgot(passwordsDto);
     }
 
@@ -91,5 +94,27 @@ public class PasswordAPI {
             response.put("exists", true);
         }
         return response;
+    }
+
+    @PutMapping("password/new-password")
+    public ResponseEntity<Users> changePasswordAPI(@RequestBody ChangePassDto changePassDto) {
+
+        String email = (String) session.getAttribute("forgotEmail");
+
+        Users users = userService.findByEmail(email);
+
+        String passwordEncore = encoder.encode(changePassDto.getNewPass());
+
+        Users updatePassUser = userService.updatePass(users.getId(), passwordEncore);
+
+        if (updatePassUser != null) {
+            session.setAttribute("toastSuccess", "Cập nhật mật khẩu thành công !");
+            session.removeAttribute(email);
+            return ResponseEntity.ok().body(updatePassUser);
+        } else {
+            session.setAttribute("toastError", "Cập nhật mật khẩu không thành công.");
+            session.removeAttribute(email);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

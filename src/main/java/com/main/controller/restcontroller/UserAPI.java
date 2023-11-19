@@ -100,6 +100,7 @@ public class UserAPI {
         emailService.queueEmailRegister(registerDto);
         // mapper và lưu đối tượng user
         Users user = EntityDtoUtils.convertToEntity(registerDto, Users.class);
+        user.setAcctive(Boolean.FALSE);
         return userService.register(user);
     }
 

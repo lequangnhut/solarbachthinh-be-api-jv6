@@ -46,6 +46,13 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers("/user/**", "/admin/**").permitAll()
                                 .requestMatchers("/quan-tri/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(
+                                        "/api/carts/**",
+                                        "/api/discount/**",
+                                        "/api/order/**",
+                                        "/api/order-item/**",
+                                        "/api/profile/**"
+                                ).authenticated()
                                 .requestMatchers("/**").permitAll()
                 ).formLogin(
                         form -> form

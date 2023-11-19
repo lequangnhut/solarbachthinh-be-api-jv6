@@ -95,7 +95,7 @@ public class AuthController {
                 } else {
                     session.setAttribute("centerWarning", "Tài khoản '" + users.getEmail() + "' hiện tại đang bị tạm khoá vui lòng liên hệ hotline để biết thêm chi tiết !");
                 }
-                
+
             } else {
                 Users user = new Users();
                 user.setEmail(oauth2User.getAttribute("email"));
@@ -103,7 +103,7 @@ public class AuthController {
                 user.setPasswords(RandomUtils.RandomToken(10));
                 user.setAcctive(Boolean.TRUE);
 
-                userService.save(user);
+                userService.register(user);
 
                 session.setAttribute(SessionAttr.CURRENT_USER, user);
                 session.setAttribute("toastSuccess", "Đăng nhập thành công !");
