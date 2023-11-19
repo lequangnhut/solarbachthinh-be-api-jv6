@@ -101,8 +101,8 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="passwordLogin">Mật Khẩu
-                                        <span id="togglePasswordSignup" class="eye-icon">
+                                    <label for="passwordSignup">Mật Khẩu
+                                        <span id="togglePasswordSignup" class="eye-icon" ng-click="togglePassword1()">
                                             <i class="fa-solid fa-eye-slash"></i>
                                         </span>
                                     </label>
@@ -110,7 +110,7 @@
                                            class="form-control"
                                            name="password"
                                            ng-model="user.passwords"
-                                           id="passwordLogin"
+                                           id="passwordSignup"
                                            ng-class="{ 'is-invalid': signupForm.password.$invalid && signupForm.password.$touched, 'is-valid': signupForm.password.$valid && signupForm.password.$touched }"
                                            required
                                            ng-minlength="6">
@@ -126,7 +126,7 @@
 
                                 <div class="mb-3">
                                     <label for="passwordConfirm">Nhập Lại Mật Khẩu
-                                        <span id="togglePasswordConfirm" class="eye-icon">
+                                        <span id="togglePasswordConfirm" class="eye-icon" ng-click="togglePassword2()">
                                             <i class="fa-solid fa-eye-slash"></i>
                                         </span>
                                     </label>
@@ -189,5 +189,3 @@
     </div>
 </div>
 <!-- Form Đăng Ký End -->
-<!--Js Hidden sigup-->
-<script src="/user/assets/js/hide-pw-signup.js"></script>

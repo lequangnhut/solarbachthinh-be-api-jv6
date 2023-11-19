@@ -61,6 +61,36 @@ solar_app.controller('password-controller', function ($scope, $route, PasswordSe
         });
     };
 
+    // nhắm mở mắt của tạo mật khẩu mới
+
+    $scope.toggleNewPass = function () {
+        var passwordInput = document.getElementById('newPassword');
+        var eyeIcon = document.getElementById('toggleNewPassword');
+
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.innerHTML = '<i class="fa-solid fa-eye"></i>';
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+        }
+    };
+
+    $scope.toggleConfirmNewPass = function () {
+        var passwordInput = document.getElementById('confirmNewPass');
+        var eyeIcon = document.getElementById('toggleConfirmNewPassword');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.innerHTML = '<i class="fa-solid fa-eye"></i>';
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+        }
+    };
+
+    // tạo mật khẩu mới
     $scope.submitNewPassword = function () {
         PasswordService.checkNewPassword($scope.users).then(function successCallback(response) {
             Swal.fire({
