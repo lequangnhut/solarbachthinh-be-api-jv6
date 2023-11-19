@@ -20,7 +20,10 @@
                 <div class="col-12 col-md-12 col-xl-6 d-flex align-items-center">
                     <form ng-submit="searchProduct(productName)">
                         <div class="find d-flex align-items-center justify-content-center">
-                            <input type="text" class="input-text" ng-model="productName" placeholder="Tìm sản phẩm">
+                            <input class="form-control" list="datalistOptionsProducts" id="" ng-model="productName" placeholder="Tìm sản phẩm">
+                            <datalist id="datalistOptionsProducts">
+                                <option ng-repeat="product in producsNameOptions" value="{{product}}">
+                            </datalist>
                             <button type="submit" class="btn-find btn"><i class="bx bx-search-alt-2"></i></button>
                         </div>
                     </form>
