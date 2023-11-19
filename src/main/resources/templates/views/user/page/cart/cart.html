@@ -63,7 +63,7 @@
                                         </p>
                                     </a>
 
-                                    <a href="javascript:void(0)" role="button" ng-click="delete_cart(cart[0].id)"
+                                    <a href="javascript:void(0)" role="button" ng-click="delete_cart($index, cart[0].id)"
                                        class="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
                                        title="Remove item"
                                     >
@@ -84,7 +84,7 @@
                                             <label for="form" class="form-label">Số lượng | Kho: {{cart[1].quantity}}</label>
                                             <div class="button-quantity d-flex align-items-center">
                                                 <button class="decrease-quantity btn btn-primary d-flex justify-content-center align-items-center"
-                                                        ng-click="decrease_quantity(cart[0])">
+                                                        ng-click="decrease_quantity($index, cart[0])">
                                                     <i class="fas fa-minus"></i>
                                                 </button>
 

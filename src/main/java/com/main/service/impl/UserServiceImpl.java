@@ -60,7 +60,6 @@ public class UserServiceImpl implements UserService {
         users.setPasswords(passwordEncoder.encode(users.getPasswords()));
         users.setToken(RandomUtils.RandomToken(20));
         users.setDateCreated(new Timestamp(System.currentTimeMillis()));
-        users.setAcctive(Boolean.FALSE);
 
         Roles role = roleRepository.findByNameRole("ROLE_USER");
         if (role == null) {

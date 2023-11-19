@@ -13,13 +13,13 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
     });
 
     // trừ số lượng
-    $scope.decrease_quantity = function (cartItem) {
+    $scope.decrease_quantity = function (index, cartItem) {
         if (cartItem.quantity > 1) {
             cartItem.quantity--;
             updateCartItemInDB(cartItem);
             $scope.calculate_total();
         } else {
-            $scope.delete_cart(cartItem.id);
+            $scope.delete_cart(index, cartItem.id);
         }
     }
 
@@ -95,9 +95,9 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
     };
 
     // xoá sản phẩm trong giỏ hàng
-    $scope.delete_cart = function (cartId) {
+    $scope.delete_cart = function (index, cartId) {
         Swal.fire({
-            title: 'Cảnh báo ?',
+            title: 'Xác nhận !',
             text: "Bạn có chắc chắn muốn xoá sản phẩm ra khỏi giỏ hàng không ?",
             icon: 'warning',
             showCancelButton: true,
@@ -108,19 +108,16 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
         }).then((result) => {
             if (result.isConfirmed) {
                 $http({
-                    method: 'GET', url: API_Cart + '/xoa-gio-hang/' + cartId
+                    method: 'GET',
+                    url: API_Cart + '/xoa-gio-hang/' + cartId
                 }).then(function successCallback() {
-                    for (let i = 0; i < $scope.object_cart.length; i++) {
-                        if ($scope.object_cart[0].id !== cartId) {
-                            $scope.object_cart.splice(i, 1);
-                            break;
-                        }
-                    }
+                    $scope.object_cart.splice(index, 1);
 
                     $rootScope.sum_quantity_cart();
                     $scope.calculate_total();
                     $scope.sum_quantity_cart();
 
+                    // Hiển thị thông báo thành công
                     $timeout(function () {
                         centerAlert('Thành công !', 'Xoá sản phẩm ra khỏi giỏ hàng thành công !', 'success');
                     });
