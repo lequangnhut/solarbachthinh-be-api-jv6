@@ -29,20 +29,22 @@
                             <div class="row">
                                 <div class="col-3 d-xs-none">
                                     <div class="img-profile">
-                                        <img src="/user/assets/img/profile-logo.png" class="img-fluid rounded-top"
+                                        <img ng-if="users.picture" ng:src="{{users.picture}}"
+                                             style="border-radius: 50%;"
+                                             class="img-fluid" width="40%" alt="">
+                                        <img ng-if="!users.picture" src="/user/assets/img/profile-logo.png"
+                                             class="img-fluid rounded-top"
                                              width="60%" alt="">
                                     </div>
                                     <div class="link-profile">
-                                        <h5 class="text-secondary">{{users.fullname}}</h5>
-                                        <h5 class="text-secondary mt-2">ID: {{users.id}}</h5>
-                                        <div class="">
-                                            <h5>
-                                                <a style="color: #32C36C" href="#!/thong-tin" scroll-to-top
-                                                   class="fs-5 text-decoration-none">
-                                                    Quay về trang trước
-                                                </a>
-                                            </h5>
-                                        </div>
+                                        <h6 class="text-secondary mt-2">ID: {{users.id}}</h6>
+                                        <h6 class="text-secondary">{{users.email}}</h6>
+                                        <br>
+                                        <a style="color: #32C36C" href="#!/thong-tin" scroll-to-top
+                                           class="fs-6 text-decoration-none">
+                                            <i class="fa fa-arrow-left"></i>
+                                            Quay về trang trước
+                                        </a>
                                         <hr>
                                         <h6 class="text-secondary mt-2">
                                             Tổng số lượng đơn hàng: {{users.orderCount}}
@@ -66,17 +68,9 @@
                                               ng-submit="submit_editProfile(users.id)"
                                               method="post">
                                             <div class="row">
-                                                <h4 class="text-dark mb-3">Thông tin</h4>
-                                                <div class="col-12 col-md-12 col-lg-4">
-                                                    <!--                                                    Email-->
-                                                    <div class="mb-3">
-                                                        <label>Email</label>
-                                                        <input type="email" class="form-control" id="email"
-                                                               ng-model="users.email" readonly>
-                                                        <input type="hidden" class="form-control" id="idaccount"
-                                                               ng-model="users.id">
-                                                    </div>
-                                                    <!--                                                    Fullname-->
+                                                <div class="col-12 col-md-12 col-lg-6">
+                                                    <h5 class="text-dark mb-3">Thông tin</h5>
+
                                                     <div class="mb-3">
                                                         <label>Họ và tên</label><br>
                                                         <input type="text"
@@ -91,7 +85,7 @@
                                                             Vui lòng nhập họ tên!
                                                         </small>
                                                     </div>
-                                                    <!--                                                    NumberPhone-->
+
                                                     <div class="mb-3">
                                                         <label>Số điện thoại</label><br>
                                                         <input type="tel" class="form-control"
@@ -111,9 +105,7 @@
                                                             Số điện thoại đã tồn tại!
                                                         </small>
                                                     </div>
-                                                </div>
 
-                                                <div class="col-12 col-md-12 col-lg-4">
                                                     <div class="mb-3">
                                                         <label for="birth">Ngày sinh</label>
                                                         <input type="date" class="form-control" id="birth"
@@ -138,22 +130,11 @@
                                                             Vui lòng chọn giới tính!
                                                         </small>
                                                     </div>
-
-                                                    <div class="mb-3">
-                                                        <label for="address-edit-customer">Địa chỉ cụ thể</label>
-                                                        <input type="text"
-                                                               name="address"
-                                                               class="form-control"
-                                                               id="address-edit-customer"
-                                                               ng-model="users.address" required>
-                                                        <small class="text-danger"
-                                                               ng-show="editProfileForm.address.$error.required">
-                                                            Địa chỉ không được để trống!
-                                                        </small>
-                                                    </div>
                                                 </div>
 
-                                                <div class="col-12 col-md-12 col-lg-4">
+                                                <div class="col-12 col-md-12 col-lg-6">
+                                                    <h5 class="text-dark mb-3">Địa chỉ</h5>
+
                                                     <div class="mb-3">
                                                         <label for="city">Tỉnh Thành</label>
                                                         <select class="form-select"
@@ -204,8 +185,22 @@
                                                             Phường/xã không được để trống!
                                                         </small>
                                                     </div>
+
+                                                    <div class="mb-3">
+                                                        <label for="address-edit-customer">Địa chỉ cụ thể</label>
+                                                        <input type="text"
+                                                               name="address"
+                                                               class="form-control"
+                                                               id="address-edit-customer"
+                                                               ng-model="users.address" required>
+                                                        <small class="text-danger"
+                                                               ng-show="editProfileForm.address.$error.required">
+                                                            Địa chỉ không được để trống!
+                                                        </small>
+                                                    </div>
                                                 </div>
                                             </div>
+
                                             <button ng-disabled="editProfileForm.$invalid"
                                                     class="btn btn-danger"
                                                     type="submit">

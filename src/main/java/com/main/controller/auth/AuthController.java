@@ -86,21 +86,21 @@ public class AuthController {
             OAuth2User oauth2User = oauth.getPrincipal();
 
             Users users = userService.findByEmail(oauth2User.getAttribute("email"));
-
             if (users != null) {
                 if (users.isAcctive()) {
+                    users.setPicture(oauth2User.getAttribute("picture"));
+
                     session.setAttribute(SessionAttr.CURRENT_USER, users);
                     session.setAttribute("toastSuccess", "Đăng nhập thành công !");
-
                 } else {
                     session.setAttribute("centerWarning", "Tài khoản '" + users.getEmail() + "' hiện tại đang bị tạm khoá vui lòng liên hệ hotline để biết thêm chi tiết !");
                 }
-
             } else {
                 Users user = new Users();
                 user.setEmail(oauth2User.getAttribute("email"));
                 user.setFullname(oauth2User.getAttribute("name"));
                 user.setPasswords(RandomUtils.RandomToken(10));
+                user.setPicture(oauth2User.getAttribute("picture"));
                 user.setAcctive(Boolean.TRUE);
 
                 userService.register(user);

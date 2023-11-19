@@ -50,8 +50,7 @@ public class SecurityConfig {
                                         "/api/carts/**",
                                         "/api/discount/**",
                                         "/api/order/**",
-                                        "/api/order-item/**",
-                                        "/api/profile/**"
+                                        "/api/order-item/**"
                                 ).authenticated()
                                 .requestMatchers("/**").permitAll()
                 ).formLogin(

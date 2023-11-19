@@ -42,19 +42,11 @@ let API_CorrectCurrentPass = '/api/check-current-password/'
 // api order item
 let API_OrderItem = '/api/order-item'
 
-
 // khởi tạo ứng dụng
-let solar_app = angular.module('solar_app', ['ngRoute'])
-    .run(function ($rootScope, $http, CartService) {
-        // lấy ra tổng số lượng giỏ hàng
-        CartService.sumQuantityCart().then(function successCallback(response) {
-            $rootScope.quantity_cart = response.data;
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
-    });
+let solar_app = angular.module('solar_app', ['ngRoute']);
 
-solar_app.config(['$qProvider', function ($qProvider) {
+solar_app.config(['$httpProvider', '$qProvider', function ($httpProvider, $qProvider) {
+    $httpProvider.interceptors.push('authenticateToken');
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
