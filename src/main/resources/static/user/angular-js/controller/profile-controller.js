@@ -1,5 +1,7 @@
 solar_app.controller('profile-controller', function ($scope, $route, UserService) {
 
+
+
     $scope.genderOptions = [{label: 'Nam', value: true}, {label: 'Nữ', value: false}];
 
 
@@ -64,6 +66,49 @@ solar_app.controller('profile-controller', function ($scope, $route, UserService
             }
         });
     };
+  // nhắm mở mắt của đổi mật khẩu
+    $scope.toggleChangePassword1 = function () {
+        var passwordInput = document.getElementById('currentPass');
+        var eyeIcon = document.getElementById('toggleCurrentPassword');
+
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.innerHTML = '<i class="fa-solid fa-eye"></i>';
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+        }
+    };
+
+    $scope.toggleChangePassword2 = function () {
+        var passwordInput = document.getElementById('newPass');
+        var eyeIcon = document.getElementById('toggleNewPassword');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.innerHTML = '<i class="fa-solid fa-eye"></i>';
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+        }
+    };
+
+    $scope.toggleChangePassword3 = function () {
+        var passwordInput = document.getElementById('confirmPass');
+        var eyeIcon = document.getElementById('toggleConfirmPassword');
+
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.innerHTML = '<i class="fa-solid fa-eye"></i>';
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+        }
+    };
+
+    // kiểm tra và xuất lỗi
 
     $scope.currentPassError = false;
 
