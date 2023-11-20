@@ -74,12 +74,13 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http) {
 
                 for (let i = 0; i < listOrderItemAndProduct.length; i++) {
                     let data = {
-                        product: listOrderItemAndProduct[i][1], orderItem: listOrderItemAndProduct[i][0]
+                        product: listOrderItemAndProduct[i][1],
+                        orderItem: listOrderItemAndProduct[i][0]
                     };
                     combinedData.push(data);
 
                     // tạm tính
-                    subTotal += (data.orderItem.quantity * data.product.price);
+                    subTotal += (data.orderItem.quantity * data.orderItem.price);
                     shippingFee = $scope.order.orderShipCost;
                     // Tính tổng tiền dựa trên số lượng và giá của orderItem
                     totalAmount = subTotal - $scope.discountCost + shippingFee;
@@ -127,7 +128,9 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http) {
                     url: API_ConfirmOrder + '/' + orderId
                 }).then(function successCallback() {
                     centerAlert('Thành công !', 'Đơn hàng ' + orderId + ' đã được xác nhận thành công !', 'success');
-                    window.location.href = '/quan-tri/xac-nhan-don-hang'
+                    setTimeout(function () {
+                        window.location.replace('/quan-tri/xac-nhan-don-hang');
+                    }, 1500);
                 });
             }
         })
@@ -150,7 +153,9 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http) {
                     url: API_DeliveredOrder + '/' + orderId
                 }).then(function successCallback() {
                     centerAlert('Thành công !', 'Đơn hàng ' + orderId + ' đã được xác nhận thành công !', 'success');
-                    window.location.href = '/quan-tri/xac-nhan-don-hang'
+                    setTimeout(function () {
+                        window.location.replace('/quan-tri/xac-nhan-don-hang');
+                    }, 1500);
                 });
             }
         })
@@ -173,7 +178,9 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http) {
                     url: API_CancelOrder + '/' + orderId
                 }).then(function successCallback() {
                     centerAlert('Thành công !', 'Đơn hàng ' + orderId + ' đã được huỷ thành công !', 'success');
-                    window.location.href = '/quan-tri/xac-nhan-don-hang'
+                    setTimeout(function () {
+                        window.location.replace('/quan-tri/xac-nhan-don-hang');
+                    }, 1500);
                 });
             }
         });

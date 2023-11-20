@@ -63,7 +63,8 @@
                                         </p>
                                     </a>
 
-                                    <a href="javascript:void(0)" role="button" ng-click="delete_cart($index, cart[0].id)"
+                                    <a href="javascript:void(0)" role="button"
+                                       ng-click="delete_cart($index, cart[0].id)"
                                        class="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
                                        title="Remove item"
                                     >
@@ -81,7 +82,8 @@
                                     <!-- Quantity -->
                                     <div class="d-flex mb-4" style="max-width: 300px">
                                         <div class="mb-3">
-                                            <label for="form" class="form-label">Số lượng | Kho: {{cart[1].quantity}}</label>
+                                            <label for="form" class="form-label">Số lượng | Kho:
+                                                {{cart[1].quantity}}</label>
                                             <div class="button-quantity d-flex align-items-center">
                                                 <button class="decrease-quantity btn btn-primary d-flex justify-content-center align-items-center"
                                                         ng-click="decrease_quantity($index, cart[0])">
@@ -106,12 +108,12 @@
                                     </div>
                                     <!-- Quantity -->
 
-                                    <!-- Price -->
-                                    <p class="text-end">Giảm giá:
+                                    <!-- Hiển thị giá giảm giá trong HTML -->
+                                    <p class="text-end" ng-if="!cart[i][1].saleValue">Đơn giá:
                                         <strong>{{formatPrice(cart[1].price)}} ₫</strong>
                                     </p>
 
-                                    <p class="text-end">Tạm tính:
+                                    <p class="text-end" ng-if="!cart[i][1].saleValue">Tạm tính:
                                         <strong>{{formatPrice(cart[1].price * cart[0].quantity)}} ₫</strong>
                                     </p>
                                     <!-- Price -->

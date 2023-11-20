@@ -1,4 +1,4 @@
-solar_app.controller('check_details_controller', function ($scope, $http, $timeout, $window, CartService, UserService, DiscountService, ShippingService) {
+solar_app.controller('check_details_controller', function ($scope, $http, $timeout, $window, CartService, UserService, DiscountService, SaleOffService, ShippingService) {
 
     // Kiểm tra xem đã có thông tin mã giảm giá trong local storage chưa
     $scope.discountApplied = localStorage.getItem('appliedDiscount') !== null;
@@ -272,6 +272,11 @@ solar_app.controller('check_details_controller', function ($scope, $http, $timeo
             return;
         }
 
+        if (validDiscount.quantity === 0) {
+            toastAlert('warning', 'Mã giảm giá đã hết !');
+            return;
+        }
+
         if (discountEndDate < date_time || !validDiscount.isActive) {
             toastAlert('warning', 'Mã giảm giá đã hết hạn !');
             return;
@@ -341,6 +346,33 @@ solar_app.controller('check_details_controller', function ($scope, $http, $timeo
         });
     };
 
+    // lấy ra tất cả sản phẩm giảm giá
+    SaleOffService.findAll().then(function successCallback(response) {
+        $scope.sale_offs = response.data;
+    });
+
+    // Hàm kiểm tra xem giảm giá còn hiệu lực hay không
+    $scope.isSaleOffValid = function (saleOff) {
+        let currentDate = new Date();
+        let saleStartDate = new Date(saleOff.startUse);
+        let saleEndDate = new Date(saleOff.endUse);
+
+        return currentDate >= saleStartDate && currentDate <= saleEndDate;
+    };
+
+    // Hàm tìm kiếm index của giảm giá dựa trên productId
+    $scope.findIndexByProductId = function (productId) {
+        let sale_offs = $scope.sale_offs || [];
+
+        for (let i = 0; i < sale_offs.length; i++) {
+            if (sale_offs[i].productId === productId) {
+                return i;
+            }
+        }
+
+        return -1; // Không tìm thấy giảm giá cho productId
+    };
+
     // tính tổng giá tiền và tạm tính
     $scope.calculate_total = function (object_cart, discounts) {
         let shippingFee = totalShippingFee.total ? totalShippingFee.total : totalShippingFee;
@@ -349,7 +381,22 @@ solar_app.controller('check_details_controller', function ($scope, $http, $timeo
         let total;
 
         for (let i = 0; i < object_cart.length; i++) {
-            subtotal += object_cart[i][0].quantity * object_cart[i][1].price;
+            let product = object_cart[i][1];
+            let quantity = object_cart[i][0].quantity;
+
+            // Tính giá giảm giá nếu có
+            let saleOffIndex = $scope.findIndexByProductId(product.id);
+            if (saleOffIndex !== -1) {
+                let saleOff = $scope.sale_offs[saleOffIndex];
+
+                if (saleOff != null && saleOff.isActive && $scope.isSaleOffValid(saleOff)) {
+                    // Áp dụng giá giảm giá cho sản phẩm
+                    product.price = saleOff.saleValue;
+                }
+            }
+
+            // Tính tổng giá của sản phẩm
+            subtotal += quantity * product.price;
         }
 
         total = subtotal - discount + shippingFee;

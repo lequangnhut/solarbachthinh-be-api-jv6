@@ -45,12 +45,35 @@ solar_app.controller('payment_controller', function ($scope, $rootScope, OrderSe
     // lấy ra các thông tin người đặt hàng, thông tin đơn hàng
     $scope.userPayment = function () {
         let productCartDto = {
-            cartsList: [], productsList: []
+            cartsList: [],
+            productsList: []
         };
 
+        let total = 0;
+
         for (let i = 0; i < $scope.object_cart.length; i++) {
-            productCartDto.cartsList.push($scope.object_cart[i][0]);
-            productCartDto.productsList.push($scope.object_cart[i][1]);
+            let cartItem = $scope.object_cart[i][0];
+            let product = $scope.object_cart[i][1];
+
+            // Tính giá giảm giá nếu có
+            let saleOffIndex = $scope.findIndexByProductId(product.id);
+            if (saleOffIndex !== -1) {
+                let saleOff = $scope.sale_offs[saleOffIndex];
+
+                if (saleOff != null && saleOff.isActive && $scope.isSaleOffValid(saleOff)) {
+                    // Áp dụng giá giảm giá cho sản phẩm
+                    product.price = saleOff.saleValue;
+                }
+            }
+
+            // Tính tổng giá của từng sản phẩm
+            let subtotal = cartItem.quantity * product.price;
+
+            total += subtotal;
+
+            // Thêm sản phẩm và giỏ hàng vào productCartDto
+            productCartDto.cartsList.push(cartItem);
+            productCartDto.productsList.push(product);
         }
 
         $scope.user_payment = {
@@ -71,12 +94,34 @@ solar_app.controller('payment_controller', function ($scope, $rootScope, OrderSe
             paymentStatus: 0,
             serviceName: $scope.serviceName.short_name,
             shippingFee: $scope.shippingFee,
-            total: $scope.total,
+            total: total,
             noted: $scope.noted,
             paymentMethod: $scope.paymentMethod
         };
 
         $scope.createOrder(data);
+    };
+
+    // Hàm kiểm tra xem giảm giá còn hiệu lực hay không
+    $scope.isSaleOffValid = function (saleOff) {
+        let currentDate = new Date();
+        let saleStartDate = new Date(saleOff.startUse);
+        let saleEndDate = new Date(saleOff.endUse);
+
+        return currentDate >= saleStartDate && currentDate <= saleEndDate;
+    };
+
+    // Hàm tìm kiếm index của giảm giá dựa trên productId
+    $scope.findIndexByProductId = function (productId) {
+        let sale_offs = $scope.sale_offs || [];
+
+        for (let i = 0; i < sale_offs.length; i++) {
+            if (sale_offs[i].productId === productId) {
+                return i;
+            }
+        }
+
+        return -1; // Không tìm thấy giảm giá cho productId
     };
 
     // kiểm tra mã giảm giá
@@ -98,12 +143,35 @@ solar_app.controller('payment_controller', function ($scope, $rootScope, OrderSe
     // lấy dữ liệu người dùng đặt hàng qua controller creat-order-controller để thanh toán vnpay
     $scope.shareData = function () {
         let productCartDto = {
-            cartsList: [], productsList: []
+            cartsList: [],
+            productsList: []
         };
 
+        let total = 0;
+
         for (let i = 0; i < $scope.object_cart.length; i++) {
-            productCartDto.cartsList.push($scope.object_cart[i][0]);
-            productCartDto.productsList.push($scope.object_cart[i][1]);
+            let cartItem = $scope.object_cart[i][0];
+            let product = $scope.object_cart[i][1];
+
+            // Tính giá giảm giá nếu có
+            let saleOffIndex = $scope.findIndexByProductId(product.id);
+            if (saleOffIndex !== -1) {
+                let saleOff = $scope.sale_offs[saleOffIndex];
+
+                if (saleOff != null && saleOff.isActive && $scope.isSaleOffValid(saleOff)) {
+                    // Áp dụng giá giảm giá cho sản phẩm
+                    product.price = saleOff.saleValue;
+                }
+            }
+
+            // Tính tổng giá của từng sản phẩm
+            let subtotal = cartItem.quantity * product.price;
+
+            total += subtotal;
+
+            // Thêm sản phẩm và giỏ hàng vào productCartDto
+            productCartDto.cartsList.push(cartItem);
+            productCartDto.productsList.push(product);
         }
 
         $scope.user_payment = {
@@ -116,13 +184,15 @@ solar_app.controller('payment_controller', function ($scope, $rootScope, OrderSe
         };
 
         const data = {
+            orderId: OrderCodeService.generateOrderCode(),
             email: $scope.user.email,
             user_payment: $scope.user_payment,
             productCartDto: productCartDto,
             discountId: $scope.discountId,
-            discountCost: $scope.discount,
+            paymentStatus: 0,
             serviceName: $scope.serviceName.short_name,
             shippingFee: $scope.shippingFee,
+            total: total,
             noted: $scope.noted,
             paymentMethod: $scope.paymentMethod
         };

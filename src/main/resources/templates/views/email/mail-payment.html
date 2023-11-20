@@ -155,10 +155,10 @@
                                                 <span th:text="${orderitem.quantity}"></span>
                                             </td>
                                             <td style="border: 1px solid #dddddd; font-size: 12px; font-weight: bold; line-height: 14px; width:25%; padding: 10px; border-right:0; border-bottom:0;">
-                                                <span th:text="${#numbers.formatDecimal(orderitem.productsByProductId.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                                                <span th:text="${#numbers.formatDecimal(orderitem.price, 0, 'COMMA', 0, 'POINT')}"></span>
                                             </td>
                                             <td style="border: 1px solid #dddddd; font-size: 12px; font-weight: bold; line-height: 14px; width:25%; padding: 10px; border-bottom:0;">
-                                                <span th:text="${#numbers.formatDecimal(orderitem.productsByProductId.price * orderitem.quantity, 0, 'COMMA', 0, 'POINT')}"></span>
+                                                <span th:text="${#numbers.formatDecimal(orderitem.price * orderitem.quantity, 0, 'COMMA', 0, 'POINT')}"></span>
                                             </td>
                                         </tr>
                                         <!--BE foreach area end-->

@@ -62,7 +62,7 @@ solar_app.controller('history_payment_controller', function ($scope, $window, Us
                     combinedData.push(data);
 
                     // tạm tính
-                    subTotal += (data.orderItem.quantity * data.product.price);
+                    subTotal += (data.orderItem.quantity * data.orderItem.price);
                     shippingFee = $scope.order.orderShipCost;
                     // Tính tổng tiền dựa trên số lượng và giá của orderItem
                     totalAmount = subTotal - $scope.discountCost + shippingFee;
@@ -105,7 +105,9 @@ solar_app.controller('history_payment_controller', function ($scope, $window, Us
             if (result.isConfirmed) {
                 OrderService.cancelOrderById(orderId).then(function successCallback() {
                     centerAlert('Thành công !', 'Đơn hàng ' + orderId + ' của bạn đã được huỷ thành công !', 'success');
-                    $window.location.reload();
+                    setTimeout(function () {
+                        $window.location.reload();
+                    }, 1500);
                     $scope.apply();
                 })
             }

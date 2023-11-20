@@ -3,10 +3,8 @@ package com.main.controller.restcontroller;
 import com.main.entity.ProductBrands;
 import com.main.entity.ProductCategories;
 import com.main.entity.Products;
-import com.main.service.ProductBrandService;
-import com.main.service.ProductCategoryService;
-import com.main.service.ProductService;
-import com.main.service.ProductTypeService;
+import com.main.entity.SaleOff;
+import com.main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +26,9 @@ public class ProductAPI {
 
     @Autowired
     private ProductBrandService productBrandService;
+
+    @Autowired
+    private SaleOffService saleOffService;
 
     @GetMapping("product")
     public List<Products> productList() {
@@ -91,4 +92,14 @@ public class ProductAPI {
         return productService.findByCategoryIdAndProductTypeId(categoryId, productTypeId);
     }
 
+    //sale off
+    @GetMapping("product/sale-off/{productId}")
+    public SaleOff findSaleOffByProductId(@PathVariable String productId) {
+        return saleOffService.findByProductId(productId);
+    }
+
+    @GetMapping("product/sale-off")
+    public List<SaleOff> findAllSaleOff() {
+        return saleOffService.findAll();
+    }
 }

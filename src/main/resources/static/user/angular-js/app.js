@@ -36,11 +36,14 @@ let API_ExistPhoneProfile = '/api/check-phone-user/'
 let API_ExistEmailForgot = '/api/check-email-user-active/'
 let API_VerifyCodeOnTime = '/api/check-code-on-time'
 
-//api check mật khẩu hiện tại đúng (dùng cho đổi mật khẩu)
+// api check mật khẩu hiện tại đúng (dùng cho đổi mật khẩu)
 let API_CorrectCurrentPass = '/api/check-current-password/'
 
 // api order item
 let API_OrderItem = '/api/order-item'
+
+// api sale off
+let API_SaleOff = '/api/product/sale-off'
 
 // khởi tạo ứng dụng
 let solar_app = angular.module('solar_app', ['ngRoute']);

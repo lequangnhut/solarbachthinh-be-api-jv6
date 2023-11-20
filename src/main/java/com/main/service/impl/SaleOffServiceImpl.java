@@ -13,6 +13,7 @@ import java.util.List;
 public class SaleOffServiceImpl implements SaleOffService {
     @Autowired
     SaleOffRepository saleOffRepository;
+
     @Override
     public List<SaleOff> findAll() {
         return saleOffRepository.findAll();
@@ -43,7 +44,7 @@ public class SaleOffServiceImpl implements SaleOffService {
         LocalDateTime currentDateTime = LocalDateTime.now();
         List<SaleOff> saleOffList = saleOffRepository.findByEndUseBeforeAndIsActiveTrue(currentDateTime);
 
-        for (SaleOff saleOff : saleOffList){
+        for (SaleOff saleOff : saleOffList) {
             saleOff.setIsActive(false);
             saleOffRepository.save(saleOff);
         }
