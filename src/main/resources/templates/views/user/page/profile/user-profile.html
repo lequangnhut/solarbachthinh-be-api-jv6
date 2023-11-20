@@ -31,21 +31,25 @@
                             <div class="row">
                                 <div class="col-3 d-xs-none">
                                     <div class="img-profile">
-                                        <img src="/user/assets/img/profile-logo.png" class="img-fluid rounded-top"
+                                        <img ng-if="users.picture" ng:src="{{users.picture}}"
+                                             style="border-radius: 50%;"
+                                             class="img-fluid" width="40%" alt="">
+                                        <img ng-if="!users.picture" src="/user/assets/img/profile-logo.png"
+                                             class="img-fluid rounded-top"
                                              width="60%" alt="">
                                     </div>
                                     <div class="link-profile">
-                                        <h5 class="text-secondary">{{users.fullname}}</h5>
-                                        <h5 class="text-secondary mt-2">ID: {{users.id}}</h5>
-                                        <div class="">
-                                            <h5>
-                                                <a style="color: #32C36C"
-                                                   href="#!/thong-tin/sua-thong-tin" scroll-to-top
-                                                   class="fs-5 text-decoration-none">
-                                                    Chỉnh sửa thông tin
-                                                </a>
-                                            </h5>
-                                        </div>
+                                        <h6 class="text-secondary mt-2">ID: {{users.id}}</h6>
+                                        <h6 class="text-secondary">{{users.fullname}}</h6>
+                                        <br>
+                                        <h6>
+                                            <a style="color: #32C36C"
+                                               href="#!/thong-tin/sua-thong-tin" scroll-to-top
+                                               class="fs-6 text-decoration-none">
+                                                Chỉnh sửa thông tin
+                                                <i class="fa fa-arrow-right"></i>
+                                            </a>
+                                        </h6>
                                         <hr>
                                         <h6 class="text-secondary mt-2">
                                             Tổng số lượng đơn hàng: {{users.orderCount}}
@@ -79,11 +83,15 @@
                                                 </h6>
                                                 <h6 class="text-dark mt-4 ng-binding">{{users.phoneNumber}}
                                                 </h6>
-                                              
-                                                <h6 class="text-dark mt-4 ng-binding">{{users.birth | date:'dd-MM-yyyy'}}</h6>
-                                                <h6 class="text-dark mt-4 ng-binding" ng-if="(users.gender) == null">. . .</h6>
-                                                <h6 class="text-dark mt-4 ng-binding" ng-if="(users.gender) == false">Nữ</h6>
-                                                <h6 class="text-dark mt-4 ng-binding" ng-if="(users.gender) == true">Nam</h6>
+
+                                                <h6 class="text-dark mt-4 ng-binding">
+                                                    {{users.birth | date:'dd-MM-yyyy'}}</h6>
+                                                <h6 class="text-dark mt-4 ng-binding" ng-if="(users.gender) == null">. .
+                                                    .</h6>
+                                                <h6 class="text-dark mt-4 ng-binding" ng-if="(users.gender) == false">
+                                                    Nữ</h6>
+                                                <h6 class="text-dark mt-4 ng-binding" ng-if="(users.gender) == true">
+                                                    Nam</h6>
 
                                                 <div class="text-dark mt-4 ng-binding">
                                                     <span>{{users.address}}</span>,

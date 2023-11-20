@@ -60,7 +60,6 @@ public class ProfileAPI {
 
             UsersDto usersDto = new UsersDto();
             usersDto.setId(users.getId());
-            usersDto.setPasswords(users.getPasswords());
             usersDto.setEmail(users.getEmail());
             usersDto.setFullname(users.getFullname());
             usersDto.setGender(users.getGender());
@@ -71,6 +70,7 @@ public class ProfileAPI {
             usersDto.setDistrictName(users.getDistrictName());
             usersDto.setWardName(users.getWardName());
             usersDto.setAddress(users.getAddress());
+            usersDto.setPicture(users.getPicture());
             usersDto.setTotalOrderPrice(sumResult);
             usersDto.setOrderCount(countResult);
 
@@ -90,7 +90,8 @@ public class ProfileAPI {
     @GetMapping("profile/{userId}")
     public ResponseEntity<Users> getAccountById(@PathVariable int userId) {
         Users users = userService.findById(userId);
-        return ResponseEntity.ok().body(users);    }
+        return ResponseEntity.ok().body(users);
+    }
 
     //Cập nhật thông tin cá nhân
     @PutMapping("profile/{userId}")
@@ -109,7 +110,7 @@ public class ProfileAPI {
         Users updateUser = userService.update(users);
         if (updateUser != null) {
             session.setAttribute(SessionAttr.CURRENT_USER, updateUser);
-            session.setAttribute("toastSuccess", "Cập nhật thông tin thành công !");
+            session.setAttribute("centerSuccess", "Thông tin cá nhân của bạn đã được cập nhật thành công.");
             return ResponseEntity.ok().body(updateUser);
         } else {
             session.setAttribute("toastError", "Cập nhật thông tin không thành công.");
@@ -167,5 +168,4 @@ public class ProfileAPI {
         }
         return response;
     }
-
 }

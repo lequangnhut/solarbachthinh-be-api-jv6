@@ -4,12 +4,10 @@ solar_app.controller('auth_controller', function ($scope, $http, AuthService) {
     $scope.phoneError = false;
 
     // form Đăng nhập
-
     $scope.togglePassword = function () {
+        const passwordInput = document.getElementById('passwordLogin');
+        const eyeIcon = document.getElementById('togglePasswordLogin');
 
-        var passwordInput = document.getElementById('passwordLogin');
-        var eyeIcon = document.getElementById('togglePasswordLogin');
-        console.log("nhận");
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
             eyeIcon.innerHTML = '<i class="fa-solid fa-eye"></i>';
@@ -18,12 +16,11 @@ solar_app.controller('auth_controller', function ($scope, $http, AuthService) {
             eyeIcon.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
         }
     };
-    // form đăng ký
 
     // nhập mật khẩu
     $scope.togglePassword1 = function () {
-        var passwordInput = document.getElementById('passwordSignup');
-        var eyeIcon = document.getElementById('togglePasswordSignup');
+        const passwordInput = document.getElementById('passwordSignup');
+        const eyeIcon = document.getElementById('togglePasswordSignup');
 
 
         if (passwordInput.type === 'password') {
@@ -37,8 +34,8 @@ solar_app.controller('auth_controller', function ($scope, $http, AuthService) {
 
     // xác nhận lại mật khẩu
     $scope.togglePassword2 = function () {
-        var passwordInput = document.getElementById('passwordConfirm');
-        var eyeIcon = document.getElementById('togglePasswordConfirm');
+        const passwordInput = document.getElementById('passwordConfirm');
+        const eyeIcon = document.getElementById('togglePasswordConfirm');
 
 
         if (passwordInput.type === 'password') {

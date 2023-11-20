@@ -1,18 +1,12 @@
 solar_app.controller('profile-controller', function ($scope, $route, UserService) {
-
-
-
     $scope.genderOptions = [{label: 'Nam', value: true}, {label: 'Nữ', value: false}];
 
-
-    UserService.fillProfileUserBySession()
-        .then(function successCallback(response) {
-            $scope.users = response.data;
-            $scope.users.birth = new Date($scope.users.birth);
-            // console.log($scope.users);
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
+    UserService.fillProfileUserBySession().then(function successCallback(response) {
+        $scope.users = response.data;
+        $scope.users.birth = new Date($scope.users.birth);
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
 
     //Thao tác lấy giá trị tỉnh/thành mới
     $scope.onProvinceSelect = function () {
@@ -47,29 +41,28 @@ solar_app.controller('profile-controller', function ($scope, $route, UserService
             cancelButtonText: 'Huỷ !'
         }).then((result) => {
             if (result.isConfirmed) {
-                UserService.checkExistPhoneProfile($scope.users.phoneNumber)
-                    .then(function successCallback(response) {
-                        phone = response.data.exists;
-                        if (phone) {
-                            centerAlert('Cảnh báo !', 'Số điện thoại đã tồn tại ở một tài khoản khác !', 'warning');
-                        } else {
-                            UserService.updateProfileUser(userId, $scope.users)
-                                .then(function successCallback(response) {
-                                    $scope.users = response.data;
-                                    window.location.href = "/redirect";
-                                    centerAlert('Thành công !', 'Thông tin người dùng được cập nhật!', 'success');
-                                }, function errorCallback(response) {
-                                    console.log('Lỗi khi cập nhật thông tin người dùng', response.data);
-                                });
-                        }
-                    });
+                UserService.checkExistPhoneProfile($scope.users.phoneNumber).then(function successCallback(response) {
+                    let phone = response.data.exists;
+
+                    if (phone) {
+                        centerAlert('Cảnh báo !', 'Số điện thoại đã tồn tại ở một tài khoản khác !', 'warning');
+                    } else {
+                        UserService.updateProfileUser(userId, $scope.users).then(function successCallback(response) {
+                            $scope.users = response.data;
+                            window.location.href = "/";
+                        }, function errorCallback(response) {
+                            console.log('Lỗi khi cập nhật thông tin người dùng', response.data);
+                        });
+                    }
+                });
             }
         });
     };
-  // nhắm mở mắt của đổi mật khẩu
+
+    // nhắm mở mắt của đổi mật khẩu
     $scope.toggleChangePassword1 = function () {
-        var passwordInput = document.getElementById('currentPass');
-        var eyeIcon = document.getElementById('toggleCurrentPassword');
+        const passwordInput = document.getElementById('currentPass');
+        const eyeIcon = document.getElementById('toggleCurrentPassword');
 
 
         if (passwordInput.type === 'password') {
@@ -82,8 +75,8 @@ solar_app.controller('profile-controller', function ($scope, $route, UserService
     };
 
     $scope.toggleChangePassword2 = function () {
-        var passwordInput = document.getElementById('newPass');
-        var eyeIcon = document.getElementById('toggleNewPassword');
+        const passwordInput = document.getElementById('newPass');
+        const eyeIcon = document.getElementById('toggleNewPassword');
 
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
@@ -95,8 +88,8 @@ solar_app.controller('profile-controller', function ($scope, $route, UserService
     };
 
     $scope.toggleChangePassword3 = function () {
-        var passwordInput = document.getElementById('confirmPass');
-        var eyeIcon = document.getElementById('toggleConfirmPassword');
+        const passwordInput = document.getElementById('confirmPass');
+        const eyeIcon = document.getElementById('toggleConfirmPassword');
 
 
         if (passwordInput.type === 'password') {
@@ -107,10 +100,6 @@ solar_app.controller('profile-controller', function ($scope, $route, UserService
             eyeIcon.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
         }
     };
-
-    // kiểm tra và xuất lỗi
-
-    $scope.currentPassError = false;
 
     $scope.checkPasswordMatch = function () {
         const currentPass = $scope.users.currentPass;
@@ -148,7 +137,6 @@ solar_app.controller('profile-controller', function ($scope, $route, UserService
                                 title: 'Xác nhận !',
                                 text: "Đổi mật khẩu thành công. Mời đăng nhập lại!",
                                 icon: 'success',
-                                showConfirmButton: false, // Tắt nút "Đồng ý"
                                 timer: 3000 // Tự động đóng thông báo sau 3 giây
                             }).then((result) => {
                                 window.location.href = "/dang-xuat";
@@ -156,6 +144,8 @@ solar_app.controller('profile-controller', function ($scope, $route, UserService
                         }, function errorCallback(response) {
                             console.log('Lỗi khi đổi mật khẩu người dùng', response);
                         });
+                    } else {
+                        toastAlert('warning', 'Mật khẩu cũ không khớp !');
                     }
                 });
             }

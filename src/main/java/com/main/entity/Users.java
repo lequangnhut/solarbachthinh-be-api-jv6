@@ -79,6 +79,10 @@ public class Users {
     @Column(name = "token", nullable = true, length = 50)
     private String token;
 
+    @Basic
+    @Column(name = "picture", nullable = true, length = 255)
+    private String picture;
+
     @OneToMany(mappedBy = "usersByUserId")
     @JsonManagedReference
     private Collection<Carts> cartsById;

@@ -40,6 +40,18 @@ public class CartsAPI {
         }
     }
 
+    @GetMapping("carts/cart-interceptor")
+    public boolean getCartAuthentication() {
+        Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
+
+        if (users != null) {
+            List<Object[]> objects = cartService.findListCartByUserId(users.getId());
+            return objects != null && !objects.isEmpty();
+        } else {
+            return false;
+        }
+    }
+
     // lấy ra tổng số lượng sản phẩm tronmg giỏ hàng
     @GetMapping("carts/quantity-cart")
     public Integer getQuantityCart() {

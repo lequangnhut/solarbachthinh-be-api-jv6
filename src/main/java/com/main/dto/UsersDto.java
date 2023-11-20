@@ -12,38 +12,39 @@ import java.util.Collection;
 @Data
 public class UsersDto implements Serializable {
 
-    int id;
+    private int id;
 
-    String email;
+    private String email;
 
-    String passwords;
+    private String passwords;
 
-    String fullname;
+    private String fullname;
 
-    String phoneNumber;
+    private String phoneNumber;
 
-    Boolean gender;
+    private Boolean gender;
 
-    Date birth;
+    private Date birth;
 
-    String ProvinceName;
+    private String ProvinceName;
 
-    String DistrictName;
+    private String DistrictName;
 
-    String WardName;
+    private String WardName;
 
-    String address;
+    private String address;
 
-    Timestamp dateCreated;
+    private Timestamp dateCreated;
 
-    boolean isAcctive;
+    private boolean isAcctive;
 
-    Collection<Roles> roles;
+    private Collection<Roles> roles;
 
-    String token;
+    private String token;
 
-    BigDecimal totalOrderPrice;
+    private String picture;
 
-    BigDecimal orderCount;
+    private BigDecimal totalOrderPrice;
 
+    private BigDecimal orderCount;
 }

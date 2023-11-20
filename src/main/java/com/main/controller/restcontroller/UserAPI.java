@@ -1,8 +1,8 @@
 package com.main.controller.restcontroller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.main.dto.RegisterDto;
 import com.main.dto.ProfileDto;
+import com.main.dto.RegisterDto;
 import com.main.dto.UsersDto;
 import com.main.entity.Users;
 import com.main.service.EmailService;
@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,13 +48,18 @@ public class UserAPI {
         return ResponseEntity.ok().body(users);
     }
 
+    @GetMapping("user/authentication")
+    public boolean authentication() {
+        Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
+        return users != null;
+    }
+
     @GetMapping("user/session-user")
     public ResponseEntity<String> sessionUser() {
         Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
         if (users != null) {
             UsersDto usersDto = new UsersDto();
             usersDto.setId(users.getId());
-            usersDto.setPasswords(users.getPasswords());
             usersDto.setEmail(users.getEmail());
             usersDto.setFullname(users.getFullname());
             usersDto.setGender(users.getGender());
@@ -66,6 +70,7 @@ public class UserAPI {
             usersDto.setDistrictName(users.getDistrictName());
             usersDto.setWardName(users.getWardName());
             usersDto.setAddress(users.getAddress());
+            usersDto.setToken(users.getToken());
 
             ObjectMapper objectMapper = new ObjectMapper();
             try {
@@ -123,7 +128,6 @@ public class UserAPI {
     @PutMapping("user/{userId}")
     public ResponseEntity<Users> updateAccount(@PathVariable int userId, @RequestBody ProfileDto profileDto) {
         Users users = userService.findById(userId);
-        System.out.println(users);
         users.setFullname(profileDto.getFullname());
         users.setGender(profileDto.getGender());
         users.setBirth(profileDto.getBirth());
