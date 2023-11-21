@@ -43,7 +43,7 @@
                                         <th scope="col">Số lượng</th>
                                         <th scope="col">Ngày tạo</th>
                                         <th scope="col">Ngày hết hạn</th>
-                                        <th scope="col">Điều kiện</th>
+                                        <th scope="col">Ghi chú</th>
                                         <th scope="col">Trạng thái</th>
                                         <th scope="col">Hành động</th>
                                     </tr>
@@ -54,8 +54,8 @@
                                         <td th:text="${discountz.id}"></td>
                                         <td th:text="${#numbers.formatDecimal(discountz.discountCost, 0, 'COMMA', 0, 'POINT')}"></td>
                                         <td th:text="${discountz.quantity}"></td>
-                                        <td th:text="${#temporals.format(discountz.startUse, 'dd-MM-yyyy')}"></td>
-                                        <td th:text="${#temporals.format(discountz.endUse, 'dd-MM-yyyy')}"></td>
+                                        <td class="text-center" th:text="${#temporals.format(discountz.startUse, 'dd-MM-yyyy')}"></td>
+                                        <td class="text-center" th:text="${#temporals.format(discountz.endUse, 'dd-MM-yyyy')}"></td>
                                         <td th:text="${discountz.discountDescription}"></td>
                                         <td th:if="${discountz.isActive == true}">
                                             <i class='bx bxs-circle' style='color:#3a9b54'></i> Còn hạn

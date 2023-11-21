@@ -57,7 +57,7 @@
                                 <div class="form-floating mb-3">
                                     <input type="text" id="discountDescription" class="form-control" name="discountDescription"
                                            th:value="${discountValue.discountDescription}">
-                                    <label for="discountValue">Điều kiện sử dụng</label>
+                                    <label for="discountValue">Ghi chú</label>
                                     <span class="text-danger invalid-form" th:if="${#fields.hasErrors('discountDescription')}"
                                           th:errors="*{discountDescription}"></span>
                                     <span class="text-danger" id="invalid-discount-description"></span>
@@ -81,13 +81,13 @@
                                     <span class="text-danger invalid-form" th:text="${errorDate}"></span>
                                     <span class="text-danger" id="invalid-expirationDate"></span>
                                 </div>
-                                <div class="form-floating mb-3">
-                                    <select class="form-select" th:field="*{isActive}" id="active">
-                                        <option value="1">Còn hạn</option>
-                                        <option value="0">Hết hạn</option>
-                                    </select>
-                                    <label for="active">Trạng thái</label>
-                                </div>
+<!--                                <div class="form-floating mb-3">-->
+<!--                                    <select class="form-select" th:field="*{isActive}" id="active">-->
+<!--                                        <option value="1">Còn hạn</option>-->
+<!--                                        <option value="0">Hết hạn</option>-->
+<!--                                    </select>-->
+<!--                                    <label for="active">Trạng thái</label>-->
+<!--                                </div>-->
 
                                 <div class="row d-flex flex-column flex-md-row mt-3">
                                     <div class="col-md-6">

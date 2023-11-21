@@ -16,4 +16,6 @@ public interface DiscountService {
     void save(Discounts discount);
 
     Discounts delete(String discount);
+
+    void updateDiscountOffStatus();
 }
