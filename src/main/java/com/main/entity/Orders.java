@@ -27,8 +27,8 @@ public class Orders {
     @Basic
     @Column(name = "user_id", nullable = true)
     private Integer userId;
-    @Basic
 
+    @Basic
     @Column(name = "payment_type", nullable = true)
     private Boolean paymentType;
 
@@ -56,6 +56,10 @@ public class Orders {
     private String toPhone;
 
     @Basic
+    @Column(name = "to_email", nullable = true, length = 100)
+    private String toEmail;
+
+    @Basic
     @Column(name = "to_province", nullable = true, length = 50)
     private String toProvince;
 
@@ -78,6 +82,14 @@ public class Orders {
     @Basic
     @Column(name = "date_created", nullable = true)
     private Timestamp dateCreated;
+
+    @Basic
+    @Column(name = "date_payment", nullable = true)
+    private Timestamp datePayment;
+
+    @Basic
+    @Column(name = "date_receive", nullable = true)
+    private Timestamp dateReceive;
 
     @OneToMany(mappedBy = "ordersByOrderId")
     @JsonManagedReference

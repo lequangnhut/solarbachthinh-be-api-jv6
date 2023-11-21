@@ -96,7 +96,7 @@
                             <th>Số điện thoại</th>
                             <th>Địa chỉ</th>
                             <th>Trạng thái đơn hàng</th>
-                            <th>Trạng thái thanh toán</th>
+                            <th>Hình thức thanh toán</th>
                             <th>Cụ thể</th>
                         </tr>
                         </thead>
@@ -134,7 +134,7 @@
                             <th>Số điện thoại</th>
                             <th>Địa chỉ</th>
                             <th>Trạng thái đơn hàng</th>
-                            <th>Trạng thái thanh toán</th>
+                            <th>Hình thức thanh toán</th>
                             <th>Cụ thể</th>
                         </tr>
                         </thead>
@@ -172,7 +172,7 @@
                             <th>Số điện thoại</th>
                             <th>Địa chỉ</th>
                             <th>Trạng thái đơn hàng</th>
-                            <th>Trạng thái thanh toán</th>
+                            <th>Hình thức thanh toán</th>
                             <th>Cụ thể</th>
                         </tr>
                         </thead>
@@ -216,27 +216,45 @@
             <div class="row">
                 <div class="col-6 col-lg-6">
                     <div class="modal-body w-100">
-                        <div class="mb-3">
+                        <div class="mb-3" ng-if="!order.dateReceive">
                             <label for="full_name" class="form-label">Tên khách hàng</label>
                             <input type="text" class="form-control" ng-value="order.toName" id="full_name" readonly>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3" ng-if="!order.datePayment">
                             <label for="phone_number" class="form-label">Số điện thoại</label>
                             <input type="text" class="form-control" ng-value="order.toPhone" id="phone_number"
                                    readonly>
                         </div>
 
                         <div class="mb-3">
-                            <label for="datePayment" class="form-label">Ngày đặt hàng</label>
-                            <input type="text" class="form-control" id="datePayment"
+                            <label for="dateCreate" class="form-label">Ngày đặt hàng</label>
+                            <input type="text" class="form-control" id="dateCreate"
                                    ng-value="order.dateCreated | vietnameseDateTime" readonly>
+                        </div>
+
+                        <div class="mb-3" ng-if="order.datePayment">
+                            <label for="datePayment" class="form-label">Ngày thanh toán</label>
+                            <input type="text" class="form-control" id="datePayment"
+                                   ng-value="order.datePayment | vietnameseDateTime" readonly>
+                        </div>
+
+                        <div class="mb-3" ng-if="order.dateReceive !== null  && order.orderStatus === 'Đã giao hàng'">
+                            <label for="dataReceive" class="form-label">Ngày giao hàng</label>
+                            <input type="text" class="form-control" id="dataReceive"
+                                   ng-value="order.dateReceive | vietnameseDateTime" readonly>
+                        </div>
+
+                        <div class="mb-3" ng-if="order.dateReceive !== null && order.orderStatus === 'Đã huỷ đơn'">
+                            <label for="dataCancel" class="form-label">Ngày huỷ đơn</label>
+                            <input type="text" class="form-control" id="dataCancel"
+                                   ng-value="order.dateReceive | vietnameseDateTime" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-lg-6">
                     <div class="modal-body w-100">
-                        <div class="mb-3">
+                        <div class="mb-3" ng-if="!order.datePayment">
                             <label for="madh" class="form-label">Mã đơn hàng</label>
                             <input type="text" class="form-control" ng-value="order.id" id="madh" readonly>
                         </div>
@@ -248,15 +266,22 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="statusPay" class="form-label">Trạng thái thanh toán</label>
+                            <label for="statusPay" class="form-label">Hình thức thanh toán</label>
                             <input type="text" class="form-control" id="statusPay"
                                    ng-value="paymentStatusDisplay = getStatusText()" readonly>
+                        </div>
+
+                        <div class="mb-3" ng-if="order.datePayment">
+                            <label for="payment_type" class="form-label">Hình thức thanh toán</label>
+                            <input type="text" class="form-control" id="payment_type"
+                                   ng-value="order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'"
+                                   readonly>
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="ms-3 mx-3 mb-4">
-                        <label for="address">Địa chỉ</label>
+                        <label for="address" class="form-label">Địa chỉ</label>
                         <textarea class="form-control" id="address" rows="2"
                                   ng-value="order.toAddress + ', ' + order.toWard + ', ' + order.toDistrict + ', ' + order.toProvince"
                                   readonly>
@@ -265,7 +290,7 @@
                 </div>
                 <div class="col-6">
                     <div class="ms-3 mx-3 mb-4">
-                        <label for="noted">Ghi chú</label>
+                        <label for="noted" class="form-label">Ghi chú</label>
                         <textarea class="form-control" id="noted" rows="2"
                                   ng-value="order.orderNote ? order.orderNote : 'Không có thông tin ghi chú'" readonly>
                         </textarea>
@@ -287,9 +312,9 @@
                         <tr ng-repeat="data in combinedData">
                             <td>{{$index + 1}}</td>
                             <td>{{data.product.productName}}</td>
-                            <td>{{formatPrice(data.orderItem.price)}} ₫</td>
+                            <td>{{formatPrice(data.product.price)}} ₫</td>
                             <td>{{data.orderItem.quantity}}</td>
-                            <td>{{formatPrice(data.orderItem.price * data.orderItem.quantity)}} ₫</td>
+                            <td>{{formatPrice(data.product.price * data.orderItem.quantity)}} ₫</td>
                         </tr>
                         </tbody>
                     </table>
@@ -302,7 +327,11 @@
                     <h6 class="d-flex justify-content-end mx-4">Phí vận chuyển:&ensp;
                         <span>{{formatPrice(shippingFee)}} ₫</span>
                     </h6>
-                    <h6 class="d-flex justify-content-end mx-4">Tổng thanh toán:&ensp;<span>{{formatPrice(totalAmount)}} ₫</span>
+                    <h6 class="d-flex justify-content-end mx-4">
+                        <strong>
+                            Tổng thanh toán:&ensp;
+                            <span>{{formatPrice(totalAmount)}} ₫</span>
+                        </strong>
                     </h6>
                 </div>
             </div>

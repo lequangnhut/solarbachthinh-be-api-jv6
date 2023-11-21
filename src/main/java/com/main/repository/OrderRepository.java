@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Orders, String> {
 
+    List<Orders> findAllByOrderByDateCreatedDesc();
+
     List<Orders> findByUserIdOrderByDateCreatedDesc(int userId);
 
     @Query("SELECT CalculateTotalOrderPrice(:userId)")

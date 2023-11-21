@@ -23,7 +23,7 @@ solar_app.controller('create_order_controller', function ($scope, $routeParams, 
 
             // Thêm trường vào đối tượng data
             data.orderId = $scope.orderInfo;
-            data.total = $scope.totalPrice / 100;
+            data.total = ($scope.totalPrice / 100) - data.shippingFee;
 
             // kiểm tra ma giảm giá
             let discountId = data.discountId;

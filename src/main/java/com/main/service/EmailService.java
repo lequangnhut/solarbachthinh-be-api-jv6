@@ -4,6 +4,7 @@ import com.main.dto.DiscountsDto;
 import com.main.dto.OrdersDto;
 import com.main.dto.PasswordsDto;
 import com.main.dto.RegisterDto;
+import com.main.entity.Orders;
 
 public interface EmailService {
 
@@ -22,4 +23,8 @@ public interface EmailService {
     void sendMailNotice();
 
     void queueEmailNotice(DiscountsDto discountsDto);
+
+    void sendMailConfirmOrder();
+
+    void queueEmailConfirmOrder(Orders orders);
 }

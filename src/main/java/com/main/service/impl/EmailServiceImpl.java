@@ -1,7 +1,11 @@
 package com.main.service.impl;
 
-import com.main.dto.*;
+import com.main.dto.DiscountsDto;
+import com.main.dto.OrdersDto;
+import com.main.dto.PasswordsDto;
+import com.main.dto.RegisterDto;
 import com.main.entity.OrderItems;
+import com.main.entity.Orders;
 import com.main.entity.Users;
 import com.main.service.*;
 import jakarta.mail.MessagingException;
@@ -27,6 +31,7 @@ public class EmailServiceImpl implements EmailService {
     Queue<OrdersDto> emailQueueOrder = new LinkedList<>();
     Queue<PasswordsDto> emailQueueForgot = new LinkedList<>();
     Queue<DiscountsDto> emailQueueNotice = new LinkedList<>();
+    Queue<Orders> emailQueueConfirmOder = new LinkedList<>();
 
     @Autowired
     JavaMailSender sender;
@@ -212,6 +217,41 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Override
+    public void queueEmailConfirmOrder(Orders orders) {
+        emailQueueConfirmOder.add(orders);
+    }
+
+    @Override
+    public void sendMailConfirmOrder() {
+        while (!emailQueueConfirmOder.isEmpty()) {
+            Orders orders = emailQueueConfirmOder.poll();
+
+            try {
+                MimeMessage message = sender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+
+                helper.setTo(orders.getToEmail());
+
+                Map<String, Object> variables = new HashMap<>();
+                variables.put("orderId", orders.getId());
+                variables.put("full_name", orders.getToName());
+                variables.put("toAddress", orders.getToAddress());
+                variables.put("toWard", orders.getToWard());
+                variables.put("toDistrict", orders.getToDistrict());
+                variables.put("toProvince", orders.getToProvince());
+
+                helper.setFrom(email);
+                helper.setText(thymeleafService.createContent("confirm-order", variables), true);
+                helper.setSubject("SOLAR BÁCH THỊNH - XÁC NHẬN ĐƠN HÀNG THÀNH CÔNG");
+
+                sender.send(message);
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     @Scheduled(fixedDelay = 5000)
     public void processRegister() {
         sendMailRegister();
@@ -230,5 +270,10 @@ public class EmailServiceImpl implements EmailService {
     @Scheduled(fixedDelay = 5000)
     public void processEmailFNotice() {
         sendMailNotice();
+    }
+
+    @Scheduled(fixedDelay = 5000)
+    public void processConfirmOrder() {
+        sendMailConfirmOrder();
     }
 }
