@@ -76,10 +76,17 @@
                     <div class="hot_line mb-2">
                         Hotline: <strong><a href="tel:1800 6567">1800 6567</a></strong>
                     </div>
-                    <div class="price-pd text-secondary">
-                        <del> Giảm giá: <strong>{{formatPrice(product.price)}} đ</strong></del>
+
+                    <div ng-if="sale_off">
+                        <div class="price-pd text-secondary fs-6">
+                            <del>Giá gốc: <strong>{{formatPrice(product.price)}} đ</strong></del>
+                        </div>
+                        <div class="price-pd text-danger">
+                            Giá giảm: <strong>{{formatPrice(sale_off.saleValue)}} đ</strong>
+                        </div>
                     </div>
-                    <div class="price-pd text-danger">
+
+                    <div class="price-pd text-danger" ng-if="!sale_off">
                         Giá bán: <strong>{{formatPrice(product.price)}} đ</strong>
                     </div>
 

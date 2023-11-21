@@ -1,4 +1,4 @@
-solar_app.controller('product_details', function ($scope, $http, $timeout, $location, $sce, $rootScope, UserService, ProductService, CategoryService, CartService) {
+solar_app.controller('product_details', function ($scope, $http, $timeout, $location, $sce, $rootScope, UserService, ProductService, CategoryService, SaleOffService, CartService) {
 
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
@@ -17,36 +17,56 @@ solar_app.controller('product_details', function ($scope, $http, $timeout, $loca
 
     // lấy ra session user đang đăng nhập
     UserService.findUserBySession().then(function successCallback(response) {
-        $scope.session_user = response.data;
+        if (response.data) {
+            $scope.session_user = response.data;
+        }
     }, function errorCallback(response) {
         console.log(response.data);
     });
 
     // lấy ra danh sách danh mục
-    CategoryService.findAllCategory()
-        .then(function successCallback(response) {
-            $scope.categories = response.data;
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
+    CategoryService.findAllCategory().then(function successCallback(response) {
+        $scope.categories = response.data;
+        $scope.calculatorSaleOffProductPrice();
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
 
     // lấy ra product bằng mã
-    ProductService.findProductByProductId(productId)
-        .then(function successCallback(response) {
-            $scope.product = response.data;
-            $scope.trustedHtml = $sce.trustAsHtml($scope.product.templateDescription);
-        }, function errorCallback(response) {
-            console.log(response.data);
-        });
+    ProductService.findProductByProductId(productId).then(function successCallback(response) {
+        $scope.product = response.data;
+        $scope.trustedHtml = $sce.trustAsHtml($scope.product.templateDescription);
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
 
     // lấy ra product nổi bật
-    ProductService.findProductByIdOne()
-        .then(function successCallback(response) {
-            $scope.products = response.data;
-            $scope.max_quantity = $scope.product.quantity;
-        }, function errorCallback(response) {
-            console.log(response.data);
+    ProductService.findProductByIdOne().then(function successCallback(response) {
+        $scope.products = response.data;
+        $scope.max_quantity = $scope.product.quantity;
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
+
+    // Hàm kiểm tra xem giảm giá còn hiệu lực hay không
+    $scope.isSaleOffValid = function (saleOff) {
+        let currentDate = new Date();
+        let saleStartDate = new Date(saleOff.startUse);
+        let saleEndDate = new Date(saleOff.endUse);
+
+        return currentDate >= saleStartDate && currentDate <= saleEndDate;
+    };
+
+    // lấy ra giá giảm sale chớp nhoáng
+    $scope.calculatorSaleOffProductPrice = function () {
+        SaleOffService.findByProductId(productId).then(function successCallback(response) {
+            let saleOff = response.data;
+
+            if (saleOff != null && saleOff.isActive && $scope.isSaleOffValid(saleOff)) {
+                $scope.sale_off = saleOff;
+            }
         });
+    }
 
     // trừ số lượng
     $scope.decrease_quantity = function () {
@@ -87,14 +107,14 @@ solar_app.controller('product_details', function ($scope, $http, $timeout, $loca
 
     // lỗi tài nguyên tĩnh
     $timeout(function () {
-        var thumbnailImages = document.querySelectorAll('.col-lg-3 img');
+        const thumbnailImages = document.querySelectorAll('.col-lg-3 img');
 
         thumbnailImages.forEach(function (thumbnail) {
             thumbnail.addEventListener('click', function () {
-                var imagePath = this.src;
+                const imagePath = this.src;
 
-                var overlay = document.getElementById('overlay');
-                var overlayImage = document.getElementById('overlay-image');
+                const overlay = document.getElementById('overlay');
+                const overlayImage = document.getElementById('overlay-image');
 
                 overlayImage.src = imagePath;
 
@@ -103,7 +123,7 @@ solar_app.controller('product_details', function ($scope, $http, $timeout, $loca
             });
         });
 
-        var overlay = document.getElementById('overlay');
+        const overlay = document.getElementById('overlay');
         overlay.addEventListener('click', function () {
             this.style.display = 'none';
         });

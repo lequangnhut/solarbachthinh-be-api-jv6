@@ -35,6 +35,9 @@ public class OrderAPI {
     ProductService productService;
 
     @Autowired
+    SaleOffService saleOffService;
+
+    @Autowired
     EmailService emailService;
 
     @Autowired
@@ -65,8 +68,6 @@ public class OrderAPI {
         String discountId = ordersDto.getDiscountId();
 
         int paymentStatus = ordersDto.getPaymentStatus();
-
-        BigDecimal price = BigDecimal.valueOf(ordersDto.getTotal());
 
         boolean paymentType = "COD".equals(ordersDto.getPaymentMethod());
 
@@ -104,21 +105,31 @@ public class OrderAPI {
 
         // tạo ra order item sau khi lưu đơn hàng
         Object[] cartsList = ordersDto.getProductCartDto().getCartsList();
-        createOrderItem(orderId, cartsList, price);
+        createOrderItem(orderId, cartsList);
 
         // xoá giỏ hàng
         deleteCart(cartsList);
     }
 
     // // tạo ra order item sau khi lưu đơn hàng
-    private void createOrderItem(String orderId, Object[] cartsList, BigDecimal price) {
+    private void createOrderItem(String orderId, Object[] cartsList) {
         for (Object cart : cartsList) {
             if (cart instanceof LinkedHashMap) {
-                Carts carts = EntityDtoUtils.convertToEntity(cart, Carts.class);
                 OrderItems orderItems = new OrderItems();
 
+                Carts carts = EntityDtoUtils.convertToEntity(cart, Carts.class);
+                Products products = productService.findProductByProductId(carts.getProductId());
+
+                // kiểm tra xem có giảm giá không
+                SaleOff saleOff = saleOffService.findByProductId(products.getId());
+
+                if (saleOff != null && saleOff.getIsActive()) {
+                    orderItems.setPrice(saleOff.getSaleValue());
+                } else {
+                    orderItems.setPrice(products.getPrice());
+                }
+
                 orderItems.setOrderId(orderId);
-                orderItems.setPrice(price);
                 orderItems.setProductId(carts.getProductId());
                 orderItems.setQuantity(carts.getQuantity());
                 orderItemService.save(orderItems);

@@ -287,9 +287,9 @@
                         <tr ng-repeat="data in combinedData">
                             <td>{{$index + 1}}</td>
                             <td>{{data.product.productName}}</td>
-                            <td>{{formatPrice(data.product.price)}} ₫</td>
+                            <td>{{formatPrice(data.orderItem.price)}} ₫</td>
                             <td>{{data.orderItem.quantity}}</td>
-                            <td>{{formatPrice(data.product.price * data.orderItem.quantity)}} ₫</td>
+                            <td>{{formatPrice(data.orderItem.price * data.orderItem.quantity)}} ₫</td>
                         </tr>
                         </tbody>
                     </table>

@@ -43,6 +43,9 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     DiscountService discountService;
 
+    @Autowired
+    SaleOffService saleOffService;
+
     @Value("${spring.mail.username}")
     private String email;
 
@@ -100,9 +103,10 @@ public class EmailServiceImpl implements EmailService {
             List<OrderItems> orderItems = orderItemService.findAllOrderItemByOrderId(ordersDto.getOrderId());
 
             for (OrderItems items : orderItems) {
-                BigDecimal price = items.getProductsByProductId().getPrice();
+                BigDecimal price = items.getPrice();
+                int quantity = items.getQuantity();
 
-                priceProduct = price.intValue();
+                priceProduct = price.intValue() * quantity;
 
                 if (items.getOrdersByOrderId().getDiscountsByDiscountId() != null) {
                     discountCost = items.getOrdersByOrderId().getDiscountsByDiscountId().getDiscountCost();
@@ -124,10 +128,10 @@ public class EmailServiceImpl implements EmailService {
                 variables.put("priceProduct", priceProduct);
                 variables.put("discountCost", discountCost);
 
-                SimpleDateFormat sdfdate = new SimpleDateFormat("dd-MM-yyyy");
-                SimpleDateFormat sdftime = new SimpleDateFormat("HH:mm:ss");
-                variables.put("date", sdfdate.format(new Date()));
-                variables.put("time", sdftime.format(new Date()));
+                SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+                variables.put("date", sdfDate.format(new Date()));
+                variables.put("time", sdfTime.format(new Date()));
 
                 helper.setFrom(email);
                 helper.setText(thymeleafService.createContent("mail-payment", variables), true);
