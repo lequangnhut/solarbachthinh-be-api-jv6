@@ -38,15 +38,14 @@
             <div th:if="${session.user != null}">
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link fw-bold dropdown-toggle" data-bs-toggle="dropdown">
-                        Chào !
-                        <span th:text="${session.user.fullname.substring(session.user.fullname.lastIndexOf(' ')+1)}"></span>
+                        <span th:text="#{menu.hello} + ' ' + ${session.user.fullname.substring(session.user.fullname.lastIndexOf(' ')+1)}"></span>
                         <span class="wave">👋</span>
                     </a>
                     <div class="dropdown-menu bg-light m-0 rounded-0 bg-white">
                         <a href="#!/thong-tin" class="dropdown-item" th:text="#{menu.profile}" scroll-to-top>Thông tin cá nhân</a>
                         <a href="#!/doi-mat-khau" class="dropdown-item" th:text="#{menu.changepass}" scroll-to-top>Đổi mật khẩu</a>
                         <a href="#!/lich-su-mua-hang" class="dropdown-item" th:text="#{menu.history}" scroll-to-top>Lịch sử mua hàng</a>
-                        <a th:href="@{/dang-xuat}" class="dropdown-item" th:text="#{menu.signupLow}">Đăng xuất</a>
+                        <a th:href="@{/dang-xuat}" class="dropdown-item" th:text="#{menu.signout}">Đăng xuất</a>
                     </div>
                 </div>
             </div>
