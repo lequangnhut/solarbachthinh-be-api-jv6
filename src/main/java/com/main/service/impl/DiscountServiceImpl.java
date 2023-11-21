@@ -1,6 +1,7 @@
 package com.main.service.impl;
 
 import com.main.entity.Discounts;
+import com.main.entity.SaleOff;
 import com.main.repository.DiscountRepository;
 import com.main.service.DiscountService;
 import org.modelmapper.ModelMapper;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -45,5 +47,16 @@ public class DiscountServiceImpl implements DiscountService {
         Discounts discounts = findById(discount);
         discounts.setIsActive(false);
         return repo.save(discounts);
+    }
+
+    @Override
+    public void updateDiscountOffStatus() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        List<Discounts> discountList = repo.findByEndUseBeforeAndIsActiveTrue(currentDateTime);
+
+        for (Discounts discounts : discountList){
+            discounts.setIsActive(false);
+            repo.save(discounts);
+        }
     }
 }

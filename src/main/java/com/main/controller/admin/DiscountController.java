@@ -2,6 +2,7 @@ package com.main.controller.admin;
 
 import com.main.dto.DiscountsDto;
 import com.main.entity.Discounts;
+import com.main.service.EmailService;
 import com.main.service.UserDiscountService;
 import com.main.service.DiscountService;
 import com.main.service.HistoryService;
@@ -17,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("quan-tri/giam-gia")
@@ -36,6 +39,11 @@ public class DiscountController {
 
     @Autowired
     HttpSession session;
+
+    @Autowired
+    EmailService emailService;
+
+    LocalDateTime currentDateTime = LocalDateTime.now();
 
     @GetMapping
     public String showDiscount(Model model) {
@@ -76,6 +84,12 @@ public class DiscountController {
         Discounts save = EntityDtoUtils.convertToEntity(discountCodesDTO, Discounts.class);
         discountService.save(save);
 
+        //nếu ngày hết hạn nhỏ hơn ngày hiện tại thì gửi thư, hông thì thôi
+        int comp = currentDateTime.compareTo(discountCodesDTO.getEndUse());
+        if (comp < 0) {
+            emailService.queueEmailNotice(discountCodesDTO);
+        }
+
         SessionUtils.setAttribute("toastSuccess", "Thêm mã giảm giá thành công!");
         return "redirect:/quan-tri/giam-gia";
     }
@@ -102,6 +116,13 @@ public class DiscountController {
             } else {
                 discountCodesDTO.setId(id);
                 if (discountCodesDTO.getId() != null) {
+                    int com = currentDateTime.compareTo(discountCodesDTO.getEndUse());
+                    if (com < 0) {
+                        discountCodesDTO.setIsActive(true);
+                    } else {
+                        discountCodesDTO.setIsActive(false);
+                    }
+
                     discountCodesDTO.setDiscountCost(ReplaceUtils.replacePrice(price));
                     Discounts discount = EntityDtoUtils.convertToEntity(discountCodesDTO, Discounts.class);
                     discountService.save(discount);
@@ -119,7 +140,7 @@ public class DiscountController {
     @GetMapping("xoa-ma/{id}")
     public String deleteDiscout(@PathVariable String id) {
         Discounts discounts = discountService.findById(id);
-        discounts.setIsActive(Boolean.FALSE);
+        discounts.setQuantity(0);
         discountService.save(discounts);
 
         session.setAttribute("toastSuccess", "Xoá mã giảm giá thành công !");

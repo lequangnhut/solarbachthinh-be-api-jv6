@@ -49,11 +49,16 @@ document.addEventListener('DOMContentLoaded', function () {
     discountPrice.addEventListener('blur', function () {
         const value = discountPrice.value.trim();
         const formattedValue = value.replace(/[^\d]/g, '');
+        const numericValue = parseInt(formattedValue, 10);
 
         if (isNaN(formattedValue) || formattedValue === '') {
             discountPrice.classList.remove('is-valid');
             discountPrice.classList.add('is-invalid');
             invalidDiscountPrice.textContent = 'Giá giảm không hợp lệ. Phải là số lớn hơn 0.';
+        }else if(numericValue > 2000000){
+            discountPrice.classList.remove('is-valid');
+            discountPrice.classList.add('is-invalid');
+            invalidDiscountPrice.textContent = 'Giá giảm không hợp lệ. Không được quá 2.000.000 đồng.';
         } else {
             discountPrice.classList.remove('is-invalid');
             discountPrice.classList.add('is-valid');
@@ -114,13 +119,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     expirationDate.addEventListener('blur', function () {
+        const currentDate = new Date();
         const value = expirationDate.value.trim();
 
         if (value === '') {
             expirationDate.classList.remove('is-valid');
             expirationDate.classList.add('is-invalid');
             invalidExpirationDate.textContent = 'Vui lòng nhập ngày hết hạn';
-        } else {
+        }else {
             expirationDate.classList.remove('is-invalid');
             expirationDate.classList.add('is-valid');
             invalidExpirationDate.textContent = '';

@@ -1,8 +1,6 @@
 package com.main.service.impl;
 
-import com.main.dto.OrdersDto;
-import com.main.dto.PasswordsDto;
-import com.main.dto.RegisterDto;
+import com.main.dto.*;
 import com.main.entity.OrderItems;
 import com.main.entity.Users;
 import com.main.service.*;
@@ -27,8 +25,8 @@ public class EmailServiceImpl implements EmailService {
 
     Queue<RegisterDto> emailQueueRegister = new LinkedList<>();
     Queue<OrdersDto> emailQueueOrder = new LinkedList<>();
-
     Queue<PasswordsDto> emailQueueForgot = new LinkedList<>();
+    Queue<DiscountsDto> emailQueueNotice = new LinkedList<>();
 
     @Autowired
     JavaMailSender sender;
@@ -172,6 +170,44 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Override
+    public void queueEmailNotice(DiscountsDto discountsDto) {
+        emailQueueNotice.add(discountsDto);
+    }
+
+    public void sendMailNotice() {
+        while (!emailQueueNotice.isEmpty()) {
+            DiscountsDto discountsDto = emailQueueNotice.poll();
+            // Lấy danh sách tất cả khách hàng từ dữ liệu (giả sử từ một service nào đó)
+            List<Users> customers = userService.findByActiveIsTrue();
+
+            // Lặp qua danh sách khách hàng và gửi mail cho mỗi khách hàng
+            for (Users customer : customers) {
+                try {
+                    MimeMessage message = sender.createMimeMessage();
+                    MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+
+                    helper.setTo(customer.getEmail());
+
+                    Map<String, Object> variables = new HashMap<>();
+                    variables.put("full_name", customer.getFullname());
+                    variables.put("discountCode", discountsDto.getId()); // Hàm sinh mã giảm giá mới
+                    variables.put("cost", discountsDto.getDiscountCost());
+                    variables.put("startUse", discountsDto.getStartUse());
+                    variables.put("endUse", discountsDto.getEndUse());
+
+                    helper.setFrom(email);
+                    helper.setText(thymeleafService.createContent("send-discount", variables), true);
+                    helper.setSubject("SOLAR BÁCH THỊNH - MÃ GIẢM GIÁ MỚI");
+
+                    sender.send(message);
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
     @Scheduled(fixedDelay = 5000)
     public void processRegister() {
         sendMailRegister();
@@ -185,5 +221,10 @@ public class EmailServiceImpl implements EmailService {
     @Scheduled(fixedDelay = 5000)
     public void processEmailForgot() {
         sendMailForgot();
+    }
+
+    @Scheduled(fixedDelay = 5000)
+    public void processEmailFNotice() {
+        sendMailNotice();
     }
 }
