@@ -38,8 +38,7 @@
             <div th:if="${session.user != null}">
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link fw-bold dropdown-toggle" data-bs-toggle="dropdown">
-                        Chào !
-                        <span th:text="${session.user.fullname.substring(session.user.fullname.lastIndexOf(' ')+1)}"></span>
+                        <span th:text="#{menu.hello} + ' ' + ${session.user.fullname.substring(session.user.fullname.lastIndexOf(' ')+1)}"></span>
                         <span class="wave">👋</span>
                     </a>
                     <div class="dropdown-menu bg-light m-0 rounded-0 bg-white">

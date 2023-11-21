@@ -174,7 +174,7 @@
                                                     th:text="${#numbers.formatDecimal(order.shippingFee, 0, 'COMMA', 0, 'POINT')}"></strong>
                                                 <br>
                                                 Tổng tiền: <strong
-                                                    th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}"></strong>
+                                                    th:text="${#numbers.formatDecimal((order.total + order.shippingFee) - discountCost, 0, 'COMMA', 0, 'POINT')}"></strong>
                                             </td>
                                         </tr>
                                         </tbody>
