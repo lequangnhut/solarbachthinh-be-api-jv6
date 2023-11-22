@@ -4,6 +4,7 @@ let API_findAllOrder = '/quan-tri/api/findAllOrder';
 let API_findByOrderId = '/quan-tri/api/findByOrderId'
 let API_findOrderItemByOrderId = '/quan-tri/api/findOrderItemByOrderId';
 
+let API_CancelOrderByCustomer = '/quan-tri/api/cancelOrderByCustomer'
 let API_CancelOrder = '/quan-tri/api/cancelOrder'
 let API_ConfirmOrder = '/quan-tri/api/confirmOrder'
 let API_DeliveredOrder = '/quan-tri/api/deliveredOrder'
@@ -176,6 +177,31 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http) {
                 $http({
                     method: 'GET',
                     url: API_CancelOrder + '/' + orderId
+                }).then(function successCallback() {
+                    centerAlert('Thành công !', 'Đơn hàng ' + orderId + ' đã được huỷ thành công !', 'success');
+                    setTimeout(function () {
+                        window.location.replace('/quan-tri/xac-nhan-don-hang');
+                    }, 1500);
+                });
+            }
+        });
+    };
+
+    $scope.cancelOrderAdminByCustomer = function (orderId) {
+        Swal.fire({
+            title: 'Cảnh báo ?',
+            text: "Bạn có chắc chắn muốn huỷ đơn hàng " + orderId + " không ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý !',
+            cancelButtonText: 'Huỷ !'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $http({
+                    method: 'GET',
+                    url: API_CancelOrderByCustomer + '/' + orderId
                 }).then(function successCallback() {
                     centerAlert('Thành công !', 'Đơn hàng ' + orderId + ' đã được huỷ thành công !', 'success');
                     setTimeout(function () {

@@ -4,6 +4,7 @@ import com.main.dto.OrdersDto;
 import com.main.dto.UserPaymentDto;
 import com.main.entity.*;
 import com.main.service.*;
+import com.main.utils.DateUtils;
 import com.main.utils.EntityDtoUtils;
 import com.main.utils.SessionAttr;
 import jakarta.servlet.http.HttpSession;
@@ -98,6 +99,7 @@ public class OrderAPI {
 
         orders.setOrderNote(ordersDto.getNoted());
         orders.setDateCreated(new Timestamp(System.currentTimeMillis()));
+        orders.setDateExpected(ordersDto.getDateExpected());
 
         if (!paymentType) {
             orders.setDatePayment(new Timestamp(System.currentTimeMillis()));

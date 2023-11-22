@@ -91,6 +91,10 @@ public class Orders {
     @Column(name = "date_receive", nullable = true)
     private Timestamp dateReceive;
 
+    @Basic
+    @Column(name = "date_expected", nullable = true, length = 50)
+    private String dateExpected;
+
     @OneToMany(mappedBy = "ordersByOrderId")
     @JsonManagedReference
     private Collection<OrderItems> orderItemsById;

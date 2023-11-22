@@ -51,6 +51,8 @@ public class ConfirmOrderController {
         order.setOrderStatus("Đã giao hàng");
         order.setPaymentStatus(1);
         order.setDateReceive(new Timestamp(System.currentTimeMillis()));
+
+        emailService.queueEmailReceiveOrder(order);
         return ResponseEntity.ok().body(orderService.save(order));
     }
 
@@ -58,24 +60,36 @@ public class ConfirmOrderController {
     private ResponseEntity<Orders> cancelOrder(@PathVariable String orderId) {
         Orders order = orderService.findByOrderId(orderId);
         order.setOrderStatus("Đã huỷ đơn");
-        order.setOrderNote("Huỷ bởi người bán. Nếu có thắc mắc xin vui lòng liên hệ +84 918.619.651");
+        order.setOrderNote("Huỷ đơn bởi người bán. Nếu có thắc mắc xin vui lòng liên hệ +84 918.619.651");
+        order.setPaymentStatus(2);
+        order.setDateReceive(new Timestamp(System.currentTimeMillis()));
+
+        emailService.queueEmailCancelOrder(order);
+        return ResponseEntity.ok().body(orderService.save(order));
+    }
+
+    @GetMapping("api/cancelOrderByCustomer/{orderId}")
+    private ResponseEntity<Orders> cancelOrderByCustomer(@PathVariable String orderId) {
+        Orders order = orderService.findByOrderId(orderId);
+        order.setOrderStatus("Đã huỷ đơn");
+        order.setOrderNote("Huỷ đơn bởi người mua hàng. Không liệc lạc được với người nhận.");
         order.setPaymentStatus(2);
         order.setDateReceive(new Timestamp(System.currentTimeMillis()));
         return ResponseEntity.ok().body(orderService.save(order));
     }
 
     @GetMapping("api/findAllOrder")
-    public ResponseEntity<List<Orders>> findAllOrder() {
+    private ResponseEntity<List<Orders>> findAllOrder() {
         return ResponseEntity.ok().body(orderService.findAll());
     }
 
     @GetMapping("api/findByOrderId/{orderId}")
-    public ResponseEntity<Orders> findByOrderId(@PathVariable String orderId) {
+    private ResponseEntity<Orders> findByOrderId(@PathVariable String orderId) {
         return ResponseEntity.ok().body(orderService.findByOrderId(orderId));
     }
 
     @GetMapping("api/findOrderItemByOrderId/{orderId}")
-    public ResponseEntity<List<Object[]>> findOrderItemByOrderId(@PathVariable String orderId) {
+    private ResponseEntity<List<Object[]>> findOrderItemByOrderId(@PathVariable String orderId) {
         return ResponseEntity.ok().body(orderItemService.findByOrderId(orderId));
     }
 }
