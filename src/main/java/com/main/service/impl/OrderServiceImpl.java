@@ -22,7 +22,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Orders> findAll() {
-        return orderRepository.findAll();
+        return orderRepository.findAllByOrderByDateCreatedDesc();
     }
 
     @Override

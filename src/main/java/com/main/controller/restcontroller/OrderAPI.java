@@ -58,6 +58,7 @@ public class OrderAPI {
     private void cancelOrder(@PathVariable String orderId) {
         Orders order = orderService.findByOrderId(orderId);
         order.setOrderStatus("Đã huỷ đơn");
+        order.setOrderNote("Huỷ bởi người mua.");
         order.setPaymentStatus(2);
         orderService.save(order);
     }
@@ -88,6 +89,7 @@ public class OrderAPI {
         if (userPayment != null) {
             orders.setToName(userPayment.getFullname());
             orders.setToPhone(userPayment.getPhoneNumber());
+            orders.setToEmail(ordersDto.getEmail());
             orders.setToProvince(userPayment.getProvinceName());
             orders.setToDistrict(userPayment.getDistrictName());
             orders.setToWard(userPayment.getWardName());
@@ -96,6 +98,10 @@ public class OrderAPI {
 
         orders.setOrderNote(ordersDto.getNoted());
         orders.setDateCreated(new Timestamp(System.currentTimeMillis()));
+
+        if (!paymentType) {
+            orders.setDatePayment(new Timestamp(System.currentTimeMillis()));
+        }
 
         // lưu đơn hàng vào db
         orderService.save(orders);
