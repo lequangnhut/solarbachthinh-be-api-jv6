@@ -62,6 +62,9 @@
                                         <p>Công suất:
                                             <span>{{cart[1].powers}}</span>
                                         </p>
+                                        <p>Kho:
+                                            <span>{{cart[1].quantity}}</span>
+                                        </p>
                                     </a>
 
                                     <a href="javascript:void(0)" role="button"
@@ -83,8 +86,7 @@
                                     <!-- Quantity -->
                                     <div class="d-flex mb-4" style="max-width: 300px">
                                         <div class="mb-3">
-                                            <label for="form" class="form-label">Số lượng | Kho:
-                                                {{cart[1].quantity}}</label>
+                                            <label for="form" class="form-label">Số lượng</label>
                                             <div class="button-quantity d-flex align-items-center">
                                                 <button class="decrease-quantity btn btn-primary d-flex justify-content-center align-items-center"
                                                         ng-click="decrease_quantity($index, cart[0])">
@@ -101,7 +103,7 @@
                                                        ng-click="checkQuantity(cart[0].quantity, cart[0])">
 
                                                 <button class="increase-quantity btn btn-primary d-flex justify-content-center align-items-center"
-                                                        ng-click="increase_quantity(cart[0])">
+                                                        ng-click="increase_quantity(cart[0], $index)">
                                                     <i class="fas fa-plus"></i>
                                                 </button>
                                             </div>
@@ -158,8 +160,8 @@
                                         <span id="subtotal">{{formatPrice(subtotal)}} ₫</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                                        Giảm giá:
-                                        <span>0 đ</span>
+                                        Thuế (VAT):
+                                        <span>10%</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                                         Phí vận chuyển:

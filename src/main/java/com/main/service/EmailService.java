@@ -35,4 +35,8 @@ public interface EmailService {
     void sendMailCancelOrder();
 
     void queueEmailCancelOrder(Orders orders);
+
+    void sendMailCancelOrderByCustomer();
+
+    void queueEmailCancelOrderByCustomer(Orders orders);
 }

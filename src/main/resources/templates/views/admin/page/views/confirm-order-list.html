@@ -259,7 +259,13 @@
                             </p>
                             <p class="form-control-plaintext">
                                 <strong>Trạng thái thanh toán:</strong>
-                                <span class="float-end">{{order.paymentStatus ? 'Đã thanh toán' : 'Chưa thanh toán'}}</span>
+                                <span class="float-end">
+                                {{
+                                    order.paymentStatus === 0 ? 'Đã thanh toán' :
+                                            order.paymentStatus === 1 ? 'Chưa thanh toán' :
+                                                    order.paymentStatus === 2 ? 'Thanh toán thất bại' : 'Trạng thái không xác định'
+                                    }}
+                                </span>
                             </p>
                             <p class="form-control-plaintext">
                                 <strong>Hình thức thanh toán:</strong>
@@ -274,14 +280,14 @@
                                 <span ng-if="order.datePayment" class="float-end">
                                     {{ order.datePayment | vietnameseDateTimeAdmin }}
                                 </span>
-                                <span ng-if="!order.datePayment" class="float-end">Chưa xác định thời gian</span>
+                                <span ng-if="!order.datePayment" class="float-end">Không xác định thời gian</span>
                             </p>
                             <p class="form-control-plaintext" ng-if="order.dateReceive === null">
                                 <strong>Dự kiến giao hàng:</strong>
                                 <span class="float-end">{{order.dateExpected}}</span>
                             </p>
                             <p class="form-control-plaintext"
-                               ng-if="order.dateReceive !== null && !order.orderStatus === 'Đã huỷ đơn'">
+                               ng-if="order.dateReceive !== null && order.orderStatus === 'Đã giao hàng'">
                                 <strong>Thời gian giao hàng:</strong>
                                 <span class="float-end">{{order.dateReceive | vietnameseDateTimeAdmin}}</span>
                             </p>

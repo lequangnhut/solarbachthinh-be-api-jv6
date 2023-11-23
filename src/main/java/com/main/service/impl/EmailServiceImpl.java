@@ -34,6 +34,7 @@ public class EmailServiceImpl implements EmailService {
     Queue<Orders> emailQueueConfirmOder = new LinkedList<>();
     Queue<Orders> emailQueueReceiveOder = new LinkedList<>();
     Queue<Orders> emailQueueCancelOder = new LinkedList<>();
+    Queue<Orders> emailQueueCancelOderCustomer = new LinkedList<>();
 
     @Autowired
     JavaMailSender sender;
@@ -362,6 +363,59 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Override
+    public void queueEmailCancelOrderByCustomer(Orders orders) {
+        emailQueueCancelOderCustomer.add(orders);
+    }
+
+    @Override
+    public void sendMailCancelOrderByCustomer() {
+        while (!emailQueueCancelOderCustomer.isEmpty()) {
+            int totalPrice = 0;
+            BigDecimal discountCost = BigDecimal.valueOf(0);
+
+            Orders orders = emailQueueCancelOderCustomer.poll();
+
+            List<OrderItems> orderItems = orderItemService.findAllOrderItemByOrderId(orders.getId());
+
+            for (OrderItems items : orderItems) {
+                BigDecimal price = items.getPrice();
+                int quantity = items.getQuantity();
+
+                int priceProduct = price.intValue() * quantity;
+
+                totalPrice += priceProduct;
+
+                if (items.getOrdersByOrderId().getDiscountsByDiscountId() != null) {
+                    discountCost = items.getOrdersByOrderId().getDiscountsByDiscountId().getDiscountCost();
+                } else {
+                    discountCost = BigDecimal.ZERO;
+                }
+            }
+
+            try {
+                MimeMessage message = sender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+
+                helper.setTo(orders.getToEmail());
+
+                Map<String, Object> variables = new HashMap<>();
+                variables.put("order", orders);
+                variables.put("full_name", orders.getToName());
+                variables.put("orderItem", orderItems);
+                variables.put("discountCost", discountCost);
+                variables.put("totalPrice", totalPrice);
+
+                helper.setFrom(email);
+                helper.setText(thymeleafService.createContent("mail-cancel-by-customer", variables), true);
+                helper.setSubject("SOLAR BÁCH THỊNH - ĐƠN HÀNG " + orders.getId() + " ĐÃ ĐƯỢC HUỶ THÀNH CÔNG. Lí do " + orders.getOrderNote());
+                sender.send(message);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     @Scheduled(fixedDelay = 5000)
     public void processRegister() {
         sendMailRegister();
@@ -395,5 +449,10 @@ public class EmailServiceImpl implements EmailService {
     @Scheduled(fixedDelay = 5000)
     public void processCancelOrder() {
         sendMailCancelOrder();
+    }
+
+    @Scheduled(fixedDelay = 5000)
+    public void processCancelOrderByCustomer() {
+        sendMailCancelOrderByCustomer();
     }
 }

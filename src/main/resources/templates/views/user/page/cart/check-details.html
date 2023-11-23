@@ -42,7 +42,14 @@
                                 <label for="email">Địa chỉ email (Nhận hoá đơn)</label>
                             </div>
 
-                            <div class="form-floating mb-3">
+                            <a href="javascript:void(0)"
+                               data-bs-toggle="modal"
+                               data-bs-target="#model-address"
+                            >
+                                (+) Địa chỉ đã được lưu
+                            </a>
+
+                            <div class="form-floating mb-3 mt-3">
                                 <input type="text"
                                        id="full_name"
                                        class="form-control"
@@ -65,7 +72,7 @@
                                 <label for="phone">Số điện thoại</label>
                             </div>
 
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-3 mt-3">
                                 <select class="form-select"
                                         id="city"
                                         ng-model="user.provinceName"
@@ -352,3 +359,56 @@
     </section>
 </div>
 <!-- Service End -->
+
+<div class="modal fade" id="model-address" tabindex="-1" aria-labelledby="model-address-label"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-0">
+            <div class="modal-header">
+                <h5 class="modal-title fw-normal" id="model-address-label">Địa chỉ của tôi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="addressChk" id="addressChk1">
+                    <label class="form-check-label row" for="addressChk1">
+                        <div class="col-9">
+                            Nguyễn Thuỵ | (+84) 942060912
+                            <br>
+                            Khu dân cư kinh f, Xã Định Thành, Huyện Thoại Sơn, Tỉnh An Giang
+                        </div>
+                        <div class="col-3 d-flex justify-content-end">
+                            <a href="">Cập nhật</a>
+                        </div>
+                    </label>
+                    <label class="mt-1 ps-1 px-1 text-danger fw-normal"
+                           style="font-size: 14px; border: 1px solid #be0202">
+                        Mặc định
+                    </label>
+                </div>
+
+                <hr class="my-4"/>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="addressChk" id="addressChk2">
+                    <label class="form-check-label row" for="addressChk2">
+                        <div class="col-9">
+                            Nguyễn Thuỵ | (+84) 942060912
+                            <br>
+                            Khu dân cư kinh f, Xã Định Thành, Huyện Thoại Sơn, Tỉnh An Giang
+                        </div>
+                        <div class="col-3 d-flex justify-content-end">
+                            <a href="">Cập nhật</a>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary rounded-0 fw-normal" data-bs-dismiss="modal">
+                    Huỷ
+                </button>
+                <button type="button" class="btn btn-primary rounded-0 fw-normal">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>

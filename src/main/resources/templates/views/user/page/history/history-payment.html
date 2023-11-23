@@ -230,7 +230,13 @@
                             </p>
                             <p class="form-control-plaintext">
                                 <strong>Trạng thái thanh toán:</strong>
-                                <span class="float-end">{{order.paymentStatus ? 'Đã thanh toán' : 'Chưa thanh toán'}}</span>
+                                <span class="float-end">
+                                {{
+                                    order.paymentStatus === 0 ? 'Đã thanh toán' :
+                                            order.paymentStatus === 1 ? 'Chưa thanh toán' :
+                                                    order.paymentStatus === 2 ? 'Thanh toán thất bại' : 'Trạng thái không xác định'
+                                    }}
+                                </span>
                             </p>
                             <p class="form-control-plaintext">
                                 <strong>Hình thức thanh toán:</strong>
@@ -332,11 +338,136 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" ng-if="order.orderStatus == 'Chờ xác nhận'" ng-click="cancelOrder(order.id)"
+                <button type="button" ng-if="order.orderStatus == 'Chờ xác nhận'" ng-click="cancelOrder()"
                         class="btn btn-success">
                     Huỷ đơn
                 </button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Cancellation Confirmation Modal -->
+<div class="modal fade" id="modal-confirm-cancellation" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelOrderReason">Lý Do Huỷ - {{order.id}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="reason"
+                           ng-model="selectedReason"
+                           id="reason1"
+                           value="Tôi muốn cập nhật địa chỉ / số điện thoại nhận hàng"
+                           ng-change="checkOtherOption()"
+                    >
+                    <label class="form-check-label" for="reason1">
+                        Tôi muốn cập nhật địa chỉ / số điện thoại nhận hàng.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="reason"
+                           ng-model="selectedReason"
+                           id="reason2"
+                           value="Tôi muốn thêm / thay đổi Mã giảm giá"
+                           ng-change="checkOtherOption()"
+                    >
+                    <label class="form-check-label" for="reason2">
+                        Tôi muốn thêm / thay đổi Mã giảm giá.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="reason"
+                           ng-model="selectedReason"
+                           id="reason3"
+                           value="Tôi muốn thay đổi sản phẩm (kích thước, màu sắc, số lượng...)"
+                           ng-change="checkOtherOption()"
+                    >
+                    <label class="form-check-label" for="reason3">
+                        Tôi muốn thay đổi sản phẩm (kích thước, màu sắc, số lượng...)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="reason"
+                           ng-model="selectedReason"
+                           id="reason4"
+                           value="Thủ tục thanh toán quá rắc rối"
+                           ng-change="checkOtherOption()"
+                    >
+                    <label class="form-check-label" for="reason4">
+                        Thủ tục thanh toán quá rắc rối.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="reason"
+                           ng-model="selectedReason"
+                           id="reason5"
+                           value="Tôi tìm thấy chổ mua khác tốt hơn (Rẻ hơn, uy tín hơn, giao nhanh hơn...)"
+                           ng-change="checkOtherOption()"
+                    >
+                    <label class="form-check-label" for="reason5">
+                        Tôi tìm thấy chổ mua khác tốt hơn (Rẻ hơn, uy tín hơn, giao nhanh hơn...)
+                    </label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="reason"
+                           ng-model="selectedReason"
+                           id="reason6"
+                           value="Tôi không có nhu cầu mua nữa"
+                           ng-change="checkOtherOption()"
+                    >
+                    <label class="form-check-label" for="reason6">
+                        Tôi không có nhu cầu mua nữa
+                    </label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="reason"
+                           ng-model="selectedReason"
+                           id="reason7"
+                           value="Mục khác..."
+                           ng-change="checkOtherOption(selectedReason)">
+                    <label class="form-check-label" for="reason7">
+                        Mục khác...
+                    </label>
+                </div>
+                <div class="form-floating" ng-show="showAdditionalComments">
+                    <textarea class="form-control"
+                              placeholder="Để lại bình luận tại đây"
+                              id="floatingTextarea2"
+                              style="height: 100px"
+                              ng-model="additionalComments"
+                    ></textarea>
+                    <label for="floatingTextarea2">Nhiều hơn</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-danger"
+                        ng-click="confirmCancelOrder(order.id, selectedReason, additionalComments)"
+                        ng-disabled="!selectedReason && !additionalComments"
+                >
+                    Xác nhận
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
             </div>
         </div>
     </div>

@@ -72,9 +72,11 @@ public class ConfirmOrderController {
     private ResponseEntity<Orders> cancelOrderByCustomer(@PathVariable String orderId) {
         Orders order = orderService.findByOrderId(orderId);
         order.setOrderStatus("Đã huỷ đơn");
-        order.setOrderNote("Huỷ đơn bởi người mua hàng. Không liệc lạc được với người nhận.");
+        order.setOrderNote("Huỷ đơn bởi người mua hàng. Khách hàng không nhận hàng " + orderId + " đang chờ chuyển hoàn");
         order.setPaymentStatus(2);
         order.setDateReceive(new Timestamp(System.currentTimeMillis()));
+
+        emailService.queueEmailCancelOrderByCustomer(order);
         return ResponseEntity.ok().body(orderService.save(order));
     }
 

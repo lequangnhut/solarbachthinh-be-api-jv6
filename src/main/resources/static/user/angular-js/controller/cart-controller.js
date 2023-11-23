@@ -94,8 +94,8 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
     };
 
     // cộng số lượng
-    $scope.increase_quantity = function (cartItem) {
-        let product = $scope.object_cart[0];
+    $scope.increase_quantity = function (cartItem, index) {
+        let product = $scope.object_cart[index];
 
         if (cartItem.quantity < product[1].quantity) {
             cartItem.quantity++;

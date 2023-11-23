@@ -1,13 +1,17 @@
 package com.main.controller.restcontroller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.main.dto.AddressDto;
 import com.main.dto.ChangePassDto;
 import com.main.dto.ProfileDto;
 import com.main.dto.UsersDto;
+import com.main.entity.Address;
 import com.main.entity.Users;
+import com.main.service.AddressService;
 import com.main.service.EmailService;
 import com.main.service.OrderService;
 import com.main.service.UserService;
+import com.main.utils.EntityDtoUtils;
 import com.main.utils.SessionAttr;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,9 @@ public class ProfileAPI {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    AddressService addressService;
 
     @Autowired
     EmailService emailService;
@@ -108,6 +115,13 @@ public class ProfileAPI {
         users.setWardName(profileDto.getWardName());
 
         Users updateUser = userService.update(users);
+
+        AddressDto addressDto = new AddressDto();
+//        addressDto.setToName(users.get);
+
+
+//        createAddress();
+
         if (updateUser != null) {
             session.setAttribute(SessionAttr.CURRENT_USER, updateUser);
             session.setAttribute("centerSuccess", "Thông tin cá nhân của bạn đã được cập nhật thành công.");
@@ -167,5 +181,10 @@ public class ProfileAPI {
             }
         }
         return response;
+    }
+
+    public void createAddress(AddressDto addressDto) {
+        Address address = EntityDtoUtils.convertToDto(addressDto, Address.class);
+        addressService.save(address);
     }
 }
