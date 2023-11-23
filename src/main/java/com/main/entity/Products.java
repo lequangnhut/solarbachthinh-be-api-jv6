@@ -84,6 +84,10 @@ public class Products {
     @JsonManagedReference
     private Collection<SaleOff> productSaleOffById;
 
+    @OneToMany(mappedBy = "productsByProductId")
+    @JsonManagedReference
+    private Collection<ProductRate> productRatesById;
+
     @ManyToOne
     @JoinColumn(name = "product_type_id", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonBackReference
