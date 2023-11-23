@@ -26,6 +26,8 @@ let API_Cart = '/api/carts';
 // api order
 let API_Order = 'api/order';
 
+// api rate procduct
+let API_RateProduct = 'api/rate-product'
 // api vnpay
 let API_VNPAY = '/api/vnpay'
 
@@ -99,6 +101,7 @@ solar_app.config(function ($routeProvider) {
             controller: 'product_details'
         })
 
+
         // cart
         .when('/gio-hang', {
             templateUrl: API_Template + 'cart/cart.html',
@@ -111,6 +114,10 @@ solar_app.config(function ($routeProvider) {
         .when('/lich-su-mua-hang', {
             templateUrl: API_Template + 'history/history-payment.html',
             controller: 'history_payment_controller'
+        })
+        .when('/danh-gia-san-pham', {
+            templateUrl: API_Template + 'rate/rate-products.html',
+            controller: 'rate_controller',
         })
 
         // vnpay

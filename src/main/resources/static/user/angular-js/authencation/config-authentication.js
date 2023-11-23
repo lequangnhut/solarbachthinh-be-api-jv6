@@ -39,6 +39,9 @@ solar_app.run(function ($rootScope, $http, $location, CartService, authenticateT
                 } else if (currentPath === '/gio-hang/xac-nhan-thong-tin-don-hang/thanh-toan/that-bai') {
                     $location.path('/dang-nhap');
                     event.preventDefault();
+                } else if (currentPath === '/danh-gia-san-pham') {
+                    $location.path('/dang-nhap');
+                    event.preventDefault();
                 }
                 // Thêm các trường hợp kiểm tra khác nếu cần thiết
             } else {
