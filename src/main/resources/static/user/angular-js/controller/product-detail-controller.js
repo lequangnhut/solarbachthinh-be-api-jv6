@@ -78,11 +78,10 @@ solar_app.controller('product_details', function ($scope, $http, $timeout, $loca
     // kiểm tra số lượng input
     $scope.check_quantity_input = function (quantity, product) {
         let quantityInDb = product.quantity;
-
-        if (quantity <= quantityInDb) {
-
-        } else {
+        $scope.quantity = quantity;
+        if (quantity > quantityInDb) {
             $scope.quantity = quantityInDb;
+            document.getElementById('form').value = $scope.quantity;
             centerAlert('Cảnh Báo !', 'Ôi hỏng rồi !!!, Bạn đã nhập quá số lượng giới hạn.', 'warning');
         }
     };

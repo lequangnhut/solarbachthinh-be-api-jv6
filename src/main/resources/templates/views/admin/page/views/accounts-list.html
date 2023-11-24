@@ -51,9 +51,9 @@
                                         <td th:text="${account.fullname}" class="hidden-text-table"
                                             th:title="${account.fullname}"></td>
                                         <td th:text="${account.phoneNumber}"></td>
-                                        <td th:text="${account.getProvinceName + ', ' + account.getDistrictName + ', ' + account.getWardName + ', ' +account.address}"
+                                        <td th:text="${account.address + ', ' + account.getWardName + ', ' + account.getDistrictName + ', ' + account.getProvinceName}"
                                             class="hidden-text-table"
-                                            th:title="${account.getProvinceName + ', ' + account.getDistrictName + ', ' + account.getWardName + ', ' +account.address}"></td>
+                                            th:title="${account.address + ', ' + account.getWardName + ', ' + account.getDistrictName + ', ' + account.getProvinceName}"></td>
                                         <td th:text="${#dates.format(account.dateCreated, 'dd/MM/yyyy')}"></td>
                                         <td th:text="${account.roles[0].nameRole}"></td>
                                         <td>

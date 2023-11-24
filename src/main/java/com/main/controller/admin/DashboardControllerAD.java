@@ -29,7 +29,7 @@ public class DashboardControllerAD {
 
     @GetMapping()
     public String doanhThuNam(@RequestParam(name = "year", defaultValue = "2023") int year, Model model) {
-        BigDecimal revenue = revenueService.calculateRevenueForYear(year);
+        double revenue = revenueService.calculateRevenueForYear(year);
         model.addAttribute("year", year);
         model.addAttribute("revenue", revenue);
 
@@ -57,7 +57,7 @@ public class DashboardControllerAD {
         model.addAttribute("profitData", profitDataJson);
 
         model.addAttribute("AverageRevenueByYear", revenueService.calculateAverageRevenue());
-        model.addAttribute("topSellingProducts", revenueService.findTopSellingProducts());
+        model.addAttribute("topSellingProducts", revenueService.findTopSellingProducts(year));
 
         return "views/admin/page/views/dashboard";
     }
@@ -65,7 +65,7 @@ public class DashboardControllerAD {
     @GetMapping("load-bieu-do")
     public ResponseEntity<Map<String, Object>> getRevenueByYear(@RequestParam("year") int year) {
         Map<String, Object> response = new HashMap<>();
-        BigDecimal revenue = revenueService.calculateRevenueForYear(year);
+        double revenue = revenueService.calculateRevenueForYear(year);
 
         List<Object[]> ordersInYear = revenueService.getOrdersByCreatedAt_Year(year);
 
@@ -90,7 +90,7 @@ public class DashboardControllerAD {
 
         response.put("revenue", revenue);
         response.put("profitData", profitData);
-        response.put("topSellingProducts", revenueService.findTopSellingProducts());
+        response.put("topSellingProducts", revenueService.findTopSellingProducts(year));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

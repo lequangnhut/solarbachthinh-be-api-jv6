@@ -70,4 +70,5 @@ public class ProductServiceImpl implements ProductService {
     public List<Object[]> findByCategoryIdAndProductTypeId(int categoryId, int productTypeId) {
         return productsRepository.findByCategoryIdAndProductTypeId(categoryId, productTypeId);
     }
+
 }
