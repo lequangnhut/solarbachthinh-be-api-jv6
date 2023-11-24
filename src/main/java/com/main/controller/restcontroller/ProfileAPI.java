@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -116,11 +117,9 @@ public class ProfileAPI {
 
         Users updateUser = userService.update(users);
 
-        AddressDto addressDto = new AddressDto();
-//        addressDto.setToName(users.get);
-
-
-//        createAddress();
+        // thêm địa chỉ của user vào bảng địa chỉ
+        AddressDto addressDto = getAddressDto(users);
+        createAddress(addressDto, users.getId());
 
         if (updateUser != null) {
             session.setAttribute(SessionAttr.CURRENT_USER, updateUser);
@@ -183,8 +182,26 @@ public class ProfileAPI {
         return response;
     }
 
-    public void createAddress(AddressDto addressDto) {
-        Address address = EntityDtoUtils.convertToDto(addressDto, Address.class);
-        addressService.save(address);
+    // thêm vào bảng địa chỉ
+    private AddressDto getAddressDto(Users users) {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setToName(users.getFullname());
+        addressDto.setToPhone(users.getPhoneNumber());
+        addressDto.setToProvince(users.getProvinceName());
+        addressDto.setToDistrict(users.getDistrictName());
+        addressDto.setToWard(users.getWardName());
+        addressDto.setToAddress(users.getAddress());
+        addressDto.setIsActive(Boolean.FALSE);
+        addressDto.setUserId(users.getId());
+        return addressDto;
+    }
+
+    private void createAddress(AddressDto addressDto, int userId) {
+        List<Address> address = addressService.findAllByUserId(userId);
+
+        if (address.isEmpty()) {
+            Address newAddress = EntityDtoUtils.convertToDto(addressDto, Address.class);
+            addressService.save(newAddress);
+        }
     }
 }
