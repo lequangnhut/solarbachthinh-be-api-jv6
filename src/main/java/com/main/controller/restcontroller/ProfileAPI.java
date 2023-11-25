@@ -1,13 +1,17 @@
 package com.main.controller.restcontroller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.main.dto.AddressDto;
 import com.main.dto.ChangePassDto;
 import com.main.dto.ProfileDto;
 import com.main.dto.UsersDto;
+import com.main.entity.Address;
 import com.main.entity.Users;
+import com.main.service.AddressService;
 import com.main.service.EmailService;
 import com.main.service.OrderService;
 import com.main.service.UserService;
+import com.main.utils.EntityDtoUtils;
 import com.main.utils.SessionAttr;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,6 +35,9 @@ public class ProfileAPI {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    AddressService addressService;
 
     @Autowired
     EmailService emailService;
@@ -108,6 +116,11 @@ public class ProfileAPI {
         users.setWardName(profileDto.getWardName());
 
         Users updateUser = userService.update(users);
+
+        // thêm địa chỉ của user vào bảng địa chỉ
+        AddressDto addressDto = getAddressDto(users);
+        createAddress(addressDto, users.getId());
+
         if (updateUser != null) {
             session.setAttribute(SessionAttr.CURRENT_USER, updateUser);
             session.setAttribute("centerSuccess", "Thông tin cá nhân của bạn đã được cập nhật thành công.");
@@ -167,5 +180,28 @@ public class ProfileAPI {
             }
         }
         return response;
+    }
+
+    // thêm vào bảng địa chỉ
+    private AddressDto getAddressDto(Users users) {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setToName(users.getFullname());
+        addressDto.setToPhone(users.getPhoneNumber());
+        addressDto.setToProvince(users.getProvinceName());
+        addressDto.setToDistrict(users.getDistrictName());
+        addressDto.setToWard(users.getWardName());
+        addressDto.setToAddress(users.getAddress());
+        addressDto.setIsActive(Boolean.FALSE);
+        addressDto.setUserId(users.getId());
+        return addressDto;
+    }
+
+    private void createAddress(AddressDto addressDto, int userId) {
+        List<Address> address = addressService.findAllByUserId(userId);
+
+        if (address.isEmpty()) {
+            Address newAddress = EntityDtoUtils.convertToDto(addressDto, Address.class);
+            addressService.save(newAddress);
+        }
     }
 }

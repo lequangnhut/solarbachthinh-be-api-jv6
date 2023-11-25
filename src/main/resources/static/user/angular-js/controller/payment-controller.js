@@ -1,4 +1,4 @@
-solar_app.controller('payment_controller', function ($scope, $rootScope, OrderService, OrderCodeService, DiscountService) {
+solar_app.controller('payment_controller', function ($scope, $rootScope, $filter, OrderService, OrderCodeService, DiscountService) {
 
     $scope.payment_calculator = function () {
         Swal.fire({
@@ -45,11 +45,11 @@ solar_app.controller('payment_controller', function ($scope, $rootScope, OrderSe
     // lấy ra các thông tin người đặt hàng, thông tin đơn hàng
     $scope.userPayment = function () {
         let productCartDto = {
-            cartsList: [],
-            productsList: []
+            cartsList: [], productsList: []
         };
 
         let total = 0;
+        let dateExpected = $filter('timestampToDateString')($scope.intend_time, 'dd/MM/yyyy HH:mm:ss');
 
         for (let i = 0; i < $scope.object_cart.length; i++) {
             let cartItem = $scope.object_cart[i][0];
@@ -94,6 +94,7 @@ solar_app.controller('payment_controller', function ($scope, $rootScope, OrderSe
             paymentStatus: 0,
             serviceName: $scope.serviceName.short_name,
             shippingFee: $scope.shippingFee,
+            dateExpected: dateExpected,
             total: total,
             noted: $scope.noted,
             paymentMethod: $scope.paymentMethod
@@ -143,11 +144,11 @@ solar_app.controller('payment_controller', function ($scope, $rootScope, OrderSe
     // lấy dữ liệu người dùng đặt hàng qua controller creat-order-controller để thanh toán vnpay
     $scope.shareData = function () {
         let productCartDto = {
-            cartsList: [],
-            productsList: []
+            cartsList: [], productsList: []
         };
 
         let total = 0;
+        let dateExpected = $filter('timestampToDateString')($scope.intend_time, 'dd/MM/yyyy HH:mm:ss');
 
         for (let i = 0; i < $scope.object_cart.length; i++) {
             let cartItem = $scope.object_cart[i][0];
@@ -192,6 +193,7 @@ solar_app.controller('payment_controller', function ($scope, $rootScope, OrderSe
             paymentStatus: 0,
             serviceName: $scope.serviceName.short_name,
             shippingFee: $scope.shippingFee,
+            dateExpected: dateExpected,
             total: total,
             noted: $scope.noted,
             paymentMethod: $scope.paymentMethod

@@ -119,14 +119,15 @@
                                     </p>
                                     <p style="font-size:16px;line-height:20px; text-align: center; margin-bottom: 15px;">
                                         Kính gửi bạn <strong th:text="${full_name}"></strong> hoá đơn mua hàng điện tử,
-                                        mã hoá đơn của bạn là <strong th:text="${order.orderId}"></strong>
+                                        mã hoá đơn của bạn là <strong th:text="${order.id}"></strong>
                                     </p>
                                     <p style="margin:0 15px 15px;">
-                                        số tiền <strong
-                                            th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}"></strong>
-                                        đã được đặt hàng vào ngày
-                                        <strong th:text="${date}"></strong> lúc <strong th:text="${time}"></strong>
-                                        thành công. Chi tiết về các khoản thanh toán của bạn như sau.
+                                        Đơn hàng với số tiền <strong
+                                            th:text="${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT')}"></strong>
+                                        đã được đặt hàng vào ngày <strong th:text="${order.dateCreated}"></strong>
+                                        thành công. Đội ngũ của chúng tôi sẽ tiến hành huỷ đơn hàng của bạn. Vì sự cố
+                                        không đáng có. Rất mong quý khách hàng thông cảm và bỏ qua. Và sẽ đồng hành công
+                                        Solar Bách Thịnh! Cảm ơn bạn đã mua hàng.
                                     </p>
                                     <table style=" width: 100%; margin:0 0 15px; border-spacing: 0; border-radius:10px;">
                                         <thead style="border-bottom: 1px solid #d0ccdd;">
@@ -171,10 +172,10 @@
                                                     th:text="${#numbers.formatDecimal(discountCost, 0, 'COMMA', 0, 'POINT')}"></strong>
                                                 <br>
                                                 Phí vận chuyển: <strong
-                                                    th:text="${#numbers.formatDecimal(order.shippingFee, 0, 'COMMA', 0, 'POINT')}"></strong>
+                                                    th:text="${#numbers.formatDecimal(order.orderShipCost, 0, 'COMMA', 0, 'POINT')}"></strong>
                                                 <br>
                                                 Tổng tiền: <strong
-                                                    th:text="${#numbers.formatDecimal((order.total + order.shippingFee) - discountCost, 0, 'COMMA', 0, 'POINT')}"></strong>
+                                                    th:text="${#numbers.formatDecimal((totalPrice + order.orderShipCost) - discountCost, 0, 'COMMA', 0, 'POINT')}"></strong>
                                             </td>
                                         </tr>
                                         </tbody>

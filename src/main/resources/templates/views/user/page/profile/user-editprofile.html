@@ -94,14 +94,16 @@
                                                                ng-maxlength="10"
                                                                pattern="^\d{10}$"
                                                                ng-model="users.phoneNumber"
-                                                               required>
+                                                               ng-change="isDuplicatePhone()"
+                                                               required
+                                                        >
                                                         <small class="text-danger"
                                                                ng-show="editProfileForm.phoneNumber.$error.required ||
                                                                editProfileForm.phoneNumber.$error.pattern">
                                                             Số điện thoại hợp lệ gồm 10 số!
                                                         </small>
                                                         <small class="text-danger"
-                                                               ng-show="isPhoneNumberDuplicate">
+                                                               ng-show="editProfileForm.phoneNumber.$touched && isPhoneNumberDuplicate">
                                                             Số điện thoại đã tồn tại!
                                                         </small>
                                                     </div>
@@ -201,7 +203,7 @@
                                                 </div>
                                             </div>
 
-                                            <button ng-disabled="editProfileForm.$invalid"
+                                            <button ng-disabled="editProfileForm.$invalid || isPhoneNumberDuplicate"
                                                     class="btn btn-danger"
                                                     type="submit">
                                                 Xác nhận

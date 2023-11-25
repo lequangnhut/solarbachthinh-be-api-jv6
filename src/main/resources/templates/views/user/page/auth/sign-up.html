@@ -154,7 +154,10 @@
                                     </small>
                                 </div>
 
-                                <button type="submit" ng-disabled="signupForm.$invalid" class="sigpButton">
+                                <button type="submit"
+                                        ng-disabled="signupForm.$invalid || emailError || phoneError"
+                                        class="sigpButton"
+                                >
                                     Đăng Ký
                                 </button>
                             </form>

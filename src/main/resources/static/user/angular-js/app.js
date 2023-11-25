@@ -28,6 +28,7 @@ let API_Order = 'api/order';
 
 // api rate procduct
 let API_RateProduct = 'api/rate-product'
+
 // api vnpay
 let API_VNPAY = '/api/vnpay'
 
@@ -46,6 +47,9 @@ let API_OrderItem = '/api/order-item'
 
 // api sale off
 let API_SaleOff = '/api/product/sale-off'
+
+// api address
+let API_Address = 'api/address/'
 
 // khởi tạo ứng dụng
 let solar_app = angular.module('solar_app', ['ngRoute']);

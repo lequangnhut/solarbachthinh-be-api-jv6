@@ -1,5 +1,6 @@
 package com.main.controller.restcontroller;
 
+import com.main.dto.CancelOrderDto;
 import com.main.dto.OrdersDto;
 import com.main.dto.UserPaymentDto;
 import com.main.entity.*;
@@ -54,12 +55,19 @@ public class OrderAPI {
         return ResponseEntity.ok().body(order);
     }
 
-    @GetMapping("order/cancel-order/{orderId}")
-    private void cancelOrder(@PathVariable String orderId) {
-        Orders order = orderService.findByOrderId(orderId);
+    @PostMapping("order/cancel-order")
+    private void cancelOrder(@RequestBody CancelOrderDto cancelOrderDto) {
+        Orders order = orderService.findByOrderId(cancelOrderDto.getOrderId());
         order.setOrderStatus("Đã huỷ đơn");
-        order.setOrderNote("Huỷ bởi người mua.");
+        if (cancelOrderDto.getReason().equals("Mục khác...")) {
+            order.setOrderNote(cancelOrderDto.getComments());
+        } else {
+            order.setOrderNote(cancelOrderDto.getReason());
+        }
         order.setPaymentStatus(2);
+        order.setDateReceive(new Timestamp(System.currentTimeMillis()));
+
+        emailService.queueEmailCancelOrderByCustomer(order);
         orderService.save(order);
     }
 
@@ -80,7 +88,7 @@ public class OrderAPI {
         if (StringUtils.isNotEmpty(discountId)) {
             orders.setDiscountId(discountId);
         }
-        orders.setPaymentStatus(paymentStatus == 0 || paymentStatus == 1 ? paymentStatus : 2);
+        orders.setPaymentStatus(paymentStatus);
         orders.setPaymentType(paymentType);
         orders.setOrderStatus("Chờ xác nhận");
         orders.setOrderShipCost(BigDecimal.valueOf(ordersDto.getShippingFee()));
@@ -98,6 +106,7 @@ public class OrderAPI {
 
         orders.setOrderNote(ordersDto.getNoted());
         orders.setDateCreated(new Timestamp(System.currentTimeMillis()));
+        orders.setDateExpected(ordersDto.getDateExpected());
 
         if (!paymentType) {
             orders.setDatePayment(new Timestamp(System.currentTimeMillis()));
@@ -107,7 +116,9 @@ public class OrderAPI {
         orderService.save(orders);
 
         // gửi mail đơn hàng
-        emailService.queueMailCreateOrder(ordersDto);
+        if (paymentStatus == 0 || paymentStatus == 1) {
+            emailService.queueMailCreateOrder(ordersDto);
+        }
 
         // tạo ra order item sau khi lưu đơn hàng
         Object[] cartsList = ordersDto.getProductCartDto().getCartsList();

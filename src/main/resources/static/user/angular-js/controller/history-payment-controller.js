@@ -56,8 +56,7 @@ solar_app.controller('history_payment_controller', function ($scope, $window, Us
 
                 for (let i = 0; i < listOrderItemAndProduct.length; i++) {
                     let data = {
-                        product: listOrderItemAndProduct[i][1],
-                        orderItem: listOrderItemAndProduct[i][0]
+                        product: listOrderItemAndProduct[i][1], orderItem: listOrderItemAndProduct[i][0]
                     };
                     combinedData.push(data);
 
@@ -90,27 +89,40 @@ solar_app.controller('history_payment_controller', function ($scope, $window, Us
         });
     };
 
-    $scope.cancelOrder = function (orderId) {
-        Swal.fire({
-            title: 'Xác nhận !',
-            text: "Bạn có chắc chắn muốn huỷ đơn hàng " + orderId + " không ?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+    $scope.selectedReason = '';
+    $scope.additionalComments = '';
+    $scope.showAdditionalComments = false;
 
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Đồng ý !',
-            cancelButtonText: 'Huỷ !'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                OrderService.cancelOrderById(orderId).then(function successCallback() {
-                    centerAlert('Thành công !', 'Đơn hàng ' + orderId + ' của bạn đã được huỷ thành công !', 'success');
-                    setTimeout(function () {
-                        $window.location.reload();
-                    }, 1500);
-                    $scope.apply();
-                })
-            }
-        })
+    $scope.cancelOrder = function () {
+        $('#modal-confirm-cancellation').modal('show');
+        $('#modal-confirm-data').modal('hide');
+    }
+
+    $scope.checkOtherOption = function (selectedReason) {
+        $scope.showAdditionalComments = selectedReason === "Mục khác...";
+
+        if (!$scope.showAdditionalComments) {
+            $scope.additionalComments = '';
+        }
+    };
+
+    $scope.confirmCancelOrder = function (orderId, selectedReason, additionalComments) {
+        if (selectedReason || additionalComments) {
+            let data = {
+                orderId: orderId,
+                reason: selectedReason,
+                comments: additionalComments
+            };
+
+            OrderService.cancelOrderById(data).then(function successCallback() {
+                centerAlert('Thành công !', 'Đơn hàng ' + orderId + ' của bạn đã được huỷ thành công !', 'success');
+                setTimeout(function () {
+                    $window.location.reload();
+                }, 1500);
+                $scope.apply();
+            })
+
+            $('#modal-confirm-cancellation').modal('hide');
+        }
     }
 });
