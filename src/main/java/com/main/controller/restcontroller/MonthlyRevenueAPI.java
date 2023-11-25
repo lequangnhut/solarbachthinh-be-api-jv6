@@ -28,7 +28,12 @@ public class MonthlyRevenueAPI {
             @RequestParam Integer day,
             @RequestParam Integer month,
             @RequestParam Integer year) {
-        return revenueService.calculateDailyRevenue(day, month, year);
+
+        BigDecimal calculateDailyRevenue = revenueService.calculateDailyRevenue(day, month, year);
+        if (calculateDailyRevenue == null) {
+            calculateDailyRevenue = BigDecimal.valueOf(0);
+        }
+        return calculateDailyRevenue;
     }
 
     @GetMapping("/quan-tri/doanh-thu-thang/revenueMonth")
