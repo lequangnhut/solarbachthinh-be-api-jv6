@@ -62,11 +62,10 @@ public class ProcessController {
             model.addAttribute("percentCompareToLastYear", "N/A");
             model.addAttribute("muiTen", "N/A"); // Hoặc bỏ qua
         } else {
-            double percent = calculatePercentageChange(revenue, revenueLastYear);
             String muiTen = (revenue >= revenueLastYear) ? "ti-arrow-up-left text-success" : "ti-arrow-down-right text-danger";
 
             model.addAttribute("muiTen", muiTen);
-            model.addAttribute("percentCompareToLastYear", percent);
+            model.addAttribute("percentCompareToLastYear", calculatePercentageChange(revenue, revenueLastYear));
         }
     }
 

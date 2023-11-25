@@ -65,11 +65,11 @@
                                                             th:text="${#numbers.formatDecimal(revenue, 0, 'COMMA', 0, 'POINT').replace(',', '.') + ' ₫'}">
                                                             $36,358</h4>
                                                         <div class="d-flex align-items-center mb-3">
-                                              <span id="muiTen" class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
-                                                <i th:class="'ti ' + ${muiTen}"></i>
-                                              </span>
+                                                          <span id="muiTen" class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
+                                                            <i th:class="'ti ' + ${muiTen}"></i>
+                                                          </span>
                                                             <p class="text-dark me-1 fs-3 mb-0" id="percentCompareToLastYear"
-                                                               th:text="${#numbers.formatDecimal(percentCompareToLastYear, 0, 'COMMA', 2, 'POINT')} + '%'"></p>
+                                                               th:text="${percentCompareToLastYear != 'N/A'} ? ${#numbers.formatDecimal(percentCompareToLastYear, 0, 'COMMA', 2, 'POINT')} + '%' : ${percentCompareToLastYear}"></p>
                                                             <p class="fs-3 mb-0">Năm trước</p>
                                                         </div>
                                                         <div class="d-flex align-items-center" id="nam-doanh-thu">

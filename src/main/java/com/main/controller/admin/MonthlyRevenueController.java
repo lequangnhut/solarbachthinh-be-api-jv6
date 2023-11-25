@@ -39,12 +39,16 @@ public class MonthlyRevenueController {
         BigDecimal revenueChange = (BigDecimal) monthlyRevenue[1]; // Giả sử [1] là phần trăm thay đổi
 
         String trendIconClass;
-        if (revenueChange.compareTo(BigDecimal.ZERO) < 0) {
-            trendIconClass = "ti ti-arrow-down-right text-danger";
+        if (revenueChange != null) {
+            if (revenueChange.compareTo(BigDecimal.ZERO) < 0) {
+                trendIconClass = "ti ti-arrow-down-right text-danger";
+            } else {
+                trendIconClass = "ti ti-arrow-up-left text-success";
+            }
+            model.addAttribute("trendIconClass", trendIconClass);
         } else {
-            trendIconClass = "ti ti-arrow-up-left text-success";
+            model.addAttribute("trendIconClass", "ti ti-arrow-down-right text-danger");
         }
-        model.addAttribute("trendIconClass", trendIconClass);
 
         return "views/admin/page/views/doanh-thu-thang";
     }

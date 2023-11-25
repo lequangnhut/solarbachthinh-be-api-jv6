@@ -81,7 +81,7 @@ public class AddData {
     @GetMapping("order")
     @ResponseBody
     public ResponseObject generateOrders() {
-        int numberOfOrders = 1500;
+        int numberOfOrders = 500;
 
         List<Orders> ordersList = new ArrayList<>();
         Faker faker = new Faker();
@@ -137,7 +137,7 @@ public class AddData {
     @GetMapping("items-order")
     @ResponseBody
     public ResponseObject generateOrderItems() {
-        int numberOfItems = 1500; // Số lượng items cần tạo
+        int numberOfItems = 500; // Số lượng items cần tạo
         List<OrderItems> orderItemList = new ArrayList<>();
         Faker faker = new Faker();
 
