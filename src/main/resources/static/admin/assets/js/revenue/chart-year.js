@@ -1,11 +1,59 @@
+// Khởi tạo biến và lấy dữ liệu lợi nhuận
 const profitDataElement = document.getElementById("profitData");
-let profitData = [140000000, 140000000, 112000000, 134000000, 147000000, 148000000, 133000000, 122000000, 140000000, 145000000, 130000000, 130000000];
+let profitData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
+// Cập nhật dữ liệu nếu tồn tại trong DOM
 if (profitDataElement !== null) {
     profitData = JSON.parse(profitDataElement.getAttribute("data-profit"));
 }
 
-// Profit
+// Tìm giá trị lợi nhuận lớn nhất
+var maxProfit = Math.max(...profitData);
+
+// Lấy phần nguyên của giá trị lợi nhuận lớn nhất
+var roundedMaxValue_chartYear = Math.floor(maxProfit);
+
+/**
+ * Làm tròn số lên ngưỡng gần nhất
+ * @param {number} value - Số cần làm tròn
+ * @returns {number} - Số đã được làm tròn
+ */
+function roundUpToNearestThreshold(value) {
+    const digits = value.toString().split('').map(Number);
+    const hundredsDigit = digits[0] || 0;
+    const thresholds = [2, 5, 10];
+    const threshold = thresholds.find(t => hundredsDigit < t) || thresholds[thresholds.length - 1];
+    return threshold * Math.pow(10, digits.length - 1);
+}
+
+// Áp dụng làm tròn
+var increasedMaxValue_chartYear = roundUpToNearestThreshold(roundedMaxValue_chartYear);
+
+/**
+ * Định dạng số thành dạng tiền tệ Việt Nam
+ * @param {number} value - Số cần định dạng
+ * @returns {string} - Chuỗi định dạng tiền tệ
+ */
+function formatCurrency(value) {
+    const formatter = new Intl.NumberFormat('vi-VN', {
+        style: 'currency', currency: 'VND', minimumFractionDigits: 0,
+    });
+    return formatter.format(value);
+}
+
+/**
+ * Định dạng số với số chữ số thập phân
+ * @param {number} value - Số cần định dạng
+ * @returns {string} - Chuỗi định dạng số
+ */
+function formatNumberWithDecimals(value) {
+    const formatter = new Intl.NumberFormat('vi-VN', {
+        style: 'decimal', minimumFractionDigits: 0, maximumFractionDigits: 2
+    });
+    return formatter.format(value);
+}
+
+// Cấu hình biểu đồ lợi nhuận
 const chartOptions = {
     series: [{
         name: "Doanh thu tháng này",
@@ -52,7 +100,7 @@ const chartOptions = {
     yaxis: {
         show: true,
         min: 0,
-        max: 1000000000,
+        max: increasedMaxValue_chartYear,
         tickAmount: 5,
         labels: {
             style: {
@@ -76,75 +124,31 @@ const chartOptions = {
     }]
 };
 
+const earning = {
+    chart: {
+        id: "sparkline3", type: "area", height: 60, sparkline: {
+            enabled: true,
+        }, group: "sparklines", fontFamily: "Plus Jakarta Sans', sans-serif", foreColor: "#adb0bb",
+    }, series: [{
+        name: "Earnings", color: "#49BEFF", data: [25, 66, 20, 40, 12, 58, 20],
+    },], stroke: {
+        curve: "smooth", width: 2,
+    }, fill: {
+        colors: ["#f3feff"], type: "solid", opacity: 0.05,
+    },
+
+    markers: {
+        size: 0,
+    }, tooltip: {
+        theme: "dark", fixed: {
+            enabled: true, position: "right",
+        }, x: {
+            show: false,
+        },
+    },
+};
+new ApexCharts(document.querySelector("#earning"), earning).render();
+
+// Khởi tạo và hiển thị biểu đồ
 const charts = new ApexCharts(document.querySelector("#chart"), chartOptions);
 charts.render();
-
-// Breakup
-const breakupOptions = {
-    color: "#adb5bd",
-    series: [38, 40, 25],
-    labels: ["2022", "2021", "2020"],
-    chart: {
-        width: 180,
-        type: "donut",
-        fontFamily: "Plus Jakarta Sans', sans-serif",
-        foreColor: "#adb0bb",
-    },
-    plotOptions: {
-        pie: {
-            startAngle: 0,
-            endAngle: 360,
-            donut: {
-                size: '75%',
-            },
-        },
-    },
-    stroke: {show: false},
-    dataLabels: {enabled: false},
-    legend: {show: false},
-    colors: ["#5D87FF", "#ecf2ff", "#F9F9FD"],
-    responsive: [{
-        breakpoint: 991,
-        options: {
-            chart: {width: 150},
-        },
-    }],
-    tooltip: {theme: "dark", fillSeriesColor: false},
-};
-
-const chartBreakup = new ApexCharts(document.querySelector("#breakup"), breakupOptions);
-chartBreakup.render();
-
-// Earning
-const earningOptions = {
-    chart: {
-        id: "sparkline3",
-        type: "area",
-        height: 60,
-        sparkline: {enabled: true},
-        group: "sparklines",
-        fontFamily: "Plus Jakarta Sans', sans-serif",
-        foreColor: "#adb0bb",
-    },
-    series: [{
-        name: "Earnings",
-        color: "#49BEFF",
-        data: [25, 66, 20, 40, 12, 58, 20],
-    }],
-    stroke: {curve: "smooth", width: 2},
-    fill: {colors: ["#f3feff"], type: "solid", opacity: 0.05},
-    markers: {size: 0},
-    tooltip: {theme: "dark", fixed: {enabled: true, position: "right"}, x: {show: false}},
-};
-
-const chartEarning = new ApexCharts(document.querySelector("#earning"), earningOptions);
-chartEarning.render();
-
-function formatCurrency(value) {
-    const formatter = new Intl.NumberFormat('vi-VN', {
-        style: 'currency',
-        currency: 'VND',
-        minimumFractionDigits: 0,
-    });
-    return formatter.format(value);
-}

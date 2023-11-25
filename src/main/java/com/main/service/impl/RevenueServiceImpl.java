@@ -1,7 +1,6 @@
 package com.main.service.impl;
 
 import com.main.dto.RevenueDto;
-import com.main.entity.Orders;
 import com.main.repository.OrderRepository;
 import com.main.service.RevenueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RevenueServiceImpl implements RevenueService {
@@ -17,7 +17,7 @@ public class RevenueServiceImpl implements RevenueService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public BigDecimal calculateRevenueForYear(int year) {
+    public double calculateRevenueForYear(int year) {
         return orderRepository.calculateRevenueForYear(year);
     }
 
@@ -37,8 +37,8 @@ public class RevenueServiceImpl implements RevenueService {
     }
 
     @Override
-    public List<Object[]> findTopSellingProducts() {
-        return orderRepository.findTopSellingProducts();
+    public List<Object> findTopSellingProducts(int year) {
+        return orderRepository.findTopSellingProducts(year);
     }
 
     @Override
@@ -53,5 +53,27 @@ public class RevenueServiceImpl implements RevenueService {
         }
 
         return revenueList;
+    }
+
+    @Override
+    public BigDecimal calculateDailyRevenue(Integer inputDay, Integer inputMonth, Integer inputYear) {
+        return orderRepository.calculateDailyRevenue(inputDay, inputMonth, inputYear);
+    }
+
+    @Override
+    public Optional<Object> MonthlyRevenue(Integer inputMonth, Integer inputYear) {
+        return orderRepository.MonthlyRevenue(inputMonth, inputYear);
+    }
+
+    @Override
+    public List<Object> findProductSalesInfoByMonthAndYear(int month, int year) {
+        return orderRepository.findProductSalesInfoByMonthAndYear(month, year);
+    }
+
+    @Override
+    public BigDecimal calculateTotalYearlyAverageRevenue(int year) {
+        List<BigDecimal> monthlyAverages = orderRepository.calculateAverageMonthlyRevenue(year);
+        return monthlyAverages.stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

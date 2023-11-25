@@ -42,4 +42,8 @@ public interface ProductsRepository extends JpaRepository<Products, String> {
             "WHERE c.id = :categoryId and pt.id = :productTypeId"
     )
     List<Object[]> findByCategoryIdAndProductTypeId(@Param("categoryId") int categoryId, @Param("productTypeId") int productTypeId);
+
+    @Query(value = "SELECT calculatePercentageSoldForProduct(:productId) as percentage_sold", nativeQuery = true)
+    Double calculatePercentageSoldForProduct(@Param("productId") String productId);
+
 }

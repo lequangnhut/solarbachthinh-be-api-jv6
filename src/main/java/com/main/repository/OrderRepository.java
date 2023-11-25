@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Orders, String> {
 
@@ -22,7 +23,7 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
 
     // doanh thu năm
 
-    @Query("SELECT DISTINCT YEAR(o.dateCreated) FROM Orders o")
+    @Query("SELECT DISTINCT YEAR(o.dateCreated) FROM Orders o ORDER BY YEAR(o.dateCreated) DESC")
     List<Integer> findDistinctOrdersByYear();
 
     @Query("SELECT SUM(ct.price * ct.quantity + o.orderShipCost) as totalAmount, o" +
@@ -36,7 +37,7 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
             "JOIN o.orderItemsById ct " +
             "JOIN o.usersByUserId a " +
             "WHERE EXTRACT(YEAR FROM o.dateCreated) = :year and o.paymentStatus = 1")
-    BigDecimal calculateRevenueForYear(@Param("year") int year);
+    double calculateRevenueForYear(@Param("year") int year);
 
     @Query("SELECT AVG(ct.price * ct.quantity + o.orderShipCost) FROM Orders o " +
             "JOIN o.orderItemsById ct " +
@@ -44,15 +45,37 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
             "WHERE o.paymentStatus = 1 ")
     List<Integer> calculateAverageRevenue();
 
-    @Query("SELECT p.id, b.brandName, p.productName, SUM(ot.quantity) AS total_sold, SUM(ot.price * ot.quantity + o.orderShipCost) AS total_revenue FROM Orders o" +
-            " JOIN o.orderItemsById ot" +
-            " JOIN ot.productsByProductId p" +
-            " JOIN p.productBrandsByProductBrandId b" +
-            " GROUP BY p.id" +
-            " ORDER BY total_sold DESC" +
-            " LIMIT 5")
-    List<Object[]> findTopSellingProducts();
+    @Query(value = "CALL findTopSellingProducts(:parameter)", nativeQuery = true)
+    List<Object> findTopSellingProducts(@Param("parameter") int parameter);
 
     @Query("SELECT MONTH(o.dateCreated), SUM(o.orderShipCost) FROM Orders o WHERE YEAR(o.dateCreated) = :year GROUP BY MONTH(o.dateCreated)")
     List<Object[]> getRevenueByYear(@Param("year") int year);
+
+    @Query(value = "CALL calculateDailyRevenue(:inputDay, :inputMonth, :inputYear)", nativeQuery = true)
+    BigDecimal calculateDailyRevenue(
+            @Param("inputDay") Integer inputDay,
+            @Param("inputMonth") Integer inputMonth,
+            @Param("inputYear") Integer inputYear
+    );
+
+    @Query(value = "CALL RevenueMonthComparison(:inputMonth, :inputYear)", nativeQuery = true)
+    Optional<Object> MonthlyRevenue(@Param("inputMonth") Integer inputMonth, @Param("inputYear") Integer inputYear);
+
+    @Query("SELECT p.id, pb.brandName, p.productName, SUM(ot.quantity), SUM((ot.quantity * ot.price) + o.orderShipCost) " +
+            "FROM Orders o " +
+            "JOIN o.orderItemsById ot " +
+            "JOIN ot.productsByProductId p " +
+            "JOIN p.productBrandsByProductBrandId pb " +
+            "WHERE MONTH(o.dateCreated) = :month AND YEAR(o.dateCreated) = :year " +
+            "GROUP BY p.id")
+    List<Object> findProductSalesInfoByMonthAndYear(@Param("month") int month, @Param("year") int year);
+
+    @Query("SELECT AVG((ot.quantity * ot.price) + o.orderShipCost) " +
+            "FROM Orders o " +
+            "JOIN o.orderItemsById ot " +
+            "WHERE YEAR(o.dateCreated) = :year " +
+            "GROUP BY MONTH(o.dateCreated)")
+    List<BigDecimal> calculateAverageMonthlyRevenue(@Param("year") int year);
+
+
 }
