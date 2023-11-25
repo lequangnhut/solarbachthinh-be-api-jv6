@@ -5,8 +5,10 @@ import com.main.dto.OrdersDto;
 import com.main.dto.ProductCartDto;
 import com.main.dto.ResponseObject;
 import com.main.dto.UserPaymentDto;
+import com.main.entity.OrderItems;
 import com.main.entity.Orders;
 import com.main.entity.Products;
+import com.main.service.OrderItemService;
 import com.main.service.OrderService;
 import com.main.service.ProductService;
 import com.main.utils.EntityDtoUtils;
@@ -14,12 +16,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("add-data")
@@ -27,6 +36,9 @@ public class AddData {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    OrderItemService orderItemService;
 
     @Autowired
     ProductService productService;
@@ -69,34 +81,100 @@ public class AddData {
     @GetMapping("order")
     @ResponseBody
     public ResponseObject generateOrders() {
-        int numberOfOrders = 500;
+        int numberOfOrders = 1500;
 
         List<Orders> ordersList = new ArrayList<>();
         Faker faker = new Faker();
 
+        // Calculate the number of days between now and January 1, 2018
+        LocalDate startDate = LocalDate.of(2018, 1, 1);
+        long daysBetween = ChronoUnit.DAYS.between(startDate, LocalDate.now());
+
+
         for (int i = 0; i < numberOfOrders; i++) {
             Orders order = new Orders();
 
-            order.setId("ORD000" + i);
-            order.setUserId(faker.number().numberBetween(1, 40));
+            // Use a similar format to the provided sample data for the order ID
+            order.setId("DH" + faker.number().digits(14));
+
+            // Assuming user IDs are integers as in the provided data
+            order.setUserId(faker.number().numberBetween(1, 4)); // Adjust range as needed
+
+            // Set payment type (true/false based on the faker boolean)
             order.setPaymentType(faker.bool().bool());
-            order.setPaymentStatus(faker.number().numberBetween(0, 2)); // Assuming payment status can be 0, 1, or 2
-            order.setOrderStatus(faker.lorem().word());
-            order.setOrderShipCost(BigDecimal.valueOf(faker.number().randomDouble(2, 10, 1000)));
+
+            // Set payment status (0, 1, or 2)
+            order.setPaymentStatus(faker.number().numberBetween(0, 2));
+
+            // Use the specific statuses from the provided data
+            String[] statuses = {"Đã giao hàng", "Đã huỷ đơn", "Chờ xác nhận"};
+            order.setOrderStatus(faker.options().option(statuses));
+
+            // Use BigDecimal for order ship cost
+            order.setOrderShipCost(BigDecimal.valueOf(faker.number().randomDouble(2, 10000, 400000)));
+
+            // Use faker to generate name, phone, and address details
             order.setToName(faker.name().fullName());
             order.setToPhone(faker.phoneNumber().cellPhone());
             order.setToProvince(faker.address().state());
-            order.setToDistrict(faker.address().city());
+            order.setToDistrict(faker.address().cityName());
             order.setToWard(faker.address().secondaryAddress());
             order.setToAddress(faker.address().fullAddress());
+
+            // Order note can be random sentence
             order.setOrderNote(faker.lorem().sentence());
-            order.setDateCreated(new Timestamp(faker.date().past(365, java.util.concurrent.TimeUnit.DAYS).getTime()));
+
+            // Generate a date between now and January 1, 2018
+            Date randomDate = faker.date().past((int) daysBetween, TimeUnit.DAYS);
+            order.setDateCreated(new Timestamp(randomDate.getTime()));
 
             orderService.save(order);
             ordersList.add(order);
         }
-        return new ResponseObject("200", "Đã thêm dữ liệu Product thành công", ordersList);
+        return new ResponseObject("200", "Đã thêm dữ liệu Order thành công", ordersList);
     }
 
+    @GetMapping("items-order")
+    @ResponseBody
+    public ResponseObject generateOrderItems() {
+        int numberOfItems = 1500; // Số lượng items cần tạo
+        List<OrderItems> orderItemList = new ArrayList<>();
+        Faker faker = new Faker();
 
+        List<String> orderIds = orderService.findAll().stream()
+                .map(Orders::getId)
+                .toList();
+        List<String> products = productService.findAll().stream()
+                .map(Products::getId)
+                .toList();
+
+        for (int i = 0; i < numberOfItems; i++) {
+            OrderItems item = new OrderItems();
+
+            // Liên kết mỗi item với một order ngẫu nhiên từ danh sách orderIds
+            String randomOrderId = getRandomId(orderIds);
+            item.setOrderId(randomOrderId);
+
+            // Mã sản phẩm ngẫu nhiên từ danh sách products
+            String randomProductId = getRandomId(products);
+            item.setProductId(randomProductId);
+
+            // Số lượng sản phẩm (từ 1 đến 10)
+            item.setQuantity(faker.number().numberBetween(1, 10));
+
+            // Giá của sản phẩm (giả sử từ 10,000 đến 1,000,000)
+            item.setPrice(BigDecimal.valueOf(faker.number().randomDouble(2, 10000, 1000000)));
+
+            orderItemService.save(item);
+            orderItemList.add(item);
+        }
+
+        return new ResponseObject("200", "Đã thêm dữ liệu OrderItem thành công", orderItemList);
+    }
+
+    private String getRandomId(List<String> idList) {
+        Random random = new Random();
+        int randomIndex = random.nextInt(idList.size());
+        return idList.get(randomIndex);
+    }
 }
