@@ -58,24 +58,6 @@ solar_app.controller('address_controller', function ($scope, $http, $timeout, $w
         $scope.allAdress = response.data;
     });
 
-    $scope.onProvinceChange = function () {
-        $scope.address.provinceName = null;
-        const selectElement = document.getElementById("city");
-        $scope.address.provinceName = selectElement.options[selectElement.selectedIndex].text;
-    }
-
-    $scope.onDistrictChange = function () {
-        $scope.address.districtName = null;
-        const selectElement = document.getElementById("province");
-        $scope.address.districtName = selectElement.options[selectElement.selectedIndex].text;
-    }
-
-    $scope.onWardsChange = function () {
-        $scope.address.wardName = null;
-        const selectElement = document.getElementById("ward");
-        $scope.address.wardName = selectElement.options[selectElement.selectedIndex].text;
-    }
-
     // submit thêm địa chỉ
     $scope.submitAddAddressForm = function () {
         let data = {
@@ -100,7 +82,7 @@ solar_app.controller('address_controller', function ($scope, $http, $timeout, $w
         });
     }
 
-    // update modal
+    // show thông tin cập nhật modal
     $scope.updateAddressModal = function (addressId) {
         $('#model-address').modal('hide');
         $('#model-info-address').modal('show');
@@ -118,6 +100,50 @@ solar_app.controller('address_controller', function ($scope, $http, $timeout, $w
                 toAddress: dataAddress.toAddress,
                 isActive: dataAddress.isActive,
             };
+
+            const matchedProvince = $scope.ship_province.find(function (province) {
+                return province.ProvinceName === $scope.address.provinceName;
+            });
+
+            if (matchedProvince) {
+                $scope.address.provinceName = matchedProvince;
+            }
+
+            // Lấy danh sách quận/huyện của tỉnh đã chọn
+            ShippingService.getDistrictsByProvinceId(matchedProvince.ProvinceID).then(function (response) {
+                $scope.ship_districts = response.data.data;
+
+                // Kiểm tra nếu user đã có quận/huyện được chọn
+                if ($scope.address.districtName && $scope.ship_districts.length > 0) {
+                    const matchedDistrict = $scope.ship_districts.find(function (district) {
+                        return district.DistrictName === $scope.address.districtName;
+                    });
+
+                    if (matchedDistrict) {
+                        $scope.address.districtName = matchedDistrict;
+                    }
+
+                    // Lấy danh sách xã/phường của quận/huyện đã chọn
+                    ShippingService.getWardByDistrictId(matchedDistrict.DistrictID).then(function (response) {
+                        $scope.ship_ward = response.data.data;
+
+                        // Kiểm tra nếu user đã có xã/phường được chọn
+                        if ($scope.address.wardName && $scope.ship_ward.length > 0) {
+                            const matchedWard = $scope.ship_ward.find(function (ward) {
+                                return ward.WardName === $scope.address.wardName;
+                            });
+
+                            if (matchedWard) {
+                                $scope.address.wardName = matchedWard;
+                            }
+                        }
+                    }, function (error) {
+                        console.log(error);
+                    });
+                }
+            }, function (error) {
+                console.log(error);
+            });
         });
     };
 
@@ -127,9 +153,9 @@ solar_app.controller('address_controller', function ($scope, $http, $timeout, $w
             id: $scope.address.id,
             toName: $scope.address.fullName,
             toPhone: $scope.address.phoneNumber,
-            toProvince: $scope.address.provinceName,
-            toDistrict: $scope.address.districtName,
-            toWard: $scope.address.wardName,
+            toProvince: $scope.address.provinceName.ProvinceName,
+            toDistrict: $scope.address.districtName.DistrictName,
+            toWard: $scope.address.wardName.WardName,
             toAddress: $scope.address.toAddress,
             isActive: $scope.address.isActive,
         };
@@ -165,8 +191,56 @@ solar_app.controller('address_controller', function ($scope, $http, $timeout, $w
                 $scope.user.wardName = selectedAddress.toWard;
                 $scope.user.address = selectedAddress.toAddress;
 
+                $scope.changeAddress();
+
                 $('#model-address').modal('hide');
             });
         }
     };
+
+    $scope.changeAddress = function () {
+        const matchedProvince = $scope.ship_province.find(function (province) {
+            return province.ProvinceName === $scope.user.provinceName;
+        });
+
+        if (matchedProvince) {
+            $scope.user.provinceName = matchedProvince;
+        }
+
+        // Lấy danh sách quận/huyện của tỉnh đã chọn
+        ShippingService.getDistrictsByProvinceId(matchedProvince.ProvinceID).then(function (response) {
+            $scope.ship_districts = response.data.data;
+
+            // Kiểm tra nếu user đã có quận/huyện được chọn
+            if ($scope.user.districtName && $scope.ship_districts.length > 0) {
+                const matchedDistrict = $scope.ship_districts.find(function (district) {
+                    return district.DistrictName === $scope.user.districtName;
+                });
+
+                if (matchedDistrict) {
+                    $scope.user.districtName = matchedDistrict;
+                }
+
+                // Lấy danh sách xã/phường của quận/huyện đã chọn
+                ShippingService.getWardByDistrictId(matchedDistrict.DistrictID).then(function (response) {
+                    $scope.ship_ward = response.data.data;
+
+                    // Kiểm tra nếu user đã có xã/phường được chọn
+                    if ($scope.user.wardName && $scope.ship_ward.length > 0) {
+                        const matchedWard = $scope.ship_ward.find(function (ward) {
+                            return ward.WardName === $scope.user.wardName;
+                        });
+
+                        if (matchedWard) {
+                            $scope.user.wardName = matchedWard;
+                        }
+                    }
+                }, function (error) {
+                    console.log(error);
+                });
+            }
+        }, function (error) {
+            console.log(error);
+        });
+    }
 });

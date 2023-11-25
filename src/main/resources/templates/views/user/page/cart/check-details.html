@@ -471,42 +471,41 @@
                             <div class="col-12">
                                 <div class="form-floating mb-3 mt-3">
                                     <select class="form-select rounded-0"
-                                            id="city"
                                             ng-model="address.provinceName"
-                                            ng-change="onProvinceChange()"
                                             aria-label="Floating label select example"
-                                            ng-required="address.provinceName"
+                                            ng-options="province.ProvinceName for province in ship_province track by province.ProvinceID"
+                                            ng-change="getDistrictsAddress(address.provinceName)"
+                                            ng-required="true"
                                     >
-                                        <option selected>{{address.provinceName}}</option>
+                                        <option value="" selected disabled>Chọn Tỉnh Thành / Thành Phố</option>
                                     </select>
-                                    <label for="city">Tỉnh Thành</label>
+                                    <label>Tỉnh Thành</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
                                     <select class="form-select rounded-0"
-                                            id="province"
                                             ng-model="address.districtName"
-                                            ng-change="onDistrictChange()"
                                             aria-label="Floating label select example"
-                                            ng-required="address.districtName"
+                                            ng-options="districts.DistrictName for districts in ship_districts track by districts.DistrictID"
+                                            ng-change="getWardAddress(address.districtName)"
+                                            ng-required="true"
                                     >
-                                        <option selected>{{address.districtName}}</option>
+                                        <option value="" selected disabled>Chọn Quận/Huyện</option>
                                     </select>
-                                    <label for="province">Quận/Huyện</label>
+                                    <label>Quận/Huyện</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
                                     <select class="form-select rounded-0"
-                                            id="ward"
                                             ng-model="address.wardName"
-                                            ng-change="onWardsChange()"
                                             aria-label="Floating label select example"
-                                            ng-required="address.wardName"
+                                            ng-options="ward.WardName for ward in ship_ward track by ward.WardCode"
+                                            ng-change="onWardChangeAddress(address.wardName)"
+                                            ng-required="true"
                                     >
-                                        <option selected>{{address.wardName}}</option>
+                                        <option value="" selected disabled>Chọn Phường/Xã</option>
                                     </select>
-
-                                    <label for="ward">Phường/Xã</label>
+                                    <label>Phường/Xã</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
@@ -673,5 +672,3 @@
         </div>
     </div>
 </div>
-
-<script src="/admin/assets/js/api_address.js"></script>

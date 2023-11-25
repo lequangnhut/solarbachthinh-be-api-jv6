@@ -197,29 +197,31 @@ solar_app.controller('check_details_controller', function ($scope, $http, $timeo
             });
         }
 
-        const requestData = {
-            "service_type_id": selectedService.service_type_id,
-            "from_district_id": 1572, // ninh kiều, cần thơ
-            "to_district_id": defaultDistrictID,
-            "to_ward_code": defaultWardId,
-            "height": 1,
-            "length": 1,
-            "weight": 1,
-            "width": 1,
-            "insurance_value": 0,
-            "coupon": null,
-            "items": items
-        };
+        if (selectedService) {
+            const requestData = {
+                "service_type_id": selectedService.service_type_id,
+                "from_district_id": 1572, // ninh kiều, cần thơ
+                "to_district_id": defaultDistrictID,
+                "to_ward_code": defaultWardId,
+                "height": 1,
+                "length": 1,
+                "weight": 1,
+                "width": 1,
+                "insurance_value": 0,
+                "coupon": null,
+                "items": items
+            };
 
-        ShippingService.calculateShippingFee(requestData).then(function (response) {
-            totalShippingFee = $scope.shippingFee = response.data.data;
+            ShippingService.calculateShippingFee(requestData).then(function (response) {
+                totalShippingFee = $scope.shippingFee = response.data.data;
 
-            // tính toán tiền và tính thời gian dự kiến
-            $scope.calculate_total($scope.object_cart, $scope.appliedDiscount);
-            $scope.intend_time_ship(defaultDistrictID, defaultWardId, selectedService.service_id);
-        }, function (error) {
-            console.log(error);
-        });
+                // tính toán tiền và tính thời gian dự kiến
+                $scope.calculate_total($scope.object_cart, $scope.appliedDiscount);
+                $scope.intend_time_ship(defaultDistrictID, defaultWardId, selectedService.service_id);
+            }, function (error) {
+                console.log(error);
+            });
+        }
     };
 
     //tính toán thời gian dự kiến vận chuyển
@@ -232,11 +234,13 @@ solar_app.controller('check_details_controller', function ($scope, $http, $timeo
             service_id: service_id
         };
 
-        ShippingService.getEstimatedDeliveryTime(requestData).then(function (response) {
-            $scope.intend_time = response.data.data.leadtime;
-        }, function (error) {
-            console.log(error);
-        });
+        if (requestData) {
+            ShippingService.getEstimatedDeliveryTime(requestData).then(function (response) {
+                $scope.intend_time = response.data.data.leadtime;
+            }, function (error) {
+                console.log(error);
+            });
+        }
     }
 
     // tính toán và áp dụng discount
