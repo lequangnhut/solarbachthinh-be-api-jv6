@@ -258,7 +258,7 @@
                                 <span class="float-end">{{order.dateExpected}}</span>
                             </p>
                             <p class="form-control-plaintext"
-                               ng-if="order.dateReceive !== null && !order.orderStatus === 'Đã huỷ đơn'">
+                               ng-if="order.dateReceive !== null && order.orderStatus === 'Đã giao hàng'">
                                 <strong>Thời gian giao hàng:</strong>
                                 <span class="float-end">{{order.dateReceive | vietnameseDateTime}}</span>
                             </p>
