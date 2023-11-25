@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -24,6 +25,8 @@ public class OrdersDto implements Serializable {
     private String discountId;
 
     private Integer shippingFee;
+
+    private String dateExpected;
 
     private double total;
 

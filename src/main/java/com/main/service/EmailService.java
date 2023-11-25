@@ -27,4 +27,16 @@ public interface EmailService {
     void sendMailConfirmOrder();
 
     void queueEmailConfirmOrder(Orders orders);
+
+    void sendMailReceiveOrder();
+
+    void queueEmailReceiveOrder(Orders orders);
+
+    void sendMailCancelOrder();
+
+    void queueEmailCancelOrder(Orders orders);
+
+    void sendMailCancelOrderByCustomer();
+
+    void queueEmailCancelOrderByCustomer(Orders orders);
 }

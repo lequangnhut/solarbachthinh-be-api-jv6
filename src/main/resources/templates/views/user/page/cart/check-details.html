@@ -42,7 +42,14 @@
                                 <label for="email">Địa chỉ email (Nhận hoá đơn)</label>
                             </div>
 
-                            <div class="form-floating mb-3">
+                            <a href="javascript:void(0)"
+                               data-bs-toggle="modal"
+                               data-bs-target="#model-address"
+                            >
+                                (+) Thông tin đã được lưu
+                            </a>
+
+                            <div class="form-floating mb-3 mt-3">
                                 <input type="text"
                                        id="full_name"
                                        class="form-control"
@@ -65,9 +72,9 @@
                                 <label for="phone">Số điện thoại</label>
                             </div>
 
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-3 mt-3">
                                 <select class="form-select"
-                                        id="city"
+                                        id="toCity"
                                         ng-model="user.provinceName"
                                         aria-label="Floating label select example"
                                         ng-options="province.ProvinceName for province in ship_province track by province.ProvinceID"
@@ -76,12 +83,12 @@
                                 >
                                     <option value="" selected disabled>Chọn Tỉnh Thành / Thành Phố</option>
                                 </select>
-                                <label for="city">Tỉnh Thành</label>
+                                <label for="toCity">Tỉnh Thành</label>
                             </div>
 
                             <div class="form-floating mb-3">
                                 <select class="form-select"
-                                        id="district"
+                                        id="toDistrict"
                                         ng-model="user.districtName"
                                         aria-label="Floating label select example"
                                         ng-options="districts.DistrictName for districts in ship_districts track by districts.DistrictID"
@@ -90,12 +97,12 @@
                                 >
                                     <option value="" selected disabled>Chọn Quận/Huyện</option>
                                 </select>
-                                <label for="district">Quận/Huyện</label>
+                                <label for="toDistrict">Quận/Huyện</label>
                             </div>
 
                             <div class="form-floating mb-3">
                                 <select class="form-select"
-                                        id="ward"
+                                        id="toWard"
                                         ng-model="user.wardName"
                                         aria-label="Floating label select example"
                                         ng-options="ward.WardName for ward in ship_ward track by ward.WardCode"
@@ -105,7 +112,7 @@
                                     <option value="" selected disabled>Chọn Phường/Xã</option>
                                 </select>
 
-                                <label for="ward">Phường/Xã</label>
+                                <label for="toWard">Phường/Xã</label>
                             </div>
 
                             <div class="form-floating mb-3">
@@ -147,7 +154,7 @@
                             <p><strong>Thời gian dự kiến giao hàng</strong></p>
                             <span class="mb-0" ng-if="intend_time == null">
                                     Chưa xác định dạng thời gian dự kiến giao hàng
-                                </span>
+                            </span>
                             <span class="mb-0" ng-if="intend_time != null">
                                     {{intend_time | calculatePreviousDate:2}} -
                                 </span>
@@ -352,3 +359,319 @@
     </section>
 </div>
 <!-- Service End -->
+
+<div ng-controller="address_controller">
+    <!--modal thông tin địa chỉ-->
+    <div class="modal fade" id="model-address" tabindex="-1" aria-labelledby="model-address-label"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-0">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-normal" id="model-address-label">Địa chỉ của tôi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div ng-if="!allAdress || allAdress.length === 0">
+                        <p class="text-center">Vui lòng cập nhật địa chỉ giao hàng</p>
+                    </div>
+
+                    <div class="form-check" ng-repeat="address in allAdress">
+                        <input class="form-check-input"
+                               type="radio"
+                               name="addressChk"
+                               id="{{address.id}}"
+                               ng-checked="address.id === selectedAddressId"
+                               ng-click="updateSelectedAddress(address.id)"
+                        >
+                        <label class="form-check-label row" for="{{address.id}}">
+                            <div class="col-9">
+                                {{address.toName}} | {{address.toPhone}}
+                                <br>
+                                {{address.toAddress + ', ' + address.toWard + ', ' + address.toDistrict + ', ' + address.toProvince}}
+                            </div>
+                            <div class="col-3 d-flex justify-content-end">
+                                <a href="javascript:void(0)" ng-click="updateAddressModal(address.id)">
+                                    Cập nhật
+                                </a>
+                            </div>
+                        </label>
+                        <label class="mt-1 ps-1 px-1 text-danger fw-normal" ng-if="address.isActive"
+                               style="font-size: 14px; border: 1px solid #be0202">
+                            Mặc định
+                        </label>
+
+                        <hr class="my-4"/>
+                    </div>
+
+                    <a class="btn btn-outline-secondary rounded-0"
+                       href="javascript:void(0)"
+                       role="button"
+                       ng-click="addAddressModal()"
+                       ng-if="allAdress.length < 4"
+                    >
+                        Thêm Địa Chỉ Mới
+                    </a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-outline-secondary rounded-0 fw-normal"
+                            data-bs-dismiss="modal"
+                    >
+                        Huỷ
+                    </button>
+                    <button type="button"
+                            class="btn btn-primary rounded-0 fw-normal"
+                            ng-click="confirmSelection()"
+                    >
+                        Xác nhận
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--modal thay đổi thông tin địa chỉ-->
+    <div class="modal fade" id="model-info-address" tabindex="-1" aria-labelledby="model-info-address-label"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-0">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-normal" id="model-info-address-label">Cập nhật địa chỉ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form ng-submit="updateAddAddressForm()" name="updateAddressForm" novalidate>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text"
+                                           id="fullName"
+                                           class="form-control rounded-0"
+                                           placeholder="Họ và tên"
+                                           ng-model="address.fullName"
+                                           required
+                                    >
+                                    <label for="fullName">Số điện thoại</label>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="tel"
+                                           id="phoneNumber"
+                                           maxlength="10"
+                                           class="form-control rounded-0"
+                                           placeholder="Số điện thoại"
+                                           ng-model="address.phoneNumber"
+                                           required
+                                    >
+                                    <label for="phoneNumber">Số điện thoại</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3 mt-3">
+                                    <select class="form-select rounded-0"
+                                            id="city"
+                                            ng-model="address.provinceName"
+                                            ng-change="onProvinceChange()"
+                                            aria-label="Floating label select example"
+                                            ng-required="address.provinceName"
+                                    >
+                                        <option selected>{{address.provinceName}}</option>
+                                    </select>
+                                    <label for="city">Tỉnh Thành</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select class="form-select rounded-0"
+                                            id="province"
+                                            ng-model="address.districtName"
+                                            ng-change="onDistrictChange()"
+                                            aria-label="Floating label select example"
+                                            ng-required="address.districtName"
+                                    >
+                                        <option selected>{{address.districtName}}</option>
+                                    </select>
+                                    <label for="province">Quận/Huyện</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select class="form-select rounded-0"
+                                            id="ward"
+                                            ng-model="address.wardName"
+                                            ng-change="onWardsChange()"
+                                            aria-label="Floating label select example"
+                                            ng-required="address.wardName"
+                                    >
+                                        <option selected>{{address.wardName}}</option>
+                                    </select>
+
+                                    <label for="ward">Phường/Xã</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="text"
+                                           id="addressNote"
+                                           ng-model="address.toAddress"
+                                           class="form-control rounded-0"
+                                           placeholder="Địa chỉ cụ thể"
+                                           required
+                                    >
+                                    <label for="addressNote">Địa chỉ cụ thể</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           ng-model="address.isActive"
+                                           type="checkbox"
+                                           id="checkDefault">
+                                    <label class="form-check-label" for="checkDefault">
+                                        Đặt làm địa chỉ mặc định
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-outline-secondary rounded-0 fw-normal"
+                                ng-click="showDefaultModal1()"
+                        >
+                            Trở lại
+                        </button>
+                        <button type="submit"
+                                class="btn btn-primary rounded-0 fw-normal"
+                                ng-disabled="updateAddressForm.$invalid"
+                        >
+                            Xác nhận
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--thêm địa chỉ mới-->
+    <div class="modal fade" id="model-add-address" tabindex="-1" aria-labelledby="model-info-address-label"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-0">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-normal" id="model-add-address-label">Địa chỉ mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form ng-submit="submitAddAddressForm()" name="addAddressForm" novalidate>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text"
+                                           id="fName"
+                                           class="form-control rounded-0"
+                                           placeholder="Họ và tên"
+                                           ng-model="address.fullName"
+                                           required
+                                    >
+                                    <label for="fName">Họ và tên</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="tel"
+                                           id="pNumber"
+                                           maxlength="10"
+                                           class="form-control rounded-0"
+                                           placeholder="Số điện thoại"
+                                           ng-model="address.phoneNumber"
+                                           required
+                                    >
+                                    <label for="pNumber">Số điện thoại</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3 mt-3">
+                                    <select class="form-select rounded-0"
+                                            id="cities"
+                                            ng-model="address.provinceName"
+                                            aria-label="Floating label select example"
+                                            ng-options="province.ProvinceName for province in ship_province track by province.ProvinceID"
+                                            ng-change="getDistrictsAddress(address.provinceName)"
+                                            ng-required="true"
+                                    >
+                                        <option value="" selected disabled>Chọn Tỉnh Thành / Thành Phố</option>
+                                    </select>
+                                    <label for="cities">Tỉnh Thành</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select class="form-select rounded-0"
+                                            id="districts"
+                                            ng-model="address.districtName"
+                                            aria-label="Floating label select example"
+                                            ng-options="districts.DistrictName for districts in ship_districts track by districts.DistrictID"
+                                            ng-change="getWardAddress(address.districtName)"
+                                            ng-required="true"
+                                    >
+                                        <option value="" selected disabled>Chọn Quận/Huyện</option>
+                                    </select>
+                                    <label for="districts">Quận/Huyện</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select class="form-select rounded-0"
+                                            id="wards"
+                                            ng-model="address.wardName"
+                                            aria-label="Floating label select example"
+                                            ng-options="ward.WardName for ward in ship_ward track by ward.WardCode"
+                                            ng-change="onWardChangeAddress(address.wardName)"
+                                            ng-required="true"
+                                    >
+                                        <option value="" selected disabled>Chọn Phường/Xã</option>
+                                    </select>
+                                    <label for="wards">Phường/Xã</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="text"
+                                           id="addressNoted"
+                                           ng-model="address.address"
+                                           class="form-control rounded-0"
+                                           placeholder="Địa chỉ cụ thể"
+                                           required
+                                    >
+                                    <label for="addressNoted">Địa chỉ cụ thể</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           ng-model="address.isActive"
+                                           type="checkbox"
+                                           id="checkDefaultAdd">
+                                    <label class="form-check-label" for="checkDefaultAdd">
+                                        Đặt làm địa chỉ mặc định
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-outline-secondary rounded-0 fw-normal"
+                                ng-click="showDefaultModal2()"
+                        >
+                            Trở lại
+                        </button>
+                        <button type="submit"
+                                class="btn btn-primary rounded-0 fw-normal"
+                                ng-disabled="addAddressForm.$invalid"
+                        >
+                            Hoàn thành
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/admin/assets/js/api_address.js"></script>

@@ -25,10 +25,15 @@ solar_app.service('OrderService', function ($http) {
         })
     }
 
-    this.cancelOrderById = function (orderId) {
+    this.cancelOrderById = function (data) {
         return $http({
-            method: 'GET',
-            url: API_Order + '/cancel-order/' + orderId,
+            method: 'POST',
+            url: API_Order + '/cancel-order',
+            headers: {
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+            },
+            data: data
         })
     }
 });

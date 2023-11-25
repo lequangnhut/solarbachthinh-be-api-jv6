@@ -1,4 +1,7 @@
-solar_app.controller('profile-controller', function ($scope, $route, UserService) {
+solar_app.controller('profile-controller', function ($scope, $route, UserService, AuthService) {
+
+    $scope.isPhoneNumberDuplicate = false;
+
     $scope.genderOptions = [{label: 'Nam', value: true}, {label: 'Nữ', value: false}];
 
     UserService.fillProfileUserBySession().then(function successCallback(response) {
@@ -7,6 +10,14 @@ solar_app.controller('profile-controller', function ($scope, $route, UserService
     }, function errorCallback(response) {
         console.log(response.data);
     });
+
+    $scope.isDuplicatePhone = function () {
+        let phone = $scope.users.phoneNumber;
+
+        AuthService.checkExistPhone(phone).then(function successCallback(response) {
+            $scope.isPhoneNumberDuplicate = response.data.exists;
+        });
+    };
 
     //Thao tác lấy giá trị tỉnh/thành mới
     $scope.onProvinceSelect = function () {
