@@ -67,7 +67,7 @@ public class UserControllerAD {
     public String account_edit(@PathVariable int userId, Model model) {
         Users users = userService.findById(userId);
 
-        model.addAttribute("password", users.getPasswords());
+        model.addAttribute("password", users.getPassword());
         model.addAttribute("usersDto", EntityDtoUtils.convertToDto(users, Users.class));
         model.addAttribute("users", users);
         return "views/admin/page/crud/account/account-edit";
@@ -75,9 +75,6 @@ public class UserControllerAD {
 
     @PostMapping("sua-tai-khoan")
     public String account_edit(@ModelAttribute("usersDto") UsersDto usersDto) {
-//        String encodedPassword = encoder.encode(usersDto.getPasswords());
-//
-//        usersDto.setPasswords(encodedPassword);
         userService.update(EntityDtoUtils.convertToEntity(usersDto, Users.class));
 
         session.setAttribute("toastSuccess", "Cập nhật thành công !");

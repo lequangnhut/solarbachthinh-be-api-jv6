@@ -156,7 +156,7 @@ public class ProfileAPI {
         Map<String, Boolean> response = new HashMap<>();
 
         if (users != null) {
-            boolean isCurrentPassCorrect = encoder.matches(currentPass, users.getPasswords());
+            boolean isCurrentPassCorrect = encoder.matches(currentPass, users.getPassword());
             if (isCurrentPassCorrect) {
                 response.put("exists", true);
             } else {

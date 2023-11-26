@@ -1,9 +1,12 @@
 package com.main.config;
 
-import com.main.security.CustomSuccessHandler;
+import com.main.security.jwt.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,14 +18,14 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-@EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    CustomSuccessHandler handler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -46,19 +49,13 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers("/user/**", "/admin/**").permitAll()
                                 .requestMatchers("/quan-tri/**").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(
-                                        "/api/carts/**",
-                                        "/api/discount/**",
-                                        "/api/order/**",
-                                        "/api/order-item/**"
-                                ).authenticated()
                                 .requestMatchers("/**").permitAll()
                 ).formLogin(
                         form -> form
-                                .loginProcessingUrl("/dang-nhap")
-                                .usernameParameter("username")
-                                .passwordParameter("password")
-                                .successHandler(handler)
+                                .loginPage("/admin")
+                                .loginProcessingUrl("/admin/login")
+                                .defaultSuccessUrl("/quan-tri/dashboard")
+                                .failureUrl("/admin?error=true")
                                 .permitAll()
                 ).logout(
                         logout -> logout
@@ -79,6 +76,12 @@ public class SecurityConfig {
                                 .tokenEndpoint()
                                 .accessTokenResponseClient(getToken())
                 );
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

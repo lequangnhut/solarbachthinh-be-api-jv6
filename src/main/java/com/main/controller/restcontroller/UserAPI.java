@@ -99,16 +99,6 @@ public class UserAPI {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("user/create-auth")
-    public Users addUser(@RequestBody RegisterDto registerDto) {
-        // send mail
-        emailService.queueEmailRegister(registerDto);
-        // mapper và lưu đối tượng user
-        Users user = EntityDtoUtils.convertToEntity(registerDto, Users.class);
-        user.setAcctive(Boolean.FALSE);
-        return userService.register(user);
-    }
-
     @GetMapping("check-phone-profile/{phoneNumber}")
     public Map<String, Boolean> checkDuplicatePhone(@PathVariable String phoneNumber) {
         Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);

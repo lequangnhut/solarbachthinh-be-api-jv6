@@ -1,29 +1,45 @@
 package com.main.service.impl;
 
+import com.main.dto.security.LoginDto;
 import com.main.entity.Roles;
 import com.main.entity.Users;
 import com.main.repository.RoleRepository;
 import com.main.repository.UserRepository;
+import com.main.security.jwt.JwtUtilities;
 import com.main.service.UserService;
 import com.main.utils.RandomUtils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    RoleRepository roleRepository;
+    private JwtUtilities jwtUtilities;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<Users> findAllUser() {
@@ -42,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.findUserByEmail(email);
     }
 
     @Override
@@ -57,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users register(Users users) {
-        users.setPasswords(passwordEncoder.encode(users.getPasswords()));
+        users.setPassword(passwordEncoder.encode(users.getPassword()));
         users.setToken(RandomUtils.RandomToken(20));
         users.setDateCreated(new Timestamp(System.currentTimeMillis()));
 
@@ -71,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users save(Users users) {
-        users.setPasswords(passwordEncoder.encode(users.getPasswords()));
+        users.setPassword(passwordEncoder.encode(users.getPassword()));
         users.setToken(RandomUtils.RandomToken(20));
         users.setDateCreated(new Timestamp(System.currentTimeMillis()));
 
@@ -89,11 +105,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean findByIdAndPasswords(int userId, String currentPass) {
-        return userRepository.findByIdAndPasswords(userId, currentPass);
-    }
-
-    @Override
     public Users delete(int userId) {
         Users users = findById(userId);
         if (users != null) {
@@ -108,13 +119,23 @@ public class UserServiceImpl implements UserService {
         if (users == null) {
             return null;
         }
-        users.setPasswords(password);
+        users.setPassword(password);
         return userRepository.save(users);
     }
 
     @Override
     public Users findUserByRoleAndActive(String email) {
         return userRepository.findUserByRoleAndActive(email);
+    }
+
+    @Override
+    public String authenticateLogin(LoginDto loginDto) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Users user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        List<String> rolesNames = new ArrayList<>();
+        user.getRoles().forEach(r -> rolesNames.add(r.getNameRole()));
+        return jwtUtilities.generateToken(user.getEmail(), rolesNames);
     }
 
     private Roles checkRoleExist() {

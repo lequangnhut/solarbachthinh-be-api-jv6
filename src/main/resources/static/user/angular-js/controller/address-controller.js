@@ -67,7 +67,7 @@ solar_app.controller('address_controller', function ($scope, $http, $timeout, $w
             toDistrict: $scope.address.districtName.DistrictName,
             toWard: $scope.address.wardName.WardName,
             toAddress: $scope.address.address,
-            isActive: $scope.address.isActive
+            isActive: true
         }
 
         AddressService.submitAddress(data).then(function successCallback() {

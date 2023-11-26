@@ -109,7 +109,7 @@
                                     <input type="password"
                                            class="form-control"
                                            name="password"
-                                           ng-model="user.passwords"
+                                           ng-model="user.password"
                                            id="passwordSignup"
                                            ng-class="{ 'is-invalid': signupForm.password.$invalid && signupForm.password.$touched, 'is-valid': signupForm.password.$valid && signupForm.password.$touched }"
                                            required
@@ -135,7 +135,7 @@
                                            ng-class="{ 'is-invalid': signupForm.passwordConfirm.$invalid && signupForm.passwordConfirm.$touched, 'is-valid': signupForm.passwordConfirm.$valid && signupForm.passwordConfirm.$touched }"
                                            name="passwordConfirm"
                                            ng-model="user.passwordConfirm"
-                                           ng-pattern="user.passwords"
+                                           ng-pattern="user.password"
                                            id="passwordConfirm"
                                            required
                                            ng-minlength="6"

@@ -261,15 +261,15 @@
                                 <strong>Trạng thái thanh toán:</strong>
                                 <span class="float-end">
                                 {{
-                                    order.paymentStatus === 0 ? 'Đã thanh toán' :
-                                            order.paymentStatus === 1 ? 'Chưa thanh toán' :
+                                    order.paymentStatus === 0 ? 'Chưa thanh toán' :
+                                            order.paymentStatus === 1 ? 'Đã thanh toán' :
                                                     order.paymentStatus === 2 ? 'Thanh toán thất bại' : 'Trạng thái không xác định'
                                     }}
                                 </span>
                             </p>
                             <p class="form-control-plaintext">
                                 <strong>Hình thức thanh toán:</strong>
-                                <span class="float-end">{{order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}</span>
+                                <span class="float-end">{{order.paymentType ? 'Thanh toán khi nhận hàng (COD)' : 'Thanh toán qua ví VNPAY'}}</span>
                             </p>
                             <p class="form-control-plaintext">
                                 <strong>Thời gian đặt hàng:</strong>
@@ -382,7 +382,7 @@
                         ng-if="order.orderStatus == 'Đang vận chuyển'"
                         ng-click="cancelOrderAdminByCustomer(order.id)"
                         class="btn btn-warning">
-                    Huỷ bởi người mua
+                    Không nhận hàng
                 </button>
 
                 <!--Đang vận chuyển-->

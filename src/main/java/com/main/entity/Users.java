@@ -32,8 +32,8 @@ public class Users {
     private String email;
 
     @Basic
-    @Column(name = "passwords", nullable = false, length = 100)
-    private String passwords;
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
 
     @Basic
     @Column(name = "fullname", nullable = false, length = 100)

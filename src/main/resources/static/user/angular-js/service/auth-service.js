@@ -1,19 +1,38 @@
 solar_app.service('AuthService', function ($http) {
-    this.loginAuth = function (email, password) {
+
+    this.loginAuthenticate = function (data) {
         return $http({
             method: 'POST',
-            url: '/dang-nhap',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            data: 'username=' + email + '&password=' + password
+            url: API_User + '/login/authenticate',
+            data: data
         })
     };
+
+    this.getCurrentUser = function (token) {
+        const tokenString = JSON.stringify(token);
+        const tokenObject = JSON.parse(tokenString);
+        const jwtToken = tokenObject.token;
+
+        return $http({
+            method: 'GET',
+            url: API_User + '/request-client',
+            headers: {
+                'Authorization': jwtToken
+            }
+        });
+    };
+
+    this.extractTokenLogin = function (email) {
+        return $http({
+            method: 'GET',
+            url: API_User + '/redirectUrl/' + email,
+        });
+    }
 
     this.creatAuth = function (authData) {
         return $http({
             method: 'POST',
-            url: API_User + '/create-auth',
+            url: API_User + '/register',
             data: authData
         })
     };

@@ -114,7 +114,7 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http) {
 
     $scope.confirmOrderAdmin = function (orderId) {
         Swal.fire({
-            title: 'Cảnh báo ?',
+            title: 'Xác nhận !',
             text: "Bạn có chắc chắn muốn xác nhận đơn hàng " + orderId + " không ?",
             icon: 'warning',
             showCancelButton: true,
@@ -139,7 +139,7 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http) {
 
     $scope.deliveredOrderAdmin = function (orderId) {
         Swal.fire({
-            title: 'Cảnh báo ?',
+            title: 'Xác nhận !',
             text: "Bạn có chắc chắn muốn xác nhận đơn hàng " + orderId + " giao thành công không ?",
             icon: 'warning',
             showCancelButton: true,
@@ -164,7 +164,7 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http) {
 
     $scope.cancelOrderAdmin = function (orderId) {
         Swal.fire({
-            title: 'Cảnh báo ?',
+            title: 'Xác nhận !',
             text: "Bạn có chắc chắn muốn huỷ đơn hàng " + orderId + " không ?",
             icon: 'warning',
             showCancelButton: true,
@@ -189,7 +189,7 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http) {
 
     $scope.cancelOrderAdminByCustomer = function (orderId) {
         Swal.fire({
-            title: 'Cảnh báo ?',
+            title: 'Xác nhận !',
             text: "Bạn có chắc chắn muốn huỷ đơn hàng " + orderId + " không ?",
             icon: 'warning',
             showCancelButton: true,
