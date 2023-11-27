@@ -3,6 +3,7 @@ package com.main.controller.admin;
 import com.main.dto.UsersDto;
 import com.main.entity.Roles;
 import com.main.entity.Users;
+import com.main.service.HistoryService;
 import com.main.service.RoleService;
 import com.main.service.UserService;
 import com.main.utils.EncodeUtils;
@@ -26,6 +27,9 @@ public class UserControllerAD {
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    HistoryService historyService;
 
     @Autowired
     HttpSession session;
@@ -59,6 +63,7 @@ public class UserControllerAD {
         Users users = EntityDtoUtils.convertToEntity(usersDto, Users.class);
         userService.save(users);
         session.setAttribute("toastSuccess", "Thêm thành công!");
+        historyService.addHistory("Thêm tài khoản");
         successMessage = true;
         return "views/admin/page/crud/account/account-add";
     }
@@ -78,6 +83,7 @@ public class UserControllerAD {
         userService.update(EntityDtoUtils.convertToEntity(usersDto, Users.class));
 
         session.setAttribute("toastSuccess", "Cập nhật thành công !");
+        historyService.addHistory("Cập nhật tài khoản");
         return "redirect:/quan-tri/tai-khoan";
     }
 
@@ -87,6 +93,7 @@ public class UserControllerAD {
         users.setAcctive(Boolean.FALSE);
         userService.update(users);
         session.setAttribute("toastSuccess", "Xoá thành công !");
+        historyService.addHistory("Xóa tài khoản");
         return "redirect:/quan-tri/tai-khoan";
     }
 

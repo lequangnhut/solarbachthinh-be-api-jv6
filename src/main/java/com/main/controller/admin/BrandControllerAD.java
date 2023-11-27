@@ -52,7 +52,7 @@ public class BrandControllerAD {
     }
 
     @GetMapping("them-thuong-hieu")
-    public String showAddBrands(@ModelAttribute ProductBrandsDto productBrandsDto ,Model model) {
+    public String showAddBrands(@ModelAttribute ProductBrandsDto productBrandsDto, Model model) {
         model.addAttribute("productBrandsDto", productBrandsDto);
         return "views/admin/page/crud/brand/brand-add";
     }
@@ -69,6 +69,7 @@ public class BrandControllerAD {
 
             productBrandService.save(saveBrands);
             session.setAttribute("toastSuccess", "Thêm thương hiệu thành công !");
+            historyService.addHistory("Thêm thương hiệu");
             return "redirect:/quan-tri/danh-sach-thuong-hieu/them-thuong-hieu";
         }
     }
@@ -76,11 +77,12 @@ public class BrandControllerAD {
     @GetMapping("sua-thuong-hieu/{id}")
     public String showEditBrand(@ModelAttribute ProductBrandsDto productBrandsDto,
                                 @PathVariable("id") String id,
-                                Model model){
+                                Model model) {
         model.addAttribute("productBrandsDto", productBrandsDto);
         model.addAttribute("infoBrand", productBrandService.findByProductBrandId(id));
         return "views/admin/page/crud/brand/brand-edit";
     }
+
     @PostMapping("sua-thuong-hieu/{id}")
     public String saveEditBrands(@ModelAttribute ProductBrandsDto productBrandsDto,
                                  @PathVariable("id") String id,
@@ -90,14 +92,15 @@ public class BrandControllerAD {
             model.addAttribute("brand", brands);
             return "views/admin/page/crud/brand/brand-edit";
         } else {
-            if(brands.isPresent()){
+            if (brands.isPresent()) {
                 ProductBrands save = EntityDtoUtils.convertToEntity(productBrandsDto, ProductBrands.class);
                 productBrandsDto.setId(id);
                 productBrandService.save(save);
                 model.addAttribute("brand", brands);
                 session.setAttribute("toastSuccess", "Cập nhật thương hiệu thành công");
+                historyService.addHistory("Cập nhật thương hiệu");
                 return "redirect:/quan-tri/danh-sach-thuong-hieu";
-            }else{
+            } else {
                 session.setAttribute("toastFailed", "Mã thương hiệu không tồn tại");
                 return "views/admin/page/crud/brand/brand-edit";
             }
@@ -106,19 +109,20 @@ public class BrandControllerAD {
     }
 
     @GetMapping("xoa-thuong-hieu/{id}")
-    public String deleteBrands(@PathVariable("id") String id){
+    public String deleteBrands(@PathVariable("id") String id) {
         boolean brandsExist = productBrandService.doesProductBrandExist(id);
 
-        if(brandsExist){
+        if (brandsExist) {
             ProductBrands brands = productBrandService.findByProductBrandId(id);
             ProductBrandsDto productBrandsDto = EntityDtoUtils.convertToDto(brands, ProductBrandsDto.class);
             productBrandsDto.setIsStatusDelete("Ngưng hợp tác");
 
             ProductBrands save = EntityDtoUtils.convertToEntity(brands, ProductBrands.class);
             productBrandService.save(save);
-            session.setAttribute("toastSuccess", "Cập nhật thương hiệu thành công");
+            session.setAttribute("toastSuccess", "Xóa thương hiệu thành công");
+            historyService.addHistory("Xóa thương hiệu");
             return "redirect:/quan-tri/danh-sach-thuong-hieu";
-        }else{
+        } else {
             session.setAttribute("toastFailed", "Mã thương hiệu không tồn tại");
             return "redirect:/quan-tri/danh-sach-thuong-hieu";
         }

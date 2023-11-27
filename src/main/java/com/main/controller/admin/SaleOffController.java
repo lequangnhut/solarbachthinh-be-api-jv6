@@ -69,12 +69,12 @@ public class SaleOffController {
             if (saleOffService.doseExitsProductId(id)) {
                 saleOff = saleOffService.findByProductId(id);
 
-                responseObject = new ResponseObject("200" , "Đã tìm thấy thông tin sản phẩm", saleOff);
+                responseObject = new ResponseObject("200", "Đã tìm thấy thông tin sản phẩm", saleOff);
             } else {
-                responseObject = new ResponseObject("200" , "Đã tìm thấy thông tin sản phẩm", null);
+                responseObject = new ResponseObject("200", "Đã tìm thấy thông tin sản phẩm", null);
             }
         } else {
-            responseObject = new ResponseObject("404" , "Lỗi không tìm thấy sản phẩm", null);
+            responseObject = new ResponseObject("404", "Lỗi không tìm thấy sản phẩm", null);
         }
 
         return responseObject;
@@ -120,6 +120,7 @@ public class SaleOffController {
                 System.out.println(saleOffDto.getIsActive());
                 saleOffService.save(saleOff);
                 responseObject = new ResponseObject("200", "Thêm giảm giá sản phẩm thành công!", null);
+                historyService.addHistory("Thêm giảm giá");
                 return responseObject;
             } else {
                 saleOffDto.setId(saleOffService.findByProductId(saleOffDto.getProductId()).getId());
@@ -138,6 +139,7 @@ public class SaleOffController {
                 System.out.println(saleOffDto.getIsActive());
                 saleOffService.save(saleOff);
                 responseObject = new ResponseObject("201", "Sửa giảm giá sản phẩm thành công!", null);
+                historyService.addHistory("Cập nhật giảm giá");
                 return responseObject;
             }
         }
@@ -168,11 +170,12 @@ public class SaleOffController {
     public String deleteSaleOffIdProduct(@PathVariable("id") String id, Model model) {
         SaleOff saleOff = saleOffService.findByProductId(id);
 
-        if(saleOff.getProductId() != null){
+        if (saleOff.getProductId() != null) {
             saleOffService.delete(saleOff);
             session.setAttribute("toastSuccess", "Xóa giảm giá thành công");
+            historyService.addHistory("Xóa giảm giá");
             return "redirect:/quan-tri/giam-gia-san-pham";
-        }else{
+        } else {
             session.setAttribute("toastFailed", "Không tìm thấy thông tin sản phẩm");
             return "redirect:/quan-tri/giam-gia-san-pham";
         }

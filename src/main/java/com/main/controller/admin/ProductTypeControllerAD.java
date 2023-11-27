@@ -3,6 +3,7 @@ package com.main.controller.admin;
 import com.main.dto.ProductTypesDto;
 import com.main.entity.ProductCategories;
 import com.main.entity.ProductTypes;
+import com.main.service.HistoryService;
 import com.main.service.ProductCategoryService;
 import com.main.service.ProductTypeService;
 import com.main.utils.EntityDtoUtils;
@@ -23,6 +24,8 @@ public class ProductTypeControllerAD {
 
     @Autowired
     ProductCategoryService productCategoryService;
+    @Autowired
+    HistoryService historyService;
 
     @Autowired
     HttpSession session;
@@ -60,6 +63,7 @@ public class ProductTypeControllerAD {
         productTypeService.save(productTypes);
 
         session.setAttribute("toastSuccess", "Thêm thể loại thành công !");
+        historyService.addHistory("Thêm thể loại");
         return "redirect:/quan-tri/the-loai";
     }
 
@@ -71,6 +75,7 @@ public class ProductTypeControllerAD {
         productTypeService.save(productTypes);
 
         session.setAttribute("toastSuccess", "Cập nhật thể loại thành công !");
+        historyService.addHistory("Cập nhật thể loại");
         return "redirect:/quan-tri/the-loai";
     }
 
@@ -81,6 +86,7 @@ public class ProductTypeControllerAD {
         productTypeService.save(productTypes);
 
         session.setAttribute("toastSuccess", "Xoá thể loại thành công !");
+        historyService.addHistory("Xóa thể loại");
         return "redirect:/quan-tri/the-loai";
     }
 }

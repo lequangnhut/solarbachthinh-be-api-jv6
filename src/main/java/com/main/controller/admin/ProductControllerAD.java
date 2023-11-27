@@ -64,7 +64,6 @@ public class ProductControllerAD {
 
     List<Products> productsList = new ArrayList<>();
 
-    Users users = new Users();
     Map<String, String> response = new HashMap<>();
 
     @GetMapping()
@@ -88,11 +87,11 @@ public class ProductControllerAD {
     @PostMapping("them-san-pham")
     @ResponseBody
     public ResponseObject saveProduct(@Validated @ModelAttribute ProductsDto productsDto, BindingResult bindingResult,
-                              @RequestParam(value = "file1", required = false) MultipartFile file01,
-                              @RequestParam(value = "file2", required = false) MultipartFile file02,
-                              @RequestParam(value = "file3", required = false) MultipartFile file03,
-                              @RequestParam(value = "file4", required = false) MultipartFile file04,
-                              Model model) {
+                                      @RequestParam(value = "file1", required = false) MultipartFile file01,
+                                      @RequestParam(value = "file2", required = false) MultipartFile file02,
+                                      @RequestParam(value = "file3", required = false) MultipartFile file03,
+                                      @RequestParam(value = "file4", required = false) MultipartFile file04,
+                                      Model model) {
         ResponseObject responseObject = new ResponseObject();
         String price = request.getParameter("price");
         if (bindingResult.hasErrors()) {
@@ -215,6 +214,7 @@ public class ProductControllerAD {
                     productImageService.save(productImages);
                 }
                 responseObject = new ResponseObject("200", "Thêm sản phẩm thành công", null);
+                historyService.addHistory("Thêm sản phẩm");
                 return responseObject;
             } catch (Exception io) {
                 responseObject = new ResponseObject("404", "Lỗi không thể thêm dữ liệu vui lòng đợi trong giây lát", null);
@@ -376,6 +376,7 @@ public class ProductControllerAD {
                     productImageService.save(productImages);
                 }
                 responseObject = new ResponseObject("200", "Sửa sản phẩm thành công", null);
+                historyService.addHistory("Cập nhật sản phẩm");
                 return responseObject;
             } catch (Exception io) {
                 responseObject = new ResponseObject("404", "Lỗi không thể thêm dữ liệu vui lòng đợi trong giây lát", null);
@@ -388,13 +389,14 @@ public class ProductControllerAD {
     }
 
     @GetMapping("xoa-san-pham/{id}")
-    public String deleteProducts(@PathVariable("id") String id){
+    public String deleteProducts(@PathVariable("id") String id) {
         boolean status = productService.doesProductExist(id);
         if (status) {
             Products product = productService.findProductByProductId(id);
             product.setIsStatusDelete("Ngừng kinh doanh");
             productService.save(product);
             session.setAttribute("toastSuccess", "Xóa sản phẩm thành công !");
+            historyService.addHistory("Xóa sản phẩm");
             return "redirect:/quan-tri/san-pham";
         } else {
             session.setAttribute("toastFailed", "Xóa sản phẩm thất bại! không tìm thấy ID");
@@ -403,7 +405,7 @@ public class ProductControllerAD {
     }
 
     @ModelAttribute("isStatusUpdateProduct")
-    public Boolean showAlert (Boolean status) {
+    public Boolean showAlert(Boolean status) {
         return status;
     }
 

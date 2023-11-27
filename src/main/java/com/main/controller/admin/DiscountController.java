@@ -91,6 +91,7 @@ public class DiscountController {
         }
 
         SessionUtils.setAttribute("toastSuccess", "Thêm mã giảm giá thành công!");
+        historyService.addHistory("Thêm mã giảm giá");
         return "redirect:/quan-tri/giam-gia";
     }
 
@@ -129,6 +130,7 @@ public class DiscountController {
                 }
 
                 SessionUtils.setAttribute("toastSuccess", "Sửa mã giảm giá thành công!");
+                historyService.addHistory("Cập nhật mã giảm giá");
                 return "redirect:/quan-tri/giam-gia";
             }
         } else {
@@ -144,6 +146,7 @@ public class DiscountController {
         discountService.save(discounts);
 
         session.setAttribute("toastSuccess", "Xoá mã giảm giá thành công !");
+        historyService.addHistory("Xóa mã giảm giá");
         return "redirect:/quan-tri/giam-gia";
     }
 
