@@ -52,8 +52,114 @@
 </section>
 <!-- Navbar End -->
 
+
+<!-- Flash Sale Start -->
+<div class="container-xxl" style="padding-top: 3rem !important; padding-bottom: 10px;" ng-if="beingsale.length > 0">
+    <div class="container">
+        <!--Start Tấm pin-->
+        <div class="product_template mt-3 mb-4 wow fadeInUp" data-wow-delay="fade-up" ng-controller="swiper">
+            <div class="title_cart d-flex align-items-center mb-3" style="background-color: #f3d984">
+                <div class="title-card-box d-flex align-items-center h-100">
+                    <div class="category_product" style="background-color: #ea6d38; border-radius: 0 50px 0 0; width: 270px">
+                        <span class="text-white fw-bold" style="font-size: large;">GIAN HÀNG KHUYẾN MÃI</span>
+                    </div>
+                </div>
+                <div class="see_more">
+                    <em style="color: #7a3b2a;font-style: italic;font-size: large;" href="#">
+                        Nhanh tay để nhận được nhiều ưu đãi!
+                    </em>
+                </div>
+            </div>
+            <div class="slide_product">
+                <!-- Swiper -->
+                <div class="swiper mswiper" id="product_pin">
+                    <div class="swiper-wrapper" style="width: 50% !important;">
+                        <div class="swiper-slide" ng-repeat="sale in beingsale" style="width: 404px; border-radius: 10px;
+                        background-color: rgba(243, 217, 132, 0.1);
+                        border: 3px dashed darkorange; margin-right: 30px;">
+                            <div class="item">
+                                <div class="item-product align-items-center pt-1" style="margin-bottom: 100px; width:430px">
+                                    <div class="img d-flex justify-content-center">
+                                        <img ng-src="/upload/{{sale[0].productImagesById[0].imagePath}}"
+                                             class="img-fluid" style="width: 200px" alt="...">
+                                    </div>
+                                    <div class="card-body-product">
+                                        <p class="name-product mb-1" style=" font-size: 18px; color: #7a4738;
+                                           text-shadow: 1px 1px #b4b4b4;">
+                                            {{sale[0].productName}}
+                                        </p>
+                                        <div class="content-product mb-2">
+                                            <span class="text-dark mb-0" style="font-size: 18px;">
+                                                Giá cũ: <del>{{formatPrice(sale[0].price)}} đ</del>
+                                            </span>
+                                            <span class="fw-bolder mb-2" style="font-size: larger; color: #f03658;">
+                                                Giá mới:
+                                                <b>{{formatPrice(sale[0].productSaleOffById[0].saleValue)}} đ</b>
+                                            </span>
+                                            <div class="row col-8 g-0 cdt mt-1" style="display: inline-flex;" id="countdown-timer">
+                                                <div class="col-4 d-flex justify-content-center"
+                                                     style="margin-left: -9px;">
+                                                    <h4 id="cdt-days-{{$index}}" style=" background-color: darkblue;
+                                                        color: white; padding: 8px; border-radius: 5px;" >
+                                                    </h4>
+                                                </div>
+                                                <div class="col-2 d-flex justify-content-center">
+                                                    <h4 id="cdt-hours-{{$index}}" style="background-color: #ed143dd9;
+                                                    color: white; padding: 8px; border-radius: 5px;">
+                                                    </h4>
+                                                </div>
+                                                <div class="col-1 d-flex justify-content-center">
+                                                    <h4 id="a" style="color: #ed143dd9; padding: 8px; border-radius: 5px;">:
+                                                    </h4>
+                                                </div>
+                                                <div class="col-2 d-flex justify-content-center">
+                                                    <h4 id="cdt-minutes-{{$index}}" style="background-color: #ed143dd9;
+                                                    color: white; padding: 8px; border-radius: 5px;">
+                                                    </h4>
+                                                </div>
+                                                <div class="col-1 d-flex justify-content-center">
+                                                    <h4 id="c" style="color: #ed143dd9; padding: 8px; border-radius: 5px;">:
+                                                    </h4>
+                                                </div>
+                                                <div class="col-2 d-flex justify-content-center">
+                                                    <h4 id="cdt-seconds-{{$index}}" style="background-color: #ed143dd9;
+                                                    color: white; padding: 8px; border-radius: 5px;">
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                            <span class="fw-bolder mb-2" id="countdown-{{$index}}"
+                                                  style="font-size: inherit;color: #F3D98419;">...
+                                            </span>
+                                        </div>
+                                        <div class="btn-add-cart mt-0">
+                                            <a href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{sale[0].id}}"
+                                               scroll-to-top role="button" type="submit" class="btn btn-primary w-100"
+                                               style="background-color: #ea6d38;border: none;font-size: 20px;
+                                               max-width: max-content;padding-left: 70px;padding-right: 70px;">
+                                                Xem chi tiết
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-button-next mt-1" style="border-radius: 50%; color: #ea6d38;
+                                text-align: center; border: 0; font-weight: bolder; padding: 30px;  width: 40px;  height: 40px;">
+                    </div>
+                    <div class="swiper-button-prev mt-1" style="border-radius: 50%; color: #ea6d38;
+                                text-align: center; border: 0; font-weight: bolder; padding: 30px;  width: 40px;  height: 40px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Tấm pin-->
+    </div>
+</div>
+<!-- Flash Sale End -->
+
 <!-- Product Start -->
-<div class="container-xxl py-5">
+<div class="container-xxl mt-0">
     <div class="container">
         <div class="product_template mt-4 mb-4 wow fadeInUp" data-wow-delay="fade-up"
              ng-repeat="category in categories" ng-if="category.isActive && category.productsTypeProducts.length != 0">
@@ -62,7 +168,7 @@
             <div class="title_cart d-flex align-items-center mb-3">
                 <div class="title-card-box d-flex align-items-center h-100">
                     <div class="category_product">
-                        <span ng-bind="category.categoryName"></span>
+                        <span ng-bind="category.categoryName" class="fw-bold"></span>
                     </div>
                     <label class="mx-3">
                         <select class="form-select" id="selectedCategory_products" ng-model="selectedProductTypeId"

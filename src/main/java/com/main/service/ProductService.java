@@ -30,4 +30,8 @@ public interface ProductService {
 
     List<Object[]> findByCategoryIdAndProductTypeId(int categoryId, int productTypeId);
 
+    Products findCloserSale();
+
+    List<Object[]> findAllProductBeingSale();
+
 }
