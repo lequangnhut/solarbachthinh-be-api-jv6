@@ -2,6 +2,7 @@ package com.main.controller.admin;
 
 import com.main.dto.ProductCategoriesDto;
 import com.main.entity.ProductCategories;
+import com.main.service.HistoryService;
 import com.main.service.ProductCategoryService;
 import com.main.utils.EntityDtoUtils;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +24,9 @@ public class CategoryControllerAD {
 
     @Autowired
     ProductCategoryService productCategoryService;
+
+    @Autowired
+    HistoryService historyService;
 
     @Autowired
     HttpSession session;
@@ -73,7 +77,7 @@ public class CategoryControllerAD {
         ProductCategories categories = EntityDtoUtils.convertToEntity(categoryDTO, ProductCategories.class);
         productCategoryService.save(categories);
         session.setAttribute("toastSuccess", "Thêm danh mục thành công!");
-
+        historyService.addHistory("Thêm danh mục");
         return "redirect:/quan-tri/danh-muc";
     }
 
@@ -99,6 +103,7 @@ public class CategoryControllerAD {
         ProductCategories categories = EntityDtoUtils.convertToEntity(categoryDTO, ProductCategories.class);
         productCategoryService.save(categories);
         session.setAttribute("toastSuccess", "Cập nhật thành công!");
+        historyService.addHistory("Cập nhật danh mục");
         return "redirect:/quan-tri/danh-muc";
     }
 
@@ -109,6 +114,7 @@ public class CategoryControllerAD {
         productCategoryService.save(categories);
 
         session.setAttribute("toastSuccess", "Xoá danh mục thành công!");
+        historyService.addHistory("Xóa danh mục");
         return "redirect:/quan-tri/danh-muc";
     }
 

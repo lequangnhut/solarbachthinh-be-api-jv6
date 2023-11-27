@@ -20,7 +20,7 @@
         <div th:replace="~{views/admin/components/header}"></div>
         <!--  Header End -->
 
-         <div class="container-fluid" style="max-width: 1900px;">
+        <div class="container-fluid" style="max-width: 1900px;">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title fw-semibold mb-4 mt-2">Lịch sử cập nhật sản phẩm</h5>
@@ -33,7 +33,6 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Người cập nhật</th>
                                         <th scope="col">Ngày cập nhật</th>
-                                        <th scope="col">Giờ cập nhật</th>
                                         <th scope="col">Mô tả cập nhật</th>
                                     </tr>
                                     </thead>
@@ -41,8 +40,7 @@
                                     <tr th:each="history,start : ${histories}">
                                         <th th:text="${start.index + 1}"></th>
                                         <th th:text="${history.usersByUserId.fullname}"></th>
-                                        <th th:text="${#dates.format(history.dateCreated, 'dd-MM-yyyy')}"></th>
-                                        <th th:text="${#dates.format(history.dateCreated, 'HH:mm:ss')}"></th>
+                                        <th th:text="${#dates.format(history.dateCreated, 'dd-MM-yyyy HH:mm:ss')}"></th>
                                         <th th:text="${history.activity}"></th>
                                     </tr>
                                     </tbody>

@@ -9,5 +9,5 @@ public interface HistoryService {
 
     List<HistoryUpdate> findAll();
 
-    void addHistoryUpdateProducts(Users users, String active);
+    void addHistory(String active);
 }
