@@ -37,10 +37,10 @@
                                         <th scope="col">Email</th>
                                         <th scope="col">Họ và tên</th>
                                         <th scope="col">Số điện thoại</th>
-                                        <th scope="col">Địa chi</th>
                                         <th scope="col">Ngày tạo</th>
                                         <th scope="col">Vai trò</th>
-                                        <th scope="col">Hoạt Động</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -51,11 +51,22 @@
                                         <td th:text="${account.fullname}" class="hidden-text-table"
                                             th:title="${account.fullname}"></td>
                                         <td th:text="${account.phoneNumber}"></td>
-                                        <td th:text="${account.address + ', ' + account.getWardName + ', ' + account.getDistrictName + ', ' + account.getProvinceName}"
-                                            class="hidden-text-table"
-                                            th:title="${account.address + ', ' + account.getWardName + ', ' + account.getDistrictName + ', ' + account.getProvinceName}"></td>
                                         <td th:text="${#dates.format(account.dateCreated, 'dd/MM/yyyy')}"></td>
-                                        <td th:text="${account.roles[0].nameRole}"></td>
+                                        <td th:if="${account.roles[0].nameRole == 'ROLE_USER'}">
+                                            Khách hàng
+                                        </td>
+                                        <td th:if="${account.roles[0].nameRole == 'ROLE_STAFF'}">
+                                            Nhân viên
+                                        </td>
+                                        <td th:if="${account.roles[0].nameRole == 'ROLE_ADMIN'}">
+                                            Quản trị
+                                        </td>
+                                        <td th:if="${account.acctive == true}">
+                                            <i class='bx bxs-circle' style='color:#3a9b54'></i> Đang hoạt động
+                                        </td>
+                                        <td th:if="${account.acctive == false}">
+                                            <i class='bx bxs-circle' style='color:#c71e1e'></i> Ngưng hoạt động
+                                        </td>
                                         <td>
                                             <div class="btn-group">
                                                 <a class="btn btn-warning ms-2"

@@ -71,9 +71,12 @@ public class AddressAPI {
     private void oneIsActiveTrue(int userId, Address address) {
         if (address.getIsActive()) {
             List<Address> userAddresses = addressService.findAllByUserId(userId);
-            for (Address userAddress : userAddresses) {
-                userAddress.setIsActive(false);
-                addressService.save(userAddress);
+
+            if (userAddresses != null) {
+                for (Address userAddress : userAddresses) {
+                    userAddress.setIsActive(false);
+                    addressService.save(userAddress);
+                }
             }
         }
     }

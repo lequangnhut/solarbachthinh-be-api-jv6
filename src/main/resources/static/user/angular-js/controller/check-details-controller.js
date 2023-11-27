@@ -325,7 +325,7 @@ solar_app.controller('check_details_controller', function ($scope, $http, $timeo
         let discountId = $scope.appliedDiscount.id;
 
         Swal.fire({
-            title: 'Cảnh báo ?',
+            title: 'Xác nhận !',
             text: "Bạn có chắc chắn muốn xoá mã giảm giá " + discountId + " này không ?",
             icon: 'warning',
             showCancelButton: true,

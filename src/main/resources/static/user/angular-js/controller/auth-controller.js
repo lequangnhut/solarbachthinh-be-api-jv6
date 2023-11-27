@@ -4,11 +4,34 @@ solar_app.controller('auth_controller', function ($scope, $http, AuthService) {
     $scope.phoneError = false;
 
     $scope.submit_login = function () {
-        let email = $scope.email;
-        let password = $scope.password;
+        let data = {
+            email: $scope.email,
+            password: $scope.password
+        }
 
-        AuthService.loginAuth(email, password).then(function successCallback() {
-            window.location.href = "/redirect";
+        AuthService.loginAuthenticate(data).then(function successCallback(response) {
+            let data = response.data;
+
+            if (data) {
+                if (data.token !== "false") {
+                    AuthService.getCurrentUser(data).then(function successCallback(response) {
+                        let email = response.data.username;
+                        let role = response.data.roles[0];
+
+                        if (role === 'ROLE_ADMIN') {
+                            toastAlert('warning', 'Không đủ quyền truy cập !');
+                        } else {
+                            AuthService.extractTokenLogin(email).then(function successCallback(response) {
+                                let message = response.data.message;
+                                toastAlert('success', message);
+                                window.location.href = '/';
+                            });
+                        }
+                    });
+                } else {
+                    toastAlert('warning', "Sai thông tin đăng nhập !");
+                }
+            }
         });
     };
 

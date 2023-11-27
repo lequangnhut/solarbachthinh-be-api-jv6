@@ -75,7 +75,7 @@ public class EmailServiceImpl implements EmailService {
 
                 Map<String, Object> variables = new HashMap<>();
                 variables.put("email", registerDto.getEmail());
-                variables.put("password", registerDto.getPasswords());
+                variables.put("password", registerDto.getPassword());
                 variables.put("full_name", registerDto.getFullname());
                 variables.put("phone_number", registerDto.getPhoneNumber());
                 variables.put("token", users.getToken());

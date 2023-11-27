@@ -52,36 +52,8 @@ public class AuthController {
         return "redirect:/#!xac-thuc-tai-khoan";
     }
 
-    // gán giá trị cho trang tạm để lưu session
-    @GetMapping("redirect")
-    public String pageRedirect(Principal principal) {
-        if (principal != null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
-            Users users = userService.findByEmail(userDetails.getUsername());
-
-            if (userDetails.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"))) {
-                if (users != null) {
-                    session.setAttribute(SessionAttr.CURRENT_USER, users);
-                    session.setAttribute("toastSuccess", "Đăng nhập thành công !");
-                    return "redirect:/quan-tri/dashboard";
-                }
-
-            } else if (userDetails.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_USER"))) {
-                if (users != null) {
-                    session.setAttribute(SessionAttr.CURRENT_USER, users);
-                    session.setAttribute("toastSuccess", "Đăng nhập thành công !");
-                    return "redirect:#!/trang-chu";
-                }
-            } else {
-                return "redirect:/error";
-            }
-        }
-        session.setAttribute("toastFailed", "Sai thông tin đăng nhập !");
-        return "redirect:#!/dang-nhap";
-    }
-
     @GetMapping("/login-google-success")
-    public String success(Principal principal, OAuth2AuthenticationToken oauth) {
+    public String loginWithGoogle(Principal principal, OAuth2AuthenticationToken oauth) {
         if (principal != null && oauth != null) {
             OAuth2User oauth2User = oauth.getPrincipal();
 
@@ -99,7 +71,7 @@ public class AuthController {
                 Users user = new Users();
                 user.setEmail(oauth2User.getAttribute("email"));
                 user.setFullname(oauth2User.getAttribute("name"));
-                user.setPasswords(RandomUtils.RandomToken(10));
+                user.setPassword(RandomUtils.RandomToken(10));
                 user.setPicture(oauth2User.getAttribute("picture"));
                 user.setAcctive(Boolean.TRUE);
 

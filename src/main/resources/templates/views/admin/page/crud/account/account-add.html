@@ -41,10 +41,10 @@
 
                                 <div class="form-floating mb-3">
                                     <input type="password" class="form-control"
-                                           id="password-edit-account" th:field="*{passwords}"
+                                           id="password-edit-account" th:field="*{password}"
                                            placeholder="name@gmail.com">
                                     <label for="password-edit-account">Mật khẩu</label>
-                                    <p th:if="${#fields.hasErrors('passwords')}" th:errors="*{passwords}"
+                                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
                                        class="text-danger mt-1"></p>
                                     <span class="text-danger" id="invalid-password"></span>
                                 </div>
@@ -67,26 +67,6 @@
                                     <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"
                                        class="text-danger mt-1"></p>
                                     <span class="text-danger" id="invalid-phone"></span>
-                                </div>
-
-                                <div class="form-floating mb-3">
-                                    <select class="form-select" id="gender-edit-account" th:field="*{gender}"
-                                            aria-label="Floating label select example">
-                                        <option selected value="true">Nam</option>
-                                        <option value="false">Nữ</option>
-                                    </select>
-                                    <label for="gender-edit-account">Giới Tính</label>
-                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('gender')}"
-                                          th:errors="*{gender}"></span>
-                                </div>
-
-                                <div class="form-floating mb-3">
-                                    <input type="date" class="form-control" id="birth-edit-account"
-                                           th:field="*{birth}">
-                                    <label for="birth-edit-account">Sinh Nhật</label>
-                                    <span class="text-danger invalid-form" th:if="${#fields.hasErrors('birth')}"
-                                          th:errors="*{birth}"></span>
-                                    <span class="text-danger" id="invalid-birth-account"></span>
                                 </div>
 
                                 <div class="form-floating mb-3">

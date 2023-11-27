@@ -1,5 +1,6 @@
 package com.main.service;
 
+import com.main.dto.security.LoginDto;
 import com.main.entity.Users;
 
 import java.util.List;
@@ -26,11 +27,11 @@ public interface UserService {
 
     Integer findIdByPhoneNumberAndNotCurrentUser(String phoneNumber, Integer userId);
 
-    boolean findByIdAndPasswords(int userId, String currentPass);
-
     Users delete(int userId);
 
     Users updatePass(int userId, String password);
 
-    Users findUserByRoleAndActive (String email);
+    Users findUserByRoleAndActive(String email);
+
+    String authenticateLogin(LoginDto loginDto);
 }
