@@ -39,6 +39,9 @@ public class OrderAPI {
     SaleOffService saleOffService;
 
     @Autowired
+    NotificationService notificationService;
+
+    @Autowired
     EmailService emailService;
 
     @Autowired
@@ -57,7 +60,9 @@ public class OrderAPI {
 
     @PostMapping("order/cancel-order")
     private void cancelOrder(@RequestBody CancelOrderDto cancelOrderDto) {
+        Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
         Orders order = orderService.findByOrderId(cancelOrderDto.getOrderId());
+
         order.setOrderStatus("Đã huỷ đơn");
         if (cancelOrderDto.getReason().equals("Mục khác...")) {
             order.setOrderNote(cancelOrderDto.getComments());
@@ -69,6 +74,9 @@ public class OrderAPI {
 
         emailService.queueEmailCancelOrderByCustomer(order);
         orderService.save(order);
+
+        // tao ra thông báo vào bảng notification
+        createNotification(order.getId(), users, "Đơn hàng " + order.getId() + " đã huỷ.");
     }
 
     @PostMapping(value = "order/create-order", consumes = {"application/json;charset=UTF-8"})
@@ -126,6 +134,9 @@ public class OrderAPI {
 
         // xoá giỏ hàng
         deleteCart(cartsList);
+
+        // tao ra thông báo vào bảng notification
+        createNotification(orderId, users, "Đơn hàng " + orderId + " đã tạo.");
     }
 
     // // tạo ra order item sau khi lưu đơn hàng
@@ -179,5 +190,16 @@ public class OrderAPI {
                 productService.save(product);
             }
         }
+    }
+
+    // lưu vào bảng thông báo để hiển thị thông báo ở admin
+    private void createNotification(String orderId, Users users, String message) {
+        NotificationOrder notification = new NotificationOrder();
+        notification.setOrderId(orderId);
+        notification.setUserId(users.getId());
+        notification.setMessage(message);
+        notification.setIsSeen(true);
+        notification.setDateCreated(new Timestamp(System.currentTimeMillis()));
+        notificationService.save(notification);
     }
 }

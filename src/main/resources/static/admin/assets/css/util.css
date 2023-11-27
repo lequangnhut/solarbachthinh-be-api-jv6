@@ -23,3 +23,14 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+/* Cho header admin*/
+.notification-container .delete-icon {
+    display: none;
+}
+
+.notification-container .dropdown-item:hover .delete-icon {
+    display: inline-block;
+    border: 0;
+    outline: 0;
+}
