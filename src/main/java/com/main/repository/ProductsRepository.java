@@ -46,4 +46,19 @@ public interface ProductsRepository extends JpaRepository<Products, String> {
     @Query(value = "SELECT calculatePercentageSoldForProduct(:productId) as percentage_sold", nativeQuery = true)
     Double calculatePercentageSoldForProduct(@Param("productId") String productId);
 
+    @Query("SELECT p, s, br FROM Products p " +
+            "JOIN p.productSaleOffById s  " +
+            "JOIN p.productBrandsByProductBrandId br " +
+            "WHERE s.endUse > NOW() " +
+            "ORDER BY s.endUse ASC " +
+            "LIMIT 1")
+    Products findCloserSale();
+
+    @Query("SELECT p, s, br FROM Products p " +
+            "JOIN p.productSaleOffById s  " +
+            "JOIN p.productBrandsByProductBrandId br " +
+            "WHERE s.endUse > NOW() and s.isActive = true " +
+            "ORDER BY s.endUse ASC ")
+    List<Object[]> findAllSaleProduct();
+
 }

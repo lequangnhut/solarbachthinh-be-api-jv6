@@ -67,4 +67,17 @@ solar_app.service('ProductService', function ($http) {
             url: API_Product + '/find-by-category-id-by-product-type-id/' + categoryId + '/' + productTypeId
         })
     }
+    this.findProductHasCloserSale = function() {
+        return $http({
+            method: 'GET',
+            url: API_Product + '/sale-off-closer'
+        })
+    }
+
+    this.findAllProductIsSale = function() {
+        return $http({
+            method: 'GET',
+            url: API_Product + '/all-sale-off-closer'
+        })
+    }
 });

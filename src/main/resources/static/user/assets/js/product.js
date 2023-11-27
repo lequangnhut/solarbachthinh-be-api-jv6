@@ -39,6 +39,7 @@ solar_app.controller("swiper", function ($scope, $timeout) {
 
         // Initialize other Swiper instances in a similar manner
         initializeSwiper("#product_light", {});
+        initializeSwiper("#product_sale", {});
         initializeSwiper("#network_inverter", { /* ... */});
         initializeSwiper("#hybrid_inverter", { /* ... */});
         initializeSwiper("#electricity_storage_battery", { /* ... */});

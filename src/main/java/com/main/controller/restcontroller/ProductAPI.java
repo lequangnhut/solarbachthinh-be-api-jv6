@@ -102,4 +102,15 @@ public class ProductAPI {
     public List<SaleOff> findAllSaleOff() {
         return saleOffService.findAll();
     }
+
+    @GetMapping("product/sale-off-closer")
+    public Products findProductCloserSale() {
+        return productService.findCloserSale();
+    }
+
+    @GetMapping("product/all-sale-off-closer")
+    public List<Object[]> findALProductCloserSale() {
+        return productService.findAllProductBeingSale();
+    }
+
 }

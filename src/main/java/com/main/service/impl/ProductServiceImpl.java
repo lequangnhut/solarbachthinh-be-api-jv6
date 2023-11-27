@@ -71,4 +71,14 @@ public class ProductServiceImpl implements ProductService {
         return productsRepository.findByCategoryIdAndProductTypeId(categoryId, productTypeId);
     }
 
+    @Override
+    public Products findCloserSale() {
+        return productsRepository.findCloserSale();
+    }
+
+    @Override
+    public List<Object[]> findAllProductBeingSale() {
+        return productsRepository.findAllSaleProduct();
+    }
+
 }

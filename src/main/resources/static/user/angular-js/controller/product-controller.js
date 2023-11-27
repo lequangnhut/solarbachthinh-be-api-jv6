@@ -1,4 +1,15 @@
-solar_app.controller('product', function ($scope, CategoryService, ProductService) {
+solar_app.controller('product', function ($scope, $rootScope, CategoryService, ProductService) {
+
+    $rootScope.$on('$locationChangeStart', function(event, next, current) {
+        // Kiểm tra nếu người dùng đang rời khỏi trang chủ
+        if (current.indexOf('#!/san-pham') !== -1 && next.indexOf('#!/') !== -1) {
+            leaveProductPage();
+        }
+    });
+
+    function leaveProductPage() {
+        clearInterval(countdownProductOff);
+    }
 
     let mySwiper;
 
@@ -177,11 +188,51 @@ solar_app.controller('product', function ($scope, CategoryService, ProductServic
     }
 
     //end search
+    ProductService.findAllProducts().then(function successCallback(response) {
+        // Lọc danh sách để chỉ giữ lại các giá trị duy nhất
+        $scope.producsNameOptions = Array.from(new Set(response.data.map(product => product.productName)));
+    });
 
-    ProductService.findAllProducts()
-        .then(function successCallback(response) {
-            // Lọc danh sách để chỉ giữ lại các giá trị duy nhất
-            $scope.producsNameOptions = Array.from(new Set(response.data.map(product => product.productName)));
-        });
+    //Từ chỗ này chị Thị quậy
+    var countdownProductOff;  // Biến toàn cục để lưu trữ interval ID
+
+    ProductService.findAllProductIsSale().then(function successCallback(response) {
+        $scope.beingsale = response.data;
+
+        for (let i = 0; i < $scope.beingsale.length; i++) {
+            const endTime = new Date($scope.beingsale[i][0].productSaleOffById[0].endUse).getTime();
+            (function (i) {
+                countdownProductOff = setInterval(function () {
+                    var now = new Date().getTime();
+                    var timeLeft = endTime - now;
+
+                    var days = Math.max(Math.floor(timeLeft / (1000 * 60 * 60 * 24)), 0);
+                    var hours = Math.max(Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), 0);
+                    var minutes = Math.max(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)), 0);
+                    var seconds = Math.max(Math.floor((timeLeft % (1000 * 60)) / 1000), 0);
+
+                    // Hàm để thêm số 0 trước các số lẻ
+                    function addLeadingZero(value) {
+                        return value < 10 ? "0" + value : value;
+                    }
+
+                    document.getElementById("cdt-days-" + i).innerHTML = addLeadingZero(days);
+                    document.getElementById("cdt-hours-" + i).innerHTML = addLeadingZero(hours);
+                    document.getElementById("cdt-minutes-" + i).innerHTML = addLeadingZero(minutes);
+                    document.getElementById("cdt-seconds-" + i).innerHTML = addLeadingZero(seconds);
+
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownProductOff);
+                        var countdownElement = document.getElementById("countdown-" + i);
+                        countdownElement.innerHTML = "Ưu đãi cho sản phẩm này đã kết thúc!";
+                        countdownElement.style.color = "#c7c7c7";
+                    }
+                }, 1000);
+            })(i);
+        }
+    }, function errorCallback(response) {
+        console.log(response.data);
+    });
+
 
 });
