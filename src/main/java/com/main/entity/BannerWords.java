@@ -24,5 +24,4 @@ public class BannerWords {
     @Basic
     @Column(name = "word", nullable = false, length = 10)
     private String word;
-
 }
