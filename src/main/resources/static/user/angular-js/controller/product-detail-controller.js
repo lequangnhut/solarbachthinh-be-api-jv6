@@ -17,11 +17,9 @@ solar_app.controller('product_details', function ($scope, $http, $timeout, $loca
 
     // lấy ra session user đang đăng nhập
     UserService.findUserBySession().then(function successCallback(response) {
-        if (response.data) {
+        if (response.status === 200) {
             $scope.session_user = response.data;
         }
-    }, function errorCallback(response) {
-        console.log(response.data);
     });
 
     // lấy ra danh sách danh mục
@@ -66,6 +64,41 @@ solar_app.controller('product_details', function ($scope, $http, $timeout, $loca
                 $scope.sale_off = saleOff;
             }
         });
+
+        // Hàm để thêm số 0 trước các số lẻ
+        function addLeadingZero(value) {
+            return value < 10 ? "0" + value : value;
+        }
+
+        function countdown() {
+            let saleOff = $scope.sale_off;
+
+            const now = new Date().getTime();
+            const endTime = new Date(saleOff.endUse).getTime();
+            const timeLeft = endTime - now;
+
+            const days = Math.max(Math.floor(timeLeft / (1000 * 60 * 60 * 24)), 0);
+            const hours = Math.max(Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), 0);
+            const minutes = Math.max(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)), 0);
+            const seconds = Math.max(Math.floor((timeLeft % (1000 * 60)) / 1000), 0);
+
+            $scope.$apply(function () {
+                $scope.daySale = addLeadingZero(days);
+                $scope.hourSale = addLeadingZero(hours);
+                $scope.minuteSale = addLeadingZero(minutes);
+                $scope.secondSale = addLeadingZero(seconds);
+            });
+
+            console.log(addLeadingZero(days))
+
+            if (timeLeft <= 0) {
+                clearInterval(countdownInterval);
+                console.log("Ưu đãi cho sản phẩm này đã kết thúc!");
+            }
+        }
+
+        // Gọi hàm đếm ngược mỗi giây
+        let countdownInterval = setInterval(countdown, 1000);
     }
 
     // trừ số lượng

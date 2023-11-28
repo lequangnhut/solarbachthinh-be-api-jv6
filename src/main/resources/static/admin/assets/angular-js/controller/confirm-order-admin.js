@@ -1,16 +1,5 @@
-let confirm_order = angular.module('confirm_order', []);
+solar_app_admin.controller('ConfirmOrderAdmin', function ($scope, $http) {
 
-let API_findAllOrder = '/quan-tri/api/findAllOrder';
-let API_findByOrderId = '/quan-tri/api/findByOrderId'
-let API_findOrderItemByOrderId = '/quan-tri/api/findOrderItemByOrderId';
-
-let API_CancelOrderByCustomer = '/quan-tri/api/cancelOrderByCustomer'
-let API_CancelOrder = '/quan-tri/api/cancelOrder'
-let API_ConfirmOrder = '/quan-tri/api/confirmOrder'
-let API_DeliveredOrder = '/quan-tri/api/deliveredOrder'
-let API_Discount = '/api/discount'
-
-confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http) {
     $scope.activeTab = 'confirm';
 
     $scope.setActiveTab = function (tab) {
@@ -210,21 +199,5 @@ confirm_order.controller('ConfirmOrderAdmin', function ($scope, $http) {
                 });
             }
         });
-    };
-});
-
-confirm_order.filter('vietnameseDateTimeAdmin', function () {
-    return function (isoDateTime) {
-        const date = new Date(isoDateTime);
-
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        const seconds = date.getSeconds().toString().padStart(2, '0');
-
-        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
     };
 });

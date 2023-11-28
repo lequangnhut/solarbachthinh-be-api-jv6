@@ -1,5 +1,6 @@
 package com.main.controller.admin;
 
+import com.main.dto.APIUsersDto;
 import com.main.dto.UsersDto;
 import com.main.entity.Roles;
 import com.main.entity.Users;
@@ -11,12 +12,15 @@ import com.main.utils.EntityDtoUtils;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("quan-tri/tai-khoan")
@@ -68,7 +72,7 @@ public class UserControllerAD {
         return "views/admin/page/crud/account/account-add";
     }
 
-    @GetMapping("sua-tai-khoan/{userId}")
+    @GetMapping("sua-tai-khoan/id={userId}")
     public String account_edit(@PathVariable int userId, Model model) {
         Users users = userService.findById(userId);
 
@@ -100,5 +104,29 @@ public class UserControllerAD {
     @ModelAttribute("rolesDto")
     public List<Roles> roles() {
         return roleService.findAllRoles();
+    }
+
+    // api đổi mật khẩu người dùng
+    @GetMapping("api/findById/{id}")
+    private ResponseEntity<APIUsersDto> getUsersById(@PathVariable int id) {
+        Users users = userService.findById(id);
+        APIUsersDto usersDto = EntityDtoUtils.convertToDto(users, APIUsersDto.class);
+        return ResponseEntity.ok(usersDto);
+    }
+
+    @PutMapping("api/changePassword/{id}/{password}")
+    private ResponseEntity<Map<String, String>> changePassword(@PathVariable int id, @PathVariable String password) {
+        Users users = userService.findById(id);
+        Map<String, String> response = new HashMap<>();
+
+        if (users != null) {
+            users.setPassword(encoder.encode(password));
+            userService.update(users);
+            response.put("message", "success:Đổi mật khẩu thành công !");
+        } else {
+            response.put("message", "success:Đổi mật khẩu thất bại !");
+        }
+
+        return ResponseEntity.ok(response);
     }
 }

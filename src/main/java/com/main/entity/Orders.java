@@ -99,6 +99,10 @@ public class Orders {
     @JsonManagedReference
     private Collection<OrderItems> orderItemsById;
 
+    @OneToMany(mappedBy = "ordersByOrderId")
+    @JsonManagedReference
+    private Collection<NotificationOrder> notificationOrderById;
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonBackReference

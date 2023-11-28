@@ -20,7 +20,6 @@ public class HistoryServiceImpl implements HistoryService {
 
     private final HttpSession session;
 
-    // Constructor để inject HttpSession
     @Autowired
     public HistoryServiceImpl(HttpSession session) {
         this.session = session;
@@ -33,7 +32,7 @@ public class HistoryServiceImpl implements HistoryService {
 
     public void addHistory(String active) {
         // Truy cập session trong phương thức
-        Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
+        Users users = (Users) session.getAttribute(SessionAttr.CURRENT_ADMIN);
 
         HistoryUpdate historyUpdate = new HistoryUpdate();
         historyUpdate.setUserId(users.getId());

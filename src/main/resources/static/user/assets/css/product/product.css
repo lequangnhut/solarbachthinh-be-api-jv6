@@ -140,12 +140,10 @@
 }
 
 .swiper-button-next::before {
-    content: '\203A'; /* Ký tự mũi tên Unicode */
-    font-size: 20px; /* Kích thước mũi tên */
+    font-size: 20px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* Thêm khoảng cách giữa mũi tên và nền */
     margin-left: 5px;
 }

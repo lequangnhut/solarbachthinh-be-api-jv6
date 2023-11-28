@@ -475,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function () {
         function checkDuplicateEmail(email) {
 
             const xhr = new XMLHttpRequest();
-            const url = '/check-duplicate-email/' + email;
+            const url = '/api/check-duplicate-email/' + email;
 
             xhr.open('GET', url, true);
             xhr.onload = function () {
@@ -500,7 +500,7 @@ document.addEventListener('DOMContentLoaded', function () {
         function checkDuplicatePhoneNumber(phoneNumber) {
 
             const xhr = new XMLHttpRequest();
-            const url = '/check-duplicate-phone/' + phoneNumber;
+            const url = '/api/check-duplicate-phone/' + phoneNumber;
 
             xhr.open('GET', url, true);
             xhr.onload = function () {

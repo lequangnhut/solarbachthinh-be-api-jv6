@@ -57,7 +57,7 @@ public class DashboardControllerAD {
         model.addAttribute("AverageRevenueByYear", revenueService.calculateAverageRevenue());
         model.addAttribute("topSellingProducts", revenueService.findTopSellingProducts(year));
 
-        session.setAttribute(SessionAttr.CURRENT_USER, users);
+        session.setAttribute(SessionAttr.CURRENT_ADMIN, users);
         return "views/admin/page/views/doanh-thu-nam";
     }
 

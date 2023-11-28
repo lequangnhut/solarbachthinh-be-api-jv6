@@ -1,6 +1,6 @@
 solar_app.controller('product', function ($scope, $rootScope, CategoryService, ProductService) {
 
-    $rootScope.$on('$locationChangeStart', function(event, next, current) {
+    $rootScope.$on('$locationChangeStart', function (event, next, current) {
         // Kiểm tra nếu người dùng đang rời khỏi trang chủ
         if (current.indexOf('#!/san-pham') !== -1 && next.indexOf('#!/') !== -1) {
             leaveProductPage();
@@ -41,49 +41,42 @@ solar_app.controller('product', function ($scope, $rootScope, CategoryService, P
     findAllCategory();
 
     function findAllCategory() {
-        CategoryService.findAllCategory()
-            .then(function successCallback(response) {
-                $scope.categories = response.data;
-                return updateAllCategoriesAndSwiper($scope.categories);
-            });
+        CategoryService.findAllCategory().then(function successCallback(response) {
+            $scope.categories = response.data;
+            return updateAllCategoriesAndSwiper($scope.categories);
+        });
     }
 
     function fetchProducts(category) {
-        return ProductService.showProductByCategory(category.id)
-            .then(function successCallback(response) {
-                let products = response.data;
+        return ProductService.showProductByCategory(category.id).then(function successCallback(response) {
+            let products = response.data;
 
-                let brandPromises = products.map(product => {
-                    return ProductService.showBrandNameByProductBrandId(product.productBrandId)
-                        .then(function successCallback(response) {
-                            product.BrandName = response.data.brandName;
-                        });
+            let brandPromises = products.map(product => {
+                return ProductService.showBrandNameByProductBrandId(product.productBrandId).then(function successCallback(response) {
+                    product.BrandName = response.data.brandName;
                 });
-
-                return Promise.all(brandPromises)
-                    .then(function () {
-                        category.productsTypeProducts = products;
-                        return category;
-                    });
             });
+
+            return Promise.all(brandPromises).then(function () {
+                category.productsTypeProducts = products;
+                return category;
+            });
+        });
     }
 
     function updateAllCategoriesAndSwiper(categories) {
         let updatePromises = categories.map(updateCategoryAndSwiper);
-        return Promise.all(updatePromises)
-            .then(function (updatedCategories) {
-                initializeSwiper(); // Gọi initializeSwiper chỉ một lần sau khi tất cả danh mục đã được cập nhật
-            });
+        return Promise.all(updatePromises).then(function (updatedCategories) {
+            initializeSwiper(); // Gọi initializeSwiper chỉ một lần sau khi tất cả danh mục đã được cập nhật
+        });
     }
 
     function updateCategoryAndSwiper(category) {
-        return fetchProducts(category)
-            .then(function (updatedCategory) {
-                return updatedCategory; // Trả về category đã được cập nhật
-            })
-            .catch(function errorCallback(response) {
-                console.log(response.data);
-            });
+        return fetchProducts(category).then(function (updatedCategory) {
+            return updatedCategory; // Trả về category đã được cập nhật
+        }).catch(function errorCallback(response) {
+            console.log(response.data);
+        });
     }
 
     //end show category
@@ -91,65 +84,57 @@ solar_app.controller('product', function ($scope, $rootScope, CategoryService, P
     //start selected
     $scope.onProductTypeChange = function (selectedProductTypeId, category) {
         if (selectedProductTypeId === '' || selectedProductTypeId === undefined || selectedProductTypeId === null) {
-            ProductService.showProductByCategory(category.id)
-                .then(response => {
-                    let products = response.data;
-                    let brandPromises = products.map(product => {
-                        return ProductService.showBrandNameByProductBrandId(product.productBrandId)
-                            .then(response => {
-                                const brandName = response.data.brandName;
-                                if (product.BrandName !== brandName) {
-                                    product.BrandName = brandName;
-                                    return product;
-                                }
-                            });
+            ProductService.showProductByCategory(category.id).then(response => {
+                let products = response.data;
+                let brandPromises = products.map(product => {
+                    return ProductService.showBrandNameByProductBrandId(product.productBrandId).then(response => {
+                        const brandName = response.data.brandName;
+                        if (product.BrandName !== brandName) {
+                            product.BrandName = brandName;
+                            return product;
+                        }
                     });
-
-                    return Promise.all(brandPromises)
-                        .then(updatedProducts => {
-                            const productsChanged = updatedProducts.filter(product => product !== undefined);
-                            if (productsChanged.length > 0) {
-                                category.productsTypeProducts = productsChanged;
-                                return category;
-                            }
-                        });
-                })
-                .catch(error => {
-                    console.log(error.data);
                 });
+
+                return Promise.all(brandPromises).then(updatedProducts => {
+                    const productsChanged = updatedProducts.filter(product => product !== undefined);
+                    if (productsChanged.length > 0) {
+                        category.productsTypeProducts = productsChanged;
+                        return category;
+                    }
+                });
+            }).catch(error => {
+                console.log(error.data);
+            });
         } else {
             onProductChange(selectedProductTypeId, category);
         }
     };
 
     function onProductChange(selectedProductTypeId, category) {
-        ProductService.findProductByProductType(selectedProductTypeId)
-            .then(response => {
-                let products = response.data;
+        ProductService.findProductByProductType(selectedProductTypeId).then(response => {
+            let products = response.data;
 
-                let brandPromises = products.map(product => {
-                    return ProductService.showBrandNameByProductBrandId(product.productBrandId)
-                        .then(response => {
-                            const brandName = response.data.brandName;
-                            if (product.BrandName !== brandName) {
-                                product.BrandName = brandName;
-                                return product;
-                            }
-                        });
+            let brandPromises = products.map(product => {
+                return ProductService.showBrandNameByProductBrandId(product.productBrandId).then(response => {
+                    const brandName = response.data.brandName;
+                    if (product.BrandName !== brandName) {
+                        product.BrandName = brandName;
+                        return product;
+                    }
                 });
-
-                return Promise.all(brandPromises)
-                    .then(updatedProducts => {
-                        const productsChanged = updatedProducts.filter(product => product !== undefined);
-                        if (productsChanged.length > 0) {
-                            category.productsTypeProducts = productsChanged;
-                            return category;
-                        }
-                    });
-            })
-            .catch(error => {
-                console.log(error.data);
             });
+
+            return Promise.all(brandPromises).then(updatedProducts => {
+                const productsChanged = updatedProducts.filter(product => product !== undefined);
+                if (productsChanged.length > 0) {
+                    category.productsTypeProducts = productsChanged;
+                    return category;
+                }
+            });
+        }).catch(error => {
+            console.log(error.data);
+        });
     }
 
     //end selected
@@ -166,25 +151,24 @@ solar_app.controller('product', function ($scope, $rootScope, CategoryService, P
     };
 
     function onSearchProduct(productName, category) {
-        ProductService.findByProductName(category.id, productName)
-            .then(function successCallback(response) {
-                let products = response.data;
+        ProductService.findByProductName(category.id, productName).then(function successCallback(response) {
+            let products = response.data;
 
-                let brandPromises = products.map(product => {
-                    return ProductService.showBrandNameByProductBrandId(product.productBrandId)
-                        .then(function successCallback(response) {
-                            product.BrandName = response.data.brandName;
-                        });
-                });
-
-                return Promise.all(brandPromises)
-                    .then(function () {
-                        category.productsTypeProducts = products;
-                        return category;
+            let brandPromises = products.map(product => {
+                return ProductService.showBrandNameByProductBrandId(product.productBrandId)
+                    .then(function successCallback(response) {
+                        product.BrandName = response.data.brandName;
                     });
-            }, function errorCallback(response) {
-                console.log(response.data);
             });
+
+            return Promise.all(brandPromises)
+                .then(function () {
+                    category.productsTypeProducts = products;
+                    return category;
+                });
+        }, function errorCallback(response) {
+            console.log(response.data);
+        });
     }
 
     //end search
@@ -194,7 +178,7 @@ solar_app.controller('product', function ($scope, $rootScope, CategoryService, P
     });
 
     //Từ chỗ này chị Thị quậy
-    var countdownProductOff;  // Biến toàn cục để lưu trữ interval ID
+    let countdownProductOff;  // Biến toàn cục để lưu trữ interval ID
 
     ProductService.findAllProductIsSale().then(function successCallback(response) {
         $scope.beingsale = response.data;
@@ -203,27 +187,34 @@ solar_app.controller('product', function ($scope, $rootScope, CategoryService, P
             const endTime = new Date($scope.beingsale[i][0].productSaleOffById[0].endUse).getTime();
             (function (i) {
                 countdownProductOff = setInterval(function () {
-                    var now = new Date().getTime();
-                    var timeLeft = endTime - now;
+                    const now = new Date().getTime();
+                    const timeLeft = endTime - now;
 
-                    var days = Math.max(Math.floor(timeLeft / (1000 * 60 * 60 * 24)), 0);
-                    var hours = Math.max(Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), 0);
-                    var minutes = Math.max(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)), 0);
-                    var seconds = Math.max(Math.floor((timeLeft % (1000 * 60)) / 1000), 0);
+                    const days = Math.max(Math.floor(timeLeft / (1000 * 60 * 60 * 24)), 0);
+                    const hours = Math.max(Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), 0);
+                    const minutes = Math.max(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)), 0);
+                    const seconds = Math.max(Math.floor((timeLeft % (1000 * 60)) / 1000), 0);
 
                     // Hàm để thêm số 0 trước các số lẻ
                     function addLeadingZero(value) {
                         return value < 10 ? "0" + value : value;
                     }
 
-                    document.getElementById("cdt-days-" + i).innerHTML = addLeadingZero(days);
-                    document.getElementById("cdt-hours-" + i).innerHTML = addLeadingZero(hours);
-                    document.getElementById("cdt-minutes-" + i).innerHTML = addLeadingZero(minutes);
-                    document.getElementById("cdt-seconds-" + i).innerHTML = addLeadingZero(seconds);
+                    let elementDays = document.getElementById("cdt-days-" + i);
+                    let elementHours = document.getElementById("cdt-hours-" + i);
+                    let elementMinutes = document.getElementById("cdt-minutes-" + i);
+                    let elementSeconds = document.getElementById("cdt-seconds-" + i)
+
+                    if (elementDays || elementHours || elementMinutes || elementSeconds) {
+                        elementDays.innerHTML = addLeadingZero(days);
+                        elementHours.innerHTML = addLeadingZero(hours);
+                        elementMinutes.innerHTML = addLeadingZero(minutes);
+                        elementSeconds.innerHTML = addLeadingZero(seconds);
+                    }
 
                     if (timeLeft <= 0) {
                         clearInterval(countdownProductOff);
-                        var countdownElement = document.getElementById("countdown-" + i);
+                        const countdownElement = document.getElementById("countdown-" + i);
                         countdownElement.innerHTML = "Ưu đãi cho sản phẩm này đã kết thúc!";
                         countdownElement.style.color = "#c7c7c7";
                     }
@@ -233,6 +224,4 @@ solar_app.controller('product', function ($scope, $rootScope, CategoryService, P
     }, function errorCallback(response) {
         console.log(response.data);
     });
-
-
 });
