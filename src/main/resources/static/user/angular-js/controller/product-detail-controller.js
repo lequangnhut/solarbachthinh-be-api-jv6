@@ -89,8 +89,6 @@ solar_app.controller('product_details', function ($scope, $http, $timeout, $loca
                 $scope.secondSale = addLeadingZero(seconds);
             });
 
-            console.log(addLeadingZero(days))
-
             if (timeLeft <= 0) {
                 clearInterval(countdownInterval);
                 console.log("Ưu đãi cho sản phẩm này đã kết thúc!");
