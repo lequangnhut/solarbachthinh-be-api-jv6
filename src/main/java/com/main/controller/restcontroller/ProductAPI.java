@@ -81,14 +81,12 @@ public class ProductAPI {
     }
 
     @GetMapping("product/find-product-by-category-id-by-key/{categoryId}/{ten-san-pham}")
-    public List<Products> findProductByCategoryIdAndKey
-            (@PathVariable(name = "categoryId") int categoryId, @PathVariable(name = "ten-san-pham") String search) {
+    public List<Products> findProductByCategoryIdAndKey(@PathVariable(name = "categoryId") int categoryId, @PathVariable(name = "ten-san-pham") String search) {
         return productService.findByCategoryIdAndProductNameContaining(categoryId, search);
     }
 
     @GetMapping("product/find-by-category-id-by-product-type-id/{categoryId}/{productTypeId}")
-    public List<Object[]> findProductByCategoryIdAndProductTypeId
-            (@PathVariable(name = "categoryId") int categoryId, @PathVariable(name = "productTypeId") int productTypeId) {
+    public List<Object[]> findProductByCategoryIdAndProductTypeId(@PathVariable(name = "categoryId") int categoryId, @PathVariable(name = "productTypeId") int productTypeId) {
         return productService.findByCategoryIdAndProductTypeId(categoryId, productTypeId);
     }
 
@@ -112,5 +110,4 @@ public class ProductAPI {
     public List<Object[]> findALProductCloserSale() {
         return productService.findAllProductBeingSale();
     }
-
 }
