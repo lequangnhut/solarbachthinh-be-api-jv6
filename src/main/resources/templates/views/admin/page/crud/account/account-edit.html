@@ -6,7 +6,7 @@
     <title>Solar Bách Thịnh - Cập Nhật Tài Khoản</title>
     <div th:replace="~{views/admin/lib/link_lib}"></div>
 </head>
-<body>
+<body ng-app="solar_app_admin" ng-controller="EditPasswordUserAdmin">
 
 <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
      data-sidebar-position="fixed" data-header-position="fixed">
@@ -23,6 +23,14 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
+                    <a class="btn btn-primary float-end"
+                       href="javascript:void(0)"
+                       ng-click="getUser()"
+                       data-bs-toggle="modal" data-bs-target="#modal-edit-pass-user"
+                       role="button"
+                    >
+                        <i class="ti ti-file-plus"></i>Mật khẩu người dùng
+                    </a>
                     <h5 class="card-title fw-semibold mb-4 mt-2">Cập nhật thông tin tài khoản</h5>
                     <div class="card">
                         <div class="card-body">
@@ -179,6 +187,95 @@
 
 <script src="/admin/assets/js/api_address.js"></script>
 <script src="/admin/assets/js/validation/validation-account.js"></script>
+
+<!--Modal -->
+<div class="modal fade" id="modal-edit-pass-user" tabindex="-1" aria-labelledby="modal-edit-pass-admin"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-edit-pass-admin">CẬP NHẬT ĐỔI MẬT KHẨU</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form ng-submit="changePasswordUser()" name="formChangePassAdmin">
+                <div class="modal-body">
+                    <fieldset disabled>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Địa chỉ email</label>
+                            <input type="email"
+                                   id="email"
+                                   class="form-control"
+                                   ng-model="user.email"
+                                   readonly
+                            >
+                        </div>
+                    </fieldset>
+
+                    <div class="mb-3">
+                        <label for="password1" class="form-label">Mật khẩu mới</label>
+                        <input type="password"
+                               class="form-control"
+                               name="password1"
+                               ng-class="{ 'is-invalid': formChangePassAdmin.password1.$invalid && formChangePassAdmin.password1.$touched, 'is-valid': formChangePassAdmin.password1.$valid && formChangePassAdmin.password1.$touched }"
+                               ng-model="user.password1"
+                               ng-minlength="6"
+                               id="password1"
+                               required
+                        >
+                        <small class="text-danger"
+                               ng-show="formChangePassAdmin.password1.$touched && formChangePassAdmin.password1.$error.required">
+                            Vui lòng nhập mật khẩu mới !
+                        </small>
+                        <small class="text-danger"
+                               ng-show="formChangePassAdmin.password1.$error.minlength && formChangePassAdmin.password1.$dirty">
+                            Mật khẩu cần ít nhất 6 ký tự.
+                        </small>
+                        <small class="text-danger"
+                               ng-show="formChangePassAdmin.password1.$touched && passwordMatchError">
+                            Mật khẩu mới không được trùng với mật khẩu hiện tại!
+                        </small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password2" class="form-label">Xác nhận mật khẩu</label>
+                        <input type="password"
+                               class="form-control"
+                               name="password2"
+                               ng-class="{ 'is-invalid': formChangePassAdmin.password2.$invalid && formChangePassAdmin.password2.$touched, 'is-valid': formChangePassAdmin.password2.$valid && formChangePassAdmin.password2.$touched }"
+                               ng-pattern="user.password1"
+                               ng-model="user.password2"
+                               ng-minlength="6"
+                               id="password2"
+                               required
+                        >
+                        <small class="text-danger"
+                               ng-show="formChangePassAdmin.password2.$touched && formChangePassAdmin.password2.$error.required">
+                            Vui lòng xác thực mật khẩu !
+                        </small>
+                        <small class="text-danger"
+                               ng-show="formChangePassAdmin.password2.$touched && formChangePassAdmin.password2.$error.pattern">
+                            Xác nhận mật khẩu không khớp.
+                        </small>
+                        <small class="text-danger"
+                               ng-show="formChangePassAdmin.password2.$touched && formChangePassAdmin.password2.$error.minlength">
+                            Mật khẩu cần ít nhất 6 ký tự.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Thoát</button>
+                    <button type="submit"
+                            class="btn btn-primary"
+                            ng-disabled="formChangePassAdmin.$invalid"
+                    >
+                        Xác nhận
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

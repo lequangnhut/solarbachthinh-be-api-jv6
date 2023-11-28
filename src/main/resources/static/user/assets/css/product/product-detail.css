@@ -146,3 +146,31 @@ img {
 a img {
     border: 0;
 }
+
+/*check detail*/
+#flash-sale {
+    margin: 0 auto;
+    display: flex; /* Hiển thị các phần tử con theo chiều ngang */
+    flex-direction: row; /* Xác định hướng hiển thị là hàng ngang */
+    align-items: center; /* Căn giữa các phần tử theo chiều dọc */
+    justify-content: space-between; /* Canh giữa các phần tử theo chiều ngang */
+    background-image: url('https://i.imgur.com/eI4mg8h.jpg');
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng đổ */
+    background-color: rgba(234, 217, 217, 0.3);
+    color: #F8FCFB;
+    font-size: 20px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    font-weight: bolder;
+}
+
+#countdown-day, #countdown-time {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.lead-text {
+    text-transform: capitalize;
+    font-size: 20px;
+    padding: 10px;
+}

@@ -1,5 +1,8 @@
 solar_app_admin.controller('NotificationAdmin', function ($scope, $http) {
 
+    $scope.maxVisibleNotifications = 5;
+    $scope.visibleNotifications = [];
+
     $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
     };
@@ -17,7 +20,25 @@ solar_app_admin.controller('NotificationAdmin', function ($scope, $http) {
                 break;
             }
         }
+
+        $scope.updateVisibleNotifications();
     });
+
+    $scope.showMore = function (event) {
+        $scope.maxVisibleNotifications += 10;
+        $scope.updateVisibleNotifications();
+        event.stopPropagation();
+    };
+
+    $scope.hideMore = function (event) {
+        $scope.maxVisibleNotifications = 6;
+        $scope.updateVisibleNotifications();
+        event.stopPropagation();
+    };
+
+    $scope.updateVisibleNotifications = function () {
+        $scope.visibleNotifications = $scope.allNotification.slice(0, $scope.maxVisibleNotifications);
+    };
 
     $scope.seenNotification = function (id, orderId) {
         $http({
@@ -44,7 +65,17 @@ solar_app_admin.controller('NotificationAdmin', function ($scope, $http) {
             method: 'GET',
             url: API_Notification + '/findAll'
         }).then(function successCallback(response) {
+            $scope.showNotification = false;
             $scope.allNotification = response.data;
+
+            for (let i = 0; i < $scope.allNotification.length; i++) {
+                if ($scope.allNotification[i].isSeen === true) {
+                    $scope.showNotification = true;
+                    break;
+                }
+            }
+
+            $scope.updateVisibleNotifications();
         });
     }
 
@@ -128,5 +159,64 @@ solar_app_admin.controller('NotificationAdmin', function ($scope, $http) {
                 }
             }
         });
+    };
+
+    // đổi mật khẩu
+    $scope.changePasswordAdmin = function () {
+        $http({
+            method: 'GET',
+            url: API_Notification + '/userIsLogin'
+        }).then(function successCallback(response) {
+            if (response.status === 200) {
+                $scope.getUserIsLoginAdmin = response.data;
+            }
+        });
+
+        $scope.checkPasswordDuplicate = function () {
+            let user = {
+                password0: $scope.user.password0,
+                password1: $scope.user.password1,
+                password2: $scope.user.password2
+            }
+
+            $scope.passwordMatchError = user.password1 === user.password0;
+        }
+
+        $scope.changePassword = function () {
+            let password = $scope.user.password0;
+            let newPassword = $scope.user.password1;
+
+            Swal.fire({
+                title: 'Xác nhận !',
+                text: "Bạn có chắc chắn muốn đổi mật khẩu không ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đồng ý !',
+                cancelButtonText: 'Huỷ !'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $http({
+                        method: 'PUT',
+                        url: API_Notification + '/changePasswordAdmin/' + password + '/' + newPassword
+                    }).then(function successCallback(response) {
+                        if (response.status === 200) {
+                            let responseMessage = response.data.message;
+                            let type = responseMessage.substring(0, responseMessage.indexOf(':'));
+                            let message = responseMessage.substring(responseMessage.indexOf(':') + 1).trim();
+
+                            if (type === 'success') {
+                                $('#modal-change-pass').modal('hide');
+                                setTimeout(function () {
+                                    window.location.href = 'http://localhost:8080/admin'
+                                }, 1000)
+                            }
+                            toastAlert(type, message);
+                        }
+                    });
+                }
+            });
+        };
     };
 });

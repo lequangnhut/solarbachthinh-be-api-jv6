@@ -25,24 +25,35 @@
                                     Không có thông báo mới.
                                 </a>
 
-                                <a ng-repeat="notification in allNotification"
+                                <a ng-repeat="notification in visibleNotifications"
                                    href="javascript:void(0)"
-                                   ng-click="seenNotification(notification.id, notification.orderId)"
                                    class="d-flex align-items-center gap-2 dropdown-item"
                                    title="Click vào để xem chi tiết đơn hàng."
                                    ng-class="notification.isSeen ? 'text-danger' : ''"
                                 >
-                                    <p class="mb-0 fs-3">
+                                    <p class="mb-0 fs-3"
+                                       ng-click="seenNotification(notification.id, notification.orderId)">
                                         {{notification.message}}
                                         <br>
-                                        <span class="mb-0 fs-2">{{ notification.isSeen ? 'Chưa xem' : 'Đã xem'
-                                            }} - </span>
+                                        <span class="mb-0 fs-2">
+                                            {{notification.isSeen ? 'Chưa xem' : 'Đã xem'}} -
+                                        </span>
                                         <span class="mb-0 fs-2">{{ notification.dateCreated | timeAgo }}</span>
                                     </p>
                                     <button class="delete-icon" ng-click="deleteNotification(notification.id)">
-                                        <i class="ti ti-trash fs-4 text-danger"></i>
+                                        <i class="ti ti-trash fs-6 text-danger"></i>
                                     </button>
                                 </a>
+
+                                <div class="text-center" style="cursor: pointer">
+                                    <a ng-if="visibleNotifications.length < allNotification.length"
+                                       ng-click="showMore($event)">
+                                        Hiển thị thêm 5 thông báo
+                                    </a>
+                                    <a ng-if="maxVisibleNotifications > 6" ng-click="hideMore($event)">
+                                        Ẩn đi
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -60,10 +71,10 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                             <div class="message-body">
-                                <a href=""
+                                <a href="javascript:void(0)" ng-click="changePasswordAdmin()"
                                    data-bs-toggle="modal" data-bs-target="#modal-change-pass"
                                    class="d-flex align-items-center gap-2 dropdown-item">
-                                    <i class="ti ti-list-check fs-6"></i>
+                                    <i class="ti ti-user fs-6"></i>
                                     <p class="mb-0 fs-3">Đổi mật khẩu</p>
                                 </a>
                                 <a th:href="@{/dang-xuat}" class="btn btn-outline-primary mx-3 mt-2 d-block">Đăng
@@ -222,35 +233,105 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-change-pass-admin">Đổi mật khẩu</h5>
+                    <h5 class="modal-title" id="modal-change-pass-admin">ĐỔI MẬT KHẨU</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="form-change-pass" method="post">
+                <form ng-submit="changePassword()" name="formChangePassAdmin">
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Địa chỉ email</label>
-                            <input type="email" class="form-control" name="email" id="email" readonly>
-                        </div>
+                        <fieldset disabled>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Địa chỉ email</label>
+                                <input type="email"
+                                       id="email"
+                                       class="form-control"
+                                       ng-model="getUserIsLoginAdmin.email"
+                                       readonly
+                                >
+                            </div>
+                        </fieldset>
+
                         <div class="mb-3">
                             <label for="password0" class="form-label">Mật khẩu cũ</label>
-                            <input type="password" class="form-control" name="password0" id="password0">
-                            <span id="pass0Error" class="text-danger"></span>
+                            <input type="password"
+                                   class="form-control"
+                                   name="password0"
+                                   ng-class="{ 'is-invalid': formChangePassAdmin.password0.$invalid && formChangePassAdmin.password0.$touched, 'is-valid': formChangePassAdmin.password0.$valid && formChangePassAdmin.password0.$touched }"
+                                   ng-model="user.password0"
+                                   ng-minlength="6"
+                                   id="password0"
+                                   required
+                            >
+                            <small class="text-danger"
+                                   ng-show="formChangePassAdmin.password0.$touched && formChangePassAdmin.password0.$error.required">
+                                Vui lòng nhập mật khẩu hiện tại !
+                            </small>
+                            <small class="text-danger"
+                                   ng-show="formChangePassAdmin.password0.$error.minlength && formChangePassAdmin.password0.$dirty">
+                                Mật khẩu cần ít nhất 6 ký tự.
+                            </small>
                         </div>
+
                         <div class="mb-3">
                             <label for="password1" class="form-label">Mật khẩu mới</label>
-                            <input type="password" class="form-control" name="password1" id="password1">
-                            <span id="pass1Error" class="text-danger"></span>
+                            <input type="password"
+                                   class="form-control"
+                                   name="password1"
+                                   ng-class="{ 'is-invalid': formChangePassAdmin.password1.$invalid && formChangePassAdmin.password1.$touched, 'is-valid': formChangePassAdmin.password1.$valid && formChangePassAdmin.password1.$touched }"
+                                   ng-model="user.password1"
+                                   ng-minlength="6"
+                                   id="password1"
+                                   ng-change="checkPasswordDuplicate()"
+                                   required
+                            >
+                            <small class="text-danger"
+                                   ng-show="formChangePassAdmin.password1.$touched && formChangePassAdmin.password1.$error.required">
+                                Vui lòng nhập mật khẩu mới !
+                            </small>
+                            <small class="text-danger"
+                                   ng-show="formChangePassAdmin.password1.$error.minlength && formChangePassAdmin.password1.$dirty">
+                                Mật khẩu cần ít nhất 6 ký tự.
+                            </small>
+                            <small class="text-danger"
+                                   ng-show="formChangePassAdmin.password1.$touched && passwordMatchError">
+                                Mật khẩu mới không được trùng với mật khẩu hiện tại!
+                            </small>
                         </div>
+
                         <div class="mb-3">
                             <label for="password2" class="form-label">Xác nhận mật khẩu</label>
-                            <input type="password" class="form-control" name="password2" id="password2">
-                            <span id="pass2Error" class="text-danger"></span>
+                            <input type="password"
+                                   class="form-control"
+                                   name="password2"
+                                   ng-class="{ 'is-invalid': formChangePassAdmin.password2.$invalid && formChangePassAdmin.password2.$touched, 'is-valid': formChangePassAdmin.password2.$valid && formChangePassAdmin.password2.$touched }"
+                                   ng-pattern="user.password1"
+                                   ng-model="user.password2"
+                                   ng-minlength="6"
+                                   id="password2"
+                                   required
+                            >
+                            <small class="text-danger"
+                                   ng-show="formChangePassAdmin.password2.$touched && formChangePassAdmin.password2.$error.required">
+                                Vui lòng xác thực mật khẩu !
+                            </small>
+                            <small class="text-danger"
+                                   ng-show="formChangePassAdmin.password2.$touched && formChangePassAdmin.password2.$error.pattern">
+                                Xác nhận mật khẩu không khớp.
+                            </small>
+                            <small class="text-danger"
+                                   ng-show="formChangePassAdmin.password2.$touched && formChangePassAdmin.password2.$error.minlength">
+                                Mật khẩu cần ít nhất 6 ký tự.
+                            </small>
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Thoát</button>
-                        <button type="button" class="btn btn-primary" id="confirm-button-change-pass">Xác nhận</button>
+                        <button type="submit"
+                                class="btn btn-primary"
+                                ng-disabled="formChangePassAdmin.$invalid"
+                        >
+                            Xác nhận
+                        </button>
                     </div>
                 </form>
             </div>
