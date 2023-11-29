@@ -22,6 +22,9 @@ public interface ProductsRepository extends JpaRepository<Products, String> {
 
     List<Products> findByProductTypeId(int productTypeId);
 
+    @Query("SELECT p.price FROM Products p JOIN p.cartsById c JOIN c.usersByUserId u WHERE u.id = :userId")
+    List<Integer> findPriceByUserId(int userId);
+
     @Query("SELECT p FROM Products p " +
             "JOIN p.productTypesByProductTypeId pt " +
             "JOIN pt.productCategoriesByCategoryId pc " +
@@ -60,6 +63,4 @@ public interface ProductsRepository extends JpaRepository<Products, String> {
             "WHERE s.endUse > NOW() and s.isActive = true " +
             "ORDER BY s.endUse ASC ")
     List<Object[]> findAllSaleProduct();
-
-
 }

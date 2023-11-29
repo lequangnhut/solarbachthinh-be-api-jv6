@@ -15,7 +15,6 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductsRepository productsRepository;
 
-
     @Override
     public List<Products> findAll() {
         return productsRepository.findAll();
@@ -29,6 +28,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Object[]> findTopProductByCategoryId(int categoryId) {
         return productsRepository.findByCategoryId(categoryId);
+    }
+
+    @Override
+    public List<Integer> findPriceProductByUserId(int userId) {
+        return productsRepository.findPriceByUserId(userId);
     }
 
     @Override
@@ -80,5 +84,4 @@ public class ProductServiceImpl implements ProductService {
     public List<Object[]> findAllProductBeingSale() {
         return productsRepository.findAllSaleProduct();
     }
-
 }

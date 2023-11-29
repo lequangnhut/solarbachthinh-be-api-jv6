@@ -6,6 +6,13 @@ solar_app.service('CartService', function ($http) {
         })
     };
 
+    this.findAllPriceByUserId = function () {
+        return $http({
+            method: 'GET',
+            url: API_Cart + '/productPriceByUserId'
+        })
+    };
+
     this.sumQuantityCart = function () {
         return $http({
             method: 'GET',

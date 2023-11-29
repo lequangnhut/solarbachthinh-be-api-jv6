@@ -65,9 +65,9 @@ public class OrderAPI {
 
         order.setOrderStatus("Đã huỷ đơn");
         if (cancelOrderDto.getReason().equals("Mục khác...")) {
-            order.setOrderNote(cancelOrderDto.getComments());
+            order.setOrderNoteCancelled(cancelOrderDto.getComments());
         } else {
-            order.setOrderNote(cancelOrderDto.getReason());
+            order.setOrderNoteCancelled(cancelOrderDto.getReason());
         }
         order.setPaymentStatus(2);
         order.setDateReceive(new Timestamp(System.currentTimeMillis()));

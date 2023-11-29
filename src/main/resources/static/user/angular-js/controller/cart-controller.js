@@ -26,6 +26,10 @@ solar_app.controller('cart_controller', function ($scope, $http, $rootScope, $ti
             let productId = cart[i][1].id;
             let saleOffIndex = $scope.findIndexByProductId(productId);
 
+            CartService.findAllPriceByUserId().then(function successCallback(response) {
+                $scope.currentPriceProduct = response.data[i];
+            });
+
             if (saleOffIndex !== -1) {
                 let saleOff = $scope.sale_offs[saleOffIndex];
 
