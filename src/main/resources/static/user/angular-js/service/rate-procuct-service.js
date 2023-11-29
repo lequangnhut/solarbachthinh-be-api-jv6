@@ -70,7 +70,7 @@ solar_app.factory('ImageValidationService', ['$q', function ($q) {
                         image.onload = function () {
                             nsfwjs.load().then(model => {
                                 model.classify(image).then(predictions => {
-                                    const isSensitive = predictions.some(prediction => prediction.className === 'Porn' && prediction.probability > 0.6);
+                                    const isSensitive = predictions.some(prediction => prediction.className === 'Porn' && prediction.probability > 0.3);
                                     resolve(!isSensitive);
                                 });
                             });
