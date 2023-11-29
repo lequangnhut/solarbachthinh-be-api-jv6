@@ -61,4 +61,5 @@ public interface ProductsRepository extends JpaRepository<Products, String> {
             "ORDER BY s.endUse ASC ")
     List<Object[]> findAllSaleProduct();
 
+
 }

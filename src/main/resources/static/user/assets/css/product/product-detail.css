@@ -174,3 +174,37 @@ a img {
     font-size: 20px;
     padding: 10px;
 }
+
+
+.review-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #f7f7f7
+}
+
+.review {
+    margin-bottom: 20px;
+    padding-bottom: 25px;
+}
+
+.user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.rating-stars {
+    color: #f39c12;
+    margin-left: 5px;
+}
+
+.review-images img {
+    max-width: 100%;
+    margin-top: 10px;
+}
+
+.hidden {
+    color: #888;
+}
