@@ -50,7 +50,8 @@ public class SecurityConfig {
                                 .requestMatchers("/user/**", "/admin/**").permitAll()
                                 .requestMatchers("/quan-tri/**").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers("/**").permitAll()
-                ).formLogin(
+                )
+                .formLogin(
                         form -> form
                                 .loginPage("/admin")
                                 .loginProcessingUrl("/admin/login")

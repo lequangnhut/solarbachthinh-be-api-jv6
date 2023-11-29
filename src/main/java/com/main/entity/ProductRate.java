@@ -35,8 +35,14 @@ public class ProductRate {
     @Column(name = "rate", nullable = true)
     private Integer rate;
 
+    @Column(name = "orderId", nullable = true)
+    private String orderId;
+
     @Column(name = "date_created", nullable = true)
     private Timestamp dateCreated;
+
+    @Column(name = "review_status", nullable = true)
+    private Boolean reviewStatus;
 
     @OneToMany(mappedBy = "productRate")
     @JsonBackReference

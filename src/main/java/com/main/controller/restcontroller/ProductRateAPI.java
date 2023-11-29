@@ -4,6 +4,8 @@ import com.main.dto.ResponseObject;
 import com.main.entity.*;
 import com.main.service.*;
 import com.main.utils.EntityDtoUtils;
+import com.main.utils.SessionAttr;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +42,9 @@ public class ProductRateAPI {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    HttpSession session;
 
     @GetMapping("findProductRate/{productId}")
     ResponseObject showRate(@PathVariable("productId") String productId){
@@ -79,45 +85,62 @@ public class ProductRateAPI {
     }
 
     @PostMapping("/save")
-    ResponseObject save(@RequestParam("stars") String stars,
+    ResponseObject save(@RequestParam("stars") int stars,
                         @RequestParam("comment") String comment,
-                        @RequestParam("images") MultipartFile[] images,
-                        @RequestParam("productId") String productId) {
+                        @RequestParam(value = "images", required = false) MultipartFile[] images,
+                        @RequestParam("productId") String productId,
+                        @RequestParam("orderId") String orderId) {
+
+        Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
 
         ProductRate productRate = new ProductRate();
         String id = productRateIdValue();
         productRate.setId(id);
         productRate.setProductId(productId);
+        productRate.setContent(comment);
+        productRate.setUserId(users.getId());
+        productRate.setDateCreated(new Timestamp(System.currentTimeMillis()));
+        productRate.setRate(stars);
+        productRate.setOrderId(orderId);
+        productRate.setReviewStatus(true);
 
-        for (MultipartFile image : images) {
+        productRateService.saveProductRate(productRate);
 
-            if (image != null && !image.isEmpty()) {
-                Path path = Paths.get("src/main/resources/static/upload/");
+        if(images == null || images.length == 0 || images[0].isEmpty()){
+            return new ResponseObject("200", "Bạn đã đánh giá thành công!", null);
+        }else{
+            for (int i = 0; i < images.length; i++) {
+                MultipartFile image = images[i];
+                ProductRateImage productRateImage = new ProductRateImage();
 
-                if (!path.toFile().exists()) {
-                    path.toFile().mkdirs();
+                if (image != null && !image.isEmpty()) {
+                    Path path = Paths.get("src/main/resources/static/upload/");
 
+                    if (!path.toFile().exists()) {
+                        path.toFile().mkdirs();
+                    }
+
+                    try {
+                        InputStream inputStream = image.getInputStream();
+                        Files.copy(inputStream, path.resolve(image.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    String fileName = image.getOriginalFilename();
+
+                    productRateImage.setId(productRate.getId() + "_" + "RIMG00" + "_" + i);
+                    productRateImage.setProductRateId(productRate.getId());
+                    productRateImage.setImagePath(fileName);
+
+                    System.out.println(fileName);
+
+                    productRateImageService.saveImageRateProduct(productRateImage);
                 }
-
-                try {
-                    InputStream inputStream = image.getInputStream();
-                    Files.copy(inputStream, path.resolve(image.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-
-                }
-
-                String fileName = image.getOriginalFilename();
-
-                System.out.println(fileName);
             }
+            return new ResponseObject("200", "Bạn đã đánh giá thành công!", null);
         }
-
-        return new ResponseObject("200", "Bạn đã đánh giá thành công!", null);
     }
-
-
 
     public String productRateIdValue() {
         List<ProductRate> productRateList;

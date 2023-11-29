@@ -1,14 +1,24 @@
 solar_app.controller('product_details', function ($scope, $http, $timeout, $location, $sce, $rootScope, UserService, ProductService, CategoryService, SaleOffService, CartService) {
 
-    $scope.formatPrice = function (price) {
-        return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
-    };
+
 
     $scope.quantity = 1;
     $scope.max_quantity = 1;
 
     let params = $location.search();
     let productId = $scope.productId = params['ma-san-pham'];
+
+    $http.get('http://localhost:8080/quan-tri/danh-gia/findRateByProductId/' + productId)
+        .then(function(response) {
+            // Xử lý dữ liệu khi nhận được từ API
+            $scope.reviews = response.data.data;
+        })
+        .catch(function(error) {
+            // Xử lý lỗi nếu có
+            console.error('Error fetching data:', error);
+        });    $scope.formatPrice = function (price) {
+        return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
+    };
 
     // thêm vào giỏ hàng
     $scope.addToCart = function (quantity) {

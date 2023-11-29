@@ -50,8 +50,8 @@
                                         <td th:text="${item.id}"></td>
                                         <td th:text="${item.productId}"></td>
                                         <td th:text="${#numbers.formatDecimal(item.saleValue, 0, 'COMMA', 0, 'POINT')}"></td>
-                                        <td th:text="${item.startUse}"></td>
-                                        <td th:text="${item.endUse}"></td>
+                                        <td th:text="${#temporals.format(item.startUse, 'yyyy-MM-dd' + '&nbsp;&nbsp;&nbsp;&nbsp;' + 'HH:mm')}"></td>
+                                        <td th:text="${#temporals.format(item.endUse, 'yyyy-MM-dd' + '&nbsp;&nbsp;&nbsp;&nbsp;' + 'HH:mm')}"></td>
                                         <td th:if="${item.isActive == true}">
                                             <i class='bx bxs-circle' style='color:#3a9b54'></i> Còn hạn
                                         </td>

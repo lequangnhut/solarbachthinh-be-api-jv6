@@ -178,6 +178,18 @@ $(document).ready(function () {
     })
 });
 
+$(document).ready(function () {
+    $('#sort-table-rate-product').DataTable({
+        "order": [],
+        "paging": false,
+        "ordering": true,
+        "info": true,
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
+        },
+    })
+});
+
 // mấy bảng này đang bị lỗi
 // $(document).ready(function () {
 //     $('#table-confirm').DataTable({
