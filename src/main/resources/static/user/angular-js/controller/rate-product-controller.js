@@ -406,7 +406,6 @@ solar_app.controller('rate_controller',
                         icon: "success",
                         title: "Thêm đánh giá thành công!"
                     });
-                    $scope.closeModal();
                 },
                 error: function (error) {
                     const Toast = Swal.mixin({
