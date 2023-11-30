@@ -2,6 +2,7 @@ package com.main.controller.restcontroller;
 
 import com.main.dto.ResponseObject;
 import com.main.entity.*;
+import com.main.repository.ProductRateRepository;
 import com.main.service.*;
 import com.main.utils.EntityDtoUtils;
 import com.main.utils.SessionAttr;
@@ -16,14 +17,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("api/rate-product")
 public class ProductRateAPI {
+
+    @Autowired
+    ProductRateRepository productRateRepository;
 
     @Autowired
     ProductRateService productRateService;
@@ -139,6 +141,64 @@ public class ProductRateAPI {
                 }
             }
             return new ResponseObject("200", "Bạn đã đánh giá thành công!", null);
+        }
+    }
+
+    @GetMapping("/findRateByProductId/{productId}")
+    ResponseObject findRateByProductId(@PathVariable("productId") String productId) {
+        System.out.println(productId);
+        if (productService.findByProductId(productId).isEmpty()) {
+            return new ResponseObject("200", "Sản phẩm không tồn tại", null);
+        } else {
+            List<Object[]> listProduct = productRateRepository.findRateByProductId(productId);
+            if (null == listProduct) {
+                return new ResponseObject("200", "Sản phẩm chưa có đánh giá", null);
+            } else {
+                List<Object[]> rawData = listProduct;
+
+                Map<String, Map<String, Object>> reviewMap = new HashMap<>();
+
+// Duyệt qua dữ liệu từ câu truy vấn và gộp ảnh dựa trên đánh giá
+                for (Object[] data : rawData) {
+                    String reviewId = (String) data[0]; // Index 0 là vị trí của cột reviewId trong mảng Object
+
+                    // Kiểm tra xem đã tồn tại đánh giá trong map chưa
+                    if (!reviewMap.containsKey(reviewId)) {
+                        Map<String, Object> reviewData = new HashMap<>();
+                        reviewData.put("reviewId", reviewId);
+                        reviewData.put("userId", (int) data[1]); // Thêm các trường dữ liệu khác từ câu truy vấn
+                        reviewData.put("productName", (String) data[2]);
+                        reviewData.put("dateCreated", data[3]);
+                        reviewData.put("content", (String) data[4]);
+                        reviewData.put("rate", (int) data[5]);
+                        reviewData.put("fullname", (String) data[6]);
+                        reviewData.put("orderId", (String) data[8]);
+                        reviewData.put("reviewStatus", (Boolean) data[9]);
+                        // Thêm các trường dữ liệu khác tùy thuộc vào cấu trúc câu truy vấn của bạn
+
+                        reviewMap.put(reviewId, reviewData);
+                    }
+
+                    // Kiểm tra xem có đủ phần tử trong mảng không trước khi truy cập
+                    if (data.length > 7) {
+                        // Thêm ảnh vào danh sách ảnh của đánh giá
+                        List<String> imageList = (List<String>) reviewMap.get(reviewId).get("images");
+                        if (imageList == null) {
+                            imageList = new ArrayList<>();
+                            reviewMap.get(reviewId).put("images", imageList);
+                        }
+                        String imagePath = (String) data[7]; // Index 7 là vị trí của cột imagePath trong mảng Object
+                        if (imagePath != null) {
+                            imageList.add(imagePath);
+                        }
+                    }
+                }
+
+// Chuyển đổi Map thành cấu trúc dữ liệu JSON
+                List<Map<String, Object>> result = new ArrayList<>(reviewMap.values());
+
+                return new ResponseObject("200", "OK", result);
+            }
         }
     }
 

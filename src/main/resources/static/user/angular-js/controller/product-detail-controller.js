@@ -8,7 +8,7 @@ solar_app.controller('product_details', function ($scope, $http, $timeout, $loca
     let params = $location.search();
     let productId = $scope.productId = params['ma-san-pham'];
 
-    $http.get('http://localhost:8080/quan-tri/danh-gia/findRateByProductId/' + productId)
+    $http.get('http://localhost:8080/api/rate-product/findRateByProductId/' + productId)
         .then(function(response) {
             // Xử lý dữ liệu khi nhận được từ API
             $scope.reviews = response.data.data;
