@@ -20,8 +20,11 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     Users findById(int userId);
 
-    @Query("SELECT u FROM Users u JOIN u.roles r  WHERE  r.nameRole LIKE 'ROLE_USER' ORDER BY u.dateCreated DESC LIMIT 90")
-    List<Users> findByActiveIsTrue();
+    @Query("SELECT u FROM Users u JOIN u.roles r  WHERE  r.nameRole LIKE 'ROLE_STAFF' ORDER BY u.dateCreated DESC")
+    List<Users> findStaffByActiveIsTrue();
+
+    @Query("SELECT u FROM Users u JOIN u.roles r  WHERE  r.nameRole LIKE 'ROLE_USER' ORDER BY u.dateCreated DESC")
+    List<Users> findUserByActiveIsTrue();
 
     @Query("SELECT u.id FROM Users u WHERE u.phoneNumber = :phoneNumber AND u.id <> :currentUserId")
     Integer findIdByPhoneNumberAndNotCurrentUser(@Param("phoneNumber") String phoneNumber, @Param("currentUserId") Integer currentUserId);

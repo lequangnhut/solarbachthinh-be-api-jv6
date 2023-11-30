@@ -40,17 +40,14 @@
                                         </span>
                                         <span class="mb-0 fs-2">{{ notification.dateCreated | timeAgo }}</span>
                                     </p>
-                                    <button class="delete-icon" ng-click="deleteNotification(notification.id)">
-                                        <i class="ti ti-trash fs-6 text-danger"></i>
-                                    </button>
                                 </a>
 
                                 <div class="text-center" style="cursor: pointer">
                                     <a ng-if="visibleNotifications.length < allNotification.length"
                                        ng-click="showMore($event)">
-                                        Hiển thị thêm 5 thông báo
+                                        Hiển thị thêm thông báo
                                     </a>
-                                    <a ng-if="maxVisibleNotifications > 6" ng-click="hideMore($event)">
+                                    <a ng-if="maxVisibleNotifications > 5" ng-click="hideMore($event)">
                                         Ẩn đi
                                     </a>
                                 </div>

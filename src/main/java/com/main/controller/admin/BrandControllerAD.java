@@ -1,24 +1,19 @@
 package com.main.controller.admin;
 
 import com.main.dto.ProductBrandsDto;
-import com.main.dto.ProductsDto;
 import com.main.entity.ProductBrands;
-import com.main.entity.Users;
-import com.main.service.HistoryService;
 import com.main.service.ProductBrandService;
 import com.main.service.ProductService;
 import com.main.service.ProductTypeService;
 import com.main.utils.EntityDtoUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,9 +27,6 @@ public class BrandControllerAD {
 
     @Autowired
     ProductBrandService productBrandService;
-
-    @Autowired
-    HistoryService historyService;
 
     @Autowired
     HttpServletRequest request;
@@ -69,7 +61,6 @@ public class BrandControllerAD {
 
             productBrandService.save(saveBrands);
             session.setAttribute("toastSuccess", "Thêm thương hiệu thành công !");
-            historyService.addHistory("Thêm thương hiệu");
             return "redirect:/quan-tri/danh-sach-thuong-hieu/them-thuong-hieu";
         }
     }
@@ -98,7 +89,6 @@ public class BrandControllerAD {
                 productBrandService.save(save);
                 model.addAttribute("brand", brands);
                 session.setAttribute("toastSuccess", "Cập nhật thương hiệu thành công");
-                historyService.addHistory("Cập nhật thương hiệu");
                 return "redirect:/quan-tri/danh-sach-thuong-hieu";
             } else {
                 session.setAttribute("toastFailed", "Mã thương hiệu không tồn tại");
@@ -120,7 +110,6 @@ public class BrandControllerAD {
             ProductBrands save = EntityDtoUtils.convertToEntity(brands, ProductBrands.class);
             productBrandService.save(save);
             session.setAttribute("toastSuccess", "Xóa thương hiệu thành công");
-            historyService.addHistory("Xóa thương hiệu");
             return "redirect:/quan-tri/danh-sach-thuong-hieu";
         } else {
             session.setAttribute("toastFailed", "Mã thương hiệu không tồn tại");

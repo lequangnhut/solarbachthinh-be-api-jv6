@@ -20,6 +20,8 @@ solar_app.controller('auth_controller', function ($scope, $http, AuthService) {
 
                         if (role === 'ROLE_ADMIN') {
                             toastAlert('warning', 'Không đủ quyền truy cập !');
+                        } else if (role === 'ROLE_STAFF') {
+                            toastAlert('warning', 'Không đủ quyền truy cập !');
                         } else {
                             AuthService.extractTokenLogin(email).then(function successCallback(response) {
                                 let message = response.data.message;

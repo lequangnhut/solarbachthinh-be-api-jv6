@@ -19,6 +19,8 @@ promise.then(function (result) {
         renderCityEdit(result.data);
     } else if (currentURL.indexOf("thong-tin/sua-thong-tin") !== -1) {
         renderCityEdit(result.data);
+    } else if (currentURL.indexOf("nhan-vien/sua-nhan-vien") !== -1) {
+        renderCityEdit(result.data);
     } else {
         renderCity(result.data);
     }

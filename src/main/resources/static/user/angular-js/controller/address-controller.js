@@ -1,7 +1,7 @@
 solar_app.controller('address_controller', function ($scope, $http, $timeout, $window, ShippingService, AddressService) {
 
     $scope.address = {
-        provinceName: "", districtName: "", wardName: "",
+        provinceName: null, districtName: null, wardName: null,
     };
 
     // add modal
@@ -67,7 +67,6 @@ solar_app.controller('address_controller', function ($scope, $http, $timeout, $w
             toDistrict: $scope.address.districtName.DistrictName,
             toWard: $scope.address.wardName.WardName,
             toAddress: $scope.address.address,
-            isActive: true
         }
 
         AddressService.submitAddress(data).then(function successCallback() {

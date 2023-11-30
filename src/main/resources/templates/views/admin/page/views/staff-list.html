@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Solar Bách Thịnh - Khách Hàng</title>
+    <title>Solar Bách Thịnh - Nhân Viên</title>
     <div th:replace="~{views/admin/lib/link_lib}"></div>
 </head>
 <body>
@@ -23,10 +23,10 @@
         <div class="container-fluid" style="max-width: 1900px;">
             <div class="card">
                 <div class="card-body">
-                    <a class="btn btn-primary float-end" th:href="@{/quan-tri/tai-khoan/them-tai-khoan}" role="button">
-                        <i class="ti ti-file-plus"></i> Thêm thông tin
+                    <a class="btn btn-primary float-end" href="/quan-tri/nhan-vien/them-nhan-vien" role="button">
+                        <i class="ti ti-file-plus"></i> Thêm nhân viên
                     </a>
-                    <h5 class="card-title fw-semibold mb-4 mt-2">Danh sách tài khoản khách hàng</h5>
+                    <h5 class="card-title fw-semibold mb-4 mt-2">Danh sách nhân viên</h5>
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
@@ -44,7 +44,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="account,start : ${dataAccount}">
+                                    <tr th:each="account,start : ${dataStaff}">
                                         <td th:text="${start.index + 1}"></td>
                                         <td th:text="${account.email}" class="hidden-text-table"
                                             th:title="${account.email}"></td>
@@ -70,7 +70,7 @@
                                         <td>
                                             <div class="btn-group">
                                                 <a class="btn btn-warning ms-2"
-                                                   th:href="@{/quan-tri/tai-khoan/sua-tai-khoan/id={id}(id=${account.id})}">Sửa</a>
+                                                   th:href="@{/quan-tri/nhan-vien/sua-nhan-vien/id={id}(id=${account.id})}">Sửa</a>
                                                 <a class="btn btn-danger ms-2"
                                                    href="javascript:void(0)"
                                                    role="button"
@@ -95,7 +95,7 @@
     function confirmDelete(id) {
         Swal.fire({
             title: 'Cảnh báo ?',
-            text: "Bạn có chắc chắn muốn xoá tài khoản không ?",
+            text: "Bạn có chắc chắn muốn xoá nhân viên không ?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -103,7 +103,7 @@
             confirmButtonText: 'Đồng ý !'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "/quan-tri/tai-khoan/xoa-tai-khoan/" + id;
+                window.location.href = "/quan-tri/nhan-vien/xoa-nhan-vien/" + id;
             } else {
                 return false;
             }
