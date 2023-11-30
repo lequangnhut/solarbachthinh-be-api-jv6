@@ -2,6 +2,7 @@ const productId = document.getElementById('productId');
 const saleValue = document.getElementById('saleValue');
 const startUse = document.getElementById('startUse');
 const endUse = document.getElementById('endUse');
+const price = document.getElementById('price');
 
 const invalidProductId = document.getElementById('invalid-productId');
 const invalidSaveValue = document.getElementById('invalid-saveValue');
@@ -127,9 +128,10 @@ function checkInputs() {
 
     console.log(
         "productId:", productId.value,
-        "saleValue:", saleValue.value,
+        "saleValue:", saleValue.value.trim().replace(/[^\d]/g, ''),
         "startUse:", startUse.value,
-        "endUse:", endUse.value
+        "endUse:", endUse.value,
+        "price:", price.value.trim().replace(/[^\d]/g, '')
     );
 }
 
@@ -153,6 +155,8 @@ function validationFielsProductId() {
 
 function validationFielsSaleValue() {
     const formattedValue = saleValue.value.trim().replace(/[^\d]/g, '');
+    const formattedPrice = price.value.trim().replace(/[^\d]/g, '');
+
     if (!formattedValue) {
         saleValue.classList.remove('is-valid');
         saleValue.classList.add('is-invalid');
@@ -161,6 +165,10 @@ function validationFielsSaleValue() {
         saleValue.classList.remove('is-valid');
         saleValue.classList.add('is-invalid');
         invalidSaveValue.textContent = 'Giá trị giảm giá không hợp lệ. Vui lòng nhập số lớn hơn hoặc bằng 0.';
+    } else if (parseInt(formattedValue) > parseInt(formattedPrice)) {
+        saleValue.classList.remove('is-valid');
+        saleValue.classList.add('is-invalid');
+        invalidSaveValue.textContent = 'Giá giảm phải nhỏ hơn giá sản phẩm';
     } else {
         saleValue.classList.remove('is-invalid');
         saleValue.classList.add('is-valid');

@@ -42,7 +42,7 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Mã</th>
-                                        <th scope="col">Tên</th>
+                                        <th scope="col">Tên sản phẩm</th>
                                         <th scope="col">Danh mục</th>
                                         <th scope="col">Số lượng</th>
                                         <th scope="col">Giá sản phẩm</th>
@@ -54,9 +54,8 @@
                                     <tr th:each="product,start : ${listProduct}">
                                         <td th:text="${start.index + 1}" th:title="${start.index + 1}"></td>
                                         <td th:text="${product.id}" th:title="${product.id}"></td>
-                                        <td th:text="${product.productName}" th:title="${product.productName}"
-                                            class="hidden-text-table"></td>
-                                        <td th:text="${product.productTypesByProductTypeId.productTypeName}"
+                                        <td th:text="${product.productName}" ></td>
+                                        <td th:text="${product.productTypesByProductTypeId.productTypeName}" class="hidden-text-table"
                                             th:title="${product.productTypesByProductTypeId.productTypeName}"></td>
                                         <td th:text="${product.quantity}" th:title="${product.quantity}"></td>
                                         <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"

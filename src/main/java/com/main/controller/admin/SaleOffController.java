@@ -155,6 +155,7 @@ public class SaleOffController {
             if (saleOffService.doseExitsProductId(id)) {
                 SaleOff saleOff = saleOffService.findByProductId(id);
                 model.addAttribute("saleOffValue", saleOff);
+                model.addAttribute("price", productService.findByProductId(id).get().getPrice());
             } else {
                 model.addAttribute("saleOffValue", null);
             }
