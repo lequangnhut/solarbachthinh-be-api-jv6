@@ -41,10 +41,16 @@
                                     <label for="productId">Chọn sản phẩm <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-productId"></span>
                                 </div>
-
+                                <div class="form-floating mb-3">
+                                    <input type="text" id="price" class="form-control"
+                                           th:value="${price != null} ? ${#numbers.formatDecimal(price, 0, 'COMMA', 0, 'POINT')} : ''"
+                                           oninput="formatPrice(this)" onload="formatPrice(this)" onblur="formatPrice(this)" onchange="formatPrice(this)" readonly="readonly">
+                                    <label for="saleValue">Giá sản phẩm</label>
+                                    <span class="text-danger" id="invalid-price"></span>
+                                </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" id="saleValue" class="form-control"
-                                           th:value="${saleOffValue.saleValue != null} ? ${saleOffValue.saleValue} : ''"
+                                           th:value="${saleOffValue.saleValue != null} ? ${#numbers.formatDecimal(saleOffValue.saleValue, 0, 'COMMA', 0, 'POINT')} : ''"
                                             oninput="formatPrice(this)" onload="formatPrice(this)" onblur="formatPrice(this)" onchange="formatPrice(this)">
                                     <label for="saleValue">Số tiền giảm</label>
                                     <span class="text-danger" id="invalid-saveValue"></span>

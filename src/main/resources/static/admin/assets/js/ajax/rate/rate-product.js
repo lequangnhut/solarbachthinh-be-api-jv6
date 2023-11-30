@@ -113,12 +113,14 @@ function updateUI(ratings) {
 
         var rating = ratings[i];
         var ratingHtml = "<div class='col-md-12'>";
-        ratingHtml += "<span>Trạng thái bình luận: " + (rating.reviewStatus ? "Hiển thị" : "Ẩn") + "</span>";
-        ratingHtml += "<button class='btn-primary btn btn-sm ms-2' onclick='confirmHideReview(" + i + ")'>Ẩn</button>";
+        ratingHtml += "<span>Trạng thái bình luận: </span>";
+        ratingHtml += "<button class='btn btn-sm ms-2' onclick='confirmHideReview(" + i + ")'>" + (rating.reviewStatus ? "Hiển thị" : "Ẩn") + "</button>";
         ratingHtml += "<div class='card'>";
         ratingHtml += "<div class='card-body'>";
+        ratingHtml += "<div class='d-flex align-items-center mb-2'>";
         ratingHtml += "<img src='/upload/avataUser.png' alt='User Avatar' class='rounded-circle' style='width: 30px; height: 30px; object-fit: cover;'>";
-        ratingHtml += "<h5 class='card-title'>" + rating.fullname + "</h5>";
+        ratingHtml += "<h5 class='card-title' style='margin: 0 0 0 10px'>" + rating.fullname + "</h5>";
+        ratingHtml += "</div>";
         ratingHtml += "<div class='d-flex align-items-center mb-2'>";
         ratingHtml += "<div class='rating-stars'>";
 
@@ -156,7 +158,7 @@ function confirmHideReview(index) {
     var rating = ratingsData[index];
 
     // Sử dụng Bootstrap Modal để hiển thị thông báo
-    var confirmation = confirm("Bạn có chắc muốn ẩn đánh giá này không?");
+    var confirmation = confirm("Bạn có chắc muốn " + (rating.reviewStatus ? "ẩn" : "hiển thị") + " đánh giá này không?");
     if (confirmation) {
         $.ajax({
             url: "http://localhost:8080/quan-tri/danh-gia/updateProductRateByProductId/" + rating.reviewId,
