@@ -2,7 +2,8 @@
 <div class="container-fluid p-0 pb-5 wow fadeIn" data-wow-delay="0.1s" ng-controller="carousel"
      xmlns="http://www.w3.org/1999/html">
     <div class="owl-carousel header-carousel position-relative">
-        <div class="owl-carousel-item position-relative" data-dot="<img src='/user/assets/img/fix-front/home-carousel-1.jpg'>">
+        <div class="owl-carousel-item position-relative"
+             data-dot="<img src='/user/assets/img/fix-front/home-carousel-1.jpg'>">
             <img class="img-fluid" src="/user/assets/img/fix-front/home-carousel-1.jpg" alt="">
             <div class="owl-carousel-inner">
                 <div class="container">
@@ -22,7 +23,8 @@
                 </div>
             </div>
         </div>
-        <div class="owl-carousel-item position-relative" data-dot="<img src='/user/assets/img/fix-front/home-carousel-2.jpg'>">
+        <div class="owl-carousel-item position-relative"
+             data-dot="<img src='/user/assets/img/fix-front/home-carousel-2.jpg'>">
             <img class="img-fluid" src="/user/assets/img/fix-front/home-carousel-2.jpg" alt="">
             <div class="owl-carousel-inner">
                 <div class="container">
@@ -44,7 +46,8 @@
                 </div>
             </div>
         </div>
-        <div class="owl-carousel-item position-relative" data-dot="<img src='/user/assets/img/fix-front/home-carousel-3.jpg'>">
+        <div class="owl-carousel-item position-relative"
+             data-dot="<img src='/user/assets/img/fix-front/home-carousel-3.jpg'>">
             <img class="img-fluid" src="/user/assets/img/fix-front/home-carousel-3.jpg" alt="">
             <div class="owl-carousel-inner">
                 <div class="container">
@@ -139,7 +142,8 @@
                 <div class="p-lg-4 pe-lg-0">
                     <h3 class="text-primary">SOLAR BÁCH THỊNH</h3>
                     <h2 class="mb-4">Hơn 25 năm tiên phong trong lĩnh vực năng lượng mặt trời</h2>
-                    <p style="text-align: justify">Chúng tôi cam kết cung cấp các sản phẩm và dịch vụ chất lượng tốt nhất, với giá cạnh tranh và
+                    <p style="text-align: justify">Chúng tôi cam kết cung cấp các sản phẩm và dịch vụ chất lượng tốt
+                        nhất, với giá cạnh tranh và
                         dịch vụ khách hàng tận tâm. Mỗi sản phẩm được kiểm tra và sàng lọc kỹ càng trước khi đến tay
                         khách hàng.</p>
                     <p><i class="fa fa-check-circle text-primary me-3"></i>Chúng tôi tuân thủ nghiêm ngặt các quy
@@ -174,41 +178,59 @@
         <div class="container py-4">
             <div class="row g-5 align-items-center">
                 <div class="col-lg-5 wow fadeIn" data-wow-delay="0.1s">
-                    <img class="img-fluid animated pulse infinite border border-2 border-primary rounded" ng-src="/upload/{{flashSale.productImagesById[0].imagePath}}">
+                    <img class="img-fluid animated pulse infinite border border-2 border-primary rounded"
+                         ng-src="/upload/{{flashSale.productImagesById[0].imagePath}}">
                 </div>
                 <div class="col-lg-7 wow fadeIn" data-wow-delay="0.5s">
                     <div class="bg-white text-center p-3">
                         <div class="border p-3">
-                            <!--                        <p class="mb-4">Mừng Xuân Giáp Thìn 2024</p>-->
                             <h2 class="text-uppercase mb-2">ƯU ĐÃI TỐT TRONG NGÀY</h2>
                             <h4 style="color:#ea6d38">{{flashSale.productName}}</h4>
-                            <strong class="mb-2" style="font-size: x-large;">Thương hiệu: {{saleBrandName}}</strong>
-                            <h4 class="mt-2" style="color:black">Giá cũ: <del>{{formatPrice(flashSale.price)}}</del> ĐỒNG</h4>
+                            <h4 class="mt-2" style="color:black">Giá cũ:
+                                <del>{{formatPrice(flashSale.price)}}</del>
+                                ĐỒNG
+                            </h4>
                             <h3 class="text-success mt-2 mb-2">NAY CHỈ CÒN</h3>
-                            <h2 class="text-danger mb-3 ng-binding" style="font-size:40px">
+                            <h2 class="text-danger mb-2 ng-binding" style="font-size:40px">
                                 {{formatPrice(flashSale.productSaleOffById[0].saleValue)}} ĐỒNG
                             </h2>
+                            <strong class="mb-2" style="font-size: x-large;">KHUYẾN MÃI SẼ KẾT THÚC SAU</strong>
                             <div class="row g-0 cdt">
                                 <div class="col-3">
                                     <h2 class="display-7" id="cdt-days"></h2>
-                                    <p class="mb-0" style="color: #0b856f; font-weight: bolder; font-size: larger; font-style: italic">-Ngày-</p>
+                                    <p class="mb-0"
+                                       style="color: #0b856f; font-weight: bolder; font-size: larger; font-style: italic">
+                                        -Ngày-
+                                    </p>
                                 </div>
                                 <div class="col-3">
                                     <h2 class="display-7" id="cdt-hours"></h2>
-                                    <p class="mb-0" style="color: #0b856f; font-weight: bolder; font-size: larger; font-style: italic">-Giờ-</p>
+                                    <p class="mb-0"
+                                       style="color: #0b856f; font-weight: bolder; font-size: larger; font-style: italic">
+                                        -Giờ-
+                                    </p>
                                 </div>
                                 <div class="col-3">
                                     <h2 class="display-7" id="cdt-minutes"></h2>
-                                    <p class="mb-0" style="color: #0b856f; font-weight: bolder; font-size: larger; font-style: italic">-Phút-</p>
+                                    <p class="mb-0"
+                                       style="color: #0b856f; font-weight: bolder; font-size: larger; font-style: italic">
+                                        -Phút-
+                                    </p>
                                 </div>
                                 <div class="col-3">
                                     <h2 class="display-7" id="cdt-seconds"></h2>
-                                    <p class="mb-0" style="color: #0b856f; font-weight: bolder; font-size: larger; font-style: italic">-Giây-</p>
+                                    <p class="mb-0"
+                                       style="color: #0b856f; font-weight: bolder; font-size: larger; font-style: italic">
+                                        -Giây-
+                                    </p>
                                 </div>
                             </div>
                             <h5 class="mb-2" style="color:#c6b7b7; font-style: italic" id="countdown"></h5>
-                            <a class="fs-5 btn btn-primary py-2 px-4 rounded-0 deal-btn me-3" href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{flashSale.id}}">Mua hàng</a>
-                            <a class="fs-5 btn btn-warning py-2 px-4 rounded-0 deal-btn" href="#!/san-pham">Ưu đãi khác</a>
+                            <a class="fs-5 btn btn-primary py-2 px-4 rounded-0 deal-btn me-3"
+                               href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{flashSale.id}}">Mua
+                                hàng</a>
+                            <a class="fs-5 btn btn-warning py-2 px-4 rounded-0 deal-btn" href="#!/san-pham">Ưu đãi
+                                khác</a>
                         </div>
                     </div>
                 </div>
@@ -228,7 +250,8 @@
             <p class="mb-2" style="font-size: 35px;font-weight: 500;color: #c1aa8c; font-family: auto;">
                 Năng Lượng Mặt Trời
             </p>
-            <p class="fs-6 mb-3 text-dark">Từ thế kỷ 7 TCN, những quảng thảo luận sơ bộ về việc sử dụng ánh sáng mặt trời để tạo
+            <p class="fs-6 mb-3 text-dark">Từ thế kỷ 7 TCN, những quảng thảo luận sơ bộ về việc sử dụng ánh sáng mặt
+                trời để tạo
                 nhiệt đã xuất hiện trong văn bản của các nhà triết học Hy Lạp.</p>
         </div>
         <div class="row g-4 align-items-center wow fadeInUp" data-wow-delay="0.1s">
@@ -381,7 +404,8 @@
                             <i class="fa fa-solar-panel fa-3x"></i>
                         </div>
                         <h4 class="mb-3">Năng Lượng Mặt Trời</h4>
-                        <p style="text-align: justify">Chúng tôi tạo ra những tấm pin mặt trời tối ưu với công nghệ tiên tiến, biến ánh nắng
+                        <p style="text-align: justify">Chúng tôi tạo ra những tấm pin mặt trời tối ưu với công nghệ tiên
+                            tiến, biến ánh nắng
                             mặt trời thành nguồn năng lượng vô tận cho gia đình và doanh nghiệp.</p>
                         <a class="small fw-medium" href="">Đọc thêm<i class="fa fa-arrow-right ms-2"></i></a>
                     </div>
@@ -395,7 +419,8 @@
                             <i class="fa fa-wind fa-3x"></i>
                         </div>
                         <h4 class="mb-3">Năng Lượng Gió</h4>
-                        <p style="text-align: justify">Chúng tôi phát triển các cánh quạt gió hiệu suất cao để tận dụng sức gió mạnh mẽ, mang
+                        <p style="text-align: justify">Chúng tôi phát triển các cánh quạt gió hiệu suất cao để tận dụng
+                            sức gió mạnh mẽ, mang
                             lại
                             năng lượng sạch và bền vững cho xã hội cho cộng đồng.</p>
                         <a class="small fw-medium" href="">Đọc thêm<i class="fa fa-arrow-right ms-2"></i></a>
@@ -410,7 +435,8 @@
                             <i class="fa fa-lightbulb fa-3x"></i>
                         </div>
                         <h4 class="mb-3">Nhà Máy Thuỷ Điện</h4>
-                        <p style="text-align: justify">Chúng tôi xây dựng các nhà máy thủy điện tiên tiến, sử dụng nguồn nước để sản xuất điện
+                        <p style="text-align: justify">Chúng tôi xây dựng các nhà máy thủy điện tiên tiến, sử dụng nguồn
+                            nước để sản xuất điện
                             năng
                             bền vững, góp phần giảm thiểu tác động đến môi trường.</p>
                         <a class="small fw-medium" href="">Đọc thêm<i class="fa fa-arrow-right ms-2"></i></a>

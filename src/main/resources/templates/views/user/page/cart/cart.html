@@ -38,12 +38,16 @@
                                     <!-- Image -->
                                     <a href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{cart[1].id}}">
                                         <div class="bg-image hover-overlay hover-zoom ripple rounded"
-                                             data-mdb-ripple-color="light">
-                                            <img ng-src="/upload/{{cart[3]}}"
-                                                 class="w-100" alt=""/>
-                                            <a href="#">
-                                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)">
-                                                </div>
+                                             data-mdb-ripple-color="light" style="position: relative;">
+                                            <img ng-src="/upload/{{cart[3]}}" class="w-100" alt=""/>
+                                            <a id="low-sale"
+                                               href="#"
+                                               style="position: absolute;top: 0;right: 0;"
+                                               ng-if="cart[1].price !== currentPriceProduct"
+                                            >
+                                                <img src="/upload/product-sale.png"
+                                                     style="width: 70%; float: right;"
+                                                     alt=""/>
                                             </a>
                                         </div>
                                     </a>

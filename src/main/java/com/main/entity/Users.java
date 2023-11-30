@@ -89,10 +89,6 @@ public class Users {
 
     @OneToMany(mappedBy = "usersByUserId")
     @JsonManagedReference
-    private Collection<HistoryUpdate> historyUpdatesById;
-
-    @OneToMany(mappedBy = "usersByUserId")
-    @JsonManagedReference
     private Collection<Orders> ordersById;
 
     @OneToMany(mappedBy = "usersByUserId")

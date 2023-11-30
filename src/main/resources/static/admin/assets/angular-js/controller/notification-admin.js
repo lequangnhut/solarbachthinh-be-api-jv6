@@ -25,19 +25,22 @@ solar_app_admin.controller('NotificationAdmin', function ($scope, $http) {
     });
 
     $scope.showMore = function (event) {
-        $scope.maxVisibleNotifications += 10;
+        $scope.maxVisibleNotifications = 9;
+        $scope.allNotification.length = 9;
         $scope.updateVisibleNotifications();
         event.stopPropagation();
     };
 
     $scope.hideMore = function (event) {
-        $scope.maxVisibleNotifications = 6;
+        $scope.maxVisibleNotifications = 5;
         $scope.updateVisibleNotifications();
         event.stopPropagation();
     };
 
     $scope.updateVisibleNotifications = function () {
         $scope.visibleNotifications = $scope.allNotification.slice(0, $scope.maxVisibleNotifications);
+        console.log($scope.visibleNotifications.length)
+        console.log($scope.allNotification.length)
     };
 
     $scope.seenNotification = function (id, orderId) {

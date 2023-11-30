@@ -317,10 +317,15 @@
                                 <br>
                                 {{order.toAddress + ', ' + order.toWard + ', ' + order.toDistrict + ', ' + order.toProvince}}
                             </p>
-                            <p class="form-control-plaintext">
+                            <p class="form-control-plaintext" ng-if="order.orderStatus !== 'Đã huỷ đơn'">
                                 <strong>Thông tin ghi chú:</strong>
                                 <br>
                                 {{order.orderNote ? order.orderNote : 'Không có thông tin ghi chú.'}}
+                            </p>
+                            <p class="form-control-plaintext" ng-if="order.orderStatus === 'Đã huỷ đơn'">
+                                <strong>Lí do huỷ đơn:</strong>
+                                <br>
+                                {{order.orderNoteCancelled}}
                             </p>
                         </div>
                     </div>
@@ -382,7 +387,7 @@
                         ng-if="order.orderStatus == 'Đang vận chuyển'"
                         ng-click="cancelOrderAdminByCustomer(order.id)"
                         class="btn btn-warning">
-                    Không nhận hàng
+                    Khách không nhận hàng
                 </button>
 
                 <!--Đang vận chuyển-->

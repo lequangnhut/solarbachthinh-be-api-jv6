@@ -45,6 +45,7 @@ public class AddressAPI {
         if (users != null) {
             addressDto.setUserId(users.getId());
         }
+        addressDto.setIsActive(Boolean.FALSE);
         Address address = EntityDtoUtils.convertToDto(addressDto, Address.class);
         if (address.getIsActive()) {
             oneIsActiveTrue(addressDto.getUserId(), address);

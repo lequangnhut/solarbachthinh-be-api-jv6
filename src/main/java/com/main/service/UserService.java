@@ -9,7 +9,9 @@ public interface UserService {
 
     List<Users> findAllUser();
 
-    List<Users> findByActiveIsTrue();
+    List<Users> findUserByActiveIsTrue();
+
+    List<Users> findStaffByActiveIsTrue();
 
     Users findById(int userId);
 

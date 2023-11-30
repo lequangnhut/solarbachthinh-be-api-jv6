@@ -80,6 +80,10 @@ public class Orders {
     private String orderNote;
 
     @Basic
+    @Column(name = "order_note_cancelled", nullable = true, length = 255)
+    private String orderNoteCancelled;
+
+    @Basic
     @Column(name = "date_created", nullable = true)
     private Timestamp dateCreated;
 
