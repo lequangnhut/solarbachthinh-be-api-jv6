@@ -27,8 +27,6 @@
                     <h5 class="card-title fw-semibold mb-4 mt-2">Thêm giảm giá sản phẩm</h5>
                     <div class="card">
                         <div class="card-body">
-                            <!--                            <div><a href="/quan-tri/giam-gia/them-ma/random-code" class="btn btn-primary mb-3">Tạo mã-->
-                            <!--                            </a></div>-->
                             <form method="post">
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="productId">
@@ -42,7 +40,13 @@
                                     <label for="productId">Chọn sản phẩm <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-productId"></span>
                                 </div>
-
+                                <div class="form-floating mb-3">
+                                    <input type="text" id="price" class="form-control"
+                                           th:value="${price != null} ? ${#numbers.formatDecimal(price, 0, 'COMMA', 0, 'POINT')} : ''"
+                                           oninput="formatPrice(this)" onload="formatPrice(this)" onblur="formatPrice(this)" onchange="formatPrice(this)" readonly="readonly">
+                                    <label for="price">Giá sản phẩm</label>
+                                    <span class="text-danger" id="invalid-price"></span>
+                                </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" oninput="formatPrice(this)" onblur="formatPrice(this)" onload="formatPrice(this)"
                                            id="saleValue"
