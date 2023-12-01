@@ -224,6 +224,14 @@ function validationFielsEndUser() {
         startUse.classList.remove('is-valid');
         startUse.classList.add('is-invalid');
         invalidStartUse.textContent = 'Ngày và thời gian bắt đầu phải lớn hơn ngày và thời gian kết thúc';
+    } else if ((endUseValue - startUseValue) / (1000 * 60 * 60 * 24) > 7) {
+        endUse.classList.remove('is-valid');
+        endUse.classList.add('is-invalid');
+        invalidEndUse.textContent = 'Khoảng thời gian không được quá 7 ngày so với ngày bắt đầu';
+
+        startUse.classList.remove('is-valid');
+        startUse.classList.add('is-invalid');
+        invalidStartUse.textContent = 'Khoảng thời gian không được quá 7 ngày so với ngày kết thúc';
     } else {
         endUse.classList.remove('is-invalid');
         endUse.classList.add('is-valid');

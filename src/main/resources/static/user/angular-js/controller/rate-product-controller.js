@@ -63,7 +63,6 @@ solar_app.controller('rate_controller',
                                 for (var j = 0; j < $scope.orderList[i].orderItemsById.length; j++) {
                                     $scope.rateProductList = $scope.orderList[i].orderItemsById;
 
-
                                 }
                             }
 

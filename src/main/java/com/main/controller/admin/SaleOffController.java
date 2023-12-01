@@ -4,6 +4,7 @@ import com.main.dto.DiscountsDto;
 import com.main.dto.ResponseObject;
 import com.main.dto.SaleOffDto;
 import com.main.entity.Discounts;
+import com.main.entity.Products;
 import com.main.entity.SaleOff;
 import com.main.service.*;
 import com.main.utils.DiscountCodeGeneratoUtils;
@@ -19,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -143,6 +145,13 @@ public class SaleOffController {
                 return responseObject;
             }
         }
+    }
+
+    @GetMapping("them-giam-gia-san-pham/gia-san-pham/{productId}")
+    @ResponseBody
+    public ResponseObject showAddDiscount(@PathVariable("productId") String productId) {
+        Products product = productService.findProductByProductId(productId);
+        return new ResponseObject("200", "OK", product);
     }
 
     @GetMapping("/sua-giam-gia-san-pham/{id}")

@@ -42,7 +42,13 @@
                                     <label for="productId">Chọn sản phẩm <span class="text-danger">*</span></label>
                                     <span class="text-danger" id="invalid-productId"></span>
                                 </div>
-
+                                <div class="form-floating mb-3">
+                                    <input type="text" id="price" class="form-control"
+                                           oninput="formatPrice(this)" onload="formatPrice(this)" onblur="formatPrice(this)"
+                                           onchange="formatPrice(this)" readonly="readonly">
+                                    <label for="price">Giá sản phẩm</label>
+                                    <span class="text-danger" id="invalid-price"></span>
+                                </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" oninput="formatPrice(this)" onblur="formatPrice(this)" onload="formatPrice(this)"
                                            id="saleValue"

@@ -89,12 +89,6 @@ function checkInputs() {
         submittedButton.disabled = true;
     }
 
-    console.log(
-        "productId:", productId.value,
-        "saleValue:", saleValue.value,
-        "startUse:", startUse.value,
-        "endUse:", endUse.value
-    );
 }
 
 function validationFielsProductId() {
@@ -125,6 +119,10 @@ function validationFielsSaleValue() {
         saleValue.classList.remove('is-valid');
         saleValue.classList.add('is-invalid');
         invalidSaveValue.textContent = 'Giá trị giảm giá không hợp lệ. Vui lòng nhập số lớn hơn hoặc bằng 0.';
+    } else if (parseInt(formattedValue) > parseInt(formattedPrice)) {
+        saleValue.classList.remove('is-valid');
+        saleValue.classList.add('is-invalid');
+        invalidSaveValue.textContent = 'Giá giảm phải nhỏ hơn giá sản phẩm';
     } else {
         saleValue.classList.remove('is-invalid');
         saleValue.classList.add('is-valid');
@@ -180,6 +178,14 @@ function validationFielsEndUser() {
         startUse.classList.remove('is-valid');
         startUse.classList.add('is-invalid');
         invalidStartUse.textContent = 'Ngày và thời gian bắt đầu phải lớn hơn ngày và thời gian kết thúc';
+    } else if ((endUseValue - startUseValue) / (1000 * 60 * 60 * 24) > 7) {
+        endUse.classList.remove('is-valid');
+        endUse.classList.add('is-invalid');
+        invalidEndUse.textContent = 'Khoảng thời gian không được quá 7 ngày so với ngày bắt đầu';
+
+        startUse.classList.remove('is-valid');
+        startUse.classList.add('is-invalid');
+        invalidStartUse.textContent = 'Khoảng thời gian không được quá 7 ngày so với ngày kết thúc';
     } else {
         endUse.classList.remove('is-invalid');
         endUse.classList.add('is-valid');
