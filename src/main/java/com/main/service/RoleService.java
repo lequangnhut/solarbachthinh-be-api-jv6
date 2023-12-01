@@ -10,4 +10,6 @@ public interface RoleService {
     List<Roles> findAllRoles();
 
     Roles findByNameRole(String nameRole);
+
+    Roles save(Roles role);
 }
