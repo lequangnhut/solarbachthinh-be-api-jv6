@@ -72,23 +72,15 @@ public class DashboardControllerAD {
 
     // Phương thức phụ trợ để cập nhật model với dữ liệu so sánh doanh thu
     private void updateModelForRevenueComparison(Model model, double revenue, double revenueLastYear) {
-        if (revenueLastYear == 0) {
-            model.addAttribute("percentCompareToLastYear", "N/A");
-            model.addAttribute("muiTen", "N/A"); // Hoặc bỏ qua
-        } else {
-            String muiTen = (revenue >= revenueLastYear) ? "ti-arrow-up-left text-success" : "ti-arrow-down-right text-danger";
+        String muiTen = (revenue >= revenueLastYear) ? "ti-arrow-up-left text-success" : "ti-arrow-down-right text-danger";
 
-            model.addAttribute("muiTen", muiTen);
-            model.addAttribute("percentCompareToLastYear", calculatePercentageChange(revenue, revenueLastYear));
-        }
+        model.addAttribute("muiTen", muiTen);
+        model.addAttribute("percentCompareToLastYear", calculatePercentageChange(revenue, revenueLastYear));
     }
 
 
     // Phương thức phụ trợ để tính toán phần trăm thay đổi
     private Double calculatePercentageChange(double newValue, double oldValue) {
-        if (oldValue == 0) {
-            return null;
-        }
         return ((newValue - oldValue) / oldValue) * 100;
     }
 
@@ -142,18 +134,22 @@ public class DashboardControllerAD {
 
     // Phương thức mới để cập nhật Map
     private void updateResponseForRevenueComparison(Map<String, Object> response, double revenue, double revenueLastYear) {
-        if (revenueLastYear == 0) {
-            response.put("percentCompareToLastYear", "N/A");
-            response.put("muiTen", "N/A"); // Hoặc bỏ qua
-        } else {
-            double percent = calculatePercentageChange(revenue, revenueLastYear);
-            String muiTen = (revenue >= revenueLastYear) ? "ti-arrow-up-left text-success" : "ti-arrow-down-right text-danger";
+        double percent = calculatePercentageChange(revenue, revenueLastYear);
+        String muiTen = (revenue >= revenueLastYear) ? "ti-arrow-up-left text-success" : "ti-arrow-down-right text-danger";
 
-            response.put("muiTen", muiTen);
-            response.put("percentCompareToLastYear", percent);
+        if (revenueLastYear == 0 && revenue != 0) {
+            percent = 100;
+            muiTen = "ti-arrow-up-left text-success";
+        } else if (revenue == 0 && revenueLastYear != 0) {
+            percent = -100;
+            muiTen = "ti-arrow-down-right text-danger";
+        } else if (revenue == revenueLastYear) {
+            percent = 0;
+            muiTen = "ti-arrow-up-left text-success";
         }
+        response.put("muiTen", muiTen);
+        response.put("percentCompareToLastYear", percent);
     }
-
 
     // Phương thức phụ trợ để tạo dữ liệu lợi nhuận rỗng
     private List<BigDecimal> generateEmptyProfitData() {
