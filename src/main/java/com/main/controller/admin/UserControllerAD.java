@@ -4,7 +4,6 @@ import com.main.dto.APIUsersDto;
 import com.main.dto.UsersDto;
 import com.main.entity.Roles;
 import com.main.entity.Users;
-import com.main.service.HistoryService;
 import com.main.service.RoleService;
 import com.main.service.UserService;
 import com.main.utils.EncodeUtils;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.relation.Role;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +33,6 @@ public class UserControllerAD {
     RoleService roleService;
 
     @Autowired
-    HistoryService historyService;
-
-    @Autowired
     HttpSession session;
 
     @Autowired
@@ -45,7 +42,7 @@ public class UserControllerAD {
 
     @GetMapping
     public String dataAccount(Model model) {
-        List<Users> users = userService.findByActiveIsTrue();
+        List<Users> users = userService.findUserByActiveIsTrue();
 
         for (Users user : users) {
             String encodedPhone = EncodeUtils.encodePhoneNumber(user.getPhoneNumber());
@@ -63,11 +60,13 @@ public class UserControllerAD {
 
     @PostMapping("them-tai-khoan")
     public String postAccount_add(@Valid UsersDto usersDto) {
+        Roles role = roleService.findByNameRole("ROLE_USER");
+
         usersDto.setAcctive(true);
+        usersDto.setRoles(List.of(role));
         Users users = EntityDtoUtils.convertToEntity(usersDto, Users.class);
         userService.save(users);
         session.setAttribute("toastSuccess", "Thêm thành công!");
-        historyService.addHistory("Thêm tài khoản");
         successMessage = true;
         return "views/admin/page/crud/account/account-add";
     }
@@ -87,7 +86,6 @@ public class UserControllerAD {
         userService.update(EntityDtoUtils.convertToEntity(usersDto, Users.class));
 
         session.setAttribute("toastSuccess", "Cập nhật thành công !");
-        historyService.addHistory("Cập nhật tài khoản");
         return "redirect:/quan-tri/tai-khoan";
     }
 
@@ -97,7 +95,6 @@ public class UserControllerAD {
         users.setAcctive(Boolean.FALSE);
         userService.update(users);
         session.setAttribute("toastSuccess", "Xoá thành công !");
-        historyService.addHistory("Xóa tài khoản");
         return "redirect:/quan-tri/tai-khoan";
     }
 

@@ -47,8 +47,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Users> findByActiveIsTrue() {
-        return userRepository.findByActiveIsTrue();
+    public List<Users> findUserByActiveIsTrue() {
+        return userRepository.findUserByActiveIsTrue();
+    }
+
+    @Override
+    public List<Users> findStaffByActiveIsTrue() {
+        return userRepository.findStaffByActiveIsTrue();
     }
 
     @Override

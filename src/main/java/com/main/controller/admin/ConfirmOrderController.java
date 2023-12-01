@@ -2,7 +2,6 @@ package com.main.controller.admin;
 
 import com.main.entity.Orders;
 import com.main.service.EmailService;
-import com.main.service.HistoryService;
 import com.main.service.OrderItemService;
 import com.main.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,6 @@ public class ConfirmOrderController {
     OrderItemService orderItemService;
 
     @Autowired
-    HistoryService historyService;
-
-    @Autowired
     EmailService emailService;
 
     @GetMapping("xac-nhan-don-hang")
@@ -42,7 +38,6 @@ public class ConfirmOrderController {
         order.setOrderStatus("Đang vận chuyển");
 
         emailService.queueEmailConfirmOrder(order);
-        historyService.addHistory("Xác nhận đơn hàng");
         return ResponseEntity.ok().body(orderService.save(order));
     }
 
@@ -58,7 +53,6 @@ public class ConfirmOrderController {
         order.setDateReceive(new Timestamp(System.currentTimeMillis()));
 
         emailService.queueEmailReceiveOrder(order);
-        historyService.addHistory("Xác nhận đã giao hàng");
         return ResponseEntity.ok().body(orderService.save(order));
     }
 
@@ -66,12 +60,11 @@ public class ConfirmOrderController {
     private ResponseEntity<Orders> cancelOrder(@PathVariable String orderId) {
         Orders order = orderService.findByOrderId(orderId);
         order.setOrderStatus("Đã huỷ đơn");
-        order.setOrderNote("Huỷ đơn bởi người bán. Nếu có thắc mắc xin vui lòng liên hệ +84 918.619.651");
+        order.setOrderNoteCancelled("Huỷ đơn bởi người bán. Nếu có thắc mắc xin vui lòng liên hệ +84 918.619.651");
         order.setPaymentStatus(2);
         order.setDateReceive(new Timestamp(System.currentTimeMillis()));
 
         emailService.queueEmailCancelOrder(order);
-        historyService.addHistory("Xác nhận đã huỷ đơn");
         return ResponseEntity.ok().body(orderService.save(order));
     }
 
@@ -79,12 +72,11 @@ public class ConfirmOrderController {
     private ResponseEntity<Orders> cancelOrderByCustomer(@PathVariable String orderId) {
         Orders order = orderService.findByOrderId(orderId);
         order.setOrderStatus("Đã huỷ đơn");
-        order.setOrderNote("Huỷ đơn bởi người mua hàng. Khách hàng không nhận hàng " + orderId + " đang chờ chuyển hoàn");
+        order.setOrderNoteCancelled("Huỷ đơn bởi người mua hàng. Khách hàng không nhận hàng " + orderId + " đang chờ chuyển hoàn");
         order.setPaymentStatus(2);
         order.setDateReceive(new Timestamp(System.currentTimeMillis()));
 
         emailService.queueEmailCancelOrderByCustomer(order);
-        historyService.addHistory("Xác nhận đã huỷ đơn");
         return ResponseEntity.ok().body(orderService.save(order));
     }
 

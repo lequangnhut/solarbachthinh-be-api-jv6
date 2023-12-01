@@ -45,7 +45,7 @@
                                     <input type="text" id="price" class="form-control"
                                            th:value="${price != null} ? ${#numbers.formatDecimal(price, 0, 'COMMA', 0, 'POINT')} : ''"
                                            oninput="formatPrice(this)" onload="formatPrice(this)" onblur="formatPrice(this)" onchange="formatPrice(this)" readonly="readonly">
-                                    <label for="saleValue">Giá sản phẩm</label>
+                                    <label for="price">Giá sản phẩm</label>
                                     <span class="text-danger" id="invalid-price"></span>
                                 </div>
                                 <div class="form-floating mb-3">

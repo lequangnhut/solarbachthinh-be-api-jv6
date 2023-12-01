@@ -215,7 +215,7 @@ async function UpdateRevenueForTheMonth(month, year) {
 function updateMonthlyRevenueData(data) {
     // Cập nhật dữ liệu doanh thu hàng tháng
     document.getElementById('monthly-revenue-value').textContent = formatCurrency(data[0]);
-    document.getElementById('monthly-revenue-change').textContent = data[1] + '%';
+    document.getElementById('monthly-revenue-change').textContent = Math.abs(data[1]) + '%';
     document.getElementById('current-month').textContent = 'Tháng ' + data[2];
     document.getElementById('previous-month').textContent = 'Tháng ' + data[3];
 

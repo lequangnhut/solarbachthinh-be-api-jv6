@@ -74,6 +74,12 @@ public class CartsAPI {
         }
     }
 
+    @GetMapping("carts/productPriceByUserId")
+    public List<Integer> getProductPriceList() {
+        Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
+        return productService.findPriceProductByUserId(users.getId());
+    }
+
     // thêm vào giỏ hàng
     @PostMapping("carts/them-vao-gio-hang/{productId}&{quantity}")
     public void addProductIntoCart(@PathVariable String productId, @PathVariable int quantity) {

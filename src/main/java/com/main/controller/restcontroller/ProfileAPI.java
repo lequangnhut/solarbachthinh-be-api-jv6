@@ -191,7 +191,7 @@ public class ProfileAPI {
         addressDto.setToDistrict(users.getDistrictName());
         addressDto.setToWard(users.getWardName());
         addressDto.setToAddress(users.getAddress());
-        addressDto.setIsActive(Boolean.FALSE);
+        addressDto.setIsActive(Boolean.TRUE);
         addressDto.setUserId(users.getId());
         return addressDto;
     }

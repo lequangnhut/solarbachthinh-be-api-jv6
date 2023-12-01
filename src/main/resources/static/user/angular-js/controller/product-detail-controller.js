@@ -1,7 +1,5 @@
 solar_app.controller('product_details', function ($scope, $http, $timeout, $location, $sce, $rootScope, UserService, ProductService, CategoryService, SaleOffService, CartService) {
 
-
-
     $scope.quantity = 1;
     $scope.max_quantity = 1;
 
@@ -9,14 +7,15 @@ solar_app.controller('product_details', function ($scope, $http, $timeout, $loca
     let productId = $scope.productId = params['ma-san-pham'];
 
     $http.get('http://localhost:8080/api/rate-product/findRateByProductId/' + productId)
-        .then(function(response) {
+        .then(function (response) {
             // Xử lý dữ liệu khi nhận được từ API
             $scope.reviews = response.data.data;
         })
-        .catch(function(error) {
+        .catch(function (error) {
             // Xử lý lỗi nếu có
             console.error('Error fetching data:', error);
-        });    $scope.formatPrice = function (price) {
+        });
+    $scope.formatPrice = function (price) {
         return new Intl.NumberFormat('vi-VN', {currency: 'VND'}).format(price);
     };
 
@@ -83,25 +82,27 @@ solar_app.controller('product_details', function ($scope, $http, $timeout, $loca
         function countdown() {
             let saleOff = $scope.sale_off;
 
-            const now = new Date().getTime();
-            const endTime = new Date(saleOff.endUse).getTime();
-            const timeLeft = endTime - now;
+            if (saleOff != null && saleOff.endUse) {
+                const now = new Date().getTime();
+                const endTime = new Date(saleOff.endUse).getTime();
+                const timeLeft = endTime - now;
 
-            const days = Math.max(Math.floor(timeLeft / (1000 * 60 * 60 * 24)), 0);
-            const hours = Math.max(Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), 0);
-            const minutes = Math.max(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)), 0);
-            const seconds = Math.max(Math.floor((timeLeft % (1000 * 60)) / 1000), 0);
+                const days = Math.max(Math.floor(timeLeft / (1000 * 60 * 60 * 24)), 0);
+                const hours = Math.max(Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), 0);
+                const minutes = Math.max(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)), 0);
+                const seconds = Math.max(Math.floor((timeLeft % (1000 * 60)) / 1000), 0);
 
-            $scope.$apply(function () {
-                $scope.daySale = addLeadingZero(days);
-                $scope.hourSale = addLeadingZero(hours);
-                $scope.minuteSale = addLeadingZero(minutes);
-                $scope.secondSale = addLeadingZero(seconds);
-            });
+                $scope.$apply(function () {
+                    $scope.daySale = addLeadingZero(days);
+                    $scope.hourSale = addLeadingZero(hours);
+                    $scope.minuteSale = addLeadingZero(minutes);
+                    $scope.secondSale = addLeadingZero(seconds);
+                });
 
-            if (timeLeft <= 0) {
-                clearInterval(countdownInterval);
-                console.log("Ưu đãi cho sản phẩm này đã kết thúc!");
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    console.log("Ưu đãi cho sản phẩm này đã kết thúc!");
+                }
             }
         }
 

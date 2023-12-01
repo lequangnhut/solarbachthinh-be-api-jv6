@@ -191,7 +191,7 @@ public class EmailServiceImpl implements EmailService {
         while (!emailQueueNotice.isEmpty()) {
             DiscountsDto discountsDto = emailQueueNotice.poll();
             // Lấy danh sách tất cả khách hàng từ dữ liệu (giả sử từ một service nào đó)
-            List<Users> customers = userService.findByActiveIsTrue();
+            List<Users> customers = userService.findUserByActiveIsTrue();
 
             // Lặp qua danh sách khách hàng và gửi mail cho mỗi khách hàng
             for (Users customer : customers) {

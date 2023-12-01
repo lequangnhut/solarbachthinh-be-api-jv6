@@ -51,7 +51,7 @@ function updateChart() {
                 });
 
                 revenueText.text(formatCurrency(revenue));
-                percentCompareToLastYearText.text(formatNumberWithDecimals(percentCompareToLastYear) + '%');
+                percentCompareToLastYearText.text(formatNumberWithDecimals(Math.abs(percentCompareToLastYear)) + '%');
                 muiTenText.append(`<i id="muiTen" class="ti ${muiTen}"></i>`)
                 namDanhThu.append(`
                     <div class="me-4">
