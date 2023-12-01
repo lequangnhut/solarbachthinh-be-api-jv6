@@ -20,7 +20,10 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     Users findById(int userId);
 
-    @Query("SELECT u FROM Users u JOIN u.roles r  WHERE  r.nameRole LIKE 'ROLE_STAFF' ORDER BY u.dateCreated DESC")
+    @Query("SELECT u FROM Users u " +
+            "LEFT JOIN FETCH u.roles r " +
+            "WHERE r.nameRole LIKE 'ROLE_ADMIN' OR r.nameRole LIKE 'ROLE_STAFF'" +
+            "ORDER BY u.dateCreated DESC")
     List<Users> findStaffByActiveIsTrue();
 
     @Query("SELECT u FROM Users u JOIN u.roles r  WHERE  r.nameRole LIKE 'ROLE_USER' ORDER BY u.dateCreated DESC")
