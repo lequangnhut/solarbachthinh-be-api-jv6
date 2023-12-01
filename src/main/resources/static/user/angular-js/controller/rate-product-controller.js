@@ -1,5 +1,5 @@
 solar_app.controller('rate_controller',
-    function ($scope, $http, $window, UserService, RateProductService, ImageValidationService, SensitiveWordsService, ProductService) {
+    function ($scope, $http, $window, UserService, RateProductService, ImageValidationService, SensitiveWordsService, ProductService, OrderService) {
 
         // Các biến được khai báo trước
         $scope.errorImageInput1 = null;
@@ -15,6 +15,7 @@ solar_app.controller('rate_controller',
         $scope.selectedStars = 0;
         $scope.comment = null;
         $scope.getAllProduct = [];
+        $scope.getAllOrders = [];
         $scope.selectedProductId = null;
         $scope.selectedOrdertId = null;
         $scope.showSuccessMessage = false;
@@ -62,11 +63,8 @@ solar_app.controller('rate_controller',
                             for (var i = 0; i < $scope.orderList.length; i++) {
                                 for (var j = 0; j < $scope.orderList[i].orderItemsById.length; j++) {
                                     $scope.rateProductList = $scope.orderList[i].orderItemsById;
-
-
                                 }
                             }
-
                         } else if (response.status === 404) {
 
                             const Toast = Swal.mixin({
@@ -90,6 +88,7 @@ solar_app.controller('rate_controller',
 
                     });
             })
+
 
         /**
          * Phương thức gọi API để lấy danh sách toàn bộ sản phẩm
@@ -120,6 +119,37 @@ solar_app.controller('rate_controller',
             // Trả về id nếu không tìm thấy tên sản phẩm
             return productId;
         };
+
+        /**
+         * Phương thức ánh xạ mã đơn hàng sang ngày giao haàng
+         * @param orderId
+         * @returns {*}
+         */
+        $scope.getDateReceive = function (orderId) {
+            var lengthOrder = $scope.getAllOrders.length;
+
+            // Lặp qua danh sách sản phẩm và tìm sản phẩm tương ứng
+            for (var i = 0; i < lengthOrder; i++) {
+                if ($scope.getAllOrders[i].id === orderId) {
+                    // Trả về tên sản phẩm nếu tìm thấy
+                    return $scope.getAllOrders[i].dateReceive;
+                }
+            }
+            // Trả về id nếu không tìm thấy tên sản phẩm
+            return orderId;
+        };
+
+        /**
+         * Phương thức gọi API để lấy danh sách sản phẩm
+         *
+         */
+        OrderService.findAllOrder()
+        .then(function successCallback(responseOrder) {
+            $scope.getAllOrders = responseOrder.data.data;
+            console.log($scope.getAllOrders.data);
+        })
+
+
 
         /**
          * Phương thức chọn sao đánh giá sản phẩm
@@ -340,12 +370,6 @@ solar_app.controller('rate_controller',
                 $scope.starError !== null ||
                 $scope.errorRateComment !== null ||
                 $scope.selectedStars === 0;
-
-            // console.log('$scope.errorImageInput1:', $scope.errorImageInput1);
-            // console.log('$scope.starError:', $scope.starError);
-            // console.log('$scope.errorRateComment:', $scope.errorRateComment);
-            // console.log('$scope.selectedStars:', $scope.selectedStars);
-            // console.log('$scope.isSubmitButtonDisabled:', $scope.isSubmitButtonDisabled);
         };
 
         /**
@@ -357,7 +381,7 @@ solar_app.controller('rate_controller',
             $scope.selectedOrdertId = orderId;
         };
 
-        console.log($scope.showSuccessMessage);
+
         /**
          * Submit đẩy dữ liệu lên server
          */
@@ -406,6 +430,10 @@ solar_app.controller('rate_controller',
                         icon: "success",
                         title: "Thêm đánh giá thành công!"
                     });
+
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1500);
                 },
                 error: function (error) {
                     const Toast = Swal.mixin({
@@ -421,7 +449,7 @@ solar_app.controller('rate_controller',
                     });
                     Toast.fire({
                         icon: "error",
-                        title: "Lỗi không thể đánh giá vui lòng liên hệ quản trị viên để được giúp đỡ!"
+                        title: "Lỗi không thể đánh giá vui lòng thử lại sau it phút!"
                     });
                 }
             });
@@ -437,7 +465,5 @@ solar_app.controller('rate_controller',
         $scope.resetSuccessMessage = function () {
             $scope.showSuccessMessage = false;
         };
-
-
 
     })

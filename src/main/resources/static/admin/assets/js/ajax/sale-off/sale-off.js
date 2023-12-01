@@ -6,11 +6,6 @@ function getFormData() {
     const startUse = document.getElementById('startUse').value;
     const endUse = document.getElementById('endUse').value;
 
-    console.log("ProductId: ", productId);
-    console.log("SaleValue: ", saleValue);
-    console.log("StartUse: ", startUse);
-    console.log("EndUse: ", endUse);
-
     formData.append("productId", productId);
     formData.append("saleValue", saleValue);
     formData.append("startUse", startUse);
@@ -29,7 +24,7 @@ document.getElementById("productId").addEventListener('change', function () {
         contentType: false,
         processData: false,
         success: function (response) {
-            console.log(response.status)
+            var price = 0;
             if (response.status === '200') {
                 if (response.data === null) {
                     setDataFormSaleOff('', '', '')
@@ -59,6 +54,24 @@ document.getElementById("productId").addEventListener('change', function () {
                         toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
                 })
+            }
+        }
+    })
+})
+
+document.getElementById("productId").addEventListener('change', function () {
+    const selectedProductId = this.value;
+
+    $.ajax({
+        url: 'http://localhost:8080/quan-tri/giam-gia-san-pham/them-giam-gia-san-pham/gia-san-pham/' + selectedProductId,
+        type: 'GET',
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            console.log(response)
+            if (response.status === '200') {
+                document.getElementById('price').value = response.data.price;
+
             }
         }
     })
@@ -153,7 +166,7 @@ document.getElementById('submitted-button').addEventListener('click', function (
     })
 })
 
-function setDataFormSaleOff(saleValue, startUse, endUse, isActive) {
+function setDataFormSaleOff(saleValue, startUse, endUse) {
 
     if (saleValue === '') {
         document.getElementById('saleValue').value = '';
