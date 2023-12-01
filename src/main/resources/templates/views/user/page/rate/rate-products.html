@@ -33,16 +33,20 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="product in rateProductList">
-                            <td>Ngày gì đó</td>
+                            <td>{{getDateReceive(product.orderId) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
                             <td>{{product.orderId}}</td>
                             <td>{{getProductName(product.productId)}}</td>
                             <td>{{product.quantity}}</td>
                             <td>Đã giao hàng</td>
                             <td>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal"
+                                        ng-if="product.statusRate === null"
                                         ng-click="openReviewModal(product.productId, product.orderId)">
                                     Đánh giá
                                 </button>
+                                <span ng-if="product.statusRate !== null">
+                                    Đã đánh giá
+                                </span>
                             </td>
                         </tr>
                         </tbody>
@@ -57,10 +61,10 @@
 </div>
 
 
-
 <div us-spinner="{radius:30, width:8, length: 16}" spinner-key="mainSpinner" spinner-start-active="loading"></div>
 <!-- Modal -->
-<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ng-if="!showSuccessMessage" ng-click="resetSuccessMessage()">
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+     ng-if="!showSuccessMessage" ng-click="resetSuccessMessage()">
     <span class="text-center" ng-class="{ 'loader': addClass }"></span>
     <div class="modal-dialog">
         <div class="modal-content">
@@ -75,10 +79,10 @@
                         Số sao bạn đánh giá
                         <div id="starRating" class="star-rating" ng-mouseleave="resetStars()">
                             <span ng-repeat="star in stars"
-                                class="star"
-                                ng-class="{ 'active': star.active }"
-                                ng-click="toggleStar($index)"
-                                ng-mouseover="hoverStar($index)">
+                                  class="star"
+                                  ng-class="{ 'active': star.active }"
+                                  ng-click="toggleStar($index)"
+                                  ng-mouseover="hoverStar($index)">
                                     &#9733;
                             </span>
                         </div>
@@ -93,8 +97,9 @@
                                ngf-select="uploadFile($file)" multiple>
                         <span class="text-danger" ng-show="errorImageInput1"> {{ errorImageInput1 }}</span>
                     </div>
-                    <div  class="d-flex justify-content-around w-100" >
-                        <img ng-repeat="image in selectedImages" ng-src="{{ image }}" style="max-width: 28%; max-height: 150px;">
+                    <div class="d-flex justify-content-around w-100">
+                        <img ng-repeat="image in selectedImages" ng-src="{{ image }}"
+                             style="max-width: 28%; max-height: 150px;">
                     </div>
                     <!-- Review content input -->
                     <div class="mb-3">
@@ -103,12 +108,14 @@
                                   ng-change="checkSensitive(inputText)" rows="3" required></textarea>
                         <span class="text-danger" ng-show="errorRateComment"> {{ errorRateComment }}</span>
                     </div>
-                    <input type="hidden" id="productIdInput" ng-model="selectedProductId" />
-                    <input type="hidden" id="orderIdInput" ng-model="selectedOrderId" />
+                    <input type="hidden" id="productIdInput" ng-model="selectedProductId"/>
+                    <input type="hidden" id="orderIdInput" ng-model="selectedOrderId"/>
                     <button type="button" id="submitted-button" class="btn btn-primary" ng-click="submitRating()"
                             ng-disabled="isSubmitButtonDisabled">Đánh giá
                     </button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" ng-click="closeModal()">Đóng</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" ng-click="closeModal()">
+                        Đóng
+                    </button>
                 </form>
             </div>
         </div>
