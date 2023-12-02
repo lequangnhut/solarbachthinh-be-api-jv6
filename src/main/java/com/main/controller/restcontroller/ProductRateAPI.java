@@ -48,6 +48,9 @@ public class ProductRateAPI {
     @Autowired
     HttpSession session;
 
+    @Autowired
+    OrderItemService orderItemService;
+
     @GetMapping("findProductRate/{productId}")
     ResponseObject showRate(@PathVariable("productId") String productId){
         List<ProductRate> productRate =  productRateService.findAllRateByProductId(productId);
@@ -86,6 +89,11 @@ public class ProductRateAPI {
         return wordsArray;
     }
 
+    @GetMapping("listOrderByOrderId")
+    ResponseObject listOrderByOrderId() {
+        return new ResponseObject("200", "OKE", orderService.findAll());
+    }
+
     @PostMapping("/save")
     ResponseObject save(@RequestParam("stars") int stars,
                         @RequestParam("comment") String comment,
@@ -94,6 +102,7 @@ public class ProductRateAPI {
                         @RequestParam("orderId") String orderId) {
 
         Users users = (Users) session.getAttribute(SessionAttr.CURRENT_USER);
+        List<OrderItems> orderItems = orderItemService.findByOrderIdAndProductId(orderId, productId);
 
         ProductRate productRate = new ProductRate();
         String id = productRateIdValue();
@@ -107,6 +116,9 @@ public class ProductRateAPI {
         productRate.setReviewStatus(true);
 
         productRateService.saveProductRate(productRate);
+
+        orderItems.get(0).setStatusRate(true);
+        orderItemService.save(orderItems.get(0));
 
         if(images == null || images.length == 0 || images[0].isEmpty()){
             return new ResponseObject("200", "Bạn đã đánh giá thành công!", null);

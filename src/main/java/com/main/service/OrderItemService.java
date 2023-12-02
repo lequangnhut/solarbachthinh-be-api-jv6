@@ -11,4 +11,6 @@ public interface OrderItemService {
     List<OrderItems> findAllOrderItemByOrderId(String orderId);
 
     OrderItems save(OrderItems orderItems);
+
+    List<OrderItems> findByOrderIdAndProductId(String orderId, String productId);
 }

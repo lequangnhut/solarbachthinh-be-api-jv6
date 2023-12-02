@@ -16,4 +16,6 @@ public class OrderItemsDto implements Serializable {
     Integer price;
 
     Integer quantity;
+
+    Boolean statusRate;
 }
