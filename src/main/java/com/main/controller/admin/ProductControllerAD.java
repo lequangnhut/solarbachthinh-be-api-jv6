@@ -51,9 +51,6 @@ public class ProductControllerAD {
     ProductImageService productImageService;
 
     @Autowired
-    HistoryService historyService;
-
-    @Autowired
     HttpServletRequest request;
 
     @Autowired
@@ -214,7 +211,6 @@ public class ProductControllerAD {
                     productImageService.save(productImages);
                 }
                 responseObject = new ResponseObject("200", "Thêm sản phẩm thành công", null);
-                historyService.addHistory("Thêm sản phẩm");
                 return responseObject;
             } catch (Exception io) {
                 responseObject = new ResponseObject("404", "Lỗi không thể thêm dữ liệu vui lòng đợi trong giây lát", null);
@@ -376,7 +372,6 @@ public class ProductControllerAD {
                     productImageService.save(productImages);
                 }
                 responseObject = new ResponseObject("200", "Sửa sản phẩm thành công", null);
-                historyService.addHistory("Cập nhật sản phẩm");
                 return responseObject;
             } catch (Exception io) {
                 responseObject = new ResponseObject("404", "Lỗi không thể thêm dữ liệu vui lòng đợi trong giây lát", null);
@@ -396,7 +391,6 @@ public class ProductControllerAD {
             product.setIsStatusDelete("Ngừng kinh doanh");
             productService.save(product);
             session.setAttribute("toastSuccess", "Xóa sản phẩm thành công !");
-            historyService.addHistory("Xóa sản phẩm");
             return "redirect:/quan-tri/san-pham";
         } else {
             session.setAttribute("toastFailed", "Xóa sản phẩm thất bại! không tìm thấy ID");

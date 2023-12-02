@@ -5,7 +5,6 @@ import com.main.entity.Discounts;
 import com.main.service.EmailService;
 import com.main.service.UserDiscountService;
 import com.main.service.DiscountService;
-import com.main.service.HistoryService;
 import com.main.utils.DiscountCodeGeneratoUtils;
 import com.main.utils.EntityDtoUtils;
 import com.main.utils.ReplaceUtils;
@@ -33,9 +32,6 @@ public class DiscountController {
 
     @Autowired
     HttpServletRequest request;
-
-    @Autowired
-    HistoryService historyService;
 
     @Autowired
     HttpSession session;
@@ -91,7 +87,6 @@ public class DiscountController {
         }
 
         SessionUtils.setAttribute("toastSuccess", "Thêm mã giảm giá thành công!");
-        historyService.addHistory("Thêm mã giảm giá");
         return "redirect:/quan-tri/giam-gia";
     }
 
@@ -130,7 +125,6 @@ public class DiscountController {
                 }
 
                 SessionUtils.setAttribute("toastSuccess", "Sửa mã giảm giá thành công!");
-                historyService.addHistory("Cập nhật mã giảm giá");
                 return "redirect:/quan-tri/giam-gia";
             }
         } else {
@@ -146,7 +140,6 @@ public class DiscountController {
         discountService.save(discounts);
 
         session.setAttribute("toastSuccess", "Xoá mã giảm giá thành công !");
-        historyService.addHistory("Xóa mã giảm giá");
         return "redirect:/quan-tri/giam-gia";
     }
 

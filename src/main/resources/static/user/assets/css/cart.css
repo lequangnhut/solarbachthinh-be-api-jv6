@@ -21,3 +21,22 @@
     right: 130%;
     transform: translateX(-40%);
 }
+
+@keyframes imageFade {
+    0% {
+        opacity: 0.4;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 0.4;
+        transform: scale(1);
+    }
+}
+
+#low-sale {
+    animation: imageFade 3s infinite;
+}

@@ -32,8 +32,9 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
             " GROUP BY o")
     List<Object[]> getOrdersByCreatedAt_Year(@Param("year") int year);
 
-
-    @Query("SELECT SUM(ct.price * ct.quantity + o.orderShipCost) FROM Orders o " +
+    //COALESCE trả về giá trị đầu là 0
+    @Query("SELECT COALESCE(SUM(ct.price * ct.quantity + o.orderShipCost), 0) " +
+            "FROM Orders o " +
             "JOIN o.orderItemsById ct " +
             "JOIN o.usersByUserId a " +
             "WHERE EXTRACT(YEAR FROM o.dateCreated) = :year and o.paymentStatus = 1")

@@ -29,7 +29,7 @@
                        data-bs-toggle="modal" data-bs-target="#modal-edit-pass-user"
                        role="button"
                     >
-                        <i class="ti ti-file-plus"></i>Mật khẩu người dùng
+                        <i class="ti ti-file-plus"></i>Cập nhật mật khẩu
                     </a>
                     <h5 class="card-title fw-semibold mb-4 mt-2">Cập nhật thông tin khách hàng</h5>
                     <div class="card">
@@ -37,7 +37,7 @@
                             <form id="edit-form"
                                   method="post"
                                   onsubmit="return validateForm()"
-                                  th:action="@{/quan-tri/tai-khoan/sua-tai-khoan}"
+                                  th:action="@{/quan-tri/nhan-vien/sua-nhan-vien}"
                                   th:object="${usersDto}"
                             >
                                 <input type="hidden" class="form-control" th:field="*{id}">
@@ -148,7 +148,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <a href="/quan-tri/tai-khoan" class="btn btn-danger" role="button">Trở
+                                            <a href="/quan-tri/nhan-vien" class="btn btn-danger" role="button">Trở
                                                 về</a>
                                         </div>
                                     </div>

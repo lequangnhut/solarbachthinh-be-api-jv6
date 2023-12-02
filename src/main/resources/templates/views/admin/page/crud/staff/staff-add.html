@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Solar Bách Thịnh - Thêm Tài Khoản</title>
+    <title>Solar Bách Thịnh - Thêm Nhân Viên</title>
     <div th:replace="~{views/admin/lib/link_lib}"></div>
 </head>
 <body>
@@ -23,10 +23,10 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title fw-semibold mb-4 mt-2">Thêm thông tin tài khoản</h5>
+                    <h5 class="card-title fw-semibold mb-4 mt-2">Thêm thông tin nhân viên</h5>
                     <div class="card">
                         <div class="card-body">
-                            <form method="post" th:action="@{/quan-tri/tai-khoan/them-tai-khoan}"
+                            <form method="post" th:action="@{/quan-tri/nhan-vien/them-nhan-vien}"
                                   th:object="${usersDto}">
 
                                 <div class="form-floating mb-3">
@@ -124,7 +124,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <a href="/quan-tri/tai-khoan" class="btn btn-danger" role="button">Trở
+                                            <a href="/quan-tri/nhan-vien" class="btn btn-danger" role="button">Trở
                                                 về</a>
                                         </div>
                                     </div>
