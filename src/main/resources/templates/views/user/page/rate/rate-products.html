@@ -18,6 +18,7 @@
     <div class="container px-lg-0">
         <div class="row g-0 mx-lg-0">
             <div class="col-lg-12 py-5 wow fadeIn" data-wow-delay="0.5s">
+                <h4 class="text-center">Lịch sử đánh giá - khách hàng {{users.fullname}}</h4>
 
                 <div class="table-responsive mt-4">
                     <table class="table">
@@ -35,11 +36,16 @@
                         <tr ng-repeat="product in rateProductList">
                             <td>{{getDateReceive(product.orderId) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
                             <td>{{product.orderId}}</td>
-                            <td>{{getProductName(product.productId)}}</td>
+                            <td>
+                                <a href="#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham={{product.productId}}">
+                                    {{getProductName(product.productId)}}
+                                </a>
+                            </td>
                             <td>{{product.quantity}}</td>
                             <td>Đã giao hàng</td>
                             <td>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal"
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#reviewModal"
                                         ng-if="product.statusRate === null"
                                         ng-click="openReviewModal(product.productId, product.orderId)">
                                     Đánh giá

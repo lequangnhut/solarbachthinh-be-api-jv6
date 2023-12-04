@@ -97,7 +97,7 @@ public class StaffManagerControllerAD {
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping("api/updateRole/{userId}")
+    @PutMapping("api/updateRole/{userId}")
     private ResponseEntity<?> updateRoles(@PathVariable int userId, @RequestBody List<String> roles) {
         Users user = userService.findById(userId);
 
