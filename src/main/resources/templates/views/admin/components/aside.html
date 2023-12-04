@@ -26,85 +26,87 @@
                     </a>
                 </li>
 
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">SẢN PHẨM</span>
-                </li>
+                <ul th:if="${#lists.contains(currentUserRoles, 'ROLE_STAFF')}">
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">SẢN PHẨM</span>
+                    </li>
 
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="/quan-tri/san-pham" aria-expanded="false">
-                <span>
-                  <i class="ti ti-shopping-cart"></i>
-                </span>
-                        <span class="hide-menu">Quản lý sản phẩm</span>
-                    </a>
-                </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/quan-tri/san-pham" aria-expanded="false">
+                            <span>
+                              <i class="ti ti-shopping-cart"></i>
+                            </span>
+                            <span class="hide-menu">Quản lý sản phẩm</span>
+                        </a>
+                    </li>
 
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="/quan-tri/danh-sach-thuong-hieu" aria-expanded="false">
-                <span>
-                  <i class="ti ti-article"></i>
-                </span>
-                        <span class="hide-menu">Nhà cung cấp</span>
-                    </a>
-                </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/quan-tri/danh-sach-thuong-hieu" aria-expanded="false">
+                            <span>
+                              <i class="ti ti-article"></i>
+                            </span>
+                            <span class="hide-menu">Nhà cung cấp</span>
+                        </a>
+                    </li>
 
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="/quan-tri/giam-gia" aria-expanded="false">
-                <span>
-                    <i class="ti ti-discount-2-off"></i>
-                </span>
-                        <span class="hide-menu">Mã giảm giá</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="/quan-tri/giam-gia-san-pham" aria-expanded="false">
-                <span>
-                    <i class="ti ti-discount-off"></i>
-                </span>
-                        <span class="hide-menu">Giảm giá sản phẩm</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="/quan-tri/xac-nhan-don-hang" aria-expanded="false">
-                <span>
-                 <i class="ti ti-ad-2"></i>
-                </span>
-                        <span class="hide-menu">Xác nhận đơn hàng</span>
-                    </a>
-                </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/quan-tri/giam-gia" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-discount-2-off"></i>
+                            </span>
+                            <span class="hide-menu">Mã giảm giá</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/quan-tri/giam-gia-san-pham" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-discount-off"></i>
+                            </span>
+                            <span class="hide-menu">Giảm giá sản phẩm</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/quan-tri/xac-nhan-don-hang" aria-expanded="false">
+                            <span>
+                             <i class="ti ti-ad-2"></i>
+                            </span>
+                            <span class="hide-menu">Xác nhận đơn hàng</span>
+                        </a>
+                    </li>
 
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">TÀI KHOẢN & KHÁCH HÀNG</span>
-                </li>
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">TÀI KHOẢN & KHÁCH HÀNG</span>
+                    </li>
 
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="/quan-tri/tai-khoan" aria-expanded="false">
-                <span>
-                    <i class="ti ti-address-book"></i>
-                </span>
-                        <span class="hide-menu">Thông tin khách hàng</span>
-                    </a>
-                </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/quan-tri/tai-khoan" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-address-book"></i>
+                            </span>
+                            <span class="hide-menu">Thông tin khách hàng</span>
+                        </a>
+                    </li>
 
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="/quan-tri/danh-gia" aria-expanded="false">
-                <span>
-                    <i class="ti ti-file-like"></i>
-                </span>
-                        <span class="hide-menu">Quản lý đánh giá</span>
-                    </a>
-                </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/quan-tri/danh-gia" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-file-like"></i>
+                            </span>
+                            <span class="hide-menu">Quản lý đánh giá</span>
+                        </a>
+                    </li>
 
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="/quan-tri/quan-ly-tu-cam" aria-expanded="false">
-                <span>
-                    <i class="ti ti-messages"></i>
-                </span>
-                        <span class="hide-menu">Quản lí từ từ cấm</span>
-                    </a>
-                </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/quan-tri/quan-ly-tu-cam" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-messages"></i>
+                            </span>
+                            <span class="hide-menu">Quản lí từ từ cấm</span>
+                        </a>
+                    </li>
+                </ul>
 
                 <ul th:if="${#lists.contains(currentUserRoles, 'ROLE_ADMIN')}">
                     <li class="nav-small-cap">

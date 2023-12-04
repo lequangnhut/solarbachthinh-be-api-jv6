@@ -17,6 +17,9 @@ let API_Notification = '/api/quan-tri/notification'
 // change password user admin
 let API_UserAdmin = '/quan-tri/tai-khoan/api'
 
+// nhân viên role staff
+let API_RoleStaff = '/quan-tri/nhan-vien/api'
+
 solar_app_admin.filter('vietnameseDateTimeAdmin', function () {
     return function (isoDateTime) {
         const date = new Date(isoDateTime);

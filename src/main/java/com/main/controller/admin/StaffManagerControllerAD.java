@@ -10,12 +10,14 @@ import com.main.utils.EntityDtoUtils;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("quan-tri/nhan-vien")
@@ -34,14 +36,7 @@ public class StaffManagerControllerAD {
     PasswordEncoder encoder;
 
     @GetMapping
-    public String showStaff(Model model) {
-        List<Users> users = userService.findStaffByActiveIsTrue();
-
-        for (Users user : users) {
-            String encodedPhone = EncodeUtils.encodePhoneNumber(user.getPhoneNumber());
-            user.setPhoneNumber(encodedPhone);
-        }
-        model.addAttribute("dataStaff", users);
+    public String showStaff() {
         return "views/admin/page/views/staff-list";
     }
 
@@ -88,5 +83,31 @@ public class StaffManagerControllerAD {
         userService.update(users);
         session.setAttribute("toastSuccess", "Xoá thành công !");
         return "redirect:/quan-tri/nhan-vien";
+    }
+
+    @GetMapping("api/findAllRoleStaff")
+    private ResponseEntity<List<Users>> getListUserRoleStaff() {
+        List<Users> users = userService.findStaffByActiveIsTrue();
+
+        for (Users user : users) {
+            String encodedPhone = EncodeUtils.encodePhoneNumber(user.getPhoneNumber());
+            user.setPhoneNumber(encodedPhone);
+        }
+
+        return ResponseEntity.ok(users);
+    }
+
+    @PostMapping("api/updateRole/{userId}")
+    private ResponseEntity<?> updateRoles(@PathVariable int userId, @RequestBody List<String> roles) {
+        Users user = userService.findById(userId);
+
+        List<Roles> rolesList = roles.stream()
+                .map(roleService::findByNameRole)
+                .collect(Collectors.toList());
+
+        user.setRoles(rolesList);
+
+        Users updatedUser = userService.update(user);
+        return ResponseEntity.ok(updatedUser);
     }
 }

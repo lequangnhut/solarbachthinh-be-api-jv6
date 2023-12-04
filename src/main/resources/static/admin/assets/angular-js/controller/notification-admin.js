@@ -39,8 +39,6 @@ solar_app_admin.controller('NotificationAdmin', function ($scope, $http) {
 
     $scope.updateVisibleNotifications = function () {
         $scope.visibleNotifications = $scope.allNotification.slice(0, $scope.maxVisibleNotifications);
-        console.log($scope.visibleNotifications.length)
-        console.log($scope.allNotification.length)
     };
 
     $scope.seenNotification = function (id, orderId) {
