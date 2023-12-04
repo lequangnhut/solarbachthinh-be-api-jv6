@@ -38,6 +38,10 @@ public class OrderItems {
     @Column(name = "quantity", nullable = true)
     private Integer quantity;
 
+    @Basic
+    @Column(name = "status-rate", nullable = true)
+    private Boolean statusRate;
+
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @JsonBackReference

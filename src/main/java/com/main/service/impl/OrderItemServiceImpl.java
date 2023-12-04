@@ -28,4 +28,9 @@ public class OrderItemServiceImpl implements OrderItemService {
     public OrderItems save(OrderItems orderItems) {
         return orderItemsRepository.save(orderItems);
     }
+
+    @Override
+    public List<OrderItems> findByOrderIdAndProductId(String orderId, String productId) {
+        return orderItemsRepository.findByOrderIdAndProductId(orderId, productId);
+    }
 }

@@ -17,4 +17,6 @@ public interface OrderItemsRepository extends JpaRepository<OrderItems, Integer>
             "JOIN ot.ordersByOrderId o " +
             "WHERE ot.orderId = :orderId")
     List<OrderItems> findAllByOrderItem(@Param("orderId") String orderId);
+
+    List<OrderItems> findByOrderIdAndProductId(String orderId, String productId);
 }

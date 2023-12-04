@@ -36,4 +36,11 @@ solar_app.service('OrderService', function ($http) {
             data: data
         })
     }
+
+    this.findAllOrder = function() {
+        return $http({
+            method: 'GET',
+            url: API_RateProduct + '/listOrderByOrderId'
+        })
+    }
 });
