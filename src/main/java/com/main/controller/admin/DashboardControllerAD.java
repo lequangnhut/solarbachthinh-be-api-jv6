@@ -27,18 +27,29 @@ import java.util.Map;
 @Controller
 @RequestMapping("quan-tri/dashboard")
 public class DashboardControllerAD {
+
     @Autowired
     private RevenueService revenueService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private HttpSession session;
+
     // Phương thức chính để hiển thị trang doanh thu năm
     @GetMapping()
-    public String doanhThuNam(@RequestParam(name = "year", defaultValue = "2023") int year, Model model) {
+    public String doanhThuNam(@RequestParam(name = "year", defaultValue = "2023") int year, Model model, Principal principal) {
+        String email = principal.getName();
         double revenue = getSafeRevenue(year);
         double revenueLastYear = getSafeRevenue(year - 1);
         updateModelForRevenueComparison(model, revenue, revenueLastYear);
 
         model.addAttribute("year", year);
         model.addAttribute("revenue", revenue);
+
+        Users users = userService.findByEmail(email);
+        session.setAttribute(SessionAttr.CURRENT_ADMIN, users);
 
         List<Object[]> ordersInYear = revenueService.getOrdersByCreatedAt_Year(year);
         model.addAttribute("profitData", getMonthlyProfitData(ordersInYear));

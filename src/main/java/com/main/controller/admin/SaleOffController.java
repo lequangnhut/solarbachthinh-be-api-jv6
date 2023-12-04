@@ -118,7 +118,7 @@ public class SaleOffController {
                 SaleOff saleOff = EntityDtoUtils.convertToEntity(saleOffDto, SaleOff.class);
                 System.out.println(saleOffDto.getIsActive());
                 saleOffService.save(saleOff);
-                responseObject = new ResponseObject("200", "Thêm giảm giá sản phẩm thành công!", null);
+                responseObject = new ResponseObject("200", "Thêm giảm giá thành công!", null);
                 return responseObject;
             } else {
                 saleOffDto.setId(saleOffService.findByProductId(saleOffDto.getProductId()).getId());
@@ -136,7 +136,7 @@ public class SaleOffController {
                 SaleOff saleOff = EntityDtoUtils.convertToEntity(saleOffDto, SaleOff.class);
                 System.out.println(saleOffDto.getIsActive());
                 saleOffService.save(saleOff);
-                responseObject = new ResponseObject("201", "Sửa giảm giá sản phẩm thành công!", null);
+                responseObject = new ResponseObject("201", "Sửa giảm giá thành công!", null);
                 return responseObject;
             }
         }
