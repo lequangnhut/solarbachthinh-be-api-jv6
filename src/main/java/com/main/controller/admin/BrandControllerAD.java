@@ -88,7 +88,7 @@ public class BrandControllerAD {
                 productBrandsDto.setId(id);
                 productBrandService.save(save);
                 model.addAttribute("brand", brands);
-                session.setAttribute("toastSuccess", "Cập nhật thương hiệu thành công");
+                session.setAttribute("toastSuccess", "Cập nhật thành công");
                 return "redirect:/quan-tri/danh-sach-thuong-hieu";
             } else {
                 session.setAttribute("toastFailed", "Mã thương hiệu không tồn tại");

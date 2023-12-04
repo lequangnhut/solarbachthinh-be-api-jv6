@@ -181,7 +181,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('#sort-table-rate-product').DataTable({
         "order": [],
-        "paging": false,
+        "paging": true,
         "ordering": true,
         "info": true,
         language: {

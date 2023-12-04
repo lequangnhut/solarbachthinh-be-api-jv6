@@ -144,11 +144,10 @@ solar_app.controller('rate_controller',
          *
          */
         OrderService.findAllOrder()
-        .then(function successCallback(responseOrder) {
-            $scope.getAllOrders = responseOrder.data.data;
-            console.log($scope.getAllOrders.data);
-        })
-
+            .then(function successCallback(responseOrder) {
+                $scope.getAllOrders = responseOrder.data.data;
+                console.log($scope.getAllOrders.data);
+            })
 
 
         /**
@@ -428,10 +427,10 @@ solar_app.controller('rate_controller',
                     });
                     Toast.fire({
                         icon: "success",
-                        title: "Thêm đánh giá thành công!"
+                        title: "Đánh giá thành công!"
                     });
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         location.reload();
                     }, 1500);
                 },
