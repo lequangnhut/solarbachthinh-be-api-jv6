@@ -40,7 +40,7 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
             "WHERE EXTRACT(YEAR FROM o.dateCreated) = :year and o.paymentStatus = 1")
     double calculateRevenueForYear(@Param("year") int year);
 
-    @Query("SELECT AVG(ct.price * ct.quantity + o.orderShipCost) FROM Orders o " +
+    @Query("SELECT COALESCE(AVG(ct.price * ct.quantity + o.orderShipCost), 0) FROM Orders o " +
             "JOIN o.orderItemsById ct " +
             "JOIN o.usersByUserId a " +
             "WHERE o.paymentStatus = 1 ")

@@ -69,7 +69,7 @@
                                                             <i th:class="'ti ' + ${muiTen}"></i>
                                                           </span>
                                                             <p class="text-dark me-1 fs-3 mb-0" id="percentCompareToLastYear"
-                                                               th:text="${percentCompareToLastYear >= 0 ? #numbers.formatDecimal(percentCompareToLastYear, 0, 'COMMA', 2, 'POINT') + '%' : #numbers.formatDecimal(percentCompareToLastYear * -1, 0, 'COMMA', 2, 'POINT')} + '%'"></p>
+                                                               th:text="${percentCompareToLastYear >= 0 ? #numbers.formatDecimal(percentCompareToLastYear, 1, 'COMMA', 2, 'POINT') : #numbers.formatDecimal(percentCompareToLastYear * -1, 0, 'COMMA', 2, 'POINT')} + '%'"></p>
                                                             <p class="fs-3 mb-0">Năm trước</p>
                                                         </div>
                                                         <div class="d-flex align-items-center" id="nam-doanh-thu">

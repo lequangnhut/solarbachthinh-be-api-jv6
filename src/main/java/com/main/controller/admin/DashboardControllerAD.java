@@ -29,26 +29,27 @@ import java.util.Map;
 public class DashboardControllerAD {
 
     @Autowired
-    private UserService userService;
+    private RevenueService revenueService;
 
     @Autowired
-    private RevenueService revenueService;
+    private UserService userService;
 
     @Autowired
     private HttpSession session;
 
     // Phương thức chính để hiển thị trang doanh thu năm
     @GetMapping()
-    public String doanhThuNam(@RequestParam(name = "year", defaultValue = "2023") int year, Principal principal, Model model) {
+    public String doanhThuNam(@RequestParam(name = "year", defaultValue = "2023") int year, Model model, Principal principal) {
         String email = principal.getName();
         double revenue = getSafeRevenue(year);
         double revenueLastYear = getSafeRevenue(year - 1);
-
         updateModelForRevenueComparison(model, revenue, revenueLastYear);
-        Users users = userService.findByEmail(email);
 
         model.addAttribute("year", year);
         model.addAttribute("revenue", revenue);
+
+        Users users = userService.findByEmail(email);
+        session.setAttribute(SessionAttr.CURRENT_ADMIN, users);
 
         List<Object[]> ordersInYear = revenueService.getOrdersByCreatedAt_Year(year);
         model.addAttribute("profitData", getMonthlyProfitData(ordersInYear));
@@ -57,7 +58,6 @@ public class DashboardControllerAD {
         model.addAttribute("AverageRevenueByYear", revenueService.calculateAverageRevenue());
         model.addAttribute("topSellingProducts", revenueService.findTopSellingProducts(year));
 
-        session.setAttribute(SessionAttr.CURRENT_ADMIN, users);
         return "views/admin/page/views/doanh-thu-nam";
     }
 
@@ -72,10 +72,22 @@ public class DashboardControllerAD {
 
     // Phương thức phụ trợ để cập nhật model với dữ liệu so sánh doanh thu
     private void updateModelForRevenueComparison(Model model, double revenue, double revenueLastYear) {
+        double percent = calculatePercentageChange(revenue, revenueLastYear);
         String muiTen = (revenue >= revenueLastYear) ? "ti-arrow-up-left text-success" : "ti-arrow-down-right text-danger";
 
+        if (revenueLastYear == 0 && revenue != 0) {
+            percent = 100;
+            muiTen = "ti-arrow-up-left text-success";
+        } else if (revenue == 0 && revenueLastYear != 0) {
+            percent = -100;
+            muiTen = "ti-arrow-down-right text-danger";
+        } else if (revenue == revenueLastYear) {
+            percent = 0;
+            muiTen = "ti-arrow-up-left text-success";
+        }
+
         model.addAttribute("muiTen", muiTen);
-        model.addAttribute("percentCompareToLastYear", calculatePercentageChange(revenue, revenueLastYear));
+        model.addAttribute("percentCompareToLastYear", percent);
     }
 
 
@@ -83,7 +95,6 @@ public class DashboardControllerAD {
     private Double calculatePercentageChange(double newValue, double oldValue) {
         return ((newValue - oldValue) / oldValue) * 100;
     }
-
 
     // Phương thức phụ trợ để lấy dữ liệu lợi nhuận hàng tháng
     private List<BigDecimal> getMonthlyProfitData(List<Object[]> ordersInYear) {
@@ -125,7 +136,6 @@ public class DashboardControllerAD {
         } catch (Exception e) {
             response.put("profitData", generateEmptyProfitData());
         }
-
         response.put("revenue", revenue);
         response.put("topSellingProducts", revenueService.findTopSellingProducts(year));
 
@@ -150,6 +160,7 @@ public class DashboardControllerAD {
         response.put("muiTen", muiTen);
         response.put("percentCompareToLastYear", percent);
     }
+
 
     // Phương thức phụ trợ để tạo dữ liệu lợi nhuận rỗng
     private List<BigDecimal> generateEmptyProfitData() {

@@ -329,6 +329,7 @@
             <div class=" mt-5">
                 <div class="review-container">
                     <h2 class="text-center mt-5">Đánh giá sản phẩm {{review.productName}}</h2>
+                    <div class="text-center mt-4" ng-if="!reviews || reviews.length === 0">Sản phẩm chưa có đánh giá !</div>
                     <div id="reviews" class="reviews">
                         <div class="review" ng-repeat="review in reviews">
                             <div ng-if="review.reviewStatus">

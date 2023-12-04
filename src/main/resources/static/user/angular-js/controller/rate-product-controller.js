@@ -27,79 +27,67 @@ solar_app.controller('rate_controller',
             {active: false}
         ];
 
-        var bannerWordList = null;
+        const bannerWordList = null;
 
         /**
          * Phương thức tìm kiếm toàn bộ từ cấm
          */
-        RateProductService.findAllBannerWord()
-            .then(function successCallback(response) {
-                if (response !== null) {
-                    var listBannerWord = response;
-                    SensitiveWordsService.initializeBannerWordList(listBannerWord);
-
-                } else {
-                    console.log("lỗi vui lòng thử lại")
-                }
-
-            })
-            .catch(function errorCallback() {
-                console.log("Lỗi khi gọi API");
-            });
+        RateProductService.findAllBannerWord().then(function successCallback(response) {
+            if (response !== null) {
+                SensitiveWordsService.initializeBannerWordList(response);
+            } else {
+                console.log("lỗi vui lòng thử lại")
+            }
+        }).catch(function errorCallback() {
+            console.log("Lỗi khi gọi API");
+        });
 
         /**
          * Phương thức lấy toàn bộ đơn hàng với trạng thái đã thanh toán
          */
-        UserService.findUserBySession()
-            .then(function successCallback(response) {
+        UserService.findUserBySession().then(function successCallback(response) {
+            $scope.users = response.data;
 
-                $scope.users = response.data;
+            RateProductService.findOrderByUserId($scope.users.id).then(function success(response) {
+                if (response.status === 200) {
+                    $scope.orderList = response.data.data;
 
-                RateProductService.findOrderByUserId($scope.users.id)
-                    .then(function success(response) {
-                        if (response.status === 200) {
-                            $scope.orderList = response.data.data;
-
-                            for (var i = 0; i < $scope.orderList.length; i++) {
-                                for (var j = 0; j < $scope.orderList[i].orderItemsById.length; j++) {
-                                    $scope.rateProductList = $scope.orderList[i].orderItemsById;
-                                }
-                            }
-                        } else if (response.status === 404) {
-
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: "top-end",
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
-                                didOpen: (toast) => {
-                                    toast.onmouseenter = Swal.stopTimer;
-                                    toast.onmouseleave = Swal.resumeTimer;
-                                }
-                            });
-                            Toast.fire({
-                                icon: "error",
-                                title: response.message
-                            });
+                    for (let i = 0; i < $scope.orderList.length; i++) {
+                        for (let j = 0; j < $scope.orderList[i].orderItemsById.length; j++) {
+                            $scope.rateProductList = $scope.orderList[i].orderItemsById;
                         }
-                    })
-                    .catch(function error() {
-
+                    }
+                } else if (response.status === 404) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
                     });
-            })
+                    Toast.fire({
+                        icon: "error",
+                        title: response.message
+                    });
+                }
+            }).catch(function error(error) {
+                console.log(error)
+            });
+        })
 
 
         /**
          * Phương thức gọi API để lấy danh sách toàn bộ sản phẩm
          */
-        ProductService.findAllProducts()
-            .then(function successCallback(responseProduct) {
-                $scope.getAllProduct = responseProduct.data;
-            })
-            .catch(function errorCallback(error) {
-                console.error('Lỗi khi tìm kiếm sản phẩm:', error);
-            });
+        ProductService.findAllProducts().then(function successCallback(responseProduct) {
+            $scope.getAllProduct = responseProduct.data;
+        }).catch(function errorCallback(error) {
+            console.error('Lỗi khi tìm kiếm sản phẩm:', error);
+        });
 
         /**
          * Phương thức ánh xạ mã sản phẩm sang tên sản phẩm
@@ -107,10 +95,10 @@ solar_app.controller('rate_controller',
          * @returns {*}
          */
         $scope.getProductName = function (productId) {
-            var lengthProduct = $scope.getAllProduct.length;
+            const lengthProduct = $scope.getAllProduct.length;
 
             // Lặp qua danh sách sản phẩm và tìm sản phẩm tương ứng
-            for (var i = 0; i < lengthProduct; i++) {
+            for (let i = 0; i < lengthProduct; i++) {
                 if ($scope.getAllProduct[i].id === productId) {
                     // Trả về tên sản phẩm nếu tìm thấy
                     return $scope.getAllProduct[i].productName;
@@ -126,10 +114,10 @@ solar_app.controller('rate_controller',
          * @returns {*}
          */
         $scope.getDateReceive = function (orderId) {
-            var lengthOrder = $scope.getAllOrders.length;
+            const lengthOrder = $scope.getAllOrders.length;
 
             // Lặp qua danh sách sản phẩm và tìm sản phẩm tương ứng
-            for (var i = 0; i < lengthOrder; i++) {
+            for (let i = 0; i < lengthOrder; i++) {
                 if ($scope.getAllOrders[i].id === orderId) {
                     // Trả về tên sản phẩm nếu tìm thấy
                     return $scope.getAllOrders[i].dateReceive;
@@ -143,12 +131,9 @@ solar_app.controller('rate_controller',
          * Phương thức gọi API để lấy danh sách sản phẩm
          *
          */
-        OrderService.findAllOrder()
-        .then(function successCallback(responseOrder) {
+        OrderService.findAllOrder().then(function successCallback(responseOrder) {
             $scope.getAllOrders = responseOrder.data.data;
-            console.log($scope.getAllOrders.data);
         })
-
 
 
         /**
@@ -157,11 +142,11 @@ solar_app.controller('rate_controller',
          */
         $scope.toggleStar = function (index) {
             // Đảo trạng thái active của các sao từ 1 đến index
-            for (var i = 0; i <= index; i++) {
+            for (let i = 0; i <= index; i++) {
                 $scope.stars[i].active = true;
                 $scope.starError = null;
             }
-            for (var j = index + 1; j < $scope.stars.length; j++) {
+            for (let j = index + 1; j < $scope.stars.length; j++) {
                 $scope.stars[j].active = false;
             }
 
@@ -200,10 +185,10 @@ solar_app.controller('rate_controller',
         $scope.hoverStar = function (index) {
             // Nếu như sao == 0 thì mới được phép hover
             if ($scope.selectedStars === 0) {
-                for (var i = 0; i <= index; i++) {
+                for (let i = 0; i <= index; i++) {
                     $scope.stars[i].active = true;
                 }
-                for (var j = index + 1; j < $scope.stars.length; j++) {
+                for (let j = index + 1; j < $scope.stars.length; j++) {
                     $scope.stars[j].active = false;
                 }
 
@@ -229,7 +214,7 @@ solar_app.controller('rate_controller',
         $scope.resetStars = function () {
             // Đặt lại trạng thái của tất cả các ngôi sao khi di chuột ra khỏi ngôi sao
             if ($scope.selectedStars === 0) {
-                for (var i = 0; i < $scope.stars.length; i++) {
+                for (let i = 0; i < $scope.stars.length; i++) {
                     $scope.stars[i].active = false;
                 }
                 $scope.showRateStarMessage = "";
@@ -243,7 +228,7 @@ solar_app.controller('rate_controller',
         $scope.fileChangedRateImg1 = function (element) {
             $scope.addClass = true;
 
-            var file = element.files;
+            const file = element.files;
 
             $scope.selectedImage = file;
             $scope.maxImageCount = 3;
@@ -256,7 +241,7 @@ solar_app.controller('rate_controller',
                 $scope.errorImageInput1 = null; // Reset lại lỗi
 
                 for (let i = 0; i < element.files.length; i++) {
-                    var reader = new FileReader();
+                    const reader = new FileReader();
 
                     reader.onload = function (e) {
 
@@ -375,6 +360,7 @@ solar_app.controller('rate_controller',
         /**
          * Phương thức mở model thì lưu productID
          * @param productId
+         * @param orderId
          */
         $scope.openReviewModal = function (productId, orderId) {
             $scope.selectedProductId = productId;
@@ -386,12 +372,12 @@ solar_app.controller('rate_controller',
          * Submit đẩy dữ liệu lên server
          */
         $scope.submitRating = function () {
-            var formData = new FormData();
+            const formData = new FormData();
 
-            var stars = $scope.selectedStars;
-            var comment = $scope.comment;
-            var productId = $scope.selectedProductId;
-            var orderId = $scope.selectedOrdertId;
+            const stars = $scope.selectedStars;
+            const comment = $scope.comment;
+            const productId = $scope.selectedProductId;
+            const orderId = $scope.selectedOrdertId;
 
             formData.append('stars', stars);
             formData.append('comment', comment);
@@ -399,11 +385,11 @@ solar_app.controller('rate_controller',
             formData.append('orderId', orderId);
 
             if ($scope.imageUrl && angular.isDefined($scope.imageUrl.length) && $scope.imageUrl.length > 0) {
-                for (var i = 0; i < $scope.imageUrl.length; i++) {
+                for (let i = 0; i < $scope.imageUrl.length; i++) {
                     formData.append('images', $scope.imageUrl[i]);
                 }
             }
-            for (var pair of formData.entries()) {
+            for (const pair of formData.entries()) {
                 console.log(pair[0] + ', ' + pair[1]);
             }
 
@@ -428,10 +414,10 @@ solar_app.controller('rate_controller',
                     });
                     Toast.fire({
                         icon: "success",
-                        title: "Thêm đánh giá thành công!"
+                        title: "Đánh giá thành công!"
                     });
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         location.reload();
                     }, 1500);
                 },
@@ -465,5 +451,4 @@ solar_app.controller('rate_controller',
         $scope.resetSuccessMessage = function () {
             $scope.showSuccessMessage = false;
         };
-
     })

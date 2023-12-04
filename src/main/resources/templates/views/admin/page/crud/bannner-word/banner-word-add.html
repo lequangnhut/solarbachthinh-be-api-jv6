@@ -23,12 +23,12 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title fw-semibold mb-4 mt-2">Thêm danh mục sản phẩm</h5>
+                    <h5 class="card-title fw-semibold mb-4 mt-2">Thêm từ cấm & nhạy cảm</h5>
                     <div class="card">
                         <div class="card-body">
                             <form th:action="@{/quan-tri/quan-ly-tu-cam/save}" th:object="${bannerWordsDto}" method="post"
                                   id="form-brand" class="mb-5">
-                                <div class="form-floating mb-3">
+                                <div class="form-floating mb-3 d-none">
                                     <input type="text" class="form-control" name="id" id="id" placeholder="..." readonly="readonly">
                                     <label for="id">Mã từ cấm</label>
                                     <p id="idBannerWordError" class="invalid-feedback"></p>
@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <a href="/quan-tri/danh-sach-thuong-hieu" class="btn btn-danger" role="button">Trở
+                                            <a href="/quan-tri/quan-ly-tu-cam" class="btn btn-danger" role="button">Trở
                                                 về</a>
                                         </div>
                                     </div>

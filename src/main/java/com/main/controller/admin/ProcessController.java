@@ -58,10 +58,22 @@ public class ProcessController {
 
     // Phương thức phụ trợ để cập nhật model với dữ liệu so sánh doanh thu
     private void updateModelForRevenueComparison(Model model, double revenue, double revenueLastYear) {
+        double percent = calculatePercentageChange(revenue, revenueLastYear);
         String muiTen = (revenue >= revenueLastYear) ? "ti-arrow-up-left text-success" : "ti-arrow-down-right text-danger";
 
+        if (revenueLastYear == 0 && revenue != 0) {
+            percent = 100;
+            muiTen = "ti-arrow-up-left text-success";
+        } else if (revenue == 0 && revenueLastYear != 0) {
+            percent = -100;
+            muiTen = "ti-arrow-down-right text-danger";
+        } else if (revenue == revenueLastYear) {
+            percent = 0;
+            muiTen = "ti-arrow-up-left text-success";
+        }
+
         model.addAttribute("muiTen", muiTen);
-        model.addAttribute("percentCompareToLastYear", calculatePercentageChange(revenue, revenueLastYear));
+        model.addAttribute("percentCompareToLastYear", percent);
     }
 
 
@@ -69,7 +81,6 @@ public class ProcessController {
     private Double calculatePercentageChange(double newValue, double oldValue) {
         return ((newValue - oldValue) / oldValue) * 100;
     }
-
 
     // Phương thức phụ trợ để lấy dữ liệu lợi nhuận hàng tháng
     private List<BigDecimal> getMonthlyProfitData(List<Object[]> ordersInYear) {
