@@ -1,5 +1,8 @@
 solar_app_admin.controller('StaffRoleAdmin', function ($scope, $http, $location) {
 
+    // Lưu trữ trạng thái ban đầu của các quyền
+    $scope.originalRoles = {};
+
     $scope.selectedRoles = [];
 
     $http({
@@ -8,6 +11,12 @@ solar_app_admin.controller('StaffRoleAdmin', function ($scope, $http, $location)
     }).then(function successCallback(response) {
         if (response.status === 200) {
             $scope.userRoleStaff = response.data;
+
+            response.data.forEach(function (userStaff) {
+                $scope.originalRoles[userStaff.id] = userStaff.roles.map(function (role) {
+                    return role.nameRole;
+                });
+            });
         }
     });
 
@@ -19,7 +28,7 @@ solar_app_admin.controller('StaffRoleAdmin', function ($scope, $http, $location)
 
     $scope.changeRole = function (role, userId) {
         if (!$scope.selectedRoles[userId]) {
-            $scope.selectedRoles[userId] = [];
+            $scope.selectedRoles[userId] = $scope.originalRoles[userId].slice();
         }
 
         const roleIndex = $scope.selectedRoles[userId].indexOf(role);
@@ -35,16 +44,12 @@ solar_app_admin.controller('StaffRoleAdmin', function ($scope, $http, $location)
 
     $scope.updateRoles = function (userId) {
         $http({
-            method: 'POST',
+            method: 'PUT',
             url: API_RoleStaff + '/updateRole/' + userId,
             data: $scope.selectedRoles[userId],
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(function successCallback(response) {
-            console.log(response.data);
-        }, function errorCallback(response) {
-            console.error('Error updating roles:', response.statusText);
         });
     };
 });
