@@ -26,6 +26,10 @@ solar_app_admin.controller('StaffRoleAdmin', function ($scope, $http, $location)
         });
     };
 
+    $scope.isAdmin = function (userStaff) {
+        return $scope.userHasRole('ROLE_ADMIN', userStaff);
+    };
+
     $scope.changeRole = function (role, userId) {
         if (!$scope.selectedRoles[userId]) {
             $scope.selectedRoles[userId] = $scope.originalRoles[userId].slice();
@@ -50,6 +54,8 @@ solar_app_admin.controller('StaffRoleAdmin', function ($scope, $http, $location)
             headers: {
                 'Content-Type': 'application/json'
             }
+        }).then(function successCallback() {
+            centerAlert('Thành công !', 'Quyền sẽ được cập nhật sau khi bạn đăng nhập lại !', 'success');
         });
     };
 });
