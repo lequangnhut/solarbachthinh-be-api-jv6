@@ -19,6 +19,7 @@ solar_app.controller('rate_controller',
         $scope.selectedProductId = null;
         $scope.selectedOrdertId = null;
         $scope.showSuccessMessage = false;
+        $scope.rateProductList = [];
         $scope.stars = [
             {active: false},
             {active: false},
@@ -53,9 +54,7 @@ solar_app.controller('rate_controller',
                     $scope.orderList = response.data.data;
 
                     for (let i = 0; i < $scope.orderList.length; i++) {
-                        for (let j = 0; j < $scope.orderList[i].orderItemsById.length; j++) {
-                            $scope.rateProductList = $scope.orderList[i].orderItemsById;
-                        }
+                        $scope.rateProductList = $scope.rateProductList.slice().concat($scope.orderList[i].orderItemsById);
                     }
                 } else if (response.status === 404) {
                     const Toast = Swal.mixin({
