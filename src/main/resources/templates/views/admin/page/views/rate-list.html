@@ -69,10 +69,9 @@
                                                     </div>
                                                 </td>
                                                 <td th:text="${rate.content}" th:title="${rate.content}"
-                                                    class="text-start"></td>
+                                                    class="text-start hidden-text-table"></td>
                                                 <td th:text="${rate.productsByProductId.productName}"
-                                                    th:title="${rate.productsByProductId.productName}"
-                                                    class="hidden-text-table"></td>
+                                                    th:title="${rate.productsByProductId.productName}"></td>
                                                 <td th:text="${rate.orderId}" th:title="${rate.orderId}"
                                                     class="text-center"></td>
                                                 <td th:text="${#dates.format(rate.dateCreated, 'dd/MM/yyyy') + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + #dates.format(rate.dateCreated, 'HH:mm:ss')}"

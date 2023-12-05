@@ -56,6 +56,13 @@
                                         Đã huỷ
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" ng-class="{ 'active': activeTab === 'cancelled' }"
+                                       href="javascript:void(0)"
+                                       ng-click="setActiveTab('allOrder')">
+                                        Tất cả đơn hàng
+                                    </a>
+                                </li>
                             </ul>
 
                             <div ng-show="activeTab === 'confirm'" class="table-responsive mt-4">
@@ -94,10 +101,6 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <h6 class="text-center text-secondary mb-5"
-                                    ng-if="!history_order || history_order.length === 0">
-                                    Không có dữ liệu đơn hàng...
-                                </h6>
                             </div>
 
                             <div ng-show="activeTab === 'deliver'" class="table-responsive mt-4">
@@ -137,10 +140,6 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <h6 class="text-center text-secondary mb-5"
-                                    ng-if="!history_order || history_order.length === 0">
-                                    Không có dữ liệu đơn hàng...
-                                </h6>
                             </div>
 
                             <div ng-show="activeTab === 'delivered'" class="table-responsive mt-4">
@@ -179,10 +178,6 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <h6 class="text-center text-secondary mb-5"
-                                    ng-if="!history_order || history_order.length === 0">
-                                    Không có dữ liệu đơn hàng...
-                                </h6>
                             </div>
 
                             <div ng-show="activeTab === 'cancelled'" class="table-responsive mt-4">
@@ -221,10 +216,44 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <h6 class="text-center text-secondary mb-5"
-                                    ng-if="!history_order || history_order.length === 0">
-                                    Không có dữ liệu đơn hàng...
-                                </h6>
+                            </div>
+
+                            <div ng-show="activeTab === 'allOrder'" class="table-responsive mt-4">
+                                <table class="table" id="table-allOrder">
+                                    <thead class="thead-inverse">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Mã đơn hàng</th>
+                                        <th>Tên khách hàng</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Trạng thái đơn hàng</th>
+                                        <th>Hình thức thanh toán</th>
+                                        <th>Chi tiết</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="order in history_order">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{order.id}}</td>
+                                        <td>{{order.toName}}</td>
+                                        <td>{{order.toPhone}}</td>
+                                        <td>{{order.toProvince}}</td>
+                                        <td>{{order.orderStatus}}</td>
+                                        <td>
+                                            {{order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0)" class="show-info"
+                                               ng-click="getInfoOrder(order.id)"
+                                               data-bs-toggle="modal"
+                                               data-bs-target="#modal-confirm-data">
+                                                Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

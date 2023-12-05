@@ -1,4 +1,4 @@
-solar_app.controller('history_payment_controller', function ($scope, $window, UserService, OrderService, OrderItermService, DiscountService) {
+solar_app.controller('history_payment_controller', function ($scope, $window, $timeout, UserService, OrderService, OrderItermService, DiscountService) {
 
     $scope.activeTab = 'confirm';
 
@@ -15,6 +15,45 @@ solar_app.controller('history_payment_controller', function ($scope, $window, Us
 
         OrderService.findByUserId($scope.users.id).then(function successCallback(response) {
             $scope.history_order = response.data;
+
+            $timeout(function () {
+                $('#table-confirm').DataTable({
+                    "order": [],
+                    "paging": true,
+                    "ordering": true,
+                    "info": true,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                    }
+                });
+                $('#table-deliver').DataTable({
+                    "order": [],
+                    "paging": true,
+                    "ordering": true,
+                    "info": true,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                    }
+                });
+                $('#table-delivered').DataTable({
+                    "order": [],
+                    "paging": true,
+                    "ordering": true,
+                    "info": true,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                    }
+                });
+                $('#table-cancelled').DataTable({
+                    "order": [],
+                    "paging": true,
+                    "ordering": true,
+                    "info": true,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                    }
+                });
+            });
         });
     });
 

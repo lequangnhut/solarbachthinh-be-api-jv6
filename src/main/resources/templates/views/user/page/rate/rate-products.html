@@ -5,7 +5,7 @@
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a class="text-white" href="#!/trang-chu" scroll-to-top>Trang Chủ</a></li>
-                <li class="breadcrumb-item"><a class="text-white" href="#!/lich-su-mua-hang" scroll-to-top>
+                <li class="breadcrumb-item"><a class="text-white" href="#!/danh-gia-san-pham" scroll-to-top>
                     Đánh giá sản phẩm</a></li>
             </ol>
         </nav>
@@ -21,9 +21,10 @@
                 <h4 class="text-center">Lịch sử đánh giá - khách hàng {{users.fullname}}</h4>
 
                 <div class="table-responsive mt-4">
-                    <table class="table">
+                    <table class="table" id="table-rate">
                         <thead class="thead-inverse">
                         <tr>
+                            <th>#</th>
                             <th>Thời gian</th>
                             <th>Mã đơn hàng</th>
                             <th>Tên sản phẩm</th>
@@ -34,6 +35,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="product in rateProductList">
+                            <td>{{$index + 1}}</td>
                             <td>{{getDateReceive(product.orderId) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
                             <td>{{product.orderId}}</td>
                             <td>
@@ -105,7 +107,7 @@
                     </div>
                     <div class="d-flex justify-content-around w-100">
                         <img ng-repeat="image in selectedImages" ng-src="{{ image }}"
-                             style="max-width: 28%; max-height: 150px;">
+                             style="max-width: 28%; max-height: 150px;" alt="">
                     </div>
                     <!-- Review content input -->
                     <div class="mb-3">
