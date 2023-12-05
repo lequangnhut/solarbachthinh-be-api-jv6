@@ -1,5 +1,5 @@
 solar_app.controller('rate_controller',
-    function ($scope, $http, $window, UserService, RateProductService, ImageValidationService, SensitiveWordsService, ProductService, OrderService) {
+    function ($scope, $http, $window, $timeout, UserService, RateProductService, ImageValidationService, SensitiveWordsService, ProductService, OrderService) {
 
         // Các biến được khai báo trước
         $scope.errorImageInput1 = null;
@@ -56,6 +56,18 @@ solar_app.controller('rate_controller',
                     for (let i = 0; i < $scope.orderList.length; i++) {
                         $scope.rateProductList = $scope.rateProductList.slice().concat($scope.orderList[i].orderItemsById);
                     }
+
+                    $timeout(function () {
+                        $('#table-rate').DataTable({
+                            "order": [],
+                            "paging": true,
+                            "ordering": true,
+                            "info": true,
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                            }
+                        });
+                    });
                 } else if (response.status === 404) {
                     const Toast = Swal.mixin({
                         toast: true,

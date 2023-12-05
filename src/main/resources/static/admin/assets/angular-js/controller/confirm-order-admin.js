@@ -1,4 +1,4 @@
-solar_app_admin.controller('ConfirmOrderAdmin', function ($scope, $http) {
+solar_app_admin.controller('ConfirmOrderAdmin', function ($scope, $http, $timeout) {
 
     $scope.activeTab = 'confirm';
 
@@ -15,6 +15,54 @@ solar_app_admin.controller('ConfirmOrderAdmin', function ($scope, $http) {
         url: API_findAllOrder
     }).then(function successCallback(response) {
         $scope.history_order = response.data;
+
+        $timeout(function () {
+            $('#table-confirm').DataTable({
+                "order": [],
+                "paging": true,
+                "ordering": true,
+                "info": true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                }
+            });
+            $('#table-deliver').DataTable({
+                "order": [],
+                "paging": true,
+                "ordering": true,
+                "info": true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                }
+            });
+            $('#table-delivered').DataTable({
+                "order": [],
+                "paging": true,
+                "ordering": true,
+                "info": true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                }
+            });
+            $('#table-cancelled').DataTable({
+                "order": [],
+                "paging": true,
+                "ordering": true,
+                "info": true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                }
+            });
+            $('#table-allOrder').DataTable({
+                "order": [],
+                "paging": true,
+                "ordering": true,
+                "info": true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                }
+            });
+        });
     });
 
     $scope.getInfoOrder = function (orderId) {

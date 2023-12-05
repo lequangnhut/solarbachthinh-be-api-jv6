@@ -1,4 +1,4 @@
-solar_app_admin.controller('StaffRoleAdmin', function ($scope, $http, $location) {
+solar_app_admin.controller('StaffRoleAdmin', function ($scope, $http, $timeout) {
 
     // Lưu trữ trạng thái ban đầu của các quyền
     $scope.originalRoles = {};
@@ -11,6 +11,18 @@ solar_app_admin.controller('StaffRoleAdmin', function ($scope, $http, $location)
     }).then(function successCallback(response) {
         if (response.status === 200) {
             $scope.userRoleStaff = response.data;
+
+            $timeout(function () {
+                $('#table-staff').DataTable({
+                    "order": [],
+                    "paging": true,
+                    "ordering": true,
+                    "info": true,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
+                    }
+                });
+            });
 
             response.data.forEach(function (userStaff) {
                 $scope.originalRoles[userStaff.id] = userStaff.roles.map(function (role) {
