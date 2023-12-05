@@ -16,18 +16,19 @@ solar_app.controller('auth_controller', function ($scope, $http, AuthService) {
                 if (data.token !== "false") {
                     AuthService.getCurrentUser(data).then(function successCallback(response) {
                         let email = response.data.username;
-                        let role = response.data.roles[0];
+                        let role = response.data.roles;
 
-                        if (role === 'ROLE_ADMIN') {
-                            toastAlert('warning', 'Không đủ quyền truy cập !');
-                        } else if (role === 'ROLE_STAFF') {
-                            toastAlert('warning', 'Không đủ quyền truy cập !');
-                        } else {
-                            AuthService.extractTokenLogin(email).then(function successCallback(response) {
-                                let message = response.data.message;
-                                toastAlert('success', message);
-                                window.location.href = '/';
-                            });
+                        for (let i = 0; i < role.length; i++) {
+                            if (role[i] !== 'ROLE_USER') {
+                                toastAlert('warning', 'Không đủ quyền truy cập !');
+                            } else {
+                                AuthService.extractTokenLogin(email).then(function successCallback(response) {
+                                    let message = response.data.message;
+
+                                    toastAlert('success', message);
+                                    window.location.href = '/';
+                                });
+                            }
                         }
                     });
                 } else {

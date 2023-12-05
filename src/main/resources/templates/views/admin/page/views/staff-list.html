@@ -58,6 +58,7 @@
                                                     <input id="{{userStaff.id}} + _ADMIN"
                                                            type="checkbox"
                                                            ng-checked="userHasRole('ROLE_ADMIN', userStaff)"
+                                                           ng-disabled="isAdmin(userStaff)"
                                                            ng-click="changeRole('ROLE_ADMIN', userStaff.id)"
                                                            class="form-check-input">
                                                     Quản trị
@@ -98,6 +99,7 @@
                                             <div class="btn-group">
                                                 <a class="btn btn-warning ms-2"
                                                    ng-href="/quan-tri/nhan-vien/sua-nhan-vien/id={{userStaff.id}}"
+                                                   ng-if="!isAdmin(userStaff)"
                                                 >
                                                     Sửa
                                                 </a>

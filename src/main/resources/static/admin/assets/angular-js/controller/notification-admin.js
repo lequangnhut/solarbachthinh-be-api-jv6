@@ -25,8 +25,7 @@ solar_app_admin.controller('NotificationAdmin', function ($scope, $http) {
     });
 
     $scope.showMore = function (event) {
-        $scope.maxVisibleNotifications = 9;
-        $scope.allNotification.length = 9;
+        $scope.maxVisibleNotifications += 10;
         $scope.updateVisibleNotifications();
         event.stopPropagation();
     };
