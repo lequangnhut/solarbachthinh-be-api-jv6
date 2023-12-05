@@ -220,7 +220,7 @@ public class ProductRateAPI {
         productRateList = productRateService.findAll();
         String productRateId;
         if (productRateList.isEmpty()) {
-            productRateId = "R0001";
+            productRateId = "R00001";
         } else {
             String input = productRateList.get(productRateList.size() - 1).getId();
             String prefix = input.substring(0, 2);
