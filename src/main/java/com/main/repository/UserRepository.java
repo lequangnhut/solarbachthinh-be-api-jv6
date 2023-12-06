@@ -22,6 +22,9 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     @Query("SELECT u FROM Users u " +
             "LEFT JOIN FETCH u.roles r " +
+            "WHERE r.nameRole LIKE 'ROLE_ADMIN' " +
+            "OR r.nameRole LIKE 'ROLE_STAFF' " +
+            "OR r.nameRole LIKE 'ROLE_USER'" +
             "ORDER BY CASE WHEN 'ROLE_ADMIN' IN (SELECT role.nameRole FROM u.roles role) THEN 0 ELSE 1 END, u.dateCreated DESC")
     List<Users> findStaffByActiveIsTrue();
 

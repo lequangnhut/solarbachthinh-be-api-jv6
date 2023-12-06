@@ -45,10 +45,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeHttpRequests((authorize) ->
-                        authorize
+                .authorizeHttpRequests(
+                        authorize -> authorize
                                 .requestMatchers("/user/**", "/admin/**").permitAll()
-                                .requestMatchers("/quan-tri/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_STAFF")
+                                .requestMatchers(
+                                        "/quan-tri/dashboard",
+                                        "/quan-tri/tai-khoan"
+                                ).hasAnyAuthority("ROLE_ADMIN", "ROLE_STAFF", "ROLE_SPAM")
+                                .requestMatchers(
+                                        "/quan-tri/nhan-vien/**"
+                                ).hasAnyAuthority("ROLE_SPAM") // role super admin
+                                .requestMatchers(
+                                        "/quan-tri/danh-gia/**",
+                                        "/quan-tri/quan-ly-tu-cam/**",
+                                        "/quan-tri/doanh-thu-thang",
+                                        "/quan-tri/doanh-thu-nam",
+                                        "/quan-tri/doanh-thu-nam/load-bieu-do"
+                                ).hasAnyAuthority("ROLE_ADMIN")
+                                .requestMatchers(
+                                        "/quan-tri/san-pham/**",
+                                        "/quan-tri/danh-muc/**",
+                                        "/quan-tri/the-loai/**",
+                                        "/quan-tri/danh-sach-thuong-hieu/**",
+                                        "/quan-tri/giam-gia/**",
+                                        "/quan-tri/giam-gia-san-pham/**",
+                                        "/quan-tri/xac-nhan-don-hang/**"
+                                ).hasAnyAuthority("ROLE_STAFF")
                                 .requestMatchers("/**").permitAll()
                 )
                 .formLogin(

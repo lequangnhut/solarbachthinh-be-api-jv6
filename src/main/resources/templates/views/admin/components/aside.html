@@ -74,10 +74,12 @@
                             <span class="hide-menu">Xác nhận đơn hàng</span>
                         </a>
                     </li>
+                </ul>
 
+                <ul th:if="${#lists.contains(currentUserRoles, 'ROLE_ADMIN')}">
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">TÀI KHOẢN & KHÁCH HÀNG</span>
+                        <span class="hide-menu">KHÁCH HÀNG & ĐÁNH GIÁ</span>
                     </li>
 
                     <li class="sidebar-item">
@@ -106,21 +108,10 @@
                             <span class="hide-menu">Quản lí từ khoá cấm</span>
                         </a>
                     </li>
-                </ul>
 
-                <ul th:if="${#lists.contains(currentUserRoles, 'ROLE_ADMIN')}">
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                         <span class="hide-menu">THỐNG KÊ & QUẢN TRỊ</span>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="/quan-tri/nhan-vien" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-user-search"></i>
-                            </span>
-                            <span class="hide-menu">Quản lí nhân viên</span>
-                        </a>
                     </li>
 
                     <li class="sidebar-item">
@@ -138,6 +129,22 @@
                                 <i class="ti ti-chart-infographic"></i>
                             </span>
                             <span class="hide-menu">Doanh thu năm</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul th:if="${#lists.contains(currentUserRoles, 'ROLE_SPAM')}">
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">QUẢN LÍ NHÂN VIÊN</span>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/quan-tri/nhan-vien" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-user-search"></i>
+                            </span>
+                            <span class="hide-menu">Phân quyền nhân viên</span>
                         </a>
                     </li>
                 </ul>

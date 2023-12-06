@@ -38,16 +38,16 @@ solar_app_admin.controller('StaffRoleAdmin', function ($scope, $http, $timeout) 
         });
     };
 
-    $scope.isAdmin = function (userStaff) {
-        return $scope.userHasRole('ROLE_ADMIN', userStaff);
-    };
-
     $scope.changeRole = function (role, userId) {
         if (!$scope.selectedRoles[userId]) {
             $scope.selectedRoles[userId] = $scope.originalRoles[userId].slice();
         }
 
         const roleIndex = $scope.selectedRoles[userId].indexOf(role);
+
+        if ($scope.selectedRoles[userId].length === 1 && roleIndex !== -1) {
+            return;
+        }
 
         if (roleIndex === -1) {
             $scope.selectedRoles[userId].push(role);
