@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Solar Bách Thịnh -Đánh Giá Sản Phẩm</title>
+    <title>Solar Bách Thịnh - Từ Khoá Cấm</title>
 
     <div th:replace="~{views/admin/lib/link_lib}"></div>
 </head>
@@ -28,11 +28,14 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h5 class="card-title fw-semi-bold mb-4 mt-2">Danh sách từ cấm & nhạy cảm</h5>
-                        <div><a class="btn-primary btn" href="/quan-tri/quan-ly-tu-cam/them-tu-cam">Thêm từ khóa mới</a></div>
+                        <div>
+                            <a class="btn-primary btn" href="/quan-tri/quan-ly-tu-cam/them-tu-cam">
+                                Thêm từ khóa mới
+                            </a>
+                        </div>
                     </div>
                     <div class="card">
                         <div class="card-body">
-
                             <div class="table-responsive">
                                 <table class="table" id="table-product">
                                     <thead class="text-center">
@@ -92,6 +95,6 @@
         })
     }
 </script>
-</body>
 
+</body>
 </html>

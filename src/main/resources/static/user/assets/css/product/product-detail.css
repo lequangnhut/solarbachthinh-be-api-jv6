@@ -208,32 +208,6 @@ a img {
 .hidden {
     color: #888;
 }
-/*đánh giá*/
-
-/* Thanh cuộn dọc */
-.review-container {
-    display: flex;
-    flex-direction: column;
-    max-height: 300px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #32C36C transparent; /* Màu thanh cuộn: thumb và track */
-    border: 1px solid #9B9B9B !important;
-}
-
-/* Cho trình duyệt Chrome và Edge */
-.review-container::-webkit-scrollbar {
-    width: 8px; /* Độ rộng của thanh cuộn */
-}
-
-.review-container::-webkit-scrollbar-thumb {
-    background-color: #32C36C; /* Màu thumb */
-    border-radius: 10px; /* Làm tròn các góc của thumb */
-}
-
-.review-container::-webkit-scrollbar-track {
-    background-color: transparent; /* Màu track */
-}
 
 .review {
     border: 1px solid #ccc;
