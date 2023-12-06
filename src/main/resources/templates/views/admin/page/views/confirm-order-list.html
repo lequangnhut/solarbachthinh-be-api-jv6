@@ -57,7 +57,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" ng-class="{ 'active': activeTab === 'cancelled' }"
+                                    <a class="nav-link" ng-class="{ 'active': activeTab === 'allOrder' }"
                                        href="javascript:void(0)"
                                        ng-click="setActiveTab('allOrder')">
                                         Tất cả đơn hàng
@@ -82,12 +82,12 @@
                                     <tbody>
                                     <tr ng-repeat="order in history_order" ng-if="order.orderStatus == 'Chờ xác nhận'">
                                         <td>{{$index + 1}}</td>
-                                        <td>{{order.id}}</td>
+                                        <td style="width: 15%">{{order.id}}</td>
                                         <td>{{order.toName}}</td>
                                         <td>{{order.toPhone}}</td>
                                         <td>{{order.toProvince}}</td>
-                                        <td>{{order.orderStatus}}</td>
-                                        <td>
+                                        <td style="width: 14%">{{order.orderStatus}}</td>
+                                        <td style="width: 20%">
                                             {{order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}
                                         </td>
                                         <td>
@@ -121,12 +121,12 @@
                                     <tr ng-repeat="order in history_order"
                                         ng-if="order.orderStatus == 'Đang vận chuyển'">
                                         <td>{{$index + 1}}</td>
-                                        <td>{{order.id}}</td>
+                                        <td style="width: 15%">{{order.id}}</td>
                                         <td>{{order.toName}}</td>
                                         <td>{{order.toPhone}}</td>
                                         <td>{{order.toProvince}}</td>
-                                        <td>{{order.orderStatus}}</td>
-                                        <td>
+                                        <td style="width: 14%">{{order.orderStatus}}</td>
+                                        <td style="width: 20%">
                                             {{order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}
                                         </td>
                                         <td>
@@ -159,12 +159,12 @@
                                     <tbody>
                                     <tr ng-repeat="order in history_order" ng-if="order.orderStatus == 'Đã giao hàng'">
                                         <td>{{$index + 1}}</td>
-                                        <td>{{order.id}}</td>
+                                        <td style="width: 15%">{{order.id}}</td>
                                         <td>{{order.toName}}</td>
                                         <td>{{order.toPhone}}</td>
                                         <td>{{order.toProvince}}</td>
-                                        <td>{{order.orderStatus}}</td>
-                                        <td>
+                                        <td style="width: 14%">{{order.orderStatus}}</td>
+                                        <td style="width: 20%">
                                             {{order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}
                                         </td>
                                         <td>
@@ -197,12 +197,12 @@
                                     <tbody>
                                     <tr ng-repeat="order in history_order" ng-if="order.orderStatus == 'Đã huỷ đơn'">
                                         <td>{{$index + 1}}</td>
-                                        <td>{{order.id}}</td>
+                                        <td style="width: 15%">{{order.id}}</td>
                                         <td>{{order.toName}}</td>
                                         <td>{{order.toPhone}}</td>
                                         <td>{{order.toProvince}}</td>
-                                        <td>{{order.orderStatus}}</td>
-                                        <td>
+                                        <td style="width: 14%">{{order.orderStatus}}</td>
+                                        <td style="width: 20%">
                                             {{order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}
                                         </td>
                                         <td>
@@ -235,12 +235,12 @@
                                     <tbody>
                                     <tr ng-repeat="order in history_order">
                                         <td>{{$index + 1}}</td>
-                                        <td>{{order.id}}</td>
+                                        <td style="width: 15%">{{order.id}}</td>
                                         <td>{{order.toName}}</td>
                                         <td>{{order.toPhone}}</td>
                                         <td>{{order.toProvince}}</td>
-                                        <td>{{order.orderStatus}}</td>
-                                        <td>
+                                        <td style="width: 14%">{{order.orderStatus}}</td>
+                                        <td style="width: 20%">
                                             {{order.paymentType ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví VNPAY'}}
                                         </td>
                                         <td>
