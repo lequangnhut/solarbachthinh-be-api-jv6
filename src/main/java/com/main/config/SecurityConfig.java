@@ -49,10 +49,10 @@ public class SecurityConfig {
                         authorize -> authorize
                                 .requestMatchers("/user/**", "/admin/**").permitAll()
                                 .requestMatchers(
-                                        "/quan-tri/dashboard",
-                                        "/quan-tri/tai-khoan"
+                                        "/quan-tri/dashboard"
                                 ).hasAnyAuthority("ROLE_ADMIN", "ROLE_STAFF", "ROLE_SPAM")
                                 .requestMatchers(
+                                        "/quan-tri/tai-khoan/**",
                                         "/quan-tri/nhan-vien/**"
                                 ).hasAnyAuthority("ROLE_SPAM") // role super admin
                                 .requestMatchers(
