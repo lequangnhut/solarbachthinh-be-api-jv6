@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Solar Bách Thịnh - Sản Phẩm</title>
+    <title>Solar Bách Thịnh - Dashboarh</title>
 
     <div th:replace="~{views/admin/lib/link_lib}"></div>
 </head>
@@ -31,7 +31,8 @@
                         <div class="col-lg-3">
                             <div class="d-flex justify-content-end align-items-center me-3 pe-1">
                                 <label for="yearSelector">
-                                    <select class="form-select" id="yearSelector" onchange="updateChart()" style="width: 330px;">
+                                    <select class="form-select" id="yearSelector" onchange="updateChart()"
+                                            style="width: 330px;">
                                         <option th:each="order :${selectYear}"
                                                 th:value="${order}"
                                                 th:text="${order}"
@@ -72,10 +73,12 @@
                                                                 th:text="${#numbers.formatDecimal(revenue, 0, 'COMMA', 0, 'POINT').replace(',', '.') + ' ₫'}">
                                                                 $36,358</h4>
                                                             <div class="d-flex align-items-center mb-3">
-                                                          <span id="muiTen" class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
+                                                          <span id="muiTen"
+                                                                class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
                                                             <i th:class="'ti ' + ${muiTen}"></i>
                                                           </span>
-                                                                <p class="text-dark me-1 fs-3 mb-0" id="percentCompareToLastYear"
+                                                                <p class="text-dark me-1 fs-3 mb-0"
+                                                                   id="percentCompareToLastYear"
                                                                    th:text="${percentCompareToLastYear >= 0 ? #numbers.formatDecimal(percentCompareToLastYear, 1, 'COMMA', 2, 'POINT') : #numbers.formatDecimal(percentCompareToLastYear * -1, 0, 'COMMA', 2, 'POINT')} + '%'"></p>
                                                                 <p class="fs-3 mb-0">Năm trước</p>
                                                             </div>

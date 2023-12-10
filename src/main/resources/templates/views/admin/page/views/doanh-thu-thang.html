@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Solar Bách Thịnh - Sản Phẩm</title>
+    <title>Solar Bách Thịnh - Doanh thu tháng</title>
 
     <div th:replace="~{views/admin/lib/link_lib}"></div>
 </head>
@@ -81,9 +81,11 @@
                                                             th:text="${#numbers.formatDecimal(monthlyRevenue[0], 0, 'COMMA', 0, 'POINT') + ' ₫'}"></h4>
                                                         <div class="d-flex align-items-center mb-3">
                                                                     <span class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
-                                                                        <i id="monthly-revenue-icon" th:class="${trendIconClass}"></i>
+                                                                        <i id="monthly-revenue-icon"
+                                                                           th:class="${trendIconClass}"></i>
                                                                     </span>
-                                                            <p class="text-dark me-1 fs-3 mb-0" id="monthly-revenue-change"
+                                                            <p class="text-dark me-1 fs-3 mb-0"
+                                                               id="monthly-revenue-change"
                                                                th:text="${monthlyRevenue[1] >= 0 ? #numbers.formatDecimal(monthlyRevenue[1] , 0, 'COMMA', 2, 'POINT') + '%'
                                                                : #numbers.formatDecimal(monthlyRevenue[1] * -1 , 0, 'COMMA', 2, 'POINT') + '%'}"></p>
                                                             <p class="fs-3 mb-0">Tháng trước</p>

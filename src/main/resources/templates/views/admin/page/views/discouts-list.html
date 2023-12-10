@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Solar Bách Thịnh - Sản Phẩm</title>
+    <title>Solar Bách Thịnh - Giảm Giá</title>
 
     <div th:replace="~{views/admin/lib/link_lib}"></div>
 </head>
@@ -21,13 +21,14 @@
         <div th:replace="~{views/admin/components/header}"></div>
         <!--  Header End -->
 
-         <div class="container-fluid" style="max-width: 1900px;">
+        <div class="container-fluid" style="max-width: 1900px;">
             <div class="card">
                 <div class="card-body">
                     <a class="btn btn-primary float-end" href="/quan-tri/giam-gia/them-ma" role="button">
                         <i class="ti ti-file-plus"></i>Thêm mã giảm giá
                     </a>
-                    <a class="btn btn-primary float-end me-3" href="/quan-tri/giam-gia/danh-sach-ma-giam-gia-da-sua-dung" role="button">
+                    <a class="btn btn-primary float-end me-3"
+                       href="/quan-tri/giam-gia/danh-sach-ma-giam-gia-da-sua-dung" role="button">
                         <i class="ti ti-article me-1"></i>Tài khoản đã sử dụng mã
                     </a>
                     <h5 class="card-title fw-semibold mb-4 mt-2">Danh sách mã giảm giá</h5>
@@ -49,13 +50,15 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr  th:each="discountz,start : ${discountCodes}">
+                                    <tr th:each="discountz,start : ${discountCodes}">
                                         <td th:text="${start.index + 1}"></td>
                                         <td th:text="${discountz.id}"></td>
                                         <td th:text="${#numbers.formatDecimal(discountz.discountCost, 0, 'COMMA', 0, 'POINT')}"></td>
                                         <td th:text="${discountz.quantity}"></td>
-                                        <td class="text-center" th:text="${#temporals.format(discountz.startUse, 'dd-MM-yyyy')}"></td>
-                                        <td class="text-center" th:text="${#temporals.format(discountz.endUse, 'dd-MM-yyyy')}"></td>
+                                        <td class="text-center"
+                                            th:text="${#temporals.format(discountz.startUse, 'dd-MM-yyyy')}"></td>
+                                        <td class="text-center"
+                                            th:text="${#temporals.format(discountz.endUse, 'dd-MM-yyyy')}"></td>
                                         <td th:text="${discountz.discountDescription}"></td>
                                         <td th:if="${discountz.isActive == true}">
                                             <i class='bx bxs-circle' style='color:#3a9b54'></i> Còn hạn
