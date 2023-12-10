@@ -76,13 +76,6 @@ public class ProductTypeControllerAD {
                                        @ModelAttribute ProductTypesDto productTypeDTO,
                                        RedirectAttributes redirectAttributes) {
         List<ProductTypes> productTypes = productTypeService.findAll();
-        for (var productType : productTypes) {
-            if (productType.getProductTypeName().equals(productTypeDTO.getProductTypeName())) {
-                redirectAttributes.addFlashAttribute("errorProductType", "Thể loại đã tồn tại!");
-                redirectAttributes.addFlashAttribute("productTypeId", id);
-                return "redirect:/quan-tri/the-loai/sua-the-loai/{productTypeId}";
-            }
-        }
         productTypeDTO.setId(id);
         ProductTypes save = EntityDtoUtils.convertToEntity(productTypeDTO, ProductTypes.class);
         productTypeService.save(save);

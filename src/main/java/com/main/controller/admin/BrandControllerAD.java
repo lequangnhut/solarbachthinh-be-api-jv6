@@ -104,11 +104,9 @@ public class BrandControllerAD {
 
         if (brandsExist) {
             ProductBrands brands = productBrandService.findByProductBrandId(id);
-            ProductBrandsDto productBrandsDto = EntityDtoUtils.convertToDto(brands, ProductBrandsDto.class);
-            productBrandsDto.setIsStatusDelete("Ngưng hợp tác");
+            brands.setIsStatusDelete("Ngưng hoạt động");
 
-            ProductBrands save = EntityDtoUtils.convertToEntity(brands, ProductBrands.class);
-            productBrandService.save(save);
+            productBrandService.save(brands);
             session.setAttribute("toastSuccess", "Xóa thương hiệu thành công");
             return "redirect:/quan-tri/danh-sach-thuong-hieu";
         } else {
