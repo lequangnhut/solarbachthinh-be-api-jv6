@@ -37,7 +37,8 @@
                                     <input type="text"
                                            class="form-control"
                                            id="name-edit-product-type"
-                                           th:field="*{productTypeName}"
+                                           th:value="${product_types.productTypeName}"
+                                           name="productTypeName"
                                            placeholder="..."
                                     >
                                     <label for="name-edit-product-type">Tên thể loại sản phẩm</label>
@@ -54,7 +55,7 @@
 
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="province-edit-product-type"
-                                            aria-label="Floating label select example" name="category-name">
+                                            aria-label="Floating label select example" name="categoryId">>
                                         <option selected disabled hidden value="">Chọn Thể Loại Doanh mục</option>
                                         <option th:each="item : ${categories}"
                                                 th:value="${item.id}"

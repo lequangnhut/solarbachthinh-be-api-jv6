@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -53,22 +54,38 @@ public class ProductTypeControllerAD {
     }
 
     @PostMapping("them-the-loai/submit")
-    public String insert_product_types(ProductTypesDto productTypeDTO, @RequestParam("category-name") int categoryId) {
-        productTypeDTO.setCategoryId(categoryId);
+    public String insert_product_types(@ModelAttribute ProductTypesDto productTypeDTO, RedirectAttributes redirectAttributes) {
+        List<ProductTypes> productTypes = productTypeService.findAll();
+        for (var productType : productTypes) {
+            if (productType.getProductTypeName().equals(productTypeDTO.getProductTypeName())) {
+                redirectAttributes.addFlashAttribute("errorProductType", "Thể loại đã tồn tại!");
+                return "redirect:/quan-tri/the-loai/them-the-loai";
+            }
+        }
         productTypeDTO.setIsActive(Boolean.TRUE);
-        ProductTypes productTypes = EntityDtoUtils.convertToEntity(productTypeDTO, ProductTypes.class);
-        productTypeService.save(productTypes);
+        ProductTypes save = EntityDtoUtils.convertToEntity(productTypeDTO, ProductTypes.class);
+        productTypeService.save(save);
 
         session.setAttribute("toastSuccess", "Thêm thể loại thành công !");
         return "redirect:/quan-tri/the-loai";
+
     }
 
     @PostMapping("sua-the-loai/{productTypeId}")
-    public String update_product_types(@PathVariable int productTypeId, @RequestParam("category-name") int categoryId, ProductTypesDto productTypeDTO) {
-        productTypeDTO.setId(productTypeId);
-        productTypeDTO.setCategoryId(categoryId);
-        ProductTypes productTypes = EntityDtoUtils.convertToEntity(productTypeDTO, ProductTypes.class);
-        productTypeService.save(productTypes);
+    public String update_product_types(@PathVariable("productTypeId") int id,
+                                       @ModelAttribute ProductTypesDto productTypeDTO,
+                                       RedirectAttributes redirectAttributes) {
+        List<ProductTypes> productTypes = productTypeService.findAll();
+        for (var productType : productTypes) {
+            if (productType.getProductTypeName().equals(productTypeDTO.getProductTypeName())) {
+                redirectAttributes.addFlashAttribute("errorProductType", "Thể loại đã tồn tại!");
+                redirectAttributes.addFlashAttribute("productTypeId", id);
+                return "redirect:/quan-tri/the-loai/sua-the-loai/{productTypeId}";
+            }
+        }
+        productTypeDTO.setId(id);
+        ProductTypes save = EntityDtoUtils.convertToEntity(productTypeDTO, ProductTypes.class);
+        productTypeService.save(save);
 
         session.setAttribute("toastSuccess", "Cập nhật thể loại thành công !");
         return "redirect:/quan-tri/the-loai";
