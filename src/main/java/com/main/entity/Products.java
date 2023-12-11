@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -19,7 +20,6 @@ import java.util.Collection;
 @Table(name = "products", schema = "solardb")
 public class Products {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false, length = 20)
     private String id;
@@ -38,7 +38,7 @@ public class Products {
 
     @Basic
     @Column(name = "price", nullable = true, precision = 0)
-    private Integer price;
+    private BigDecimal price;
 
     @Basic
     @Column(name = "quantity", nullable = true)
@@ -58,11 +58,7 @@ public class Products {
 
     @Basic
     @Column(name = "warranty", nullable = true)
-    private Integer warranty;
-
-    @Basic
-    @Column(name = "sale_off", nullable = true, precision = 0)
-    private Integer saleOff;
+    private String warranty;
 
     @Basic
     @Column(name = "is_status_delete", nullable = true, length = 255)
@@ -82,11 +78,15 @@ public class Products {
 
     @OneToMany(mappedBy = "productsByProductId")
     @JsonManagedReference
-    private Collection<ProductAttributes> productAttributesById;
+    private Collection<ProductImages> productImagesById;
 
     @OneToMany(mappedBy = "productsByProductId")
     @JsonManagedReference
-    private Collection<ProductImages> productImagesById;
+    private Collection<SaleOff> productSaleOffById;
+
+    @OneToMany(mappedBy = "productsByProductId")
+    @JsonManagedReference
+    private Collection<ProductRate> productRatesById;
 
     @ManyToOne
     @JoinColumn(name = "product_type_id", referencedColumnName = "id", insertable = false, updatable = false)

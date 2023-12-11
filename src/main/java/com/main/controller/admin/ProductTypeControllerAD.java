@@ -3,7 +3,7 @@ package com.main.controller.admin;
 import com.main.dto.ProductTypesDto;
 import com.main.entity.ProductCategories;
 import com.main.entity.ProductTypes;
-import com.main.service.CategoryService;
+import com.main.service.ProductCategoryService;
 import com.main.service.ProductTypeService;
 import com.main.utils.EntityDtoUtils;
 import jakarta.servlet.http.HttpSession;
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class ProductTypeControllerAD {
     ProductTypeService productTypeService;
 
     @Autowired
-    CategoryService categoryService;
+    ProductCategoryService productCategoryService;
 
     @Autowired
     HttpSession session;
@@ -35,7 +36,7 @@ public class ProductTypeControllerAD {
 
     @GetMapping("them-the-loai")
     public String show_product_types_add(Model model) {
-        List<ProductCategories> categories = categoryService.findAll();
+        List<ProductCategories> categories = productCategoryService.findAll();
 
         model.addAttribute("productTypeDTO", new ProductTypesDto());
         model.addAttribute("categories", categories);
@@ -45,7 +46,7 @@ public class ProductTypeControllerAD {
     @GetMapping("sua-the-loai/{productTypeId}")
     public String show_product_types_edit(@PathVariable int productTypeId, Model model) {
         ProductTypes productTypes = productTypeService.findById(productTypeId);
-        List<ProductCategories> categories = categoryService.findAll();
+        List<ProductCategories> categories = productCategoryService.findAll();
 
         model.addAttribute("product_types", productTypes);
         model.addAttribute("categories", categories);
@@ -53,22 +54,31 @@ public class ProductTypeControllerAD {
     }
 
     @PostMapping("them-the-loai/submit")
-    public String insert_product_types(ProductTypesDto productTypeDTO, @RequestParam("category-name") int categoryId) {
-        productTypeDTO.setCategoryId(categoryId);
+    public String insert_product_types(@ModelAttribute ProductTypesDto productTypeDTO, RedirectAttributes redirectAttributes) {
+        List<ProductTypes> productTypes = productTypeService.findAll();
+        for (var productType : productTypes) {
+            if (productType.getProductTypeName().equals(productTypeDTO.getProductTypeName())) {
+                redirectAttributes.addFlashAttribute("errorProductType", "Thể loại đã tồn tại!");
+                return "redirect:/quan-tri/the-loai/them-the-loai";
+            }
+        }
         productTypeDTO.setIsActive(Boolean.TRUE);
-        ProductTypes productTypes = EntityDtoUtils.convertToEntity(productTypeDTO, ProductTypes.class);
-        productTypeService.save(productTypes);
+        ProductTypes save = EntityDtoUtils.convertToEntity(productTypeDTO, ProductTypes.class);
+        productTypeService.save(save);
 
         session.setAttribute("toastSuccess", "Thêm thể loại thành công !");
         return "redirect:/quan-tri/the-loai";
+
     }
 
     @PostMapping("sua-the-loai/{productTypeId}")
-    public String update_product_types(@PathVariable int productTypeId, @RequestParam("category-name") int categoryId, ProductTypesDto productTypeDTO) {
-        productTypeDTO.setId(productTypeId);
-        productTypeDTO.setCategoryId(categoryId);
-        ProductTypes productTypes = EntityDtoUtils.convertToEntity(productTypeDTO, ProductTypes.class);
-        productTypeService.save(productTypes);
+    public String update_product_types(@PathVariable("productTypeId") int id,
+                                       @ModelAttribute ProductTypesDto productTypeDTO,
+                                       RedirectAttributes redirectAttributes) {
+        List<ProductTypes> productTypes = productTypeService.findAll();
+        productTypeDTO.setId(id);
+        ProductTypes save = EntityDtoUtils.convertToEntity(productTypeDTO, ProductTypes.class);
+        productTypeService.save(save);
 
         session.setAttribute("toastSuccess", "Cập nhật thể loại thành công !");
         return "redirect:/quan-tri/the-loai";

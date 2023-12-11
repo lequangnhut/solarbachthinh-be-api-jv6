@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Solar Bách Thịnh - Thêm Sản Phẩm</title>
-
+    <title>Solar Bách Thịnh - Cập Nhật Sản Phẩm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="/admin/assets/css/add-product.css">
     <div th:replace="~{views/admin/lib/link_lib}"></div>
 </head>
 <body>
@@ -27,98 +29,219 @@
                     <h5 class="card-title fw-semi-bold mb-4 mt-2">Cập nhật sản phẩm</h5>
                     <div class="card">
                         <div class="card-body">
-                            <form method="post" id="edit-form" onsubmit="return confirmForm()">
-
-                                <div class="form">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="productIdValue" readonly>
-                                        <label for="productIdValue">Mã sản phẩm</label>
-                                    </div>
-
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="productName" name="productName">
-                                        <label for="productName">Tên sản phẩm</label>
-                                        <span class="text-danger" id="invalid-product-name"></span>
-                                    </div>
-
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="power" name="power">
-                                        <label for="power">Công suất</label>
-                                        <span class="text-danger" id="invalid-power"></span>
-                                    </div>
-
-                                    <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="amount" name="amount">
-                                        <label for="amount">Số lượng sản phẩm</label>
-                                        <span class="text-danger" id="invalid-amount"></span>
-                                    </div>
-
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" oninput="formatPrice(this)"
-                                               id="priceInput" name="price">
-                                        <label for="priceInput">Giá sản phẩm</label>
-                                        <span class="text-danger" id="invalid-price"></span>
-                                    </div>
-
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="warranty" name="warranty">
-                                        <label for="warranty">Thời gian bảo hành</label>
-                                        <span class="text-danger" id="invalid-warranty"></span>
-                                    </div>
-
-                                    <div class="form-floating mb-3">
-                                        <input type="tel" class="form-control" id="saleOff" name="saleOff"
-                                               oninput="formatPrice(this)">
-                                        <label for="saleOff">Giảm giá</label>
-                                        <span class="text-danger" id="invalid-saleOff"></span>
-                                    </div>
-
-                                    <div class="form-floating mb-3">
-
-                                        <select class="form-select" name="brandId">
-                                            <option></option>
-                                        </select>
-                                        <label>Thương hiệu</label>
-                                    </div>
-
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" name="productTypeId">
-                                            <option></option>
-                                        </select>
-                                        <label>Thể loại</label>
-                                    </div>
-
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" name="isStatusDelete">
-                                            <option></option>
-                                        </select>
-                                        <label>Trạng thái</label>
-                                    </div>
-                                </div>
-
+                            <div id="form-product" th:object="${productDto}">
                                 <div class="form-floating mb-3">
-                                    <textarea class="form-control" id="descriptions" name="descriptions"
-                                              placeholder="Nhập ghi chú ở đây" style="height: 200px"></textarea>
-                                    <label for="descriptions">Ghi chú</label>
+                                    <input type="text" class="form-control"
+                                           id="productIdValue" readonly name="id"
+                                           th:value="${productDto.id}">
+                                    <label for="productIdValue">Mã sản phẩm <span class="text-danger">*</span></label>
                                 </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="productName"
+                                           th:value="${productDto.productName}">
+                                    <label for="productName">Tên sản phẩm <span class="text-danger">*</span></label>
+                                    <span class="text-danger" id="invalid-product-name"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="powers" th:value="${productDto.powers}">
+                                    <label for="powers">Công suất <span class="text-danger">*</span></label>
+                                    <span class="text-danger" id="invalid-power"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="quantity"
+                                           th:value="${productDto.quantity}">
+                                    <label for="quantity">Số lượng sản phẩm <span class="text-danger">*</span></label>
+                                    <span class="text-danger" id="invalid-amount"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" oninput="formatPrice(this)" name="price"
+                                           id="price" th:value="${ProductPriceEdit}">
+                                    <label for="price">Giá sản phẩm <span class="text-danger">*</span></label>
+                                    <span class="text-danger" id="invalid-price"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="warranty"
+                                           th:value="${productDto.warranty}">
+                                    <label for="warranty">Thời gian bảo hành <span class="text-danger">*</span></label>
+                                    <span class="text-danger" id="invalid-warranty"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="brandId">
+                                        <option value="" class="text-center">--------- Thêm thương hiệu ----------
+                                        </option>
+                                        <option th:each="brand : ${listBrandValue}"
+                                                th:value="${brand.id}"
+                                                th:text="${brand.brandName}"
+                                                th:selected="${brand.id} == ${productDto.productBrandId}">
+                                        </option>
+                                    </select>
+                                    <label for="brandId">Thương hiệu <span class="text-danger">*</span></label>
+                                    <span class="text-danger" id="invalid-brandId"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="productTypeId">
+                                        <option value="" class="text-center">--------- Thêm loại sản phẩm ----------
+                                        </option>
+                                        <option th:each="type : ${listProductTypeValue}"
+                                                th:value="${type.id}"
+                                                th:text="${type.productTypeName}"
+                                                th:selected="${type.id} == ${productDto.productTypeId}">
+                                        </option>
+                                    </select>
+                                    <label for="productTypeId">Loại sản phẩm <span class="text-danger">*</span></label>
+                                    <span class="text-danger" id="invalid-productTypeId"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="isStatusDelete">
+                                        <option th:each="status : ${isStatusDeleteValue}"
+                                                th:value="${status}"
+                                                th:text="${status}"
+                                                th:selected="${status} == ${productDto.isStatusDelete}">
+                                        </option>
+                                    </select>
+                                    <label for="isStatusDelete">Trạng thái xóa <span
+                                            class="text-danger">*</span></label>
+                                    <span class="text-danger" id="invalid-isStatusDelete"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="file1">Hình ảnh 1</label>
+                                    <input type="file" class="form-control" id="file1">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="file2">Hình ảnh 2</label>
+                                    <input type="file" class="form-control" id="file2">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="file3">Hình ảnh 3</label>
+                                    <input type="file" class="form-control" id="file3">
+                                </div>
+                                <div class="mb-5">
+                                    <label for="file4">Hình ảnh 4</label>
+                                    <input type="file" class="form-control" id="file4">
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control"
+                                              id="descriptions"
+                                              placeholder="Nhập ghi chú ở đây"
+                                              style="height: 150px"
+                                              th:text="${productDto.descriptions}">
+                                    </textarea>
+                                    <label for="descriptions">Mô tả</label>
+                                </div>
+                                <div class="container-desciption mb-5">
+                                    <div class="">
+                                        <label>Mô tả chi tiết sản phẩm <span class="text-danger">*</span></label>
+                                    </div>
+                                    <div class="options">
+                                        <!-- Text Format -->
+                                        <button id="bold" class="option-button format">
+                                            <i class="fa-solid fa-bold"></i>
+                                        </button>
+                                        <button id="italic" class="option-button format">
+                                            <i class="fa-solid fa-italic"></i>
+                                        </button>
+                                        <button id="underline" class="option-button format">
+                                            <i class="fa-solid fa-underline"></i>
+                                        </button>
+                                        <button id="strikethrough" class="option-button format">
+                                            <i class="fa-solid fa-strikethrough"></i>
+                                        </button>
+                                        <button id="superscript" class="option-button script">
+                                            <i class="fa-solid fa-superscript"></i>
+                                        </button>
+                                        <button id="subscript" class="option-button script">
+                                            <i class="fa-solid fa-subscript"></i>
+                                        </button>
+                                        <!-- List -->
+                                        <button id="insertOrderedList" class="option-button">
+                                            <div class="fa-solid fa-list-ol"></div>
+                                        </button>
+                                        <button id="insertUnorderedList" class="option-button">
+                                            <i class="fa-solid fa-list"></i>
+                                        </button>
+                                        <!-- Table -->
+                                        <button id="createTable">
+                                            <i class="fa-solid fa-table"></i>
+                                        </button>
+                                        <!-- Undo/Redo -->
+                                        <button id="undo" class="option-button">
+                                            <i class="fa-solid fa-rotate-left"></i>
+                                        </button>
+                                        <button id="redo" class="option-button">
+                                            <i class="fa-solid fa-rotate-right"></i>
+                                        </button>
+                                        <!-- Link -->
+                                        <button id="createLink" class="adv-option-button">
+                                            <i class="fa fa-link"></i>
+                                        </button>
+                                        <button id="unlink" class="option-button">
+                                            <i class="fa fa-unlink"></i>
+                                        </button>
+                                        <!-- Alignment -->
+                                        <button id="justifyLeft" class="option-button align">
+                                            <i class="fa-solid fa-align-left"></i>
+                                        </button>
+                                        <button id="justifyCenter" class="option-button align">
+                                            <i class="fa-solid fa-align-center"></i>
+                                        </button>
+                                        <button id="justifyRight" class="option-button align">
+                                            <i class="fa-solid fa-align-right"></i>
+                                        </button>
+                                        <button id="justifyFull" class="option-button align">
+                                            <i class="fa-solid fa-align-justify"></i>
+                                        </button>
+                                        <button id="indent" class="option-button spacing">
+                                            <i class="fa-solid fa-indent"></i>
+                                        </button>
+                                        <button id="outdent" class="option-button spacing">
+                                            <i class="fa-solid fa-outdent"></i>
+                                        </button>
+                                        <!-- Headings -->
+                                        <select id="formatBlock" class="adv-option-button">
+                                            <option value="H1">H1</option>
+                                            <option value="H2">H2</option>
+                                            <option value="H3">H3</option>
+                                            <option value="H4">H4</option>
+                                            <option value="H5">H5</option>
+                                            <option value="H6">H6</option>
+                                        </select>
+                                        <!-- Font -->
+                                        <select id="fontName" class="adv-option-button"></select>
+                                        <select id="fontSize" class="adv-option-button"></select>
+                                        <!-- Color -->
+                                        <div class="input-wrapper">
+                                            <input type="color" id="foreColor" class="adv-option-button"/>
+                                            <label for="foreColor">Màu chữ</label>
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <input type="color" id="backColor" class="adv-option-button"/>
+                                            <label for="backColor">Làm nổi bật</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-control" id="text-input" contenteditable="true"
+                                         th:utext="${productDto.templateDescription}"></div>
+                                    <span class="text-danger" id="invalid-templateDescription"></span>
+                                    <span th:if="${#fields.hasErrors('templateDescription')}"
+                                          class="text-danger"></span>
 
+                                </div>
                                 <div class="row d-flex flex-column flex-md-row mt-3">
                                     <div class="col-md-6">
                                         <div class="d-grid gap-2 d-md-block">
-                                            <button class="btn btn-success" id="submitted-button" type="submit">
+                                            <button class="btn btn-success" type="submit" id="submitted-button">
                                                 Cập nhật
                                             </button>
-                                            <button class="btn btn-primary" type="reset">Làm mới</button>
+                                            <button type="reset" class="btn btn-primary">Làm mới</button>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <a href="/admin/san-pham" class="btn btn-danger" role="button">Trở
+                                            <a href="/quan-tri/san-pham" class="btn btn-danger" role="button">Trở
                                                 về</a>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -129,9 +252,8 @@
 
 <div th:replace="~{views/admin/lib/script_lib}"></div>
 <script src="/admin/assets/js/format-price.js"></script>
-
-<script src="/admin/assets/js/validation/validation-form-product.js"></script>
-
+<script src="/admin/assets/js/validation/validation-form-product-edit-img.js"></script>
+<script src="/admin/assets/js/ajax/product/edit-product.js"></script>
 <script>
     function confirmForm() {
         Swal.fire({

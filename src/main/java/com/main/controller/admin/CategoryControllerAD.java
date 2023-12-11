@@ -2,7 +2,7 @@ package com.main.controller.admin;
 
 import com.main.dto.ProductCategoriesDto;
 import com.main.entity.ProductCategories;
-import com.main.service.CategoryService;
+import com.main.service.ProductCategoryService;
 import com.main.utils.EntityDtoUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +22,14 @@ import java.nio.file.StandardCopyOption;
 public class CategoryControllerAD {
 
     @Autowired
-    CategoryService categoryService;
+    ProductCategoryService productCategoryService;
 
     @Autowired
     HttpSession session;
 
     @GetMapping
     public String categories(Model model) {
-        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("categories", productCategoryService.findAll());
         return "views/admin/page/views/categorys-list";
     }
 
@@ -41,7 +41,7 @@ public class CategoryControllerAD {
 
     @GetMapping("sua-danh-muc/{categoryId}")
     public String categorys_edit(@PathVariable int categoryId, Model model) {
-        ProductCategories categories = categoryService.findById(categoryId);
+        ProductCategories categories = productCategoryService.findById(categoryId);
 
         model.addAttribute("categories", categories);
         return "views/admin/page/crud/category/categorys-edit";
@@ -49,6 +49,11 @@ public class CategoryControllerAD {
 
     @PostMapping("them-danh-muc/submit")
     public String addFormCategory(ProductCategoriesDto categoryDTO, @RequestParam("img") MultipartFile file) {
+        if (isCategoryNameExists(categoryDTO.getCategoryName())) {
+            session.setAttribute("toastWarning", "Tên danh mục đã tồn tại!");
+            return "redirect:/quan-tri/danh-muc/them-danh-muc";
+        }
+
         if (!file.isEmpty()) {
             Path path = Paths.get("src/main/resources/static/upload/");
 
@@ -66,9 +71,8 @@ public class CategoryControllerAD {
         categoryDTO.setCategoryImage(file.getOriginalFilename());
         categoryDTO.setIsActive(Boolean.TRUE);
         ProductCategories categories = EntityDtoUtils.convertToEntity(categoryDTO, ProductCategories.class);
-        categoryService.save(categories);
+        productCategoryService.save(categories);
         session.setAttribute("toastSuccess", "Thêm danh mục thành công!");
-
         return "redirect:/quan-tri/danh-muc";
     }
 
@@ -92,18 +96,23 @@ public class CategoryControllerAD {
         categoryDTO.setCategoryImage(file.getOriginalFilename());
         categoryDTO.setIsActive(categoryDTO.getIsActive());
         ProductCategories categories = EntityDtoUtils.convertToEntity(categoryDTO, ProductCategories.class);
-        categoryService.save(categories);
-        session.setAttribute("toastSuccess", "Cập nhật danh mục thành công!");
+        productCategoryService.save(categories);
+        session.setAttribute("toastSuccess", "Cập nhật thành công!");
         return "redirect:/quan-tri/danh-muc";
     }
 
     @GetMapping("xoa-danh-muc/{categoryId}")
     public String delete_categorys(@PathVariable int categoryId) {
-        ProductCategories categories = categoryService.findById(categoryId);
+        ProductCategories categories = productCategoryService.findById(categoryId);
         categories.setIsActive(Boolean.FALSE);
-        categoryService.save(categories);
+        productCategoryService.save(categories);
 
         session.setAttribute("toastSuccess", "Xoá danh mục thành công!");
         return "redirect:/quan-tri/danh-muc";
+    }
+
+    public boolean isCategoryNameExists(String categoryName) {
+        ProductCategories categories = productCategoryService.existsByCategoryName(categoryName);
+        return categories != null;
     }
 }

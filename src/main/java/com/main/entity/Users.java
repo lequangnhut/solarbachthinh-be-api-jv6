@@ -1,6 +1,7 @@
 package com.main.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,8 +33,8 @@ public class Users {
     private String email;
 
     @Basic
-    @Column(name = "passwords", nullable = false, length = 100)
-    private String passwords;
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
 
     @Basic
     @Column(name = "fullname", nullable = false, length = 100)
@@ -52,16 +53,16 @@ public class Users {
     private Date birth;
 
     @Basic
-    @Column(name = "city", nullable = true, length = 50)
-    private String city;
+    @Column(name = "province_name", nullable = true, length = 50)
+    private String ProvinceName;
 
     @Basic
-    @Column(name = "province", nullable = true, length = 50)
-    private String province;
+    @Column(name = "district_name", nullable = true, length = 50)
+    private String DistrictName;
 
     @Basic
-    @Column(name = "ward", nullable = true, length = 50)
-    private String ward;
+    @Column(name = "ward_name", nullable = true, length = 50)
+    private String WardName;
 
     @Basic
     @Column(name = "address", nullable = true, length = 100)
@@ -72,12 +73,16 @@ public class Users {
     private Timestamp dateCreated;
 
     @Basic
-    @Column(name = "is_acctive", nullable = false)
+    @Column(name = "is_active", nullable = false)
     private boolean isAcctive;
 
     @Basic
     @Column(name = "token", nullable = true, length = 50)
     private String token;
+
+    @Basic
+    @Column(name = "picture", nullable = true, length = 255)
+    private String picture;
 
     @OneToMany(mappedBy = "usersByUserId")
     @JsonManagedReference
@@ -85,15 +90,7 @@ public class Users {
 
     @OneToMany(mappedBy = "usersByUserId")
     @JsonManagedReference
-    private Collection<HistoryUpdate> historyUpdatesById;
-
-    @OneToMany(mappedBy = "usersByUserId")
-    @JsonManagedReference
     private Collection<Orders> ordersById;
-
-    @OneToMany(mappedBy = "usersByUserId")
-    @JsonManagedReference
-    private Collection<ProductComment> productCommentsById;
 
     @OneToMany(mappedBy = "usersByUserId")
     @JsonManagedReference
@@ -103,8 +100,12 @@ public class Users {
     @JsonManagedReference
     private Collection<UserDiscounts> userDiscountsById;
 
+    @OneToMany(mappedBy = "usersByUserId")
+    @JsonManagedReference
+    private Collection<NotificationOrder> notificationUserById;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "role_users", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
-    @JsonBackReference
+    @JsonIgnoreProperties("users") // Tùy chỉnh tên trường cần bỏ qua
     private List<Roles> roles = new ArrayList<>();
 }

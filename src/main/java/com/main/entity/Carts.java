@@ -18,7 +18,7 @@ public class Carts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false, length = 20)
-    private String id;
+    private int id;
 
     @Basic
     @Column(name = "user_id", nullable = false)

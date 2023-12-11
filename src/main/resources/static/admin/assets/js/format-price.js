@@ -1,19 +1,31 @@
 //format giá tiền khi nhập vào
 function formatPrice(input) {
+
     let rawValue = input.value.replace(/[^0-9]/g, '');
 
     let price = parseInt(rawValue);
 
     if (!isNaN(price)) {
-        let formattedPrice = price.toLocaleString('vi-VN');
-        input.value = formattedPrice;
+        input.value = price.toLocaleString('en-US');
     }
 }
 
-// không cho người dùng nhập chữ vào
-document.getElementById('priceInput').addEventListener('keydown', function (event) {
-    let keyCode = event.keyCode;
-    if (!((keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105) || keyCode === 8 || keyCode === 9 || keyCode === 37 || keyCode === 39 || keyCode === 46)) {
-        event.preventDefault();
+function formatPriceGetId(inputId) {
+    // Lấy đối tượng input bằng cách sử dụng ID
+    let input = document.getElementById(inputId);
+
+    if (!input) {
+        console.error("Input element not found");
+        return;
     }
-});
+
+    let rawValue = input.value.replace(/[^0-9]/g, '');
+
+    let price = parseInt(rawValue);
+
+    if (!isNaN(price)) {
+        // Cập nhật giá trị của input
+        input.value = price.toLocaleString('en-US');
+    }
+}
+

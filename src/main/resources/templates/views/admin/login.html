@@ -27,7 +27,10 @@
                             <p class="text-center">Quản Lý Cửa Hàng <a href="/admin" class="fw-bold">Solar Bách
                                 Thịnh</a></p>
 
-                            <form th:action="@{/dang-nhap}" method="post" role="form">
+                            <form th:action="@{/admin/login}" method="post" role="form">
+                                <div th:if="${error}">
+                                    <p style="color: red;">Tài khoản hoặc mật khẩu không đúng !</p>
+                                </div>
 
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
@@ -46,7 +49,7 @@
                                             Đăng nhập lần sau ?
                                         </label>
                                     </div>
-                                    <a class="text-primary fw-bold text-decoration-none" href="/trang-chu">
+                                    <a class="text-primary fw-bold text-decoration-none" href="/">
                                         <i class="fa-solid fa-arrow-left"></i>
                                         Quay về trang chủ
                                     </a>

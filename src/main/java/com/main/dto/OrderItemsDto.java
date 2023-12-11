@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 @Data
 public class OrderItemsDto implements Serializable {
+
     int id;
 
     String orderId;
@@ -15,4 +16,6 @@ public class OrderItemsDto implements Serializable {
     Integer price;
 
     Integer quantity;
+
+    Boolean statusRate;
 }

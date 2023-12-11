@@ -8,35 +8,45 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 @Entity
 @Table(name = "product_rate", schema = "solardb")
 public class ProductRate {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private int id;
+    private String id;
 
-    @Basic
     @Column(name = "user_id", nullable = false)
     private int userId;
 
-    @Basic
     @Column(name = "product_id", nullable = false, length = 20)
     private String productId;
 
-    @Basic
+    @Column(name = "content", nullable = false, length = -1)
+    private String content;
+
     @Column(name = "rate", nullable = true)
     private Integer rate;
 
-    @Basic
+    @Column(name = "orderId", nullable = true)
+    private String orderId;
+
     @Column(name = "date_created", nullable = true)
     private Timestamp dateCreated;
+
+    @Column(name = "review_status", nullable = true)
+    private Boolean reviewStatus;
+
+    @OneToMany(mappedBy = "productRate")
+    @JsonBackReference
+    private Collection<ProductRateImage> images;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)

@@ -311,7 +311,7 @@
     left: 0;
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, .1);
+    background: rgba(0, 0, 0, .4);
 }
 
 @media (max-width: 768px) {
@@ -370,8 +370,12 @@
     transition: .5s;
 }
 
+.header-carousel .display-2 {
+    width: max-content;
+}
+
 .page-header {
-    background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1)), url(../img/carousel-2.jpg) center center no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, .4), rgba(0, 0, 0, .4)), url(../img/carousel-2.jpg) center center no-repeat;
     background-size: cover;
 }
 
@@ -1047,7 +1051,7 @@ body {
     text-transform: uppercase;
     padding: 15px 70px;
     display: inline-block;
-    margin-top: 45px;
+    margin-top: 20px;
     font-weight: bolder;
     letter-spacing: 1.5px;
 }
@@ -1109,3 +1113,76 @@ body {
 .footer .copyright a:hover {
     color: var(--primary);
 }
+
+/*** Deal ***/
+.deal-banner {
+    position: relative;
+    background-size: cover;
+    min-height: 100px
+}
+
+.deal-btn {
+    transition: box-shadow 0.3s ease, color 0.3s ease; /* Thêm hiệu ứng chuyển động */
+}
+
+.deal-btn:hover {
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.7); /* Màu cam khi hover */
+    color: #ffffff; /* Màu chữ trắng khi hover */
+}
+
+.flash-sale-banner {
+    position: absolute;
+    top: 20%; /* Điều chỉnh vị trí theo mong muốn */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.flash-sale-text {
+    color: #000; /* Màu chữ đen */
+    font-size: 20px; /* Điều chỉnh kích thước chữ theo mong muốn */
+}
+
+.discount-code-banner {
+    background-color: #4CAF50; /* Màu xanh lá cây */
+    padding: 10px;
+    border-radius: 5px; /* Điều chỉnh độ cong của viền */
+    margin-top: 20px; /* Khoảng cách giữa hai phần */
+}
+
+.discount-code-text {
+    color: #fff; /* Màu chữ trắng */
+    font-size: 18px; /* Điều chỉnh kích thước chữ theo mong muốn */
+    margin: 0; /* Loại bỏ margin mặc định */
+}
+
+.deal {
+    position: relative;
+    background: url(https://i.imgur.com/PqK9aHG.png) center center no-repeat;
+    background-size: cover;
+}
+
+.deal::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, .1);
+    clip-path: polygon(66% 0, 100% 0, 100% 100%, 33% 100%);
+}
+
+.deal .bg-white {
+    position: relative;
+    z-index: 1;
+}
+
+.deal .cdt span {
+    display: block;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 200;
+    text-transform: capitalize;
+}
+

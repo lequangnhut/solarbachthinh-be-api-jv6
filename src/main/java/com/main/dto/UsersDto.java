@@ -1,38 +1,50 @@
 package com.main.dto;
 
+import com.main.entity.Roles;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 @Data
 public class UsersDto implements Serializable {
-    int id;
 
-    String email;
+    private int id;
 
-    String passwords;
+    private String email;
 
-    String fullname;
+    private String password;
 
-    String phoneNumber;
+    private String fullname;
 
-    Boolean gender;
+    private String phoneNumber;
 
-    Date birth;
+    private Boolean gender;
 
-    String city;
+    private Date birth;
 
-    String province;
+    private String ProvinceName;
 
-    String ward;
+    private String DistrictName;
 
-    String address;
+    private String WardName;
 
-    Timestamp dateCreated;
+    private String address;
 
-    boolean isAcctive;
+    private Timestamp dateCreated;
 
-    String token;
+    private boolean isAcctive;
+
+    private Collection<Roles> roles;
+
+    private String token;
+
+    private String picture;
+
+    private BigDecimal totalOrderPrice;
+
+    private BigDecimal orderCount;
 }

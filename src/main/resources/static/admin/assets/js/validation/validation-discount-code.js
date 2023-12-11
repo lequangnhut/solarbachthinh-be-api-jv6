@@ -3,12 +3,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const discountCodeId = document.getElementById('discountCodeId');
     const discountPrice = document.getElementById('priceInput');
     const discountValue = document.getElementById('discountValue');
+    const discountDescription = document.getElementById('discountDescription');
     const createdAt = document.getElementById('createdAt');
     const expirationDate = document.getElementById('expirationDate');
 
     const invalidDiscountCodeId = document.getElementById('invalid-discountCode-id');
     const invalidDiscountPrice = document.getElementById('invalid-discount-price');
     const invalidDiscountValue = document.getElementById('invalid-discount-value');
+    const invalidDiscountDescription = document.getElementById('invalid-discount-description');
     const invalidCreatedAt = document.getElementById('invalid-createdAt');
     const invalidExpirationDate = document.getElementById('invalid-expirationDate');
 
@@ -17,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let discountSubmitted = false;
 
     function checkInputsDiscount() {
-        const fields = [discountCodeId, discountPrice, discountValue, createdAt, expirationDate];
+        const fields = [discountCodeId, discountPrice, discountValue, discountDescription, createdAt, expirationDate];
         for (let i = 0; i < fields.length; i++) {
             if (fields[i].value.trim() === '') {
                 submittedButton.disabled = true;
@@ -47,11 +49,16 @@ document.addEventListener('DOMContentLoaded', function () {
     discountPrice.addEventListener('blur', function () {
         const value = discountPrice.value.trim();
         const formattedValue = value.replace(/[^\d]/g, '');
+        const numericValue = parseInt(formattedValue, 10);
 
         if (isNaN(formattedValue) || formattedValue === '') {
             discountPrice.classList.remove('is-valid');
             discountPrice.classList.add('is-invalid');
             invalidDiscountPrice.textContent = 'Giá giảm không hợp lệ. Phải là số lớn hơn 0.';
+        }else if(numericValue > 2000000){
+            discountPrice.classList.remove('is-valid');
+            discountPrice.classList.add('is-invalid');
+            invalidDiscountPrice.textContent = 'Giá giảm không hợp lệ. Không được quá 2.000.000 đồng.';
         } else {
             discountPrice.classList.remove('is-invalid');
             discountPrice.classList.add('is-valid');
@@ -67,11 +74,26 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isNaN(formattedValue) || formattedValue === '' || parseInt(formattedValue) <= 0 || discountValue.value.trim() < 0) {
             discountValue.classList.remove('is-valid');
             discountValue.classList.add('is-invalid');
-            invalidDiscountValue.textContent = 'Giá trị giảm không hợp lệ. Phải là số lớn hơn 0.';
+            invalidDiscountValue.textContent = 'Số lượng mã không hợp lệ. Phải là số lớn hơn 0.';
         } else {
             discountValue.classList.remove('is-invalid');
             discountValue.classList.add('is-valid');
             invalidDiscountValue.textContent = '';
+        }
+        checkInputsDiscount();
+    });
+
+    discountDescription.addEventListener('blur', function () {
+        const value = discountDescription.value.trim();
+
+        if (value === '') {
+            discountDescription.classList.remove('is-valid');
+            discountDescription.classList.add('is-invalid');
+            invalidDiscountDescription.textContent = 'Mời nhập điều kiện của mã.';
+        } else {
+            discountDescription.classList.remove('is-invalid');
+            discountDescription.classList.add('is-valid');
+            invalidDiscountDescription.textContent = '';
         }
         checkInputsDiscount();
     });
@@ -97,13 +119,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     expirationDate.addEventListener('blur', function () {
+        const currentDate = new Date();
         const value = expirationDate.value.trim();
 
         if (value === '') {
             expirationDate.classList.remove('is-valid');
             expirationDate.classList.add('is-invalid');
             invalidExpirationDate.textContent = 'Vui lòng nhập ngày hết hạn';
-        } else {
+        }else {
             expirationDate.classList.remove('is-invalid');
             expirationDate.classList.add('is-valid');
             invalidExpirationDate.textContent = '';

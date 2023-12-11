@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Solar Bách Thịnh - Sản Phẩm</title>
+    <title>Solar Bách Thịnh - Giảm Giá</title>
 
     <div th:replace="~{views/admin/lib/link_lib}"></div>
 </head>
@@ -21,16 +21,14 @@
         <div th:replace="~{views/admin/components/header}"></div>
         <!--  Header End -->
 
-        <div class="container-fluid">
+        <div class="container-fluid" style="max-width: 1900px;">
             <div class="card">
                 <div class="card-body">
                     <a class="btn btn-primary float-end" href="/quan-tri/giam-gia/them-ma" role="button">
                         <i class="ti ti-file-plus"></i>Thêm mã giảm giá
                     </a>
                     <a class="btn btn-primary float-end me-3"
-                       href="/quan-tri/giam-gia/ma-giam-gia-da-su-dung"
-                       role="button"
-                    >
+                       href="/quan-tri/giam-gia/danh-sach-ma-giam-gia-da-sua-dung" role="button">
                         <i class="ti ti-article me-1"></i>Tài khoản đã sử dụng mã
                     </a>
                     <h5 class="card-title fw-semibold mb-4 mt-2">Danh sách mã giảm giá</h5>
@@ -46,33 +44,37 @@
                                         <th scope="col">Số lượng</th>
                                         <th scope="col">Ngày tạo</th>
                                         <th scope="col">Ngày hết hạn</th>
+                                        <th scope="col">Ghi chú</th>
                                         <th scope="col">Trạng thái</th>
                                         <th scope="col">Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="discount, start : ${discountCodes}">
+                                    <tr th:each="discountz,start : ${discountCodes}">
                                         <td th:text="${start.index + 1}"></td>
-                                        <td th:text="${discount.discountCode}"></td>
-                                        <td th:text="${#numbers.formatDecimal(discount.discountPrice, 0, 'COMMA', 0, 'POINT')}"></td>
-                                        <td th:text="${discount.discountValue}"></td>
-                                        <td th:text="${#temporals.format(discount.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
-                                        <td th:text="${#temporals.format(discount.expirationDate, 'dd-MM-yyyy HH:mm')}"></td>
-                                        <td th:if="${discount.isActive == 'Đang hoạt động'}">
-                                            <i class='bx bxs-circle' style='color:#3a9b54'></i> Đang hoạt động
+                                        <td th:text="${discountz.id}"></td>
+                                        <td th:text="${#numbers.formatDecimal(discountz.discountCost, 0, 'COMMA', 0, 'POINT')}"></td>
+                                        <td th:text="${discountz.quantity}"></td>
+                                        <td class="text-center"
+                                            th:text="${#temporals.format(discountz.startUse, 'dd-MM-yyyy')}"></td>
+                                        <td class="text-center"
+                                            th:text="${#temporals.format(discountz.endUse, 'dd-MM-yyyy')}"></td>
+                                        <td th:text="${discountz.discountDescription}"></td>
+                                        <td th:if="${discountz.isActive == true}">
+                                            <i class='bx bxs-circle' style='color:#3a9b54'></i> Còn hạn
                                         </td>
-                                        <td th:if="${discount.isActive == 'Ngưng hoạt động'}">
-                                            <i class='bx bxs-circle' style='color:#c71e1e'></i> Ngưng hoạt động
+                                        <td th:if="${discountz.isActive == false}">
+                                            <i class='bx bxs-circle' style='color:#c71e1e'></i> Hết hạn
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <a class="btn btn-warning ms-2"
-                                                   th:href="@{/admin/sua-ma/{discountCode} (discountCode = ${discount.discountCode})}"
+                                                   th:href="@{/quan-tri/giam-gia/sua-ma/{discountCode} (discountCode = ${discountz.id})}"
                                                    role="button">Sửa</a>
                                                 <a class="btn btn-danger ms-2"
                                                    href="javascript:void(0)"
                                                    role="button"
-                                                   th:attr="onclick='confirmDelete(\'' + ${discount.discountCode} + '\')'">Xoá</a>
+                                                   th:attr="onclick='confirmDelete(\'' + ${discountz.id} + '\')'">Xoá</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -102,7 +104,7 @@
             confirmButtonText: 'Đồng ý !'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "/admin/xoa-ma/" + discountCode;
+                window.location.href = "/quan-tri/giam-gia/xoa-ma/" + discountCode;
             } else {
                 return false;
             }

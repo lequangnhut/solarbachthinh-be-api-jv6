@@ -146,3 +146,112 @@ img {
 a img {
     border: 0;
 }
+
+/*check detail*/
+#flash-sale {
+    margin: 0 auto;
+    display: flex; /* Hiển thị các phần tử con theo chiều ngang */
+    flex-direction: row; /* Xác định hướng hiển thị là hàng ngang */
+    align-items: center; /* Căn giữa các phần tử theo chiều dọc */
+    justify-content: space-between; /* Canh giữa các phần tử theo chiều ngang */
+    background-image: url('https://i.imgur.com/eI4mg8h.jpg');
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng đổ */
+    background-color: rgba(234, 217, 217, 0.3);
+    color: #F8FCFB;
+    font-size: 20px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    font-weight: bolder;
+}
+
+#countdown-day, #countdown-time {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.lead-text {
+    text-transform: capitalize;
+    font-size: 20px;
+    padding: 10px;
+}
+
+
+.review-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #f7f7f7
+}
+
+.review {
+    margin-bottom: 20px;
+    padding-bottom: 25px;
+}
+
+.user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.rating-stars {
+    color: #f39c12;
+    margin-left: 5px;
+}
+
+.review-images img {
+    max-width: 100%;
+    margin-top: 10px;
+}
+
+.hidden {
+    color: #888;
+}
+
+.review {
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    max-height: 30px;
+}
+
+.user-info img {
+    width: 25px;
+    height: 25px;
+}
+
+.user-info h6 {
+    margin: 0 10px 0 10px;
+    border: 0;
+    padding: 0;
+    position: relative;
+}
+
+.user-info h6:after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #333;
+}
+
+.rating-stars {
+    /* Thêm kiểu cho sao đánh giá nếu cần */
+}
+
+.review p {
+    margin-top: 10px;
+}
+
+.review-images img {
+    height: 100px;
+    margin-right: 20px;
+}

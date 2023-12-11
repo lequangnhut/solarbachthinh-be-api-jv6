@@ -1,5 +1,5 @@
 var citis = document.getElementById("city");
-var districts = document.getElementById("district");
+var province = document.getElementById("province");
 var wards = document.getElementById("ward");
 
 var Parameter = {
@@ -13,11 +13,13 @@ var promise = axios(Parameter);
 promise.then(function (result) {
     var currentURL = window.location.href;
 
-    if (currentURL.indexOf("sua-khach-hang") !== -1) {
+    if (currentURL.indexOf("tai-khoan/sua-tai-khoan/") !== -1) {
         renderCityEdit(result.data);
-    } else if (currentURL.indexOf("xac-nhan-thong-tin") !== -1) {
+    } else if (currentURL.indexOf("them-tai-khoan") !== -1) {
         renderCityEdit(result.data);
-    } else if (currentURL.indexOf("sua-thong-tin") !== -1) {
+    } else if (currentURL.indexOf("thong-tin/sua-thong-tin") !== -1) {
+        renderCityEdit(result.data);
+    } else if (currentURL.indexOf("nhan-vien/sua-nhan-vien") !== -1) {
         renderCityEdit(result.data);
     } else {
         renderCity(result.data);
@@ -33,20 +35,20 @@ function renderCity(data) {
 
     // Xử lý khi thay đổi tỉnh thành
     citis.onchange = function () {
-        districts.length = 1;
+        province.length = 1;
         wards.length = 1;
         if (this.value != "") {
             const result = data.filter((n) => n.Name === this.value);
 
             for (const k of result[0].Districts) {
                 const option = new Option(k.Name, k.Name);
-                districts.options[districts.options.length] = option;
+                province.options[province.options.length] = option;
             }
         }
     };
 
     // Xử lý khi thay đổi quận huyện
-    districts.onchange = function () {
+    province.onchange = function () {
         wards.length = 1;
         const dataCity = data.filter((n) => n.Name === citis.value);
         if (this.value != "") {
@@ -73,43 +75,43 @@ function renderCityEdit(data) {
         if (previousCitisValue !== this.value) {
             // Citis đã thay đổi giá trị
             previousCitisValue = this.value; // Cập nhật giá trị của citis trước khi thay đổi
-            districts.innerHTML = '<option value="" selected>Chọn Quận/Huyện</option>';
+            province.innerHTML = '<option value="" selected>Chọn Quận/Huyện</option>';
             wards.innerHTML = '<option value="" selected>Chọn Phường/Xã</option>';
 
         }
         // Thực hiện các xử lý khác ở đây sau khi citis thay đổi
     };
 
-    let previousDistrictsValue = districts.value; // Lưu giá trị của districts trước khi thay đổi
-    districts.onchange = function () {
+    let previousDistrictsValue = province.value; // Lưu giá trị của province trước khi thay đổi
+    province.onchange = function () {
         if (previousDistrictsValue !== this.value) {
             // Districts đã thay đổi giá trị
-            previousDistrictsValue = this.value; // Cập nhật giá trị của districts trước khi thay đổi
+            previousDistrictsValue = this.value; // Cập nhật giá trị của province trước khi thay đổi
             wards.innerHTML = '<option value="" selected>Chọn Phường/Xã</option>';
         }
-        // Thực hiện các xử lý khác ở đây sau khi districts thay đổi
+        // Thực hiện các xử lý khác ở đây sau khi province thay đổi
     };
 
 
     // Xử lý khi thay đổi tỉnh thành
     citis.onclick = function () {
-        districts.length = 1;
+        province.length = 1;
         wards.length = 1;
         if (this.value !== "") {
             const result = data.filter((n) => n.Name === this.value);
 
             for (const k of result[0].Districts) {
                 const option = new Option(k.Name, k.Name);
-                districts.options[districts.options.length] = option;
+                province.options[province.options.length] = option;
             }
         }
         setTimeout(function () {
-            districts.click();
+            province.click();
         }, 100);
     };
 
     // Xử lý khi thay đổi quận huyện
-    districts.onclick = function () {
+    province.onclick = function () {
         wards.length = 1;
         const dataCity = data.filter((n) => n.Name === citis.value);
         if (this.value != "") {
@@ -127,20 +129,21 @@ function performEventsInOrder() {
     setTimeout(function () {
         citis.click();
         setTimeout(function () {
-            districts.click();
+            province.click();
         }, 100);
     }, 100);
 }
 
 function btnFunc() {
     var selectedCityIndex = citis.selectedIndex;
-    var selectedDistrictIndex = districts.selectedIndex;
+    var selectedDistrictIndex = province.selectedIndex;
     var selectedWardIndex = wards.selectedIndex;
 
     var selectedCityName = citis.options[selectedCityIndex].text;
-    var selectedDistrictName = districts.options[selectedDistrictIndex].text;
+    var selectedDistrictName = province.options[selectedDistrictIndex].text;
     var selectedWardName = wards.options[selectedWardIndex].text;
 
     var selectedAddress = `Địa chỉ đã chọn: ${selectedWardName}, ${selectedDistrictName}, ${selectedCityName}`;
     console.log(selectedAddress);
 }
+

@@ -21,10 +21,10 @@
         <div th:replace="~{views/admin/components/header}"></div>
         <!--  Header End -->
 
-        <div class="container-fluid">
+         <div class="container-fluid" style="max-width: 1900px;">
             <div class="card">
                 <div class="card-body">
-                    <a class="btn btn-primary float-end" href="/admin/them-thuong-hieu" role="button">
+                    <a class="btn btn-primary float-end" href="/quan-tri/danh-sach-thuong-hieu/them-thuong-hieu" role="button">
                         <i class="ti ti-file-plus"></i>Thêm thương hiệu mới
                     </a>
                     <h5 class="card-title fw-semi-bold mb-4 mt-2">Các thương hiệu đang hợp tác</h5>
@@ -44,25 +44,25 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="brand, start : ${brandsList}">
+                                    <tr th:each="brand, start : ${listProductBrand}">
                                         <td th:text="${start.index + 1}"></td>
-                                        <td th:text="${brand.brandId}"></td>
+                                        <td th:text="${brand.id}"></td>
                                         <td th:text="${brand.brandName}"></td>
-                                        <td th:text="${brand.phoneNumber}"></td>
+                                        <td th:text="${brand.brandPhoneNumber}"></td>
                                         <td th:text="${brand.countryOfOrigin}" class="hidden-text-table"></td>
-                                        <td th:if="${brand.isStatusDelete == 'Đang hợp tác'}">
+                                        <td th:if="${brand.isStatusDelete == 'Đang hoạt động'}">
                                             <i class='bx bxs-circle' style='color:#3a9b54'></i> Đang hợp tác
                                         </td>
-                                        <td th:if="${brand.isStatusDelete == 'Ngưng hợp tác'}">
-                                            <i class='bx bxs-circle' style='color:#c71e1e'></i> Ngưng hợp tác
+                                        <td th:if="${brand.isStatusDelete == 'Ngưng hoạt động'}">
+                                            <i class='bx bxs-circle' style='color:#c71e1e'></i> Ngưng hoạt động
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <a class="btn btn-warning ms-2"
-                                                   th:href="@{/admin/chinh-sua-thuong-hieu/{id}(id = ${brand.brandId})}"
+                                                   th:href="@{/quan-tri/danh-sach-thuong-hieu/sua-thuong-hieu/{id}(id = ${brand.id})}"
                                                    role="button">Sửa</a>
                                                 <button class="btn btn-danger ms-2"
-                                                        th:attr="onclick='confirmDelete(\'' + ${brand.brandId} + '\')'">
+                                                        th:attr="onclick='confirmDelete(\'' + ${brand.id} + '\')'">
                                                     Xoá
                                                 </button>
                                             </div>
@@ -94,7 +94,7 @@
             cancelButtonText: 'Hủy'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = '/admin/danh-sach-thuong-hieu/delete/' + brandId;
+                window.location.href = '/quan-tri/danh-sach-thuong-hieu/xoa-thuong-hieu/' + brandId;
             }
         })
     }

@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @Data
 public class RolesDto implements Serializable {
+
     int id;
 
     String nameRole;
