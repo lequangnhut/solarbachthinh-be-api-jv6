@@ -79,11 +79,11 @@ public class AddData {
     @GetMapping("order")
     @ResponseBody
     public ResponseObject generateOrders() {
-        int numberOfOrders = 9500;
+        int numberOfOrders = 1500;
         List<Orders> ordersList = new ArrayList<>();
         Faker faker = new Faker();
 
-        LocalDate startDate = LocalDate.of(2018, 1, 1);
+        LocalDate startDate = LocalDate.of(2019, 1, 1);
         long daysBetween = ChronoUnit.DAYS.between(startDate, LocalDate.now());
 
         List<Integer> users = userService.findAllUser().stream()
@@ -126,7 +126,7 @@ public class AddData {
     @GetMapping("items-order")
     @ResponseBody
     public ResponseObject generateOrderItems() {
-        int numberOfItems = 9500; // Số lượng items cần tạo
+        int numberOfItems = 1500; // Số lượng items cần tạo
         List<OrderItems> orderItemList = new ArrayList<>();
         Faker faker = new Faker();
 

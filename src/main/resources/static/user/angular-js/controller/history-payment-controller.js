@@ -1,4 +1,4 @@
-solar_app.controller('history_payment_controller', function ($scope, $window, $timeout, UserService, OrderService, OrderItermService, DiscountService) {
+solar_app.controller('history_payment_controller', function ($scope, $window, $timeout, $rootScope, CartService, UserService, OrderService, OrderItermService, DiscountService) {
 
     $scope.activeTab = 'confirm';
 
@@ -95,7 +95,8 @@ solar_app.controller('history_payment_controller', function ($scope, $window, $t
 
                 for (let i = 0; i < listOrderItemAndProduct.length; i++) {
                     let data = {
-                        product: listOrderItemAndProduct[i][1], orderItem: listOrderItemAndProduct[i][0]
+                        product: listOrderItemAndProduct[i][1],
+                        orderItem: listOrderItemAndProduct[i][0]
                     };
                     combinedData.push(data);
 
@@ -127,6 +128,32 @@ solar_app.controller('history_payment_controller', function ($scope, $window, $t
             }
         });
     };
+
+    $scope.redirectProduct = function (productId) {
+        $('#modal-confirm-data').modal('hide');
+        window.location.href = '#!/san-pham/loai-danh-muc/san-pham-chi-tiet?ma-san-pham=' + productId;
+    }
+
+    $scope.repurchase = function (orderId) {
+        $('#modal-confirm-data').modal('hide');
+
+        OrderItermService.findByOrderId(orderId).then(function successCallback(response) {
+            $scope.order_items = response.data;
+
+            for (let i = 0; i < $scope.order_items.length; i++) {
+                let quantity = $scope.order_items[i][0].quantity;
+                let productId = $scope.order_items[i][1].id;
+
+                CartService.addProductToCart(productId, quantity).then(function successCallback() {
+                    toastAlert('success', 'Thêm vào giỏ hàng thành công!');
+                    window.location.href = '#!/gio-hang';
+                    $rootScope.sum_quantity_cart();
+                }, function errorCallback(response) {
+                    console.log(response.data)
+                });
+            }
+        });
+    }
 
     $scope.selectedReason = '';
     $scope.additionalComments = '';

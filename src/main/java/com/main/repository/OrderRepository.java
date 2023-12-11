@@ -40,10 +40,11 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
             "WHERE EXTRACT(YEAR FROM o.dateCreated) = :year and o.paymentStatus = 1")
     double calculateRevenueForYear(@Param("year") int year);
 
-    @Query("SELECT COALESCE(AVG(ct.price * ct.quantity + o.orderShipCost), 0) FROM Orders o " +
-            "JOIN o.orderItemsById ct " +
-            "JOIN o.usersByUserId a " +
-            "WHERE o.paymentStatus = 1 ")
+    @Query(value = "SELECT TotalRevenue / NumberOfYears AS AverageRevenue " +
+            "FROM (SELECT (SELECT SUM(ct.price * ct.quantity + o.order_ship_cost) " +
+            "FROM orders o JOIN order_items ct ON ct.order_id = o.id " +
+            "WHERE o.payment_status = 1) AS TotalRevenue, (SELECT COUNT(DISTINCT year(date_created)) " +
+            "FROM Orders WHERE payment_status = 1) AS NumberOfYears ) AS SubQuery ", nativeQuery = true)
     List<Integer> calculateAverageRevenue();
 
     @Query(value = "CALL findTopSellingProducts(:parameter)", nativeQuery = true)

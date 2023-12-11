@@ -325,7 +325,11 @@
                         <tbody>
                         <tr ng-repeat="data in combinedData">
                             <td>{{$index + 1}}</td>
-                            <td>{{data.product.productName}}</td>
+                            <td>
+                                <a href="javascript:void(0)" ng-click="redirectProduct(data.product.id)">
+                                    {{data.product.productName}}
+                                </a>
+                            </td>
                             <td>{{formatPrice(data.product.price)}} ₫</td>
                             <td>{{data.orderItem.quantity}}</td>
                             <td>{{formatPrice(data.product.price * data.orderItem.quantity)}} ₫</td>
@@ -351,11 +355,15 @@
             </div>
 
             <div class="modal-footer">
+                <button type="button" ng-if="order.orderStatus == 'Đã giao hàng' || order.orderStatus == 'Đã huỷ đơn'"
+                        ng-click="repurchase(order.id)" class="btn btn-success rounded-0">
+                    Mua lại
+                </button>
                 <button type="button" ng-if="order.orderStatus == 'Chờ xác nhận'" ng-click="cancelOrder()"
-                        class="btn btn-success">
+                        class="btn btn-secondary rounded-0">
                     Huỷ đơn
                 </button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Thoát</button>
+                <button type="button" class="btn btn-danger rounded-0" data-bs-dismiss="modal">Thoát</button>
             </div>
         </div>
     </div>
@@ -473,14 +481,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button"
-                        class="btn btn-danger"
+                <button type="button" class="btn btn-danger rounded-0"
                         ng-click="confirmCancelOrder(order.id, selectedReason, additionalComments)"
                         ng-disabled="!selectedReason && !additionalComments"
                 >
                     Xác nhận
                 </button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-secondary rounded-0" data-bs-dismiss="modal">Hủy</button>
             </div>
         </div>
     </div>
